@@ -1,0 +1,260 @@
+.reviewsSection {
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #1a252f 0%, #2d3e50 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.reviewsSection::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.header h2 {
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.header p {
+    font-size: 1.1rem;
+    color: #d4af37;
+    font-weight: 300;
+}
+
+.reviewsWrapper {
+    width: 100%;
+    overflow: hidden;
+    /* Important: disable native horizontal scroll to allow JS transform control */
+    cursor: grab;
+    padding: 20px 0;
+    touch-action: none;
+    /* Changed from pan-y to none for better iOS control */
+    position: relative;
+    /* iOS Safari specific fixes */
+    -webkit-overflow-scrolling: touch;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.reviewsWrapper:active {
+    cursor: grabbing;
+}
+
+.reviewsTrack {
+    display: flex;
+    gap: 30px;
+    width: max-content;
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000px;
+    perspective: 1000px;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+.reviewCard {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 16px;
+    padding: 30px;
+    flex: 0 0 400px;
+    max-width: 90vw;
+    user-select: none;
+    /* Do NOT add generic transitions here as they interfere with track transform */
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.reviewCard:hover {
+    transform: translateY(-8px);
+    border-color: rgba(212, 175, 55, 0.5);
+    box-shadow: 0 12px 40px rgba(212, 175, 55, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.reviewHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.avatarSection {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #1a252f;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+}
+
+.reviewerInfo h4 {
+    color: #ffffff;
+    font-size: 1.1rem;
+    margin: 0 0 5px 0;
+    font-weight: 600;
+}
+
+.date {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+}
+
+.platformBadge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.platformBadge.google {
+    background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+}
+
+.platformBadge.yelp {
+    background: linear-gradient(135deg, #d32323 0%, #ff1a1a 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(211, 35, 35, 0.3);
+}
+
+.stars {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.starFilled {
+    color: #d4af37;
+    text-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
+}
+
+.starEmpty {
+    color: rgba(212, 175, 55, 0.2);
+}
+
+.reviewText {
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.7;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.scrollIndicator {
+    width: 200px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    margin: 40px auto 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.scrollProgress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: #d4af37;
+    border-radius: 2px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .reviewsSection {
+        padding: 60px 15px;
+    }
+
+    .header h2 {
+        font-size: 2rem;
+    }
+
+    .header p {
+        font-size: 1rem;
+    }
+
+    .reviewCard {
+        padding: 25px;
+        flex: 0 0 320px;
+    }
+
+    .avatar {
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
+    }
+
+    .reviewerInfo h4 {
+        font-size: 1rem;
+    }
+
+    .stars {
+        font-size: 1.1rem;
+    }
+
+    .reviewText {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .reviewsSection {
+        padding: 50px 10px;
+    }
+
+    .header h2 {
+        font-size: 1.75rem;
+    }
+
+    .reviewCard {
+        padding: 20px;
+        flex: 0 0 280px;
+    }
+
+    .reviewHeader {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .platformBadge {
+        align-self: flex-start;
+    }
+}

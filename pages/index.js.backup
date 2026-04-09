@@ -1,0 +1,62 @@
+import Image from 'next/image';
+import Layout from '../components/Layout';
+import Modal from '../components/Modal';
+import ContactFormSection from '../components/ContactFormSection';
+import Reviews from '../components/Reviews';
+import styles from '../styles/Home.module.css';
+import Link from 'next/link';
+import { useState } from 'react';
+
+export default function Home() {
+    const [showContactModal, setShowContactModal] = useState(false);
+
+    return (
+        <Layout onContactClick={() => setShowContactModal(true)}>
+            <div className={styles.hero}>
+                <div className={styles.heroContent}>
+                    <div className={styles.heroTitle}>
+                        <Image src="/logo.png" alt="J&R NW Construction Logo" width={200} height={200} />
+                        <h1>J&R NW Construction</h1>
+                    </div>
+                    <h2>We Work For You</h2>
+                    <p>
+                        At J&R NW Construction, our mission is to deliver reliable, high-quality residential and light commercial remodels, siding projects, and interior/exterior reconstruction. With over 30 years of experience, our family-owned team is dedicated to restoring not just buildings—but confidence, comfort, and long-term value. From water mitigation and full restoration to interior upgrades, exterior improvements, and complete siding remodels, we provide end-to-end solutions built on craftsmanship, safety, and integrity. Every project is approached with the same commitment: to protect your property, enhance your space, and exceed your expectations. We don't just repair and remodel—we help rebuild trust in the places you live and work.
+                    </p>
+                    <div className={styles.heroButtons}>
+                        <Link href="/services" className="btn btn-accent">Our Services</Link>
+                        <Link href="/projects" className="btn btn-primary">Our Projects</Link>
+                        <button
+                            onClick={() => setShowContactModal(true)}
+                            className="btn btn-primary"
+                            style={{ backgroundColor: '#1a252f' }}
+                        >
+                            Contact Us
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {/* Reviews Section */}
+            <Reviews />
+
+            {/* Floating Contact Button */}
+            <button
+                className={styles.floatingContactBtn}
+                onClick={() => setShowContactModal(true)}
+                aria-label="Contact Us"
+            >
+                <span className={styles.floatingBtnIcon}>💬</span>
+                <span className={styles.floatingBtnText}>Contact Us!</span>
+            </button>
+
+            {/* Contact Form Modal */}
+            {showContactModal && (
+                <Modal title="Get in Touch" onClose={() => setShowContactModal(false)}>
+                    <ContactFormSection />
+                </Modal>
+            )}
+
+
+        </Layout>
+    );
+}

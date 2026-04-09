@@ -1,0 +1,164 @@
+import { useState, useEffect } from 'react';
+import Layout from '../components/Layout';
+import Modal from '../components/Modal';
+import ContactFormSection from '../components/ContactFormSection';
+import styles from '../styles/Home.module.css';
+import pageStyles from '../styles/Projects.module.css';
+import { getDb } from '../lib/db';
+
+export default function Projects({ projects }) {
+    const [selectedProject, setSelectedProject] = useState(null);
+    const [projectImages, setProjectImages] = useState([]);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [showContactModal, setShowContactModal] = useState(false);
+
+    useEffect(() => {
+        if (selectedProject) {
+            // Fetch images for the selected project
+            fetch(`/api/projects/${selectedProject.id}/images`)
+                .then(res => res.json())
+                .then(data => {
+                    setProjectImages(data);
+                    setCurrentImageIndex(0);
+                })
+                .catch(err => console.error('Failed to fetch project images:', err));
+        }
+    }, [selectedProject]);
+
+    const handleProjectClick = (project) => {
+        setSelectedProject(project);
+    };
+
+    const handleCloseModal = () => {
+        setSelectedProject(null);
+        setProjectImages([]);
+        setCurrentImageIndex(0);
+    };
+
+    const handleNextImage = () => {
+        setCurrentImageIndex((prev) => (prev + 1) % projectImages.length);
+    };
+
+    const handlePrevImage = () => {
+        setCurrentImageIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length);
+    };
+
+    return (
+        <Layout title="Our Projects | J&R NW Construction" onContactClick={() => setShowContactModal(true)}>
+            <div className={pageStyles.projectsPage}>
+                <div className={`container ${pageStyles.projectsContent}`} style={{ padding: '40px 20px' }}>
+                    <h1 className="section-title" style={{ fontSize: 'clamp(1.5rem, 5vw, 2.5rem)', wordWrap: 'break-word', overflowWrap: 'break-word', hyphens: 'auto', lineHeight: '1.2', padding: '0 15px' }}>Our Projects</h1>
+                    <div className={styles.modalIntro}>
+                        <p>We transform spaces and revive structures with expertise and care. Our projects range from restoring the beauty of historical buildings to reconstructing damaged properties.</p>
+                    </div>
+                    <div className={styles.projectsGrid}>
+                        {projects.map(project => (
+                            <div
+                                key={project.id}
+                                className={styles.projectCard}
+                                onClick={() => handleProjectClick(project)}
+                                style={{ cursor: 'pointer' }}
+                            >
+                                <img src={project.image || '/assets/placeholder.jpg'} alt={project.title} />
+                                <div className={styles.cardContent}>
+                                    <h3>{project.title}</h3>
+                                    <p>{project.description}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {selectedProject && (
+                <Modal onClose={handleCloseModal} title={selectedProject.title}>
+                    <div className={styles.projectDetailContainer}>
+                        <div className={styles.projectGallery}>
+                            {projectImages.length > 0 && (
+                                <div className={styles.galleryMain}>
+                                    <img
+                                        src={projectImages[currentImageIndex]?.image_path}
+                                        alt={`${selectedProject.title} - Image ${currentImageIndex + 1}`}
+                                        className={styles.galleryImage}
+                                    />
+                                    {projectImages.length > 1 && (
+                                        <div className={styles.galleryControls}>
+                                            <button onClick={handlePrevImage} className={styles.galleryBtn}>‹</button>
+                                            <span className={styles.galleryCounter}>
+                                                {currentImageIndex + 1} / {projectImages.length}
+                                            </span>
+                                            <button onClick={handleNextImage} className={styles.galleryBtn}>›</button>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                            {projectImages.length > 1 && (
+                                <div className={styles.galleryThumbnails}>
+                                    {projectImages.map((img, idx) => (
+                                        <img
+                                            key={img.id}
+                                            src={img.image_path}
+                                            alt={`Thumbnail ${idx + 1}`}
+                                            className={`${styles.thumbnail} ${idx === currentImageIndex ? styles.thumbnailActive : ''}`}
+                                            onClick={() => setCurrentImageIndex(idx)}
+                                        />
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                        <div className={styles.projectDetails}>
+                            <h3>Project Details</h3>
+                            <p>{selectedProject.details}</p>
+                        </div>
+                    </div>
+                </Modal>
+            )}
+
+            {/* Floating Contact Button */}
+            <button
+                className={styles.floatingContactBtn}
+                onClick={() => setShowContactModal(true)}
+                aria-label="Contact Us"
+            >
+                <span className={styles.floatingBtnIcon}>💬</span>
+                <span className={styles.floatingBtnText}>Contact Us!</span>
+            </button>
+
+            {/* Contact Form Modal */}
+            {showContactModal && (
+                <Modal title="Get in Touch" onClose={() => setShowContactModal(false)}>
+                    <ContactFormSection />
+                </Modal>
+            )}
+        </Layout>
+    );
+}
+
+export async function getServerSideProps() {
+    const db = await getDb();
+
+    // Try to get all columns, fallback if details doesn't exist
+    let projects = [];
+    try {
+        const projectsResult = await db.execute('SELECT id, title, description, details FROM projects');
+        projects = projectsResult.rows;
+    } catch (error) {
+        // If details column doesn't exist, query without it
+        console.warn('Details column may not exist, querying without it:', error.message);
+        const projectsResult = await db.execute('SELECT id, title, description FROM projects');
+        projects = projectsResult.rows.map(p => ({ ...p, details: '' }));
+    }
+
+    // For each project, get the first image (lowest display_order)
+    for (let project of projects) {
+        const imageResult = await db.execute({
+            sql: 'SELECT image_path FROM project_images WHERE project_id = ? ORDER BY display_order LIMIT 1',
+            args: [project.id]
+        });
+
+        // Set the image field to the first image path, or use placeholder if no images found
+        project.image = imageResult.rows.length > 0 ? imageResult.rows[0].image_path : '/assets/placeholder.jpg';
+    }
+
+    return { props: { projects } };
+}

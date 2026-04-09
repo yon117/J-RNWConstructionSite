@@ -1,0 +1,81 @@
+export async function getServerSideProps({ params }) {
+    try {
+        const db = await getDb();
+        const slug = params.id;
+
+        console.log('=== Service Details Request ===');
+        console.log('Requested slug:', slug);
+
+        // Get all services - production uses 'title' column
+        const servicesResult = await db.execute('SELECT * FROM services');
+        
+        console.log('Total services in database:', servicesResult.rows?.length || 0);
+
+        if (!servicesResult.rows || servicesResult.rows.length === 0) {
+            console.log('ERROR: No services found in database');
+            return { notFound: true };
+        }
+
+        // Map database columns for production: image → image_url
+        const services = servicesResult.rows.map(s => ({
+            id: s.id,
+            title: s.title || '',  // Production has 'title' column
+            description: s.description || '',
+            details: s.details || '',  // Production has 'details' column
+            image_url: s.image || ''  // Map 'image' to 'image_url'
+        }));
+
+        console.log('Available services:');
+        services.forEach(s => {
+            const generatedSlug = s.title
+                ? s.title.toLowerCase().trim().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+                : 'no-title';
+            console.log(`  - ID: ${s.id}, Title: "${s.title}", Slug: "${generatedSlug}"`);
+        });
+
+        // Find service by matching generated slug
+        const service = services.find(s => {
+            if (!s.title) return false;
+            
+            const generatedSlug = s.title
+                .toLowerCase()
+                .trim()
+                .replace(/&/g, 'and')
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+            
+            return generatedSlug === slug;
+        });
+
+        if (!service) {
+            console.log('ERROR: Service not found for slug:', slug);
+            return { notFound: true };
+        }
+
+        console.log('Service found:', service.title);
+
+        // Get service images
+        const imagesResult = await db.execute({
+            sql: 'SELECT * FROM service_images WHERE service_id = ? ORDER BY display_order',
+            args: [service.id]
+        });
+
+        const images = (imagesResult.rows || []).map(img => ({
+            ...img,
+            image_url: img.image_path || img.image_url
+        }));
+
+        console.log('Images found:', images.length);
+        console.log('=== End Service Details Request ===');
+
+        return {
+            props: {
+                service: service,
+                images: images
+            }
+        };
+    } catch (error) {
+        console.error('Error fetching service details:', error);
+        return { notFound: true };
+    }
+}
