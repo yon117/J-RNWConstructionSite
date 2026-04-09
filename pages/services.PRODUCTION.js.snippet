@@ -1,0 +1,17 @@
+export async function getServerSideProps() {
+    const db = await getDb();
+    const result = await db.execute('SELECT * FROM services');
+    
+    // Map database columns for production
+    // Production has: id, title, description, details, image
+    // Frontend expects: id, title, description, details, image_url
+    const services = (result.rows || []).map(s => ({
+        id: s.id,
+        title: s.title || '',  // Production has 'title'
+        description: s.description || '',
+        details: s.details || '',  // Production has 'details'
+        image_url: s.image || ''  // Map 'image' to 'image_url'
+    }));
+    
+    return { props: { services } };
+}

@@ -1,0 +1,96 @@
+.servicesPage {
+    min-height: 100vh;
+    background-image:
+        linear-gradient(rgba(26, 37, 47, 0.95), rgba(26, 37, 47, 0.95)),
+        url('/logo-watermark.png');
+    background-size: auto, 40%;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+    background-attachment: scroll, fixed;
+}
+
+.servicesPage::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/logo-watermark.png');
+    background-size: 40%;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.05;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.servicesContent {
+    position: relative;
+    z-index: 1;
+}
+
+/* Floating Contact Button */
+.floatingContactBtn {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    background: linear-gradient(135deg, var(--accent) 0%, #b8941f 100%);
+    color: var(--primary);
+    border: none;
+    border-radius: 50px;
+    padding: 16px 28px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    z-index: 999;
+    animation: pulse 2s infinite;
+}
+
+.floatingContactBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 30px rgba(212, 175, 55, 0.6);
+    background: linear-gradient(135deg, #e6c34a 0%, var(--accent) 100%);
+}
+
+.floatingBtnIcon {
+    font-size: 1.5rem;
+    animation: wave 1s ease-in-out infinite;
+}
+
+.floatingBtnText {
+    white-space: nowrap;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 4px 30px rgba(212, 175, 55, 0.7);
+    }
+}
+
+@keyframes wave {
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(-15deg);
+    }
+
+    75% {
+        transform: rotate(15deg);
+    }
+}

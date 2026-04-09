@@ -1,0 +1,82 @@
+import { getDb } from '../../../lib/db';
+
+export default async function handler(req, res) {
+    console.log(`\n========== ${req.method} /api/services ==========`);
+
+    try {
+        const db = await getDb();
+
+        if (req.method === 'GET') {
+            console.log('Fetching all services...');
+            const result = await db.execute('SELECT id, title, description, image, details FROM services');
+            console.log(`Found ${result.rows?.length || 0} services`);
+
+            // Database has: id, title, description, image, details
+            // Frontend expects: id, title, description, details, image_url
+            const services = result.rows.map(s => ({
+                id: s.id,
+                title: s.title,
+                description: s.description,
+                image_url: s.image,
+                details: s.details
+            }));
+
+            console.log('Services:', services.map(s => `ID:${s.id} Title:"${s.title}"`).join(', '));
+            return res.status(200).json(services);
+
+        } else if (req.method === 'POST') {
+            const { name, title, description, details, image_url } = req.body;
+            const serviceName = title || name || '';
+
+            console.log('Creating service:', serviceName);
+
+            // Database columns: title, description, image, details
+            const result = await db.execute({
+                sql: 'INSERT INTO services (title, description, image, details) VALUES (?, ?, ?, ?)',
+                args: [serviceName, description || '', image_url || '', details || '']
+            });
+            console.log('Service created successfully');
+            return res.status(201).json({ success: true });
+
+        } else if (req.method === 'PUT') {
+            const { id, name, title, description, details, image_url } = req.body;
+            const serviceName = title || name || '';
+
+            console.log(`Updating service ${id}: name="${serviceName}"`);
+
+            // Database columns: title, description, image
+            await db.execute({
+                sql: 'UPDATE services SET title = ?, description = ?, image = ?, details = ? WHERE id = ?',
+                args: [serviceName, description || '', image_url || '', details || '', id]
+            });
+
+            console.log('Service updated successfully');
+            return res.status(200).json({ success: true });
+
+        } else if (req.method === 'DELETE') {
+            const { id } = req.body;
+            console.log('Deleting service:', id);
+
+            await db.execute({
+                sql: 'DELETE FROM services WHERE id = ?',
+                args: [id]
+            });
+
+            console.log('Service deleted successfully');
+            return res.status(200).json({ success: true });
+
+        } else {
+            return res.status(405).json({ error: 'Method not allowed' });
+        }
+
+    } catch (error) {
+        console.error('API ERROR:', error.message);
+        console.error('Stack:', error.stack);
+        return res.status(500).json({
+            error: 'Internal server error',
+            message: error.message
+        });
+    } finally {
+        console.log('========== END ==========\n');
+    }
+}

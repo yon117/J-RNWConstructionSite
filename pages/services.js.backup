@@ -1,0 +1,86 @@
+import Layout from '../components/Layout';
+import Modal from '../components/Modal';
+import ContactFormSection from '../components/ContactFormSection';
+import Link from 'next/link';
+import styles from '../styles/Home.module.css';
+import pageStyles from '../styles/Services.module.css';
+import { getDb } from '../lib/db';
+import { useState } from 'react';
+
+export default function Services({ services }) {
+    const [showContactModal, setShowContactModal] = useState(false);
+
+    return (
+        <Layout title="Our Services | J&R NW Construction" onContactClick={() => setShowContactModal(true)}>
+            <div className={pageStyles.servicesPage}>
+                <div className={`container ${pageStyles.servicesContent}`} style={{ padding: '40px 20px' }}>
+                    <h1 className="section-title" style={{ fontSize: 'clamp(1.5rem, 5vw, 2.5rem)', wordWrap: 'break-word', overflowWrap: 'break-word', hyphens: 'auto', lineHeight: '1.2', padding: '0 15px' }}>Our Services</h1>
+                    <div className={styles.modalIntro}>
+                        <p>Delivering top-tier restoration and construction services with precision, integrity, and a commitment to excellence. Your vision, our expertise.</p>
+                    </div>
+                    <div className={styles.servicesGrid}>
+                        {services.map(service => {
+                            // Generate clean slug from service title
+                            const slug = service.title
+                                ? service.title
+                                    .toLowerCase()
+                                    .trim()
+                                    .replace(/&/g, 'and')
+                                    .replace(/[^a-z0-9]+/g, '-')
+                                    .replace(/^-+|-+$/g, '')
+                                : 'service';
+                            const serviceUrl = `/services/${slug}`;
+
+                            return (
+                                <Link href={serviceUrl} key={service.id} style={{ textDecoration: 'none' }}>
+                                    <div className={styles.serviceCard}>
+                                        <img src={service.image_url || '/assets/placeholder.jpg'} alt={service.title} />
+                                        <div className={styles.cardContent}>
+                                            <h3>{service.title}</h3>
+                                            <p>{service.description}</p>
+                                            <span className={styles.learnMore}>Learn More →</span>
+                                        </div>
+                                    </div>
+                                </Link>
+                            );
+                        })}
+                    </div>
+                </div>
+            </div>
+
+            {/* Floating Contact Button */}
+            <button
+                className={styles.floatingContactBtn}
+                onClick={() => setShowContactModal(true)}
+                aria-label="Contact Us"
+            >
+                <span className={styles.floatingBtnIcon}>💬</span>
+                <span className={styles.floatingBtnText}>Contact Us!</span>
+            </button>
+
+            {/* Contact Form Modal */}
+            {showContactModal && (
+                <Modal title="Get in Touch" onClose={() => setShowContactModal(false)}>
+                    <ContactFormSection />
+                </Modal>
+            )}
+        </Layout>
+    );
+}
+
+export async function getServerSideProps() {
+    const db = await getDb();
+    const result = await db.execute('SELECT * FROM services');
+
+    // Map database columns to frontend format
+    // Database has: id, name, description, image_url
+    // Frontend expects: id, title, description, image_url
+    const services = (result.rows || []).map(s => ({
+        id: s.id,
+        title: s.title || '',
+        description: s.description || '',
+        image_url: s.image || ''
+    }));
+
+    return { props: { services } };
+}

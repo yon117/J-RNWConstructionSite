@@ -1,0 +1,284 @@
+import { useState } from 'react';
+import styles from '../styles/Home.module.css';
+
+const SERVICE_OPTIONS = [
+    'Interior Construction & Remodeling',
+    'Restoration & Reconstruction',
+    'Mitigation & Emergency Services',
+    'General Repairs & Carpentry',
+    'Paint',
+    'Siding',
+    'Drywall',
+    'Other'
+];
+
+export default function ContactFormSection() {
+    const [contactForm, setContactForm] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        message: '',
+        budget: '',
+        serviceType: '',
+        otherService: ''
+    });
+    const [status, setStatus] = useState('');
+    const [emailError, setEmailError] = useState('');
+    const [phoneError, setPhoneError] = useState('');
+    const [budgetError, setBudgetError] = useState('');
+
+    const validateEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    const validatePhone = (phone) => {
+        const phoneRegex = /^[0-9\s\-\(\)]+$/;
+        return phone === '' || phoneRegex.test(phone);
+    };
+
+    const validateBudget = (budget) => {
+        const budgetRegex = /^[0-9,.\s]*$/;
+        return budget === '' || budgetRegex.test(budget);
+    };
+
+    const handleEmailChange = (e) => {
+        const email = e.target.value;
+        setContactForm({ ...contactForm, email });
+        if (email && !validateEmail(email)) {
+            setEmailError('Please enter a valid email');
+        } else {
+            setEmailError('');
+        }
+    };
+
+    const handlePhoneChange = (e) => {
+        const phone = e.target.value;
+        if (validatePhone(phone)) {
+            setContactForm({ ...contactForm, phone });
+            setPhoneError('');
+        } else {
+            setPhoneError('Only numbers allowed');
+        }
+    };
+
+    const handleBudgetChange = (e) => {
+        const budget = e.target.value;
+        if (validateBudget(budget)) {
+            setContactForm({ ...contactForm, budget });
+            setBudgetError('');
+        } else {
+            setBudgetError('Only numbers, commas, and periods allowed');
+        }
+    };
+
+    const handleContactSubmit = async (e) => {
+        e.preventDefault();
+
+        // Validate email before submission
+        if (!validateEmail(contactForm.email)) {
+            setEmailError('Please enter a valid email');
+            return;
+        }
+
+        setStatus('sending');
+        setEmailError('');
+        setPhoneError('');
+        setBudgetError('');
+
+        // Prepare form data with service type
+        const formData = {
+            ...contactForm,
+            serviceType: contactForm.serviceType === 'Other' ? contactForm.otherService : contactForm.serviceType
+        };
+
+        console.log('Submitting form data:', formData);
+
+        try {
+            const res = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await res.json();
+            console.log('Response:', res.status, data);
+
+            if (res.ok) {
+                setStatus('success');
+                setContactForm({
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    phone: '',
+                    message: '',
+                    budget: '',
+                    serviceType: '',
+                    otherService: ''
+                });
+            } else {
+                console.error('Error response:', data);
+                setStatus('error');
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+            setStatus('error');
+        }
+    };
+
+    return (
+        <div className={styles.contactSection}>
+            <div className="container" style={{ padding: '60px 20px', maxWidth: '1200px', margin: '0 auto' }}>
+                <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '40px' }}>Get in Touch</h2>
+                <div className={styles.contactContainer}>
+                    <div className={styles.contactInfo}>
+                        <h3>Always Ready When You Are</h3>
+                        <p>From Repairs to Full Construction Solutions</p>
+                        <p>Get a FREE estimate today. We handle interior and exterior construction projects, expert repairs, and preventative solutions—built to last and done right the first time.</p>
+
+                        <div className={styles.joinTeam}>
+                            <h4>Our Services</h4>
+                            <ul>
+                                <li>Interior & Exterior Construction</li>
+                                <li>General Repairs & Carpentry</li>
+                                <li>Restoration & Reconstruction</li>
+                                <li>Mitigation & Emergency Services</li>
+                            </ul>
+                        </div>
+
+                        {/* Google Maps */}
+                        <div style={{ marginTop: '30px', width: '100%', height: '300px', borderRadius: '8px', overflow: 'hidden' }}>
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2795.8976543210123!2d-122.12345678901234!3d47.12345678901234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x5ea1161c5e563902!2sJ%26R%20NW%20Construction!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus"
+                                width="100%"
+                                height="100%"
+                                style={{ border: 0 }}
+                                allowFullScreen=""
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade"
+                            ></iframe>
+                        </div>
+                    </div>
+
+                    {/* Contact Form */}
+                    <form className={styles.contactForm} onSubmit={handleContactSubmit}>
+                        <div className={styles.formGroup}>
+                            <input
+                                type="text"
+                                placeholder="First Name"
+                                required
+                                value={contactForm.firstName}
+                                onChange={e => setContactForm({ ...contactForm, firstName: e.target.value })}
+                            />
+                            <input
+                                type="text"
+                                placeholder="Last Name"
+                                required
+                                value={contactForm.lastName}
+                                onChange={e => setContactForm({ ...contactForm, lastName: e.target.value })}
+                            />
+                        </div>
+                        <div style={{ width: '100%' }}>
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                required
+                                value={contactForm.email}
+                                onChange={handleEmailChange}
+                                style={{ borderColor: emailError ? '#ff4444' : '' }}
+                            />
+                            {emailError && <p className={styles.validationError}>{emailError}</p>}
+                        </div>
+                        <div style={{ width: '100%' }}>
+                            <input
+                                type="tel"
+                                placeholder="Phone Number"
+                                value={contactForm.phone}
+                                onChange={handlePhoneChange}
+                                style={{ borderColor: phoneError ? '#ff4444' : '' }}
+                            />
+                            {phoneError && <p className={styles.validationError}>{phoneError}</p>}
+                        </div>
+
+                        {/* Service Type Dropdown */}
+                        <div style={{ width: '100%' }}>
+                            <select
+                                value={contactForm.serviceType}
+                                onChange={e => setContactForm({ ...contactForm, serviceType: e.target.value, otherService: '' })}
+                                required
+                                style={{
+                                    width: '100%',
+                                    padding: '12px',
+                                    border: '1px solid #555',
+                                    borderRadius: '5px',
+                                    fontFamily: 'inherit',
+                                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                    color: contactForm.serviceType ? 'var(--text-light)' : 'rgba(255, 255, 255, 0.7)',
+                                    fontSize: '1rem'
+                                }}
+                            >
+                                <option value="" disabled>Select Service Type</option>
+                                {SERVICE_OPTIONS.map(service => (
+                                    <option key={service} value={service} style={{ color: '#000' }}>{service}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Other Service Text Field */}
+                        {contactForm.serviceType === 'Other' && (
+                            <div style={{ width: '100%' }}>
+                                <input
+                                    type="text"
+                                    placeholder="Please specify the service you need"
+                                    required
+                                    value={contactForm.otherService}
+                                    onChange={e => setContactForm({ ...contactForm, otherService: e.target.value })}
+                                />
+                            </div>
+                        )}
+
+                        {/* Budget Field */}
+                        <div style={{ width: '100%' }}>
+                            <input
+                                type="text"
+                                placeholder="Budget (optional)"
+                                value={contactForm.budget}
+                                onChange={handleBudgetChange}
+                                style={{ borderColor: budgetError ? '#ff4444' : '' }}
+                            />
+                            {budgetError && <p className={styles.validationError}>{budgetError}</p>}
+                        </div>
+
+                        <textarea
+                            placeholder="Message"
+                            rows={5}
+                            required
+                            value={contactForm.message}
+                            onChange={e => setContactForm({ ...contactForm, message: e.target.value })}
+                        ></textarea>
+
+                        {/* Budget Disclaimer */}
+                        <div style={{
+                            background: 'rgba(212, 175, 55, 0.1)',
+                            border: '1px solid var(--accent)',
+                            borderRadius: '5px',
+                            padding: '12px',
+                            fontSize: '0.85rem',
+                            color: 'var(--text-light)',
+                            lineHeight: '1.5'
+                        }}>
+                            <strong style={{ color: 'var(--accent)' }}>Budget Notice:</strong> We strive to accommodate your budget whenever possible. However, please note that the final project cost may vary based on scope, materials, and unforeseen conditions. The budget you provide does not guarantee the final price and serves as an estimate for planning purposes.
+                        </div>
+
+                        <button type="submit" className="btn btn-accent" disabled={status === 'sending'}>
+                            {status === 'sending' ? 'Sending...' : 'Submit'}
+                        </button>
+                        {status === 'success' && <p className={styles.success}>Message sent successfully!</p>}
+                        {status === 'error' && <p className={styles.error}>Error sending message.</p>}
+                    </form>
+                </div>
+            </div>
+        </div>
+    );
+}

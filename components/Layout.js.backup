@@ -1,0 +1,75 @@
+import Head from 'next/head';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Phone, Mail, Facebook, Instagram, Star, MapPin } from 'lucide-react';
+import styles from './Layout.module.css';
+
+export default function Layout({ children, title = 'J&R NW Construction', onContactClick }) {
+    return (
+        <div className={styles.container}>
+            <Head>
+                <title>{title}</title>
+                <meta name="description" content="J&R NW Construction - Restoration and Construction Services" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
+
+            <header className={styles.header}>
+                <div className={styles.topBar}>
+                    <div className={styles.contactInfo}>
+                        <span><Phone size={16} /> Call Us Now!! 24/7 Phone | <a href="tel:+15039982340">(503) 998-2340</a></span>
+                        <span><Mail size={16} /> <a href="mailto:jandrnwconstruction@gmail.com">jandrnwconstruction@gmail.com</a></span>
+                    </div>
+                </div>
+                <div className={styles.navBar}>
+                    <div className={styles.logo}>
+                        <Image src="/logo.png" alt="J&R NW Construction Logo" width={50} height={50} />
+                        <h1>J&R NW Construction</h1>
+                    </div>
+                    <nav>
+                        <Link href="/">Home</Link>
+                        <Link href="/services">Services</Link>
+                        <Link href="/projects">Projects</Link>
+                        {onContactClick ? (
+                            <button onClick={onContactClick} className={styles.navButton}>Contact Us</button>
+                        ) : (
+                            <Link href="/">Contact Us</Link>
+                        )}
+                        <div className={styles.navSocials}>
+                            <a href="https://www.facebook.com/JRNWConstruction/" target="_blank" rel="noreferrer" title="Facebook" aria-label="Facebook">
+                                <Facebook size={20} />
+                            </a>
+                            <a href="https://www.instagram.com/jandrnwconstruction/" target="_blank" rel="noreferrer" title="Instagram" aria-label="Instagram">
+                                <Instagram size={20} />
+                            </a>
+                        </div>
+                    </nav>
+                </div>
+            </header>
+
+            <main className={styles.main}>{children}</main>
+
+            <footer className={styles.footer}>
+                <div className={styles.footerContent}>
+                    <div className={styles.footerSection}>
+                        <div className={styles.footerLogo}>
+                            <Image src="/logo.png" alt="J&R NW Construction Logo" width={40} height={40} />
+                            <h3>J&R NW Construction</h3>
+                        </div>
+                        <p>© 2025 J&R NW Construction LLC</p>
+                    </div>
+                    <div className={styles.footerSection}>
+                        <h3><a href="tel:+15039982340" style={{ color: 'var(--accent)', textDecoration: 'none' }}>Call Us Now!!</a></h3>
+                        <div className={styles.socials}>
+                            <a href="tel:+15039982340" title="Call us"><Phone /></a>
+                            <a href="mailto:jandrnwconstruction@gmail.com" title="Send us an email"><Mail /></a>
+                            <a href="https://www.facebook.com/JRNWConstruction/" target="_blank" rel="noreferrer" title="Facebook"><Facebook /></a>
+                            <a href="https://www.instagram.com/jandrnwconstruction/" target="_blank" rel="noreferrer" title="Instagram"><Instagram /></a>
+                            <a href="https://m.yelp.com/biz/j-and-r-nw-construction-portland-5" target="_blank" rel="noreferrer" title="Yelp"><Star /></a>
+                            <a href="https://www.google.com/maps/place/J%26R+NW+Construction/data=!4m2!3m1!1s0x0:0x5ea1161c5e563902?sa=X&ved=1t:2428&ictx=111" target="_blank" rel="noreferrer" title="Find us on Google Maps"><MapPin /></a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    );
+}

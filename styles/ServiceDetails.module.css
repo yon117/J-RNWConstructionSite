@@ -1,0 +1,1031 @@
+.serviceDetailsPage {
+    min-height: 100vh;
+    background: var(--primary);
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    min-height: 520px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: hidden;
+    padding: 30px 0 40px;
+}
+
+.heroOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%);
+    z-index: 1;
+}
+
+.heroContent {
+    position: relative;
+    z-index: 2;
+    text-align: left;
+    padding: 20px;
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Pill / badge above the headline */
+.heroLabel {
+    display: inline-block;
+    background: rgba(212, 175, 55, 0.15);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 50px;
+    margin-bottom: 16px;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.heroContent h1 {
+    font-size: clamp(1.8rem, 4.5vw, 3rem);
+    color: #fff;
+    margin-bottom: 16px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    line-height: 1.15;
+    animation: fadeInUp 0.8s ease-out 0.1s both;
+}
+
+.shortDescription {
+    font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+    color: rgba(255,255,255,0.82);
+    line-height: 1.65;
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+    max-width: 640px;
+}
+
+.backButton {
+    position: relative;
+    background: rgba(212, 175, 55, 0.2);
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    z-index: 10;
+    margin-bottom: 20px;
+    align-self: flex-start;
+}
+
+.backButton:hover {
+    background: var(--accent);
+    color: var(--primary);
+    transform: translateX(-5px);
+}
+
+/* Content Wrapper */
+.contentWrapper {
+    padding: 60px 20px;
+}
+
+/* ── Short Description Banner ──────────────────────────────────── */
+.shortDescBanner {
+    margin-bottom: 40px;
+    padding: 24px 28px;
+    background: rgba(212, 175, 55, 0.06);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    animation: fadeInUp 0.8s ease-out 0.3s both;
+}
+
+.shortDescBanner p {
+    color: var(--text-light);
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    line-height: 1.7;
+    margin: 0;
+    font-weight: 400;
+}
+
+/* ── Shared section label ───────────────────────────────────────── */
+.sectionLabel {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    opacity: 0.7;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ── Key Selling Points ─────────────────────────────────────────── */
+.kspSection {
+    margin-bottom: 60px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    animation: fadeInUp 0.8s ease-out 0.3s both;
+}
+
+.kspGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+@media (max-width: 900px) {
+    .kspGrid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 540px) {
+    .kspGrid { grid-template-columns: 1fr; }
+}
+
+.kspCard {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.kspIcon {
+    font-size: 1.4rem;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 4px;
+}
+
+.kspTitle {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-light);
+    line-height: 1.3;
+}
+
+.kspDesc {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.55;
+    margin: 0;
+}
+
+/* ── Page Copy Blocks ───────────────────────────────────────────── */
+.copyBlocksSection {
+    margin-bottom: 60px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.copyBlock {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-bottom: 16px;
+}
+
+.copyBlockLabel {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin: 0 0 12px;
+}
+
+.copyBlockContent p {
+    color: var(--text-light);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.7;
+    margin: 0 0 12px;
+}
+
+.copyBlockContent p:last-child {
+    margin-bottom: 0;
+}
+
+/* ── Our Process Section ────────────────────────────────────────── */
+.processSection {
+    margin-bottom: 60px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    animation: fadeInUp 0.8s ease-out 0.45s both;
+}
+
+.processSectionLabel {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 20px;
+}
+
+.processList {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.processItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 22px 28px;
+}
+
+.processItem + .processItem {
+    border-top: 1px solid rgba(255,255,255,0.07);
+}
+
+.processNumber {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    background: var(--accent);
+    color: #1a1a1a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.95rem;
+    margin-top: 2px;
+}
+
+.processContent {
+    flex: 1;
+}
+
+.processTitle {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 4px;
+    line-height: 1.3;
+}
+
+.processDesc {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.6;
+    margin: 0;
+}
+
+
+/* ── FAQ Section ────────────────────────────────────────────────── */
+.faqSection {
+    margin-bottom: 60px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    animation: fadeInUp 0.8s ease-out 0.5s both;
+}
+
+.faqList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.faqItem + .faqItem {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 16px;
+}
+
+.faqQuestion {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin: 0 0 6px;
+}
+
+.faqAnswer {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ── Details Section (legacy — keep for backward compat) ────────── */
+.detailsSection {
+    margin-bottom: 60px;
+    animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.detailsSection h2 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    color: var(--accent);
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.detailsSection h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+}
+
+.detailsContent {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    line-height: 1.8;
+}
+
+.detailsContent p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.detailsContent p:last-child {
+    margin-bottom: 0;
+}
+
+/* Gallery Section */
+.gallerySection {
+    margin-bottom: 60px;
+    animation: fadeInUp 0.8s ease-out 0.6s both;
+}
+
+.gallerySection h2 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    color: var(--accent);
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.gallerySection h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+}
+
+.imageGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.galleryItem {
+    position: relative;
+    aspect-ratio: 4/3;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid rgba(212, 175, 55, 0.2);
+    transition: all 0.3s ease;
+}
+
+.galleryItem:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+}
+
+.galleryItem img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.galleryItem:hover img {
+    transform: scale(1.1);
+}
+
+.imageOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.galleryItem:hover .imageOverlay {
+    opacity: 1;
+}
+
+.imageOverlay span {
+    color: var(--accent);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.lightboxContent {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightboxContent img {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.closeButton,
+.prevButton,
+.nextButton {
+    position: fixed;
+    background: rgba(212, 175, 55, 0.2);
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    font-size: 2rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.closeButton:hover,
+.prevButton:hover,
+.nextButton:hover {
+    background: var(--accent);
+    color: var(--primary);
+    transform: scale(1.1);
+}
+
+.closeButton {
+    top: 20px;
+    right: 20px;
+}
+
+.prevButton {
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.nextButton {
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.prevButton:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+.nextButton:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+.imageCounter {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(212, 175, 55, 0.2);
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+    z-index: 10000;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* CTA Section */
+.ctaSection {
+    text-align: center;
+    padding: 80px 40px;
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(45, 45, 45, 0.95) 100%);
+    border-radius: 16px;
+    border: 2px solid rgba(212, 175, 55, 0.3);
+    margin: 60px 0;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.ctaSection h2 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    color: var(--accent);
+    margin-bottom: 20px;
+}
+
+.ctaSection p {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    margin-bottom: 30px;
+}
+
+.ctaSection .btn {
+    font-size: 1.1rem;
+    padding: 16px 40px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero {
+        min-height: 420px;
+        padding: 20px 0 30px;
+    }
+
+    .backButton {
+        position: relative;
+        margin-bottom: 16px;
+    }
+
+    .heroContent {
+        padding: 15px;
+    }
+
+    .contentWrapper {
+        padding: 40px 15px;
+    }
+
+    .detailsContent {
+        padding: 25px;
+    }
+
+    .imageGrid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 15px;
+    }
+
+    .closeButton,
+    .prevButton,
+    .nextButton {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+
+    .closeButton {
+        top: 10px;
+        right: 10px;
+    }
+
+    .prevButton {
+        left: 10px;
+    }
+
+    .nextButton {
+        right: 10px;
+    }
+
+    .imageCounter {
+        bottom: 20px;
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+
+    .ctaSection {
+        padding: 40px 20px;
+        margin: 40px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .imageGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Floating Contact Button */
+.floatingContactBtn {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    background: linear-gradient(135deg, var(--accent) 0%, #b8941f 100%);
+    color: var(--primary);
+    border: none;
+    border-radius: 50px;
+    padding: 16px 28px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    z-index: 999;
+    animation: pulse 2s infinite;
+}
+
+.floatingContactBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 30px rgba(212, 175, 55, 0.6);
+    background: linear-gradient(135deg, #e6c34a 0%, var(--accent) 100%);
+}
+
+.floatingBtnIcon {
+    font-size: 1.5rem;
+    animation: wave 1s ease-in-out infinite;
+}
+
+.floatingBtnText {
+    white-space: nowrap;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 4px 30px rgba(212, 175, 55, 0.7);
+    }
+}
+
+@keyframes wave {
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(-15deg);
+    }
+
+    75% {
+        transform: rotate(15deg);
+    }
+}
+
+/* ── Random Projects Showcase ───────────────────────────────────── */
+.projectsShowcase {
+    margin-top: 60px;
+    padding-top: 50px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    animation: fadeInUp 0.8s ease-out 0.7s both;
+}
+
+.showcaseTitle {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    color: var(--accent);
+    margin-bottom: 10px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.showcaseTitle::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+}
+
+.showcaseSubtitle {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.95rem;
+    margin-bottom: 36px;
+    letter-spacing: 0.02em;
+}
+
+.projectsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-bottom: 36px;
+}
+
+@media (max-width: 680px) {
+    .projectsGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Card = <Link> — reset link styles */
+.projectCard {
+    display: flex;
+    flex-direction: column;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(212, 175, 55, 0.18);
+    background: rgba(255, 255, 255, 0.03);
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    cursor: pointer;
+}
+
+.projectCard:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 40px rgba(212, 175, 55, 0.22);
+    border-color: var(--accent);
+}
+
+.projectCardImage {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.projectCardImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.projectCard:hover .projectCardImage img {
+    transform: scale(1.07);
+}
+
+.projectCardPlaceholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.projectCardOverlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, transparent 60%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 18px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.projectCard:hover .projectCardOverlay {
+    opacity: 1;
+}
+
+.projectCardViewBtn {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    background: rgba(0, 0, 0, 0.55);
+    padding: 6px 18px;
+    border-radius: 30px;
+    border: 1px solid var(--accent);
+    backdrop-filter: blur(6px);
+}
+
+.projectCardInfo {
+    padding: 18px 20px 20px;
+}
+
+.projectCardTitle {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin: 0 0 6px;
+    line-height: 1.3;
+}
+
+.projectCardDesc {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+    line-height: 1.55;
+}
+
+/* CTA row below the grid */
+.projectsCta {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.viewAllBtn {
+    display: inline-block;
+    background: transparent;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    padding: 12px 36px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+.viewAllBtn:hover {
+    background: var(--accent);
+    color: var(--primary);
+    transform: translateY(-2px);
+}
+
+/* ── Projects Carousel ───────────────────────────────────────────── */
+.carousel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.carouselTrack {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    border-radius: 14px;
+    min-height: 420px;
+}
+
+.carouselSlide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(212, 175, 55, 0.18);
+    background: rgba(255, 255, 255, 0.03);
+    text-decoration: none;
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+    pointer-events: none;
+}
+
+.carouselSlideActive {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+    position: relative;
+}
+
+.carouselImage {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
+}
+
+.carouselImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.carouselSlideActive:hover .carouselImage img {
+    transform: scale(1.05);
+}
+
+.carouselOverlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, transparent 60%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 18px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.carouselSlideActive:hover .carouselOverlay {
+    opacity: 1;
+}
+
+.carouselBtn {
+    flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    background: rgba(212, 175, 55, 0.12);
+    color: var(--accent);
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    z-index: 2;
+}
+
+.carouselBtn:hover {
+    background: var(--accent);
+    color: var(--primary);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+    transform: scale(1.08);
+}
+
+.carouselDots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.carouselDot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid rgba(212, 175, 55, 0.45);
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+.carouselDotActive {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: scale(1.3);
+}
+
+@media (max-width: 600px) {
+    .carouselBtn {
+        width: 38px;
+        height: 38px;
+        font-size: 1.5rem;
+    }
+
+    .carouselTrack {
+        min-height: 280px;
+    }
+}
