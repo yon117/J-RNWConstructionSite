@@ -18,13 +18,14 @@ export function imageUrl(path) {
 
   // Solo redirigir al proxy si estamos en el cliente en localhost
   // (en producción los archivos existen físicamente en /uploads/)
-  if (
-    path.startsWith('/uploads/') &&
-    typeof window !== 'undefined' &&
-    (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-  ) {
-    return `/api/image-proxy?path=${encodeURIComponent(path)}`;
-  }
+  // Note: Images are now local in dev, so no need for proxy
+  // if (
+  //   path.startsWith('/uploads/') &&
+  //   typeof window !== 'undefined' &&
+  //   (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  // ) {
+  //   return `/api/image-proxy?path=${encodeURIComponent(path)}`;
+  // }
 
   return path;
 }
