@@ -1,18 +1,20 @@
 import { useState } from 'react';
+import { useLang } from '../context/LanguageContext';
 import styles from '../styles/Home.module.css';
 
-const SERVICE_OPTIONS = [
-    'Interior Construction & Remodeling',
-    'Restoration & Reconstruction',
-    'Mitigation & Emergency Services',
-    'General Repairs & Carpentry',
-    'Paint',
-    'Siding',
-    'Drywall',
-    'Other'
+const SERVICE_OPTION_KEYS = [
+    'pt1',
+    'pt2',
+    'pt3',
+    'pt4',
+    'pt5',
+    'pt6',
+    'pt7',
+    'pt8'
 ];
 
 export default function ContactFormSection() {
+    const { t } = useLang();
     const [contactForm, setContactForm] = useState({
         fullName: '',
         email: '',
@@ -39,7 +41,7 @@ export default function ContactFormSection() {
         const email = e.target.value;
         setContactForm({ ...contactForm, email });
         if (email && !validateEmail(email)) {
-            setEmailError('Please enter a valid email');
+            setEmailError(t.validEmailError);
         } else {
             setEmailError('');
         }
@@ -51,7 +53,7 @@ export default function ContactFormSection() {
             setContactForm({ ...contactForm, phone });
             setPhoneError('');
         } else {
-            setPhoneError('Only numbers allowed');
+            setPhoneError(t.onlyNumbersError);
         }
     };
 
@@ -59,7 +61,7 @@ export default function ContactFormSection() {
         e.preventDefault();
 
         if (!validateEmail(contactForm.email)) {
-            setEmailError('Please enter a valid email');
+            setEmailError(t.validEmailError);
             return;
         }
 
@@ -74,7 +76,9 @@ export default function ContactFormSection() {
             phone: contactForm.phone,
             message: contactForm.message,
             budget: '',
-            serviceType: contactForm.serviceType === 'Other' ? contactForm.otherService : contactForm.serviceType
+            serviceType: contactForm.serviceType === 'pt8'
+                ? contactForm.otherService
+                : t[contactForm.serviceType]
         };
 
         try {
@@ -87,7 +91,12 @@ export default function ContactFormSection() {
             const data = await res.json();
 
             if (res.ok) {
-                setStatus('success'); if (typeof window !== 'undefined' && window.gtag) { window.gtag('event', 'conversion', { 'send_to': 'AW-17362940957/co0XCP6H_pAcEJ3opddA' }); }
+                setStatus('success');
+                if (typeof window !== 'undefined' && window.gtag) {
+                    window.gtag('event', 'conversion', {
+                        send_to: 'AW-17362940957/co0XCP6H_pAcEJ3opddA'
+                    });
+                }
                 setContactForm({
                     fullName: '',
                     email: '',
@@ -109,12 +118,12 @@ export default function ContactFormSection() {
     return (
         <div className={styles.contactSection}>
             <div className="container" style={{ padding: '60px 20px', maxWidth: '1200px', margin: '0 auto' }}>
-                <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '40px' }}>Get in Touch</h2>
+                <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '40px' }}>{t.getInTouchTitle}</h2>
                 <div className={styles.contactContainer}>
                     <div className={styles.contactInfo}>
-                        <h3>Always Ready When You Are</h3>
-                        <p>From Repairs to Full Construction Solutions</p>
-                        <p>Get a FREE estimate today. We handle interior and exterior construction projects, expert repairs, and preventative solutions—built to last and done right the first time.</p>
+                        <h3>{t.alwaysReady}</h3>
+                        <p>{t.fromRepairs}</p>
+                        <p>{t.getFreeEstimateDesc}</p>
                     </div>
 
                     {/* Contact Form */}
@@ -122,7 +131,7 @@ export default function ContactFormSection() {
                         <div style={{ width: '100%' }}>
                             <input
                                 type="text"
-                                placeholder="Full Name"
+                                placeholder={t.fullName}
                                 required
                                 value={contactForm.fullName}
                                 onChange={e => setContactForm({ ...contactForm, fullName: e.target.value })}
@@ -132,7 +141,7 @@ export default function ContactFormSection() {
                         <div style={{ width: '100%' }}>
                             <input
                                 type="email"
-                                placeholder="Email"
+                                placeholder={t.emailAddress}
                                 required
                                 value={contactForm.email}
                                 onChange={handleEmailChange}
@@ -143,7 +152,7 @@ export default function ContactFormSection() {
                         <div style={{ width: '100%' }}>
                             <input
                                 type="tel"
-                                placeholder="Phone Number"
+                                placeholder={t.phoneNumber}
                                 value={contactForm.phone}
                                 onChange={handlePhoneChange}
                                 style={{ borderColor: phoneError ? '#ff4444' : '', width: '100%' }}
@@ -168,19 +177,19 @@ export default function ContactFormSection() {
                                     fontSize: '1rem'
                                 }}
                             >
-                                <option value="" disabled>Select Service Type</option>
-                                {SERVICE_OPTIONS.map(service => (
-                                    <option key={service} value={service} style={{ color: '#000' }}>{service}</option>
+                                <option value="" disabled>{t.selectServiceType}</option>
+                                {SERVICE_OPTION_KEYS.map(key => (
+                                    <option key={key} value={key} style={{ color: '#000' }}>{t[key]}</option>
                                 ))}
                             </select>
                         </div>
 
                         {/* Other Service Text Field */}
-                        {contactForm.serviceType === 'Other' && (
+                        {contactForm.serviceType === 'pt8' && (
                             <div style={{ width: '100%' }}>
                                 <input
                                     type="text"
-                                    placeholder="Please specify the service you need"
+                                    placeholder={t.specifyService}
                                     required
                                     value={contactForm.otherService}
                                     onChange={e => setContactForm({ ...contactForm, otherService: e.target.value })}
@@ -189,7 +198,7 @@ export default function ContactFormSection() {
                         )}
 
                         <textarea
-                            placeholder="Message"
+                            placeholder={t.message}
                             rows={5}
                             required
                             value={contactForm.message}
@@ -197,10 +206,10 @@ export default function ContactFormSection() {
                         ></textarea>
 
                         <button type="submit" className="btn btn-accent" disabled={status === 'sending'}>
-                            {status === 'sending' ? 'Sending...' : 'Submit'}
+                            {status === 'sending' ? t.sending : t.submit}
                         </button>
-                        {status === 'success' && <p className={styles.success}>Message sent successfully!</p>}
-                        {status === 'error' && <p className={styles.error}>Error sending message.</p>}
+                        {status === 'success' && <p className={styles.formSuccess}>{t.successMsg}</p>}
+                        {status === 'error' && <p className={styles.formError}>{t.errorMsg}</p>}
                     </form>
                 </div>
             </div>

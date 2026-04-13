@@ -8,6 +8,7 @@ import styles from '../../styles/ServiceDetails.module.css';
 import { getDb } from '../../lib/db';
 import { useLang } from '../../context/LanguageContext';
 import { translateText } from '../../utils/translate';
+import { sanitizeServiceObject, sanitizeServiceText } from '../../utils/sanitizeServiceText';
 
 export default function ServiceDetails({ service, images, randomProjects }) {
     const router = useRouter();
@@ -16,16 +17,20 @@ export default function ServiceDetails({ service, images, randomProjects }) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [showContactModal, setShowContactModal] = useState(false);
     const [carouselIndex, setCarouselIndex] = useState(0);
-    const [svc, setSvc] = useState(service);
+    const [svc, setSvc] = useState(sanitizeServiceObject(service));
     useEffect(() => {
-        if (!lang || lang === 'en') { setSvc(service); return; }
-        import('../../utils/translate').then(({ translateText }) => {
+        if (!lang || lang === 'en') { setSvc(sanitizeServiceObject(service)); return; }
+        import('../../utils/translate').then(async ({ translateText }) => {
             const fields = ['title','subtitle','header_desc','description','details','process_desc',
                 'ksp_title_1','ksp_desc_1','ksp_title_2','ksp_desc_2','ksp_title_3','ksp_desc_3','ksp_title_4','ksp_desc_4',
                 'faq_q_1','faq_a_1','faq_q_2','faq_a_2','faq_q_3','faq_a_3','faq_q_4','faq_a_4','faq_q_5','faq_a_5'];
-            const updated = { ...service };
-            Promise.all(fields.map(f => service[f] ? translateText(service[f], lang).then(v => { updated[f] = v; }) : Promise.resolve()))
-                .then(() => setSvc(updated));
+            const updated = sanitizeServiceObject({ ...service });
+            for (const f of fields) {
+                if (service[f]) {
+                    updated[f] = await translateText(service[f], lang);
+                }
+            }
+            setSvc(sanitizeServiceObject(updated));
         });
     }, [lang, service]);
     const autoPlayRef = useRef(null);
@@ -94,7 +99,9 @@ export default function ServiceDetails({ service, images, randomProjects }) {
         .filter(f => f.q);
 
     /* Page title: use page_title if set, otherwise fall back to service title */
-    const pageTitle = service.page_title || `${svc.title} | J&R NW Construction`;
+    const pageTitle = service.page_title
+        ? sanitizeServiceText(service.page_title)
+        : `${svc.title} | J&R NW Construction`;
 
     return (
         <Layout title={pageTitle} onContactClick={() => setShowContactModal(true)}>
@@ -115,6 +122,7 @@ export default function ServiceDetails({ service, images, randomProjects }) {
                             <p className={styles.shortDescription}>{svc.header_desc}</p>
                         )}
                     </div>
+                    
                 </div>
 
                 {/* ── Main Content ──────────────────────────────────────── */}
