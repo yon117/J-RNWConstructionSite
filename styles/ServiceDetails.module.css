@@ -3,16 +3,19 @@
     background: var(--primary);
 }
 
-/* Hero Section */
+/* ─── HERO ─────────────────────────────────────────── */
 .hero {
-    position: relative;
+     position: relative;
     min-height: 520px;
+    max-height: 630px;  /* ← agrega esto */
+    overflow: hidden;   /* ← ya lo tienes, pero verifica */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     display: flex;
+    flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: flex-start;
     overflow: hidden;
     padding: 30px 0 40px;
 }
@@ -23,7 +26,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.45) 100%);
     z-index: 1;
 }
 
@@ -40,7 +43,6 @@
     align-items: flex-start;
 }
 
-/* Pill / badge above the headline */
 .heroLabel {
     display: inline-block;
     background: rgba(212, 175, 55, 0.15);
@@ -96,19 +98,17 @@
     transform: translateX(-5px);
 }
 
-/* Content Wrapper */
+/* ─── CONTENT WRAPPER ───────────────────────────────── */
 .contentWrapper {
     padding: 60px 20px;
 }
 
-/* ── Short Description Banner ──────────────────────────────────── */
 .shortDescBanner {
     margin-bottom: 40px;
     padding: 24px 28px;
     background: rgba(212, 175, 55, 0.06);
     border-left: 4px solid var(--accent);
     border-radius: 0 10px 10px 0;
-    animation: fadeInUp 0.8s ease-out 0.3s both;
 }
 
 .shortDescBanner p {
@@ -116,10 +116,8 @@
     font-size: clamp(1rem, 1.6vw, 1.15rem);
     line-height: 1.7;
     margin: 0;
-    font-weight: 400;
 }
 
-/* ── Shared section label ───────────────────────────────────────── */
 .sectionLabel {
     font-size: 0.72rem;
     font-weight: 700;
@@ -132,25 +130,17 @@
     border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
-/* ── Key Selling Points ─────────────────────────────────────────── */
+/* ─── KSP ───────────────────────────────────────────── */
 .kspSection {
     margin-bottom: 60px;
     padding-bottom: 40px;
     border-bottom: 1px solid rgba(255,255,255,0.07);
-    animation: fadeInUp 0.8s ease-out 0.3s both;
 }
 
 .kspGrid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 24px;
-}
-
-@media (max-width: 900px) {
-    .kspGrid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 540px) {
-    .kspGrid { grid-template-columns: 1fr; }
 }
 
 .kspCard {
@@ -179,12 +169,11 @@
     margin: 0;
 }
 
-/* ── Page Copy Blocks ───────────────────────────────────────────── */
+/* ─── COPY BLOCKS ───────────────────────────────────── */
 .copyBlocksSection {
     margin-bottom: 60px;
     padding-bottom: 40px;
     border-bottom: 1px solid rgba(255,255,255,0.07);
-    animation: fadeInUp 0.8s ease-out 0.4s both;
 }
 
 .copyBlock {
@@ -216,12 +205,11 @@
     margin-bottom: 0;
 }
 
-/* ── Our Process Section ────────────────────────────────────────── */
+/* ─── PROCESS ───────────────────────────────────────── */
 .processSection {
     margin-bottom: 60px;
     padding-bottom: 40px;
     border-bottom: 1px solid rgba(255,255,255,0.07);
-    animation: fadeInUp 0.8s ease-out 0.45s both;
 }
 
 .processSectionLabel {
@@ -266,9 +254,7 @@
     margin-top: 2px;
 }
 
-.processContent {
-    flex: 1;
-}
+.processContent { flex: 1; }
 
 .processTitle {
     display: block;
@@ -286,13 +272,11 @@
     margin: 0;
 }
 
-
-/* ── FAQ Section ────────────────────────────────────────────────── */
+/* ─── FAQ ───────────────────────────────────────────── */
 .faqSection {
     margin-bottom: 60px;
     padding-bottom: 40px;
     border-bottom: 1px solid rgba(255,255,255,0.07);
-    animation: fadeInUp 0.8s ease-out 0.5s both;
 }
 
 .faqList {
@@ -320,11 +304,8 @@
     margin: 0;
 }
 
-/* ── Details Section (legacy — keep for backward compat) ────────── */
-.detailsSection {
-    margin-bottom: 60px;
-    animation: fadeInUp 0.8s ease-out 0.4s both;
-}
+/* ─── DETAILS (legacy) ──────────────────────────────── */
+.detailsSection { margin-bottom: 60px; }
 
 .detailsSection h2 {
     font-size: clamp(1.8rem, 4vw, 2.5rem);
@@ -337,10 +318,8 @@
 .detailsSection h2::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 80px;
-    height: 4px;
+    bottom: 0; left: 0;
+    width: 80px; height: 4px;
     background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
 }
 
@@ -358,15 +337,10 @@
     margin-bottom: 20px;
 }
 
-.detailsContent p:last-child {
-    margin-bottom: 0;
-}
+.detailsContent p:last-child { margin-bottom: 0; }
 
-/* Gallery Section */
-.gallerySection {
-    margin-bottom: 60px;
-    animation: fadeInUp 0.8s ease-out 0.6s both;
-}
+/* ─── GALLERY ───────────────────────────────────────── */
+.gallerySection { margin-bottom: 60px; }
 
 .gallerySection h2 {
     font-size: clamp(1.8rem, 4vw, 2.5rem);
@@ -379,10 +353,8 @@
 .gallerySection h2::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 80px;
-    height: 4px;
+    bottom: 0; left: 0;
+    width: 80px; height: 4px;
     background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
 }
 
@@ -409,23 +381,17 @@
 }
 
 .galleryItem img {
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
 }
 
-.galleryItem:hover img {
-    transform: scale(1.1);
-}
+.galleryItem:hover img { transform: scale(1.1); }
 
 .imageOverlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    inset: 0;
+    background: rgba(0,0,0,0.7);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -433,9 +399,7 @@
     transition: opacity 0.3s ease;
 }
 
-.galleryItem:hover .imageOverlay {
-    opacity: 1;
-}
+.galleryItem:hover .imageOverlay { opacity: 1; }
 
 .imageOverlay span {
     color: var(--accent);
@@ -443,19 +407,15 @@
     font-weight: 600;
 }
 
-/* Lightbox */
+/* ─── LIGHTBOX ──────────────────────────────────────── */
 .lightbox {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.95);
+    inset: 0;
+    background: rgba(0,0,0,0.95);
     z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: fadeIn 0.3s ease;
 }
 
 .lightboxContent {
@@ -472,66 +432,36 @@
     max-height: 90vh;
     object-fit: contain;
     border-radius: 8px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
-.closeButton,
-.prevButton,
-.nextButton {
+.closeButton, .prevButton, .nextButton {
     position: fixed;
     background: rgba(212, 175, 55, 0.2);
     border: 2px solid var(--accent);
     color: var(--accent);
     font-size: 2rem;
-    width: 60px;
-    height: 60px;
+    width: 60px; height: 60px;
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 10000;
 }
 
-.closeButton:hover,
-.prevButton:hover,
-.nextButton:hover {
+.closeButton { top: 20px; right: 20px; }
+.prevButton  { left: 20px; top: 50%; transform: translateY(-50%); }
+.nextButton  { right: 20px; top: 50%; transform: translateY(-50%); }
+
+.closeButton:hover, .prevButton:hover, .nextButton:hover {
     background: var(--accent);
     color: var(--primary);
-    transform: scale(1.1);
-}
-
-.closeButton {
-    top: 20px;
-    right: 20px;
-}
-
-.prevButton {
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.nextButton {
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.prevButton:hover {
-    transform: translateY(-50%) scale(1.1);
-}
-
-.nextButton:hover {
-    transform: translateY(-50%) scale(1.1);
 }
 
 .imageCounter {
     position: fixed;
-    bottom: 30px;
-    left: 50%;
+    bottom: 30px; left: 50%;
     transform: translateX(-50%);
     background: rgba(212, 175, 55, 0.2);
     border: 2px solid var(--accent);
@@ -539,42 +469,17 @@
     padding: 12px 24px;
     border-radius: 30px;
     font-weight: 600;
-    backdrop-filter: blur(10px);
     z-index: 10000;
 }
 
-/* Animations */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* CTA Section */
+/* ─── CTA SECTION ───────────────────────────────────── */
 .ctaSection {
     text-align: center;
     padding: 80px 40px;
-    background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(45, 45, 45, 0.95) 100%);
+    background: linear-gradient(135deg, rgba(26,26,26,0.95) 0%, rgba(45,45,45,0.95) 100%);
     border-radius: 16px;
     border: 2px solid rgba(212, 175, 55, 0.3);
     margin: 60px 0;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
 .ctaSection h2 {
@@ -589,150 +494,42 @@
     margin-bottom: 30px;
 }
 
-.ctaSection .btn {
-    font-size: 1.1rem;
-    padding: 16px 40px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .hero {
-        min-height: 420px;
-        padding: 20px 0 30px;
-    }
-
-    .backButton {
-        position: relative;
-        margin-bottom: 16px;
-    }
-
-    .heroContent {
-        padding: 15px;
-    }
-
-    .contentWrapper {
-        padding: 40px 15px;
-    }
-
-    .detailsContent {
-        padding: 25px;
-    }
-
-    .imageGrid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 15px;
-    }
-
-    .closeButton,
-    .prevButton,
-    .nextButton {
-        width: 50px;
-        height: 50px;
-        font-size: 1.5rem;
-    }
-
-    .closeButton {
-        top: 10px;
-        right: 10px;
-    }
-
-    .prevButton {
-        left: 10px;
-    }
-
-    .nextButton {
-        right: 10px;
-    }
-
-    .imageCounter {
-        bottom: 20px;
-        padding: 10px 20px;
-        font-size: 0.9rem;
-    }
-
-    .ctaSection {
-        padding: 40px 20px;
-        margin: 40px 0;
-    }
-}
-
-@media (max-width: 480px) {
-    .imageGrid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Floating Contact Button */
+/* ─── FLOATING BUTTON ───────────────────────────────── */
 .floatingContactBtn {
     position: fixed;
-    bottom: 30px;
-    left: 30px;
-    background: linear-gradient(135deg, var(--accent) 0%, #b8941f 100%);
-    color: var(--primary);
+    bottom: 28px; left: 28px;
+    background: var(--gold, #C8961E);
+    color: var(--dark, #0F1923);
     border: none;
     border-radius: 50px;
-    padding: 16px 28px;
-    font-size: 1rem;
-    font-weight: bold;
+    padding: 14px 24px;
+    font-size: 14px;
+    font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+    box-shadow: 0 4px 20px rgba(200, 150, 30, 0.4);
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     transition: all 0.3s ease;
     z-index: 999;
-    animation: pulse 2s infinite;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
 }
 
 .floatingContactBtn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 30px rgba(212, 175, 55, 0.6);
-    background: linear-gradient(135deg, #e6c34a 0%, var(--accent) 100%);
+    background: var(--gold-light, #E8B84B);
+    transform: translateY(-2px);
 }
 
-.floatingBtnIcon {
-    font-size: 1.5rem;
-    animation: wave 1s ease-in-out infinite;
-}
+.floatingBtnIcon { font-size: 1.2rem; flex-shrink: 0; }
+.floatingBtnText { white-space: nowrap; }
 
-.floatingBtnText {
-    white-space: nowrap;
-}
-
-@keyframes pulse {
-
-    0%,
-    100% {
-        box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
-    }
-
-    50% {
-        box-shadow: 0 4px 30px rgba(212, 175, 55, 0.7);
-    }
-}
-
-@keyframes wave {
-
-    0%,
-    100% {
-        transform: rotate(0deg);
-    }
-
-    25% {
-        transform: rotate(-15deg);
-    }
-
-    75% {
-        transform: rotate(15deg);
-    }
-}
-
-/* ── Random Projects Showcase ───────────────────────────────────── */
+/* ─── PROJECTS SHOWCASE ─────────────────────────────── */
 .projectsShowcase {
     margin-top: 60px;
     padding-top: 50px;
-    border-top: 1px solid rgba(255, 255, 255, 0.07);
-    animation: fadeInUp 0.8s ease-out 0.7s both;
+    border-top: 1px solid rgba(255,255,255,0.07);
 }
 
 .showcaseTitle {
@@ -746,18 +543,15 @@
 .showcaseTitle::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 80px;
-    height: 4px;
+    bottom: 0; left: 0;
+    width: 80px; height: 4px;
     background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
 }
 
 .showcaseSubtitle {
-    color: rgba(255, 255, 255, 0.55);
+    color: rgba(255,255,255,0.55);
     font-size: 0.95rem;
     margin-bottom: 36px;
-    letter-spacing: 0.02em;
 }
 
 .projectsGrid {
@@ -767,20 +561,13 @@
     margin-bottom: 36px;
 }
 
-@media (max-width: 680px) {
-    .projectsGrid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Card = <Link> — reset link styles */
 .projectCard {
     display: flex;
     flex-direction: column;
     border-radius: 14px;
     overflow: hidden;
     border: 1px solid rgba(212, 175, 55, 0.18);
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255,255,255,0.03);
     text-decoration: none;
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     cursor: pointer;
@@ -794,36 +581,30 @@
 
 .projectCardImage {
     position: relative;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 16/9;
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.05);
 }
 
 .projectCardImage img {
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     object-fit: cover;
     transition: transform 0.4s ease;
 }
 
-.projectCard:hover .projectCardImage img {
-    transform: scale(1.07);
-}
+.projectCard:hover .projectCardImage img { transform: scale(1.07); }
 
 .projectCardPlaceholder {
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 3rem;
-    background: rgba(255, 255, 255, 0.04);
 }
 
 .projectCardOverlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, transparent 60%);
+    background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 60%);
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -832,25 +613,19 @@
     transition: opacity 0.3s ease;
 }
 
-.projectCard:hover .projectCardOverlay {
-    opacity: 1;
-}
+.projectCard:hover .projectCardOverlay { opacity: 1; }
 
 .projectCardViewBtn {
     color: var(--accent);
     font-weight: 700;
     font-size: 0.9rem;
-    letter-spacing: 0.04em;
-    background: rgba(0, 0, 0, 0.55);
+    background: rgba(0,0,0,0.55);
     padding: 6px 18px;
     border-radius: 30px;
     border: 1px solid var(--accent);
-    backdrop-filter: blur(6px);
 }
 
-.projectCardInfo {
-    padding: 18px 20px 20px;
-}
+.projectCardInfo { padding: 18px 20px 20px; }
 
 .projectCardTitle {
     font-size: 1.05rem;
@@ -862,16 +637,12 @@
 
 .projectCardDesc {
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255,255,255,0.5);
     margin: 0;
     line-height: 1.55;
 }
 
-/* CTA row below the grid */
-.projectsCta {
-    text-align: center;
-    margin-top: 10px;
-}
+.projectsCta { text-align: center; margin-top: 10px; }
 
 .viewAllBtn {
     display: inline-block;
@@ -882,18 +653,16 @@
     border-radius: 50px;
     font-weight: 700;
     font-size: 0.95rem;
-    letter-spacing: 0.04em;
     text-decoration: none;
-    transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 .viewAllBtn:hover {
     background: var(--accent);
     color: var(--primary);
-    transform: translateY(-2px);
 }
 
-/* ── Projects Carousel ───────────────────────────────────────────── */
+/* ─── CAROUSEL ──────────────────────────────────────── */
 .carousel {
     position: relative;
     display: flex;
@@ -918,7 +687,7 @@
     border-radius: 14px;
     overflow: hidden;
     border: 1px solid rgba(212, 175, 55, 0.18);
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255,255,255,0.03);
     text-decoration: none;
     opacity: 0;
     transform: translateX(40px);
@@ -935,63 +704,34 @@
 
 .carouselImage {
     position: relative;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 16/9;
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.05);
     flex-shrink: 0;
 }
 
 .carouselImage img {
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
-}
-
-.carouselSlideActive:hover .carouselImage img {
-    transform: scale(1.05);
-}
-
-.carouselOverlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, transparent 60%);
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    padding-bottom: 18px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.carouselSlideActive:hover .carouselOverlay {
-    opacity: 1;
 }
 
 .carouselBtn {
     flex-shrink: 0;
-    width: 50px;
-    height: 50px;
+    width: 50px; height: 50px;
     border-radius: 50%;
     border: 2px solid var(--accent);
     background: rgba(212, 175, 55, 0.12);
     color: var(--accent);
     font-size: 2rem;
-    line-height: 1;
     cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    transition: background 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    backdrop-filter: blur(8px);
-    z-index: 2;
 }
 
 .carouselBtn:hover {
     background: var(--accent);
     color: var(--primary);
-    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
-    transform: scale(1.08);
 }
 
 .carouselDots {
@@ -1002,14 +742,13 @@
 }
 
 .carouselDot {
-    width: 10px;
-    height: 10px;
+    width: 10px; height: 10px;
     border-radius: 50%;
     border: 2px solid rgba(212, 175, 55, 0.45);
     background: transparent;
     cursor: pointer;
     padding: 0;
-    transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+    transition: background 0.3s ease;
 }
 
 .carouselDotActive {
@@ -1018,14 +757,174 @@
     transform: scale(1.3);
 }
 
-@media (max-width: 600px) {
-    .carouselBtn {
-        width: 38px;
-        height: 38px;
-        font-size: 1.5rem;
+/* ─── ANIMATIONS ────────────────────────────────────── */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── TABLET ────────────────────────────────────────── */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .hero { min-height: 380px; padding: 20px 0 30px; }
+    .heroContent { padding: 20px 32px; max-width: 700px; }
+    .heroContent h1 { font-size: 2.2rem; }
+    .contentWrapper { padding: 48px 32px; }
+    .kspGrid { grid-template-columns: repeat(2, 1fr); }
+    .carouselTrack { min-height: 360px; }
+}
+
+/* ─── MOBILE ────────────────────────────────────────── */
+@media (max-width: 768px) {
+
+    /* Hero: imagen de fondo visible arriba, texto scrolleable debajo */
+    @media (max-width: 768px) {
+    .hero {
+        min-height: 520px;
+        max-height: none;
+        padding: 20px 0 40px;
+        flex-direction: column;
+        overflow: hidden;
     }
 
-    .carouselTrack {
-        min-height: 280px;
+    .heroOverlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 100%;
+        width: 100%;
+        background: linear-gradient(135deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.45) 100%);
+        display: block;
+        padding: 0;
     }
+
+    .heroContent {
+        position: relative;
+        z-index: 2;
+        background: transparent;  /* ← quita el recuadro azul */
+        padding: 20px 16px;
+        max-width: 100%;
+        width: 100%;
+        margin: 0;
+        text-align: left;
+        align-items: flex-start;
+        max-height: 340px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        border-top: none;  /* ← quita la línea dorada */
+        box-sizing: border-box;
+    }
+
+    /* Scrollbar invisible */
+    .heroContent::-webkit-scrollbar { width: 0px; }
+    .heroContent { scrollbar-width: none; }
 }
+    
+
+    /* Back button dentro del overlay */
+    .backButton {
+        position: relative;
+        margin-bottom: 0;
+        padding: 6px 12px;
+        font-size: 0.8rem;
+        z-index: 10;
+        align-self: flex-start;
+    }
+
+
+
+    .heroLabel {
+        font-size: 0.7rem;
+        padding: 4px 12px;
+        margin-bottom: 10px;
+    }
+
+    .heroContent h1 {
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+        line-height: 1.2;
+        color: #fff;
+    }
+
+    .shortDescription {
+        font-size: 0.88rem;
+        line-height: 1.65;
+        display: block;
+        overflow: visible;
+        max-width: 100%;
+        color: rgba(255,255,255,0.85);
+    }
+
+    /* Content */
+    .contentWrapper { padding: 24px 16px 48px; }
+    .shortDescBanner { padding: 14px 16px; margin-bottom: 20px; }
+    .shortDescBanner p { font-size: 0.9rem; }
+    .copyBlock { padding: 14px 16px; margin-bottom: 12px; border-radius: 6px; }
+    .copyBlockContent p { font-size: 0.9rem; line-height: 1.65; }
+
+    /* KSP */
+    .kspGrid { grid-template-columns: 1fr 1fr; gap: 14px; }
+    .kspTitle { font-size: 0.88rem; }
+    .kspDesc  { font-size: 0.82rem; }
+
+    /* Process */
+    .processItem { padding: 14px 16px; gap: 10px; }
+    .processNumber { width: 28px; height: 28px; font-size: 0.82rem; }
+    .processTitle { font-size: 0.9rem; }
+    .processDesc  { font-size: 0.83rem; }
+
+    /* FAQ */
+    .faqQuestion { font-size: 0.9rem; }
+    .faqAnswer   { font-size: 0.83rem; }
+
+    /* CTA */
+    .ctaSection { padding: 24px 16px; margin: 24px 0; border-radius: 8px; }
+    .ctaSection h2 { font-size: 1.3rem; }
+    .ctaSection p  { font-size: 0.9rem; }
+
+    /* Gallery */
+    .imageGrid { grid-template-columns: 1fr; gap: 12px; }
+    .closeButton, .prevButton, .nextButton { width: 44px; height: 44px; font-size: 1.3rem; }
+    .closeButton { top: 10px; right: 10px; }
+    .prevButton  { left: 10px; }
+    .nextButton  { right: 10px; }
+
+    /* Projects grid */
+    .projectsGrid { grid-template-columns: 1fr; }
+    .carouselTrack { min-height: 240px; }
+    .carouselBtn { width: 36px; height: 36px; font-size: 1.2rem; }
+
+    /* BBB */
+    #bbb-seal { display: none !important; }
+
+    /* Floating button */
+    .floatingContactBtn {
+        bottom: 16px; left: 16px;
+        width: 52px; height: 52px;
+        border-radius: 50%;
+        padding: 0;
+        justify-content: center;
+        animation: none;
+    }
+    .floatingBtnText { display: none; }
+    .floatingBtnIcon { font-size: 1.4rem; animation: none; }
+}
+
+/* ─── SMALL PHONES ──────────────────────────────────── */
+@media (max-width: 380px) {
+    .heroOverlay { height: 170px; }
+    .heroContent { max-height: 220px; }
+    .kspGrid { grid-template-columns: 1fr; }
+    .heroContent h1 { font-size: 1.2rem; }
+}
+
+.hero::after {
+    display: none !important;
+}
+

@@ -6,6 +6,14 @@ const translations = {
         home: 'Home',
         services: 'Services',
         projects: 'Projects',
+        phoneLabel: 'Phone',
+        emailLabel: 'Email',
+        licenseLabel: 'CCB',
+        menuLabel: 'Open menu',
+        switchLanguage: 'Switch language',
+        navAvailability: 'Available 24/7 · Licensed · Bonded · Insured · CCB 232708',
+        navSubtitle: 'Build Better, Restore Stronger',
+        navEstimate: 'Free Estimate',
         getFreeEstimate: 'Get Your Free Estimate',
         callUs: 'Call Us Now!! 24/7 Phone |',
 
@@ -21,6 +29,7 @@ const translations = {
         heroItem3: 'Drywall · Restoration · Mitigation · Emergency Services',
         lookUsUp: 'Look us up on',
         fullyLicensed: 'Fully Licensed & Insured · 100% Satisfaction Guarantee',
+        accredited: 'Accredited',
 
         // Form (hero & contact modal shared keys)
         requestFreeQuote: 'Request a',
@@ -55,6 +64,10 @@ const translations = {
         contactService2: 'General Repairs & Carpentry',
         contactService3: 'Restoration & Reconstruction',
         contactService4: 'Mitigation & Emergency Services',
+        serviceArea: 'Service Area',
+        yearsExp: 'Years Exp.',
+        projectsDone: 'Projects',
+        rating: 'Rating',
 
         // Project types
         pt1: 'Interior Construction & Remodeling',
@@ -68,7 +81,8 @@ const translations = {
 
         // About / original hero
         weWorkForYou: 'We Work For You',
-        companyDesc: "At J&R NW Construction, our mission is to deliver reliable, high-quality residential and light commercial remodels, siding projects, and interior/exterior reconstruction. With over 30 years of experience, our family-owned team is dedicated to restoring not just buildings—but confidence, comfort, and long-term value. From water mitigation and full restoration to interior upgrades, exterior improvements, and complete siding remodels, we provide end-to-end solutions built on craftsmanship, safety, and integrity. Every project is approached with the same commitment: to protect your property, enhance your space, and exceed your expectations. We don't just repair and remodel—we help rebuild trust in the places you live and work.",
+        companyDesc: "At J&R NW Construction, our mission is to deliver reliable, high-quality residential and light commercial remodels, siding projects, and interior/exterior reconstruction. With over 20 years of experience, our family-owned team is dedicated to restoring not just buildings—but confidence, comfort, and long-term value. From water mitigation and full restoration to interior upgrades, exterior improvements, and complete siding remodels, we provide end-to-end solutions built on craftsmanship, safety, and integrity. Every project is approached with the same commitment: to protect your property, enhance your space, and exceed your expectations. We don't just repair and remodel—we help rebuild trust in the places you live and work.",
+        companyDescShort: 'Family-owned and operated. Serving Oregon with integrity, craftsmanship, and 20+ years of experience.',
 
         // Floating button & modals
         getEstimate: 'Get Your Free Estimate',
@@ -85,13 +99,36 @@ const translations = {
 
         // Projects page
         ourProjects: 'Our Projects',
+        portfolioLabel: 'Portfolio',
         projectsIntro: 'We transform spaces and revive structures with expertise and care. Our projects range from restoring the beauty of historical buildings to reconstructing damaged properties.',
+        completedProjects: 'Completed Projects',
+        photos: 'Photos',
+        constructionOregon: 'Construction · Oregon',
         projectDetails: 'Project Details',
+        projectsSubtitle: 'Explore some of our completed projects',
+        ourWork: 'Our Work',
+        viewOurWork: 'View Our Work',
+        viewProject: 'View Project →',
+        viewAllProjects: 'View All Projects',
 
         // Services page
         ourServices: 'Our Services',
         servicesIntro: 'Delivering top-tier restoration and construction services with precision, integrity, and a commitment to excellence. Your vision, our expertise.',
         learnMore: 'Learn More →',
+        serviceTag1: 'Interior · Residential',
+        serviceTag2: 'Exterior · Protection',
+        serviceTag3: 'Restoration · Reconstruction',
+        serviceTag4: 'Emergency · 24/7',
+        serviceTag5: 'Exterior · Painting',
+        serviceTag6: 'Interior · Drywall',
+        serviceTag7: 'General · Repairs',
+        serviceTag8: 'Commercial · Residential',
+        filterAll: 'All',
+        filterRemodeling: 'Remodeling',
+        filterSiding: 'Siding',
+        filterRestoration: 'Restoration',
+        filterDrywall: 'Drywall',
+        filterEmergency: 'Emergency',
 
         // Service detail page
         ourProcess: 'Our Process',
@@ -113,6 +150,14 @@ const translations = {
         home: 'Inicio',
         services: 'Servicios',
         projects: 'Proyectos',
+        phoneLabel: 'Telefono',
+        emailLabel: 'Correo',
+        licenseLabel: 'CCB',
+        menuLabel: 'Abrir menu',
+        switchLanguage: 'Cambiar idioma',
+        navAvailability: 'Disponible 24/7 · Licenciado · Garantizado · Asegurado · CCB 232708',
+        navSubtitle: 'Construir Mejor, Restaurar Más Fuerte',
+        navEstimate: 'Estimado Gratis',
         getFreeEstimate: 'Obtén tu Estimado Gratis',
         callUs: '¡Llámanos Ahora!! 24/7 Teléfono |',
 
@@ -128,6 +173,7 @@ const translations = {
         heroItem3: 'Tablaroca · Restauración · Mitigación · Servicios de Emergencia',
         lookUsUp: 'Encuéntranos en',
         fullyLicensed: 'Totalmente Licenciado y Asegurado · 100% Garantía de Satisfacción',
+        accredited: 'Acreditado',
 
         // Form shared keys
         requestFreeQuote: 'Solicita un',
@@ -162,6 +208,10 @@ const translations = {
         contactService2: 'Reparaciones Generales y Carpintería',
         contactService3: 'Restauración y Reconstrucción',
         contactService4: 'Mitigación y Servicios de Emergencia',
+        serviceArea: 'Área de Servicio',
+        yearsExp: 'Años de Exp.',
+        projectsDone: 'Proyectos',
+        rating: 'Calificación',
 
         // Project types
         pt1: 'Construcción y Remodelación Interior',
@@ -175,7 +225,8 @@ const translations = {
 
         // About / original hero
         weWorkForYou: 'Trabajamos Para Ti',
-        companyDesc: 'En J&R NW Construction, nuestra misión es ofrecer remodelaciones residenciales y comerciales ligeras de alta calidad, proyectos de revestimiento y reconstrucción interior/exterior de manera confiable. Con más de 30 años de experiencia, nuestro equipo familiar está dedicado a restaurar no solo edificios, sino también la confianza, el confort y el valor a largo plazo. Desde mitigación de agua y restauración completa hasta mejoras interiores, mejoras exteriores y remodelaciones completas de revestimiento, ofrecemos soluciones integrales basadas en artesanía, seguridad e integridad. Cada proyecto se aborda con el mismo compromiso: proteger su propiedad, mejorar su espacio y superar sus expectativas.',
+        companyDesc: 'En J&R NW Construction, nuestra misión es ofrecer remodelaciones residenciales y comerciales ligeras de alta calidad, proyectos de revestimiento y reconstrucción interior/exterior de manera confiable. Con más de 20 años de experiencia, nuestro equipo familiar está dedicado a restaurar no solo edificios, sino también la confianza, el confort y el valor a largo plazo. Desde mitigación de agua y restauración completa hasta mejoras interiores, mejoras exteriores y remodelaciones completas de revestimiento, ofrecemos soluciones integrales basadas en artesanía, seguridad e integridad. Cada proyecto se aborda con el mismo compromiso: proteger su propiedad, mejorar su espacio y superar sus expectativas.',
+        companyDescShort: 'Empresa familiar. Sirviendo a Oregon con integridad, artesanía y más de 20 años de experiencia.',
 
         // Floating button & modals
         getEstimate: 'Obtén tu Estimado Gratis',
@@ -192,13 +243,36 @@ const translations = {
 
         // Projects page
         ourProjects: 'Nuestros Proyectos',
+        portfolioLabel: 'Portafolio',
         projectsIntro: 'Transformamos espacios y revivimos estructuras con experiencia y cuidado. Nuestros proyectos van desde restaurar la belleza de edificios históricos hasta reconstruir propiedades dañadas.',
+        completedProjects: 'Proyectos Completados',
+        photos: 'Fotos',
+        constructionOregon: 'Construcción · Oregon',
         projectDetails: 'Detalles del Proyecto',
+        projectsSubtitle: 'Explora algunos de nuestros proyectos completados',
+        ourWork: 'Nuestro Trabajo',
+        viewOurWork: 'Ver Nuestro Trabajo',
+        viewProject: 'Ver Proyecto →',
+        viewAllProjects: 'Ver Todos los Proyectos',
 
         // Services page
         ourServices: 'Nuestros Servicios',
         servicesIntro: 'Ofrecemos servicios de restauración y construcción de primera calidad con precisión, integridad y compromiso con la excelencia. Tu visión, nuestra experiencia.',
         learnMore: 'Ver Más →',
+        serviceTag1: 'Interior · Residencial',
+        serviceTag2: 'Exterior · Protección',
+        serviceTag3: 'Restauración · Reconstrucción',
+        serviceTag4: 'Emergencia · 24/7',
+        serviceTag5: 'Exterior · Pintura',
+        serviceTag6: 'Interior · Tablaroca',
+        serviceTag7: 'Reparaciones Generales · Carpintería',
+        serviceTag8: 'Comercial · Residencial',
+        filterAll: 'Todo',
+        filterRemodeling: 'Remodelación',
+        filterSiding: 'Revestimiento',
+        filterRestoration: 'Restauración',
+        filterDrywall: 'Tablaroca',
+        filterEmergency: 'Emergencia',
 
         // Service detail page
         ourProcess: 'Nuestro Proceso',
