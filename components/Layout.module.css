@@ -264,16 +264,29 @@
 }
 
 /* ─── HAMBURGER ──────────────────────────────────── */
+/* Label MENU bajo el hamburger */
+.hamburgerLabel {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--white);        /* ← blanco */
+    text-transform: uppercase;
+    font-family: 'Barlow', sans-serif;
+    order: -1;                  /* ← lo pone a la IZQUIERDA de las líneas */
+}
+
 .hamburger {
     display: none;
-    flex-direction: column;
-    gap: 5px;
+    flex-direction: row;        /* ← cambia de column a row */
+    align-items: center;
+    gap: 8px;                   /* ← espacio entre MENU y las líneas */
     cursor: pointer;
     padding: 6px;
     background: none;
     border: none;
     flex-shrink: 0;
 }
+
 
 .hamburger span {
     display: block;
@@ -593,5 +606,23 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 12px;
+    }
+}
+
+
+/* ─── iOS Safari fix ─────────────────────────────── */
+@supports (-webkit-touch-callout: none) {
+    .nav {
+        position: -webkit-sticky;
+        position: sticky;
+    }
+
+    .topbar {
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+    }
+
+    .container {
+        min-height: -webkit-fill-available;
     }
 }

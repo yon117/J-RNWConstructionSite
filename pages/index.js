@@ -52,11 +52,11 @@ const MapIcon = () => (
 );
 
 const YelpLogoIcon = () => (
-    <Image src="/yelp-logo.png" alt="Yelp" width={117} height={31} style={{ objectFit: 'contain' }} />
+    <Image src="/yelp-logo.png" alt="Yelp" width={130} height={40} style={{ objectFit: 'contain' }} />
 );
 
 const GoogleLogoIcon = () => (
-    <Image src="/google-logo.png" alt="Google" width={117} height={117} style={{ objectFit: 'contain' }} />
+    <Image src="/google-logo.png" alt="Google" width={130} height={130} style={{ objectFit: 'contain' }} />
 );
 
 const LockIcon = () => (
