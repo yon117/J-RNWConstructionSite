@@ -288,13 +288,18 @@
 }
 
 
-.hamburger span {
+.hamburgerLines {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.hamburgerLines span {
     display: block;
     width: 22px;
     height: 2px;
     background: var(--white);
     border-radius: 2px;
-    transition: all 0.3s;
 }
 
 /* ─── MOBILE MENU ────────────────────────────────── */
