@@ -150,10 +150,12 @@ export default function Layout({ children, title = 'J&R NW Construction', onCont
                {/* Hamburger (mobile) */}
 <button className={styles.hamburger} onClick={() => setMenuOpen(!menuOpen)}
     aria-label={t.menuLabel}>
-    <span />
-    <span />
-    <span />
     <span className={styles.hamburgerLabel}>MENU</span>
+    <div className={styles.hamburgerLines}>
+        <span />
+        <span />
+        <span />
+    </div>
 </button>
             </nav>
 
