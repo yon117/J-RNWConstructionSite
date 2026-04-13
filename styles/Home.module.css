@@ -1144,3 +1144,8 @@
         min-height: -webkit-fill-available;
     }
 }
+
+.floatingContactBtn {
+    bottom: 28px;
+    left: 28px;  /* ya está a la izquierda */
+}
