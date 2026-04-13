@@ -1,4 +1,5 @@
 import { Html, Head, Main, NextScript } from "next/document";
+
 export default function Document() {
   return (
     <Html lang="en">
@@ -7,9 +8,21 @@ export default function Document() {
         <link rel="icon" href="/favicon.png" type="image/png" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
-        {/* BBB Seal */}
+
+        {/* Preconnect para performance */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+
+        {/* Hero image preload — crítico para LCP */}
+        <link
+          rel="preload"
+          as="image"
+          href="/assets/home-hero-bg.webp"
+          fetchPriority="high"
+        />
+
+        {/* BBB Seal — sin cambios */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -31,7 +44,8 @@ export default function Document() {
             `,
           }}
         />
-        {/* Google Tag Manager */}
+
+        {/* GTM — solo aquí, NO en _app.tsx */}
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -43,7 +57,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         />
       </Head>
       <body>
-        {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-K44RZ5FM"
