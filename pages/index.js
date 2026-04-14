@@ -176,14 +176,7 @@ export default function Home() {
             {/* ── HERO ── */}
             <section className={styles.hero}>
                 {/* ✅ Después */}
-<img
-  src="/assets/home-hero-bg.webp"
-  alt=""
-  fetchPriority="high"
-  decoding="sync"
-  className={styles.heroBg}
-  style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', zIndex: 0 }}
-/>
+<div className={styles.heroBg} />
                 <div className={styles.heroAccentLine} />
                 <div className={styles.heroInner}>
                 <div className={styles.heroContent}>
