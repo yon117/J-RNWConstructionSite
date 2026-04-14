@@ -27,8 +27,8 @@
     position: absolute;
     inset: 0;
     background:
-        linear-gradient(105deg, rgba(15, 25, 35, 0.97) 45%, rgba(15, 25, 35, 0.6) 100%);
-        z-index: 1;
+        linear-gradient(105deg, rgba(15, 25, 35, 0.97) 45%, rgba(15, 25, 35, 0.6) 100%),
+        url('/assets/home-hero-bg.webp') center / cover no-repeat;
 }
 
 .heroAccentLine {
@@ -982,11 +982,10 @@
         align-items: flex-end;
     }
 
-    .heroBg {
-        background: linear-gradient(180deg, rgba(15, 25, 35, 0.55) 0%, rgba(15, 25, 35, 0.98) 100%);
-         z-index: 1;   
-        
-    }
+   .heroBg {
+    background: linear-gradient(180deg, rgba(15, 25, 35, 0.55) 0%, rgba(15, 25, 35, 0.98) 100%),
+        url('/assets/home-hero-bg.webp') center / cover no-repeat;
+}
 
     .heroContent {
         padding: 24px 20px 24px 20px;
