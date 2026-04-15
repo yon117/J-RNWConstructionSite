@@ -328,30 +328,43 @@ function HomeContactForm({ t }) {
     const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     const validatePhone = (phone) => phone === '' || /^[0-9\s\-\(\)]+$/.test(phone);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!validateEmail(form.email)) { setEmailError(t.validEmailError); return; }
-        setStatus('sending');
-        try {
-            const res = await fetch('/api/contact', {
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateEmail(form.email)) { setEmailError(t.validEmailError); return; }
+    setStatus('sending');
+    try {
+        const res = await fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                firstName: form.fullName, lastName: '', email: form.email,
+                phone: form.phone, message: form.message, serviceType: form.projectType, budget: ''
+            })
+        });
+        if (res.ok) {
+            // Enviar a n8n
+            fetch('https://n8n.jandrnw.com/webhook/formulario-contacto', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    firstName: form.fullName, lastName: '', email: form.email,
-                    phone: form.phone, message: form.message, serviceType: form.projectType, budget: ''
+                    nombre: form.fullName,
+                    email: form.email,
+                    phone: form.phone,
+                    mensaje: form.message,
+                    serviceType: form.projectType
                 })
-            });
-            if (res.ok) {
-                setStatus('success');
-                setForm({ fullName: '', phone: '', email: '', projectType: '', message: '' });
-                if (typeof window !== 'undefined' && window.gtag) {
-                    window.gtag('event', 'conversion', { send_to: 'AW-17362940957/co0XCP6H_pAcEJ3opddA' });
-                    window.gtag('event', 'generate_lead', { event_category: 'contact', event_label: 'home_form' });
-                }
-                if (typeof window !== 'undefined' && window.fbq) window.fbq('track', 'Lead');
-            } else setStatus('error');
-        } catch { setStatus('error'); }
-    };
+            }).catch(() => {});
+
+            setStatus('success');
+            setForm({ fullName: '', phone: '', email: '', projectType: '', message: '' });
+            if (typeof window !== 'undefined' && window.gtag) {
+                window.gtag('event', 'conversion', { send_to: 'AW-17362940957/co0XCP6H_pAcEJ3opddA' });
+                window.gtag('event', 'generate_lead', { event_category: 'contact', event_label: 'home_form' });
+            }
+            if (typeof window !== 'undefined' && window.fbq) window.fbq('track', 'Lead');
+        } else setStatus('error');
+    } catch { setStatus('error'); }
+};
 
     return (
         <div className={styles.contactForm}>
