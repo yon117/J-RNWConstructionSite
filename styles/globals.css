@@ -102,3 +102,8 @@ button {
     line-height: 1.2;
   }
 }
+
+/* Typebot bubble position */
+typebot-bubble {
+  --typebot-bubble-bottom: 100px !important;
+}

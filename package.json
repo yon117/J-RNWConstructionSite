@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@libsql/client": "^0.14.0",
+    "@typebot.io/react": "^0.10.2",
     "bcryptjs": "^3.0.3",
     "cloudinary": "^2.8.0",
     "cookie": "^1.0.2",
