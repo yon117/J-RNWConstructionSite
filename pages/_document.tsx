@@ -40,6 +40,32 @@ export default function Document() {
             `,
           }}
         />
+        {/* Google Ads gtag — requerido para conversion tracking */}
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=AW-17362940957"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag("js", new Date());
+              gtag("config", "AW-17362940957");
+              function gtag_report_conversion(url) {
+                var callback = function () {
+                  if (typeof(url) != "undefined") { window.location = url; }
+                };
+                gtag("event", "conversion", {
+                  "send_to": "AW-17362940957/co0XCP6H_pAcEJ3opddA",
+                  "event_callback": callback
+                });
+                return false;
+              }
+            `,
+          }}
+        />
+
         {/* GTM */}
         <script
           dangerouslySetInnerHTML={{

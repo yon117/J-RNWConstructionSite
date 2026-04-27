@@ -358,7 +358,7 @@ const handleSubmit = async (e) => {
             setStatus('success');
             setForm({ fullName: '', phone: '', email: '', projectType: '', message: '' });
             if (typeof window !== 'undefined' && window.gtag) {
-                window.gtag('event', 'conversion', { send_to: 'AW-17362940957/co0XCP6H_pAcEJ3opddA' });
+                window.gtag('event', 'conversion', { send_to: 'AW-17362940957/it5lCL_Ei6IcEJ3opddA', value: 1.0, currency: 'USD' });
                 window.gtag('event', 'generate_lead', { event_category: 'contact', event_label: 'home_form' });
             }
             if (typeof window !== 'undefined' && window.fbq) window.fbq('track', 'Lead');
