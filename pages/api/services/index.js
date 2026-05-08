@@ -11,19 +11,19 @@ export default async function handler(req, res) {
         if (req.method === 'GET') {
             console.log('Fetching all services...');
             const result = await db.execute(`
-                SELECT id, name, description, image_url
+                SELECT id, title, description, image, details, name
                 FROM services
             `);
             console.log(`Found ${result.rows?.length || 0} services`);
 
             const services = result.rows.map(s => ({
                 id:           s.id,
-                title:        s.name,
-                name:         s.name,
+                title:        s.title || s.name,
+                name:         s.title || s.name,
                 description:  s.description,
                 header_desc:  '',
-                image_url:    s.image_url,
-                image:        s.image_url,
+                image_url:    s.image,
+                image:        s.image,
                 details:      s.details      || '',
                 slug:         s.slug         || '',
                 page_title:   s.page_title   || '',
@@ -81,7 +81,7 @@ export default async function handler(req, res) {
             console.log('Creating service:', serviceName);
 
             await db.execute({
-                sql: `INSERT INTO services (name, description, image_url) VALUES (?, ?, ?)`,
+                sql: `INSERT INTO services (title, description, image) VALUES (?, ?, ?)`,
                 args: [serviceName, description || '', imageVal]
             });
             console.log('Service created successfully');
@@ -109,7 +109,7 @@ export default async function handler(req, res) {
             console.log(`Updating service ${id}: name="${serviceName}"`);
 
             await db.execute({
-                sql: `UPDATE services SET name = ?, description = ?, image_url = ? WHERE id = ?`,
+                sql: `UPDATE services SET title = ?, description = ?, image = ? WHERE id = ?`,
                 args: [serviceName, description || '', imageVal || '', id]
             });
 
