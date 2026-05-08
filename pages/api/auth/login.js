@@ -1,9 +1,18 @@
 import { getDb } from '../../../lib/db';
 import bcrypt from 'bcryptjs';
 import { serialize } from 'cookie';
+import { createSessionToken } from '../../../lib/auth';
+import { rateLimit } from '../../../lib/rateLimit';
+
+const loginRateLimit = rateLimit({ windowMs: 15 * 60_000, max: 10 });
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
+        const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress || 'unknown';
+        if (!loginRateLimit(ip)) {
+            return res.status(429).json({ error: 'Too many login attempts. Try again later.' });
+        }
+
         try {
             const { username, email, password } = req.body;
             const loginId = username || email;
@@ -39,7 +48,8 @@ export default async function handler(req, res) {
             const storedPassword = user?.password || user?.password_hash;
 
             if (user && storedPassword && await bcrypt.compare(password, storedPassword)) {
-                const token = serialize('admin_token', 'authenticated', {
+                const sessionToken = createSessionToken();
+                const token = serialize('admin_token', sessionToken, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV !== 'development',
                     sameSite: 'strict',

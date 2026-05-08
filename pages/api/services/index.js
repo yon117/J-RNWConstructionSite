@@ -1,4 +1,6 @@
 import { getDb } from '../../../lib/db';
+import { parse } from 'cookie';
+import { isValidSessionToken } from '../../../lib/auth';
 
 export default async function handler(req, res) {
     console.log(`\n========== ${req.method} /api/services ==========`);
@@ -62,7 +64,14 @@ export default async function handler(req, res) {
             console.log('Services:', services.map(s => `ID:${s.id} Title:"${s.title}"`).join(', '));
             return res.status(200).json(services);
 
-        } else if (req.method === 'POST') {
+        } else if (req.method === 'POST' || req.method === 'PUT' || req.method === 'DELETE') {
+            const cookies = parse(req.headers.cookie || '');
+            if (!isValidSessionToken(cookies.admin_token)) {
+                return res.status(401).json({ error: 'Unauthorized' });
+            }
+        }
+
+        if (req.method === 'POST') {
             const {
                 name, title, description, header_desc, details, image_url, image,
                 slug, page_title, subtitle,
@@ -212,10 +221,7 @@ export default async function handler(req, res) {
     } catch (error) {
         console.error('API ERROR:', error.message);
         console.error('Stack:', error.stack);
-        return res.status(500).json({
-            error: 'Internal server error',
-            message: error.message
-        });
+        return res.status(500).json({ error: 'Internal server error' });
     } finally {
         console.log('========== END ==========\n');
     }

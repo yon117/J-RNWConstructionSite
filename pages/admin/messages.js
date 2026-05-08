@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Layout from '../../components/Layout';
 import styles from '../../styles/Admin.module.css';
 import { parse } from 'cookie';
+import { isValidSessionToken } from '../../lib/auth';
 import { getDb } from '../../lib/db';
 import { Trash2 } from 'lucide-react';
 
@@ -70,7 +71,7 @@ export default function Messages({ messages }) {
 
 export async function getServerSideProps(context) {
     const cookies = parse(context.req.headers.cookie || '');
-    if (!cookies.admin_token) {
+    if (!isValidSessionToken(cookies.admin_token)) {
         return { redirect: { destination: '/admin/login', permanent: false } };
     }
 

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import AdminLayout from '../../components/AdminLayout';
 import styles from '../../styles/Admin.module.css';
+import { parse } from 'cookie';
+import { isValidSessionToken } from '../../lib/auth';
 
 export default function AdminProjects() {
     const [projects, setProjects] = useState([]);
@@ -729,4 +731,12 @@ export default function AdminProjects() {
             </div>
         </AdminLayout>
     );
+}
+
+export async function getServerSideProps(context) {
+    const cookies = parse(context.req.headers.cookie || '');
+    if (!isValidSessionToken(cookies.admin_token)) {
+        return { redirect: { destination: '/adminside', permanent: false } };
+    }
+    return { props: {} };
 }

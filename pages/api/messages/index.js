@@ -1,6 +1,13 @@
 import { getDb } from '../../../lib/db';
+import { parse } from 'cookie';
+import { isValidSessionToken } from '../../../lib/auth';
 
 export default async function handler(req, res) {
+    const cookies = parse(req.headers.cookie || '');
+    if (!isValidSessionToken(cookies.admin_token)) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
     const db = await getDb();
 
     if (req.method === 'GET') {

@@ -1,4 +1,6 @@
 import { getDb } from '../../../lib/db';
+import { parse } from 'cookie';
+import { isValidSessionToken } from '../../../lib/auth';
 
 export default async function handler(req, res) {
     try {
@@ -6,40 +8,48 @@ export default async function handler(req, res) {
 
         if (req.method === 'GET') {
             const result = await db.execute('SELECT * FROM projects');
-            res.status(200).json(result.rows);
-        } else if (req.method === 'POST') {
+            return res.status(200).json(result.rows);
+        }
+
+        // All write methods require auth
+        const cookies = parse(req.headers.cookie || '');
+        if (!isValidSessionToken(cookies.admin_token)) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
+        if (req.method === 'POST') {
             const { title, description, image_url, details } = req.body;
             await db.execute({
                 sql: 'INSERT INTO projects (title, description, details, image, created_at) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)',
                 args: [title || '', description || '', details || '', image_url || '']
             });
-            res.status(201).json({ success: true });
+            return res.status(201).json({ success: true });
+
         } else if (req.method === 'PUT') {
             const { id, title, description, image_url, details } = req.body;
-
-            // Only update image if explicitly provided
             if (image_url !== undefined) {
                 await db.execute({
                     sql: 'UPDATE projects SET title = ?, description = ?, details = ?, image = ? WHERE id = ?',
                     args: [title || '', description || '', details || '', image_url, id]
                 });
             } else {
-                // Don't update image field if not provided
                 await db.execute({
                     sql: 'UPDATE projects SET title = ?, description = ?, details = ? WHERE id = ?',
                     args: [title || '', description || '', details || '', id]
                 });
             }
-            res.status(200).json({ success: true });
+            return res.status(200).json({ success: true });
+
         } else if (req.method === 'DELETE') {
             const { id } = req.body;
             await db.execute({
                 sql: 'DELETE FROM projects WHERE id = ?',
                 args: [id]
             });
-            res.status(200).json({ success: true });
+            return res.status(200).json({ success: true });
+
         } else {
-            res.status(405).end();
+            return res.status(405).end();
         }
     } catch (error) {
         console.error('Projects API error:', error);

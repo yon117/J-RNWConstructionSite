@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import AdminLayout from '../../components/AdminLayout';
 import styles from '../../styles/Admin.module.css';
+import { parse } from 'cookie';
+import { isValidSessionToken } from '../../lib/auth';
 
 const STATUS_OPTIONS = [
     { value: 'new', label: 'New', color: '#4CAF50' },
@@ -396,4 +398,12 @@ export default function AdminMessages() {
             )}
         </AdminLayout>
     );
+}
+
+export async function getServerSideProps(context) {
+    const cookies = parse(context.req.headers.cookie || '');
+    if (!isValidSessionToken(cookies.admin_token)) {
+        return { redirect: { destination: '/adminside', permanent: false } };
+    }
+    return { props: {} };
 }

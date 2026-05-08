@@ -1,15 +1,32 @@
 import { getDb } from '../../lib/db';
 import nodemailer from 'nodemailer';
+import { rateLimit } from '../../lib/rateLimit';
+
+const contactRateLimit = rateLimit({ windowMs: 60_000, max: 5 });
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
+        const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress || 'unknown';
+        if (!contactRateLimit(ip)) {
+            return res.status(429).json({ error: 'Too many requests. Please wait before submitting again.' });
+        }
+
         // Support both new (fullName) and legacy (firstName+lastName) field names
         const { firstName, lastName, fullName, email, phone, message, serviceType } = req.body;
 
-        const name = fullName || `${firstName || ''} ${lastName || ''}`.trim();
+        const name = (fullName || `${firstName || ''} ${lastName || ''}`.trim()).slice(0, 200);
+        const safeEmail = (email || '').slice(0, 254);
+        const safePhone = (phone || '').slice(0, 30);
+        const safeMessage = (message || '').slice(0, 5000);
+        const safeServiceType = (serviceType || '').slice(0, 200);
 
-        if (!name || !email || !message || !serviceType) {
+        if (!name || !safeEmail || !safeMessage || !safeServiceType) {
             return res.status(400).json({ error: 'Missing required fields' });
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(safeEmail)) {
+            return res.status(400).json({ error: 'Invalid email address' });
         }
 
         try {
@@ -19,10 +36,9 @@ export default async function handler(req, res) {
 
             console.log('Inserting message into database...', { name, email, phone, serviceType });
 
-            // Save to database — use full_name column, no budget
             await db.execute({
                 sql: 'INSERT INTO messages (name, full_name, email, phone, message, service_type) VALUES (?, ?, ?, ?, ?, ?)',
-                args: [name, name, email, phone || '', message, serviceType || '']
+                args: [name, name, safeEmail, safePhone, safeMessage, safeServiceType]
             });
 
             console.log('Message saved to database successfully');
@@ -37,7 +53,6 @@ export default async function handler(req, res) {
                         user: process.env.EMAIL_USER,
                         pass: process.env.EMAIL_PASS
                     },
-                    tls: { rejectUnauthorized: false }
                 });
 
                 const mailOptions = {
@@ -48,12 +63,12 @@ export default async function handler(req, res) {
 New contact message received:
 
 Name: ${name}
-Email: ${email}
-Phone: ${phone || 'Not provided'}
-Service Type: ${serviceType || 'Not specified'}
+Email: ${safeEmail}
+Phone: ${safePhone || 'Not provided'}
+Service Type: ${safeServiceType || 'Not specified'}
 
 Message:
-${message}
+${safeMessage}
 
 ---
 This message was sent from the contact form at jandrnw.com
@@ -70,13 +85,13 @@ Date: ${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}
                                 </h2>
                                 <div style="margin: 20px 0;">
                                     <p style="margin: 10px 0;"><strong>Name:</strong> ${name}</p>
-                                    <p style="margin: 10px 0;"><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-                                    <p style="margin: 10px 0;"><strong>Phone:</strong> ${phone || 'Not provided'}</p>
-                                    <p style="margin: 10px 0;"><strong>Service Type:</strong> ${serviceType || 'Not specified'}</p>
+                                    <p style="margin: 10px 0;"><strong>Email:</strong> <a href="mailto:${safeEmail}">${safeEmail}</a></p>
+                                    <p style="margin: 10px 0;"><strong>Phone:</strong> ${safePhone || 'Not provided'}</p>
+                                    <p style="margin: 10px 0;"><strong>Service Type:</strong> ${safeServiceType || 'Not specified'}</p>
                                 </div>
                                 <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #D4AF37; margin: 20px 0;">
                                     <p style="margin: 0 0 10px 0;"><strong>Message:</strong></p>
-                                    <p style="margin: 0; white-space: pre-wrap;">${message}</p>
+                                    <p style="margin: 0; white-space: pre-wrap;">${safeMessage}</p>
                                 </div>
                                 <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
                                 <p style="color: #666; font-size: 12px; margin: 0;">
@@ -97,10 +112,7 @@ Date: ${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}
             res.status(200).json({ success: true });
         } catch (error) {
             console.error('Contact form error:', error);
-            res.status(500).json({
-                error: 'Database error',
-                details: error.message
-            });
+            res.status(500).json({ error: 'Failed to submit message. Please try again.' });
         }
     } else {
         res.setHeader('Allow', ['POST']);

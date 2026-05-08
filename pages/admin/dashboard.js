@@ -2,6 +2,7 @@ import Layout from '../../components/Layout';
 import Link from 'next/link';
 import styles from '../../styles/Admin.module.css';
 import { parse } from 'cookie';
+import { isValidSessionToken } from '../../lib/auth';
 import { Briefcase, Settings, MessageSquare, LogOut } from 'lucide-react';
 import { useRouter } from 'next/router';
 
@@ -55,7 +56,7 @@ export default function Dashboard() {
 
 export async function getServerSideProps(context) {
     const cookies = parse(context.req.headers.cookie || '');
-    if (!cookies.admin_token) {
+    if (!isValidSessionToken(cookies.admin_token)) {
         return {
             redirect: {
                 destination: '/admin/login',
