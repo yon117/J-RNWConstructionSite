@@ -11,32 +11,19 @@ export default async function handler(req, res) {
         if (req.method === 'GET') {
             console.log('Fetching all services...');
             const result = await db.execute(`
-                SELECT
-                    id, name AS title,
-                    description, header_desc, image, details, name,
-                    slug, page_title, subtitle,
-                    ksp_title_1, ksp_desc_1,
-                    ksp_title_2, ksp_desc_2,
-                    ksp_title_3, ksp_desc_3,
-                    ksp_title_4, ksp_desc_4,
-                    process_desc,
-                    faq_q_1, faq_a_1,
-                    faq_q_2, faq_a_2,
-                    faq_q_3, faq_a_3,
-                    faq_q_4, faq_a_4,
-                    faq_q_5, faq_a_5
+                SELECT id, name, description, image_url
                 FROM services
             `);
             console.log(`Found ${result.rows?.length || 0} services`);
 
             const services = result.rows.map(s => ({
                 id:           s.id,
-                title:        s.title,
-                name:         s.title,
+                title:        s.name,
+                name:         s.name,
                 description:  s.description,
-                header_desc:  s.header_desc  || '',
-                image_url:    s.image,
-                image:        s.image,
+                header_desc:  '',
+                image_url:    s.image_url,
+                image:        s.image_url,
                 details:      s.details      || '',
                 slug:         s.slug         || '',
                 page_title:   s.page_title   || '',
@@ -94,47 +81,8 @@ export default async function handler(req, res) {
             console.log('Creating service:', serviceName);
 
             await db.execute({
-                sql: `INSERT INTO services (
-                    name, description, header_desc, image, details,
-                    slug, page_title, subtitle,
-                    ksp_title_1, ksp_desc_1,
-                    ksp_title_2, ksp_desc_2,
-                    ksp_title_3, ksp_desc_3,
-                    ksp_title_4, ksp_desc_4,
-                    process_desc,
-                    faq_q_1, faq_a_1,
-                    faq_q_2, faq_a_2,
-                    faq_q_3, faq_a_3,
-                    faq_q_4, faq_a_4,
-                    faq_q_5, faq_a_5
-                ) VALUES (
-                    ?, ?, ?, ?, ?,
-                    ?, ?, ?,
-                    ?, ?,
-                    ?, ?,
-                    ?, ?,
-                    ?, ?,
-                    ?,
-                    ?, ?,
-                    ?, ?,
-                    ?, ?,
-                    ?, ?,
-                    ?, ?
-                )`,
-                args: [
-                    serviceName, description || '', header_desc || '', imageVal, details || '',
-                    slug || '', page_title || '', subtitle || '',
-                    ksp_title_1 || '', ksp_desc_1 || '',
-                    ksp_title_2 || '', ksp_desc_2 || '',
-                    ksp_title_3 || '', ksp_desc_3 || '',
-                    ksp_title_4 || '', ksp_desc_4 || '',
-                    process_desc || '',
-                    faq_q_1 || '', faq_a_1 || '',
-                    faq_q_2 || '', faq_a_2 || '',
-                    faq_q_3 || '', faq_a_3 || '',
-                    faq_q_4 || '', faq_a_4 || '',
-                    faq_q_5 || '', faq_a_5 || '',
-                ]
+                sql: `INSERT INTO services (name, description, image_url) VALUES (?, ?, ?)`,
+                args: [serviceName, description || '', imageVal]
             });
             console.log('Service created successfully');
             return res.status(201).json({ success: true });
@@ -160,45 +108,10 @@ export default async function handler(req, res) {
 
             console.log(`Updating service ${id}: name="${serviceName}"`);
 
-            if (imageVal !== undefined && !serviceName && !description) {
-                // Image-only update
-                await db.execute({
-                    sql: 'UPDATE services SET image = ? WHERE id = ?',
-                    args: [imageVal, id]
-                });
-            } else {
-                await db.execute({
-                    sql: `UPDATE services SET
-                        name = ?, description = ?, header_desc = ?, image = ?, details = ?,
-                        slug = ?, page_title = ?, subtitle = ?,
-                        ksp_title_1 = ?, ksp_desc_1 = ?,
-                        ksp_title_2 = ?, ksp_desc_2 = ?,
-                        ksp_title_3 = ?, ksp_desc_3 = ?,
-                        ksp_title_4 = ?, ksp_desc_4 = ?,
-                        process_desc = ?,
-                        faq_q_1 = ?, faq_a_1 = ?,
-                        faq_q_2 = ?, faq_a_2 = ?,
-                        faq_q_3 = ?, faq_a_3 = ?,
-                        faq_q_4 = ?, faq_a_4 = ?,
-                        faq_q_5 = ?, faq_a_5 = ?
-                    WHERE id = ?`,
-                    args: [
-                        serviceName, description || '', header_desc || '', imageVal || '', details || '',
-                        slug || '', page_title || '', subtitle || '',
-                        ksp_title_1 || '', ksp_desc_1 || '',
-                        ksp_title_2 || '', ksp_desc_2 || '',
-                        ksp_title_3 || '', ksp_desc_3 || '',
-                        ksp_title_4 || '', ksp_desc_4 || '',
-                        process_desc || '',
-                        faq_q_1 || '', faq_a_1 || '',
-                        faq_q_2 || '', faq_a_2 || '',
-                        faq_q_3 || '', faq_a_3 || '',
-                        faq_q_4 || '', faq_a_4 || '',
-                        faq_q_5 || '', faq_a_5 || '',
-                        id
-                    ]
-                });
-            }
+            await db.execute({
+                sql: `UPDATE services SET name = ?, description = ?, image_url = ? WHERE id = ?`,
+                args: [serviceName, description || '', imageVal || '', id]
+            });
 
             console.log('Service updated successfully');
             return res.status(200).json({ success: true });
