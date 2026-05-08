@@ -12,7 +12,8 @@ export default async function handler(req, res) {
             console.log('Fetching all services...');
             const result = await db.execute(`
                 SELECT
-                    id, title, description, header_desc, image, details, name,
+                    id, name AS title,
+                    description, header_desc, image, details, name,
                     slug, page_title, subtitle,
                     ksp_title_1, ksp_desc_1,
                     ksp_title_2, ksp_desc_2,
@@ -94,7 +95,7 @@ export default async function handler(req, res) {
 
             await db.execute({
                 sql: `INSERT INTO services (
-                    title, description, header_desc, image, details,
+                    name, description, header_desc, image, details,
                     slug, page_title, subtitle,
                     ksp_title_1, ksp_desc_1,
                     ksp_title_2, ksp_desc_2,
@@ -168,7 +169,7 @@ export default async function handler(req, res) {
             } else {
                 await db.execute({
                     sql: `UPDATE services SET
-                        title = ?, description = ?, header_desc = ?, image = ?, details = ?,
+                        name = ?, description = ?, header_desc = ?, image = ?, details = ?,
                         slug = ?, page_title = ?, subtitle = ?,
                         ksp_title_1 = ?, ksp_desc_1 = ?,
                         ksp_title_2 = ?, ksp_desc_2 = ?,
