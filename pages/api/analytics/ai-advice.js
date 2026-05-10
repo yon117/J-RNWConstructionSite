@@ -2,9 +2,8 @@ import Anthropic from '@anthropic-ai/sdk';
 import { parse } from 'cookie';
 import { isValidSessionToken } from '../../../lib/auth';
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-
 export default async function handler(req, res) {
+    const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
     if (req.method !== 'POST') return res.status(405).end();
 
     const cookies = parse(req.headers.cookie || '');
@@ -45,7 +44,8 @@ Only return the JSON array, no other text.`;
             messages: [{ role: 'user', content: prompt }],
         });
 
-        const text = message.content[0].text.trim();
+        const raw = message.content[0].text.trim();
+        const text = raw.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '').trim();
         const advice = JSON.parse(text);
         res.status(200).json({ advice });
     } catch (error) {
