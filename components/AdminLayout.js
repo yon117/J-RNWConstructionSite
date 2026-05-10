@@ -52,6 +52,12 @@ export default function AdminLayout({ children, title }) {
                     <Link href="/adminside/messages" className={router.pathname === '/adminside/messages' ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}>
                         Messages
                     </Link>
+                    <Link href="/adminside/analytics" className={router.pathname === '/adminside/analytics' ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}>
+                        Analytics
+                    </Link>
+                    <Link href="/adminside/monitor" className={router.pathname === '/adminside/monitor' ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}>
+                        Monitor
+                    </Link>
                     <button onClick={handleLogout} className={styles.navLink} style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer' }}>
                         Logout
                     </button>

@@ -46,7 +46,9 @@ export default function Services({ services }) {
 
     return (
         <Layout
-            title={`${t.ourServices} | J&R NW Construction`}
+            title="Construction Services Portland OR | Remodeling, Siding & Restoration | J&R NW Construction"
+            description="Portland OR construction services — remodeling, siding, water damage restoration, painting & drywall. Free estimates. Licensed contractor CCB #232708. Call (503) 998-2340."
+            canonical="/services"
             onContactClick={() => setShowContactModal(true)}
         >
             <div className={pageStyles.servicesPage}>

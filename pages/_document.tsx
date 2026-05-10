@@ -45,6 +45,69 @@ export default function Document() {
           }}
         />
 
+        {/* LocalBusiness JSON-LD */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "GeneralContractor",
+              "name": "J&R NW Construction",
+              "url": "https://jandrnw.com",
+              "logo": "https://jandrnw.com/logo.png",
+              "image": "https://jandrnw.com/og-image.jpg",
+              "telephone": "+15039982340",
+              "email": "jandrnwconstruction@gmail.com",
+              "description": "Portland's trusted general contractor specializing in home remodeling, siding installation, water damage restoration, painting, and general repairs. Licensed, bonded & insured.",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Portland",
+                "addressRegion": "OR",
+                "addressCountry": "US"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 45.5051,
+                "longitude": -122.6750
+              },
+              "areaServed": [
+                { "@type": "City", "name": "Portland" },
+                { "@type": "State", "name": "Oregon" }
+              ],
+              "serviceType": [
+                "Home Remodeling",
+                "Siding Installation",
+                "Water Damage Restoration",
+                "Painting",
+                "Drywall",
+                "General Construction"
+              ],
+              "award": "Oregon CCB #232708",
+              "priceRange": "$$",
+              "openingHoursSpecification": {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+                "opens": "07:00",
+                "closes": "18:00"
+              },
+              "sameAs": [
+                "https://www.facebook.com/JRNWConstruction/",
+                "https://www.instagram.com/jandrnwconstruction/",
+                "https://m.yelp.com/biz/j-and-r-nw-construction-portland-5",
+                "https://www.google.com/maps/place/J%26R+NW+Construction/"
+              ]
+            }),
+          }}
+        />
+
+        {/* GA4 */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-8GM4CDHB35" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-8GM4CDHB35');`,
+          }}
+        />
+
         {/* GTM — solo aquí, NO en _app.tsx */}
         <script
           dangerouslySetInnerHTML={{

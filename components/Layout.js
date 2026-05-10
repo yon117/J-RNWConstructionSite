@@ -55,15 +55,38 @@ const ArrowIcon = () => (
     </svg>
 );
 
-export default function Layout({ children, title = 'J&R NW Construction', onContactClick }) {
+const SITE_URL = 'https://jandrnw.com';
+const DEFAULT_DESCRIPTION = 'J&R NW Construction — Portland\'s trusted general contractor. Home remodeling, siding installation, water damage restoration & repairs. Licensed, bonded & insured. CCB #232708. Call (503) 998-2340.';
+const DEFAULT_OG_IMAGE = `${SITE_URL}/assets/home-hero-bg.jpg`;
+
+export default function Layout({ children, title = 'J&R NW Construction | Portland General Contractor', description = DEFAULT_DESCRIPTION, canonical, onContactClick }) {
     const { t, lang, chooseLang } = useLang();
     const [menuOpen, setMenuOpen] = useState(false);
+    const canonicalUrl = canonical ? `${SITE_URL}${canonical}` : SITE_URL;
 
     return (
         <div className={styles.container}>
             <Head>
                 <title>{title}</title>
-                <meta name="description" content="J&R NW Construction - Restoration and Construction Services" />
+                <meta name="description" content={description} />
+                <link rel="canonical" href={canonicalUrl} />
+
+                {/* Open Graph */}
+                <meta property="og:type"        content="website" />
+                <meta property="og:url"         content={canonicalUrl} />
+                <meta property="og:title"       content={title} />
+                <meta property="og:description" content={description} />
+                <meta property="og:image"       content={DEFAULT_OG_IMAGE} />
+                <meta property="og:site_name"   content="J&R NW Construction" />
+                <meta property="og:locale"      content="en_US" />
+
+                {/* Twitter Card */}
+                <meta name="twitter:card"        content="summary_large_image" />
+                <meta name="twitter:title"       content={title} />
+                <meta name="twitter:description" content={description} />
+                <meta name="twitter:image"       content={DEFAULT_OG_IMAGE} />
+
+                <meta name="robots" content="index, follow" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 

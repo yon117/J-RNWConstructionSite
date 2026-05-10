@@ -171,7 +171,12 @@ export default function Home() {
     };
 
     return (
-        <Layout onContactClick={() => setShowContactModal(true)}>
+        <Layout
+            title="Portland General Contractor | Home Remodeling & Restoration | J&R NW Construction"
+            description="J&R NW Construction — Portland's trusted general contractor. Expert home remodeling, siding installation, water damage restoration & repairs. Licensed, bonded & insured. CCB #232708. Call (503) 998-2340."
+            canonical="/"
+            onContactClick={() => setShowContactModal(true)}
+        >
 
             {/* ── HERO ── */}
             <section className={styles.hero}>
@@ -216,17 +221,12 @@ export default function Home() {
                     <div className={styles.heroTrust}>
                         <div className={styles.trustItem}>
                             <ShieldIcon />
-                            {t.licensed} &amp; {t.bonded}
+                            {t.licensed}, {t.insured} &amp; {t.bonded}
                         </div>
                         <span className={styles.trustSep}>·</span>
                         <div className={styles.trustItem}>
                             <StarIcon />
                             BBB {t.accredited || 'Accredited'}
-                        </div>
-                        <span className={styles.trustSep}>·</span>
-                        <div className={styles.trustItem}>
-                            <CheckIcon />
-                            {t.fullyLicensed}
                         </div>
                     </div>
                 </div>

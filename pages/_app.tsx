@@ -3,6 +3,8 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import { LanguageProvider } from "../context/LanguageContext";
 import { Barlow, Barlow_Condensed } from "next/font/google";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const barlow = Barlow({
   subsets: ["latin"],
@@ -38,6 +40,45 @@ if (typeof window !== "undefined") {
 }
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+
+  useEffect(() => {
+    const track = (url: string) => {
+      if (url.startsWith('/adminside') || url.startsWith('/admin')) return;
+      const device_type = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+      fetch('/api/monitor/pageview', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path: url, referrer: document.referrer || '', device_type }),
+        keepalive: true,
+      }).catch(() => {});
+    };
+
+    const path = window.location.pathname + window.location.search;
+    track(path);
+    router.events.on('routeChangeComplete', track);
+
+    const handleError = (event: ErrorEvent) => {
+      fetch('/api/monitor/error', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: event.message,
+          source: event.filename || '',
+          lineno: event.lineno || 0,
+          path: window.location.pathname,
+        }),
+        keepalive: true,
+      }).catch(() => {});
+    };
+    window.addEventListener('error', handleError);
+
+    return () => {
+      router.events.off('routeChangeComplete', track);
+      window.removeEventListener('error', handleError);
+    };
+  }, [router.events]);
+
   return (
     <LanguageProvider>
       <div className={`${barlow.variable} ${barlowCondensed.variable}`}>
@@ -48,4 +89,14 @@ export default function App({ Component, pageProps }: AppProps) {
       </div>
     </LanguageProvider>
   );
+}
+
+export function reportWebVitals(metric: any) {
+  if (typeof navigator === 'undefined') return;
+  fetch('/api/monitor/vitals', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: metric.name, value: metric.value, rating: metric.rating }),
+    keepalive: true,
+  }).catch(() => {});
 }

@@ -69,7 +69,9 @@ export default function Projects({ projects }) {
 
     return (
         <Layout
-            title={`${t.ourProjects} | J&R NW Construction`}
+            title="Construction Projects Portfolio Portland OR | J&R NW Construction"
+            description="View completed remodeling, siding, and restoration projects by J&R NW Construction. Portland Oregon's trusted contractor for home renovations and repairs. CCB #232708."
+            canonical="/projects"
             onContactClick={() => setShowContactModal(true)}
         >
             <div className={pageStyles.projectsPage}>
