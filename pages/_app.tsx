@@ -5,6 +5,7 @@ import { LanguageProvider } from "../context/LanguageContext";
 import { Barlow, Barlow_Condensed } from "next/font/google";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { Bubble } from "@typebot.io/react";
 
 const barlow = Barlow({
   subsets: ["latin"],
@@ -79,6 +80,8 @@ export default function App({ Component, pageProps }: AppProps) {
     };
   }, [router.events]);
 
+  const isAdmin = router.pathname.startsWith('/admin') || router.pathname.startsWith('/adminside');
+
   return (
     <LanguageProvider>
       <div className={`${barlow.variable} ${barlowCondensed.variable}`}>
@@ -86,6 +89,19 @@ export default function App({ Component, pageProps }: AppProps) {
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         </Head>
         <Component {...pageProps} />
+        {!isAdmin && (
+          <Bubble
+            typebot="j-r-nw-construction-bot-jo87vrh"
+            apiHost="https://typebot.io"
+            previewMessage={{ message: "I have a question for you!" }}
+            theme={{
+              button: {
+                backgroundColor: "#1D1D1D",
+                customIconSrc: "https://s3.typebotstorage.com/public/workspaces/cmo20jc8e000007kvcr9wsbe1/typebots/cmo23mpkg000108l7ujo87vrh/bubble-icon?v=1778376477391",
+              },
+            }}
+          />
+        )}
       </div>
     </LanguageProvider>
   );
