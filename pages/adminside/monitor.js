@@ -101,6 +101,7 @@ export default function Monitor() {
     const [ga4, setGa4]             = useState(null);
     const [ga4Loading, setGa4Loading] = useState(false);
     const [ga4Error, setGa4Error]     = useState('');
+    const [clicks, setClicks]         = useState(null);
 
     useEffect(() => {
         setLoading(true);
@@ -114,6 +115,11 @@ export default function Monitor() {
             })
             .catch(() => setFetchError('Failed to load stats'))
             .finally(() => setLoading(false));
+
+        fetch(`/api/monitor/click${params}`)
+            .then(r => r.json())
+            .then(data => { if (!data.error) setClicks(data.clicks); })
+            .catch(() => {});
     }, [range]);
 
     const loadSC = () => {
@@ -213,6 +219,22 @@ export default function Monitor() {
                     <StatCard label="Avg CLS"          value={clsVal || '—'}                color={RATING_COLOR[clsRate]} delay={240} sub={clsVal ? clsRate.replace('-', ' ') : 'no data'} />
                     <StatCard label="JS Errors"        value={errorCount}                   color={errorCount > 0 ? '#ef5350' : '#4CAF50'} delay={320} />
                 </div>
+
+                {/* Conversion Clicks */}
+                {clicks !== null && (() => {
+                    const clickMap = {};
+                    clicks.forEach(c => { clickMap[c.event] = Number(c.count); });
+                    return (
+                        <div className={styles.chartCard}>
+                            <h2 className={styles.sectionTitle}>Conversion Clicks</h2>
+                            <div className={styles.statsGrid}>
+                                <StatCard label="Phone Clicks"      value={clickMap['phone_click']      || 0} color="#4CAF50" delay={0} sub="(503) 998-2340" />
+                                <StatCard label="Email Clicks"      value={clickMap['email_click']      || 0} color="#2196F3" delay={80} sub="topbar email" />
+                                <StatCard label="Estimate Submits"  value={clickMap['form_submit_click'] || 0} color="#D4AF37" delay={160} sub="free estimate form" />
+                            </div>
+                        </div>
+                    );
+                })()}
 
                 {/* Traffic over time */}
                 <div className={styles.chartCard}>

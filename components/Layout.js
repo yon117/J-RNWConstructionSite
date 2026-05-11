@@ -98,6 +98,7 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                         onClick={() => {
                             if (typeof gtag_report_conversion !== 'undefined') gtag_report_conversion('tel:+15039982340');
                             if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'phone_click', { event_category: 'contact', event_label: 'topbar' });
+                            fetch('/api/monitor/click', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'phone_click' }), keepalive: true }).catch(() => {});
                         }}>
                         (503) 998-2340
                     </a>
@@ -106,7 +107,10 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                 <div className={styles.topbarItem}>
                     <MailIcon />
                     <a href="mailto:jandrnwconstruction@gmail.com"
-                        onClick={() => { if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'email_click', { event_category: 'contact', event_label: 'topbar' }); }}>
+                        onClick={() => {
+                            if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'email_click', { event_category: 'contact', event_label: 'topbar' });
+                            fetch('/api/monitor/click', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'email_click' }), keepalive: true }).catch(() => {});
+                        }}>
                         jandrnwconstruction@gmail.com
                     </a>
                 </div>
