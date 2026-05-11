@@ -98,7 +98,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <Bubble
             typebot="j-r-nw-construction-bot-jo87vrh"
             apiHost="https://typebot.io"
-            previewMessage={{ message: "Get a Free Estimate Today!" }}
+            previewMessage={{ message: "Get a Free Estimate Today!", autoShowDelay: 3000 }}
             theme={{
               button: {
                 backgroundColor: "#1D1D1D",

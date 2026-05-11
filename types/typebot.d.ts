@@ -12,6 +12,7 @@ declare module '@typebot.io/react' {
 
   interface BubblePreviewMessage {
     message: string;
+    autoShowDelay?: number;
   }
 
   interface BubbleProps {
