@@ -76,6 +76,33 @@ async function fetchYelpReviews() {
 // Sample fallback reviews (Yelp Only)
 const sampleReviews = [
     {
+        id: "real-stefan",
+        name: "Stefan N.",
+        platform: "Yelp",
+        rating: 5,
+        date: "3/14/26",
+        text: "Highly recommended. Professional, timely, good quality, and competitive pricing. We had a basement water leak after heavy rains. We scanned through Yelp and took a chance with J&R NW Construction based on recent positive reviews. Julio immediately picked up our phone call and was at our place in 30 minutes. After an assessment, he followed up with a contract and got his team scheduled for later in the day. The crew did a quality job. J&R is going into our contacts list for future home improvement/repair projects!",
+        avatar: "SN"
+    },
+    {
+        id: "real-jeff",
+        name: "Jeff F.",
+        platform: "Yelp",
+        rating: 5,
+        date: "1/31/26",
+        text: "I can confidently recommend J&R NW Construction for your next project. Our family engaged Julio's team (a family affair) to remediate water that was entering our home and resulting in mold growth behind our walls. They came the same day we called them, gave us a report on the issues and a detailed estimate of what it would take to bring it back to normal. Their team communicated every day about status of arrivals, even notifying us if they were going to be late. The quality of their work has been exceptional. Overall the best people, very professional, quality work and deep expertise in codes and construction practices. Having worked most of my life with contractors, they stand out as one of the best we've worked with. We'll be using them again for sure!",
+        avatar: "JF"
+    },
+    {
+        id: "real-marcia",
+        name: "Marcia M.",
+        platform: "Yelp",
+        rating: 5,
+        date: "1/23/26",
+        text: "We began by hiring Julio and his crew to replace siding on our garage. When they finished, we mentioned that we needed the exterior of our house painted. After completing that, they repaired and replaced posts on our patio cover, power washed and painted the woodwork and fiberglass cover. It looks like new and we have far more light than before. Julio and his team were courteous, professional and hard working. They consulted with me about each step of the tasks and their workmanship was excellent. In spite of having several jobs at the same time, they kept in close contact and finished each of our tasks on schedule. We intend to hire them again for any work we need in the future.",
+        avatar: "MM"
+    },
+    {
         id: "real-1",
         name: "John J.",
         platform: "Yelp",
@@ -182,6 +209,42 @@ const sampleReviews = [
         date: "1 month ago",
         text: "Good price. Real deal!",
         avatar: "C"
+    },
+    {
+        id: "real-britta",
+        name: "Britta Blucher",
+        platform: "Google",
+        rating: 5,
+        date: "2 weeks ago",
+        text: "I had a squirrel infestation that had eaten through the majority of a support beam on my house. I called J&R NW Construction and they responded right away. The price was fair, the work was expedient, and Julio and his staff displayed the utmost professionalism. The repairs they made were a great improvement upon the original construction. I am confident that no more squirrels will be able to make it through to the new support beam. Also the appearance of the new column surrounding the support beam looks way better than the original construction.",
+        avatar: "BB"
+    },
+    {
+        id: "real-barb",
+        name: "Barb Troxel",
+        platform: "Google",
+        rating: 5,
+        date: "4 weeks ago",
+        text: "If I could, I would give J&R NW Construction a 10 out of 5 rating, because their crew is not only exceptional, they are outstanding! Julio was exceptional in communicating with me when his crew would be here and what the plan of the day was. He is highly ethical, as well as being respectful, and I cannot say enough good things about his crew. Viktor is very talented, highly dedicated, and has great pride in producing highest quality results. The work done included installing exterior waterproofing, a French drain trench, framing a new interior wall, replacing insulation and sheathing, repairing drywall, painting the entire room, and installing subfloor and wall-to-wall carpeting. Julio's plan and estimate far surpassed all others. I am so thankful I found J&R NW Construction and will definitely use them again!",
+        avatar: "BT"
+    },
+    {
+        id: "real-rebecca-a",
+        name: "Rebecca Abramson",
+        platform: "Google",
+        rating: 5,
+        date: "7 weeks ago",
+        text: "I highly recommend J&R NW Construction! Julio and his team recently repaired our kitchen sink pipe that was leaking. Julio was very responsive — he got us a quote and scheduled our repair quickly. His team did a great job and we will definitely be hiring them again for future projects!",
+        avatar: "RA"
+    },
+    {
+        id: "real-mayvis",
+        name: "Mayvis Martin",
+        platform: "Google",
+        rating: 5,
+        date: "8 weeks ago",
+        text: "J&R NW Construction did an outstanding house repair job for me. The right side garage door support post was pushed in about 6 inches by an accidental car crash. The garage door was inoperable and there was other structural damage. The estimator and manager, Julio, worked with the insurance company and got the job done quickly and professionally. Julio and the workers were friendly, fast and professional.",
+        avatar: "MM"
     }
 ];
 
@@ -202,17 +265,11 @@ export default async function handler(req, res) {
         console.log('Fetching fresh reviews from Yelp API...');
         const yelpReviews = await fetchYelpReviews();
 
-        // Use Yelp reviews if available
-        let allReviews = yelpReviews;
-
-        // If no reviews fetched (API not configured or failed), use sample reviews
-        if (allReviews.length === 0) {
-            console.log('No reviews fetched, using sample reviews');
-            allReviews = sampleReviews;
-        } else {
-            // Sort by rating (highest first)
-            allReviews.sort((a, b) => b.rating - a.rating);
-        }
+        // Always start with static reviews, merge in Yelp API results (dedup by name)
+        const staticNames = new Set(sampleReviews.map(r => r.name.toLowerCase()));
+        const newYelpReviews = yelpReviews.filter(r => !staticNames.has(r.name.toLowerCase()));
+        let allReviews = [...newYelpReviews, ...sampleReviews];
+        allReviews.sort((a, b) => b.rating - a.rating);
 
         // Update cache
         reviewsCache.data = allReviews;
