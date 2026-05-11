@@ -95,14 +95,20 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                 <div className={styles.topbarItem}>
                     <PhoneIcon />
                     <a href="tel:+15039982340"
-                        onClick={() => { if (typeof gtag_report_conversion !== 'undefined') gtag_report_conversion('tel:+15039982340'); }}>
+                        onClick={() => {
+                            if (typeof gtag_report_conversion !== 'undefined') gtag_report_conversion('tel:+15039982340');
+                            if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'phone_click', { event_category: 'contact', event_label: 'topbar' });
+                        }}>
                         (503) 998-2340
                     </a>
                 </div>
                 <div className={styles.topbarDivider} />
                 <div className={styles.topbarItem}>
                     <MailIcon />
-                    <a href="mailto:jandrnwconstruction@gmail.com">jandrnwconstruction@gmail.com</a>
+                    <a href="mailto:jandrnwconstruction@gmail.com"
+                        onClick={() => { if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'email_click', { event_category: 'contact', event_label: 'topbar' }); }}>
+                        jandrnwconstruction@gmail.com
+                    </a>
                 </div>
                 <div className={styles.topbarDivider} />
                 <div className={styles.topbarItem}>{t.navAvailability}</div>

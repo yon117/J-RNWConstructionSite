@@ -30,8 +30,7 @@ export default function Document() {
               bbb.push(["bbbid", "greatwestpacific"]);
               bbb.push(["bid", "1000117288"]);
               bbb.push(["chk", "A690EB6EA0"]);
-              bbb.push(["pos", "inline"]);
-              bbb.push(["container", "bbb-seal"]);
+              bbb.push(["pos", "bottom-left"]);
               (function () {
                 var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
                 var bbb = document.createElement("script");

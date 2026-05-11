@@ -414,7 +414,8 @@ const handleSubmit = async (e) => {
                     <textarea placeholder={t.projectDescription} rows={3}
                         value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} />
                 </div>
-                <button type="submit" className={styles.formSubmit} disabled={status === 'sending'}>
+                <button type="submit" className={styles.formSubmit} disabled={status === 'sending'}
+                    onClick={() => { if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'form_submit_click', { event_category: 'contact', event_label: 'free_estimate_form' }); }}>
                     {status === 'sending' ? t.sending : t.getFreeEstimateBtn} {status !== 'sending' && <ArrowIcon />}
                 </button>
                 <div className={styles.formNote}>
