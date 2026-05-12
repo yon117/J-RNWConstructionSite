@@ -124,6 +124,8 @@ export default function Projects({ projects }) {
                                         src={imageUrl(project.image)}
                                         alt={project.title}
                                         className={pageStyles.projectPhoto}
+                                        loading={index < 4 ? 'eager' : 'lazy'}
+                                        decoding="async"
                                     />
                                     <div className={pageStyles.projectOverlay}>
                                         <div className={pageStyles.projectCategory}>
@@ -163,6 +165,8 @@ export default function Projects({ projects }) {
                         src={imageUrl(projectImages[currentImageIndex]?.image_path)}
                         alt={`${selectedProject.title} - Image ${currentImageIndex + 1}`}
                         className={pageStyles.galleryImage}
+                        loading="lazy"
+                        decoding="async"
                     />
                     {projectImages.length > 1 && (
                         <div className={pageStyles.galleryControls}>
