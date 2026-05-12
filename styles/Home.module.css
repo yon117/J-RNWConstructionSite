@@ -276,7 +276,7 @@
 /* Stats block — bottom right of hero */
 .heroStats {
     position: absolute;
-    bottom: 15vh;
+    bottom: 30px;
     right: 40px;
     z-index: 10;
     display: flex;
