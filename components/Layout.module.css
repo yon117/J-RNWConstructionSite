@@ -56,6 +56,14 @@
     top: 0;
     z-index: 200;
     gap: 16px;
+    transition: padding 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+.navScrolled {
+    padding: 7px 32px;
+    background: rgba(10, 14, 20, 0.97);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    border-bottom-color: rgba(200, 150, 30, 0.25);
+    backdrop-filter: blur(8px);
 }
 
 .navBrand {

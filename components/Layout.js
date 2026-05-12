@@ -99,6 +99,13 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
     const [menuOpen, setMenuOpen] = useState(false);
     const [showBanner, setShowBanner] = useState(false);
     const [showEmergency, setShowEmergency] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 60);
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
     const [bannerIdx, setBannerIdx] = useState(0);
     const seasonMsgs = getSeasonMessages();
     const banner = seasonMsgs[bannerIdx];
@@ -193,7 +200,7 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
             )}
 
             {/* ── NAVBAR ── */}
-            <nav className={styles.nav}>
+            <nav className={`${styles.nav} ${scrolled ? styles.navScrolled : ''}`}>
                 {/* Brand */}
                 <Link href="/" className={styles.navBrand}>
                     <div className={styles.navLogoCircle}>
