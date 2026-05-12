@@ -3,6 +3,35 @@ import formidable from 'formidable';
 import fs from 'fs';
 import path from 'path';
 
+// Auto-compress uploaded image in-place using sharp (if available)
+async function compressUpload(filepath) {
+    try {
+        const sharp = (await import('sharp')).default;
+        const ext = path.extname(filepath).toLowerCase();
+        const tmp = filepath + '.tmp';
+        let pipeline = sharp(filepath);
+        const meta = await pipeline.metadata();
+        if ((meta.width || 0) > 1600 || (meta.height || 0) > 1600) {
+            pipeline = pipeline.resize(1600, 1600, { fit: 'inside', withoutEnlargement: true });
+        }
+        if (ext === '.jpg' || ext === '.jpeg') pipeline = pipeline.jpeg({ quality: 82, progressive: true, mozjpeg: true });
+        else if (ext === '.png') pipeline = pipeline.png({ compressionLevel: 8 });
+        else if (ext === '.webp') pipeline = pipeline.webp({ quality: 82 });
+        else return; // skip unsupported formats
+        await pipeline.toFile(tmp);
+        const orig = fs.statSync(filepath).size;
+        const compressed = fs.statSync(tmp).size;
+        if (compressed < orig) {
+            fs.renameSync(tmp, filepath);
+            console.log(`[compress] ${path.basename(filepath)}: ${Math.round(orig/1024)}KB → ${Math.round(compressed/1024)}KB`);
+        } else {
+            fs.unlinkSync(tmp);
+        }
+    } catch (e) {
+        console.warn('[compress] skipped:', e.message);
+    }
+}
+
 export const config = {
     api: {
         bodyParser: false,
@@ -119,6 +148,9 @@ export default async function handler(req, res) {
 
                     // Copy file to uploads directory
                     fs.copyFileSync(file.filepath, filepath);
+
+                    // Auto-compress in background (non-blocking)
+                    compressUpload(filepath);
 
                     // Clean up temp file
                     try {
