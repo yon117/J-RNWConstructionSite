@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Layout from '../components/Layout';
 import Modal from '../components/Modal';
 import Reviews from '../components/Reviews';
+import WarningSigns from '../components/WarningSigns';
 import styles from '../styles/Home.module.css';
 import { useState, useEffect } from 'react';
 import { useLang } from '../context/LanguageContext';
@@ -110,23 +111,133 @@ const GridIcon = () => (
 
 // Static service cards for the home preview
 const HOME_SERVICES = [
-    { icon: <HomeIcon />, key: 'pt1' },
-    { icon: <BuildingIcon />, key: 'pt6' },
-    { icon: <RefreshIcon />, key: 'pt2' },
-    { icon: <BoltIcon />, key: 'pt3' },
-    { icon: <PaintIcon />, key: 'pt5' },
-    { icon: <GridIcon />, key: 'pt7' },
+    { key: 'pt1', category: 'REMODEL',     desc: 'Kitchens, bathrooms, additions. Permits pulled, subs coordinated, finish carpentry in-house.' },
+    { key: 'pt3', category: 'EMERGENCY',   desc: 'Burst pipes, fire, windstorm damage. We dispatch within the hour and stabilize the same day.' },
+    { key: 'pt2', category: 'RESTORATION', desc: 'Source repair, structural drying, antimicrobial treatment, then finish-grade rebuild.' },
+    { key: 'pt6', category: 'SIDING',      desc: 'Full replacement, repairs, and paint. Hardie board, LP SmartSide, vinyl — all weather-sealed.' },
+    { key: 'pt5', category: 'PAINTING',    desc: 'Interior and exterior. Surface prep, primer coat, finish — clean lines and lasting color.' },
+    { key: 'pt7', category: 'DRYWALL',     desc: 'Hanging, taping, mudding, and finishing. Seamless texture matching and full room repairs.' },
 ];
 
 const PROJECT_TYPES = [
-    { key: 'pt1', en: 'Interior Construction & Remodeling' },
-    { key: 'pt2', en: 'Restoration & Reconstruction' },
-    { key: 'pt3', en: 'Mitigation & Emergency Services' },
-    { key: 'pt4', en: 'General Repairs & Carpentry' },
-    { key: 'pt5', en: 'Paint' },
-    { key: 'pt6', en: 'Siding' },
-    { key: 'pt7', en: 'Drywall' },
-    { key: 'pt8', en: 'Other' },
+    { key: 'pt1',   en: 'Interior Construction & Remodeling' },
+    { key: 'ptBath', en: 'Bathroom Remodel' },
+    { key: 'ptKit',  en: 'Kitchen Remodel' },
+    { key: 'pt2',   en: 'Restoration & Reconstruction' },
+    { key: 'pt3',   en: 'Mitigation & Emergency Services' },
+    { key: 'pt4',   en: 'General Repairs & Carpentry' },
+    { key: 'pt5',   en: 'Paint' },
+    { key: 'pt6',   en: 'Siding' },
+    { key: 'pt7',   en: 'Drywall' },
+    { key: 'pt8',   en: 'Other (describe in message below)' },
+];
+
+// WARNING SIGNS moved to components/WarningSigns.js
+const _REMOVED = [
+    {
+        icon: '💧', shortTitle: 'Water Stains', severity: 'critical', service: 'Restoration & Mitigation',
+        title: 'Water Stains on Ceiling or Walls',
+        desc: 'Yellow or brown stains signal active water intrusion from a pipe, failed caulk, or window seal. Every day it sits, the damage gets deeper.',
+        risk: 'Drywall saturates and loses structural integrity. Mold colonies form within 24-48 hours and spread behind walls.',
+        solution: 'We stop the source, remove damaged drywall, treat for mold, and restore the wall — painted and finished.',
+        chain: ['Water enters wall', 'Drywall softens & stains', 'Mold grows within 48 hrs', 'Framing begins to rot', 'Full wall reconstruction required'],
+    },
+    {
+        icon: '🤢', shortTitle: 'Musty Odor', severity: 'high', service: 'Restoration & Mitigation',
+        title: 'Musty or Mold Smell Inside the Home',
+        desc: 'A persistent musty smell means mold is already active somewhere in your walls, floors, or crawl space — you just cannot see it yet.',
+        risk: 'Mold spreads through wall cavities and into adjacent rooms. Health risk grows the longer it goes untreated.',
+        solution: 'We locate the moisture source, remove all affected drywall and insulation, treat for mold, and rebuild properly.',
+        chain: ['Hidden moisture accumulates', 'Mold starts growing behind surfaces', 'Spreads to adjacent walls', 'HVAC circulates spores', 'Full remediation & drywall replacement'],
+    },
+    {
+        icon: '🎨', shortTitle: 'Paint Failure', severity: 'high', service: 'Painting & Siding',
+        title: 'Cracked or Peeling Exterior Paint',
+        desc: 'Paint that peels, cracks, or bubbles is no longer sealing your home. Water is already getting behind it and saturating the surface below.',
+        risk: 'Moisture reaches siding and sheathing. Wood rot starts — and once it spreads, paint alone cannot fix it.',
+        solution: 'We remove failed paint, replace rotted sections, prime properly, and apply a durable exterior finish that holds.',
+        chain: ['Paint seal fails', 'Water reaches siding surface', 'Siding begins to rot', 'Rot spreads to wall sheathing', 'Siding replacement + repaint required'],
+    },
+    {
+        icon: '🪵', shortTitle: 'Siding Damage', severity: 'high', service: 'Siding',
+        title: 'Gaps, Cracks, or Damaged Siding Panels',
+        desc: 'Missing caulk, cracked panels, or separated siding boards are open invitations for water and pests to get inside your wall system.',
+        risk: 'Water infiltrates insulation and sheathing. Interior drywall begins to absorb moisture from the outside in.',
+        solution: 'We remove damaged panels, treat any underlying rot, install new siding properly sealed against Oregon weather.',
+        chain: ['Siding gap or crack forms', 'Water enters wall cavity', 'Insulation gets saturated', 'Drywall absorbs moisture', 'Mold + full siding replacement'],
+    },
+    {
+        icon: '👣', shortTitle: 'Soft Floors', severity: 'critical', service: 'Remodeling & Restoration',
+        title: 'Soft, Spongy, or Bouncy Floor Spots',
+        desc: 'Soft areas under your feet — especially near bathrooms or kitchen — mean the subfloor is water-damaged and actively failing underneath.',
+        risk: 'Subfloor panels break down. Joists below start to rot. In severe cases, floors can partially collapse.',
+        solution: 'We remove flooring, replace rotted subfloor and joists, treat for mold, and install new flooring with proper moisture barrier.',
+        chain: ['Water reaches subfloor', 'OSB/plywood softens', 'Joists begin to rot', 'Structural failure risk increases', 'Full subfloor + joist replacement'],
+    },
+    {
+        icon: '🚿', shortTitle: 'Bathroom Mold', severity: 'high', service: 'Bathroom Remodeling',
+        title: 'Mold or Discoloration in Bathroom Walls',
+        desc: 'Black or green growth on grout lines, caulk, or wall surfaces means water is already behind your tile and into the drywall.',
+        risk: 'Mold eats through drywall and reaches the subfloor. Full tile removal and wall replacement becomes unavoidable.',
+        solution: 'We remove all affected tile and drywall, treat for mold, install moisture-resistant board, retile, and refinish properly.',
+        chain: ['Grout or caulk fails', 'Water reaches drywall behind tile', 'Mold grows on wall cavity', 'Subfloor gets wet', 'Full bathroom gut & rebuild'],
+    },
+    {
+        icon: '🧱', shortTitle: 'Drywall Damage', severity: 'medium', service: 'Drywall',
+        title: 'Cracks, Holes, or Bulging Drywall',
+        desc: 'Drywall that cracks, bulges, or has visible damage is not just cosmetic — it often signals moisture, settling, or impact damage that needs addressing.',
+        risk: 'Cracks let moisture in. Bulging drywall means water is already trapped behind it. Ignored, it leads to mold and structural issues.',
+        solution: 'We assess the cause, repair or replace affected sections, tape, mud, sand, and repaint to a seamless finish.',
+        chain: ['Crack or damage forms', 'Moisture enters through gap', 'Paper face deteriorates', 'Mold grows behind wall', 'Section replacement + mold treatment'],
+    },
+    {
+        icon: '🖌️', shortTitle: 'Interior Paint', severity: 'medium', service: 'Interior Painting',
+        title: 'Bubbling or Peeling Interior Paint',
+        desc: 'Interior paint that bubbles, peels, or flakes off walls is almost always caused by moisture behind the surface — not just poor application.',
+        risk: 'The wall behind is already holding moisture. Mold grows on the paper backing of drywall before the paint even falls off.',
+        solution: 'We identify the moisture source, remove and treat affected drywall if needed, and repaint with appropriate primer and finish.',
+        chain: ['Moisture gets behind wall', 'Paint adhesion fails', 'Bubbles & peeling appear', 'Drywall paper gets moldy', 'Wall repair + repaint'],
+    },
+    {
+        icon: '💨', shortTitle: 'Air Leaks', severity: 'medium', service: 'Remodeling & Siding',
+        title: 'Drafts Around Windows, Doors, or Walls',
+        desc: 'Feeling air movement around window frames or exterior walls means your home envelope is compromised — and water follows wherever air goes.',
+        risk: 'Water infiltrates wall cavities. Drywall absorbs moisture. Insulation loses effectiveness. Mold follows.',
+        solution: 'We seal penetrations, replace failed caulk and flashing, repair damaged siding or trim, and restore the water barrier.',
+        chain: ['Seal fails around frame', 'Air & water enter wall cavity', 'Insulation gets wet', 'Drywall absorbs moisture', 'Mold + wall repair required'],
+    },
+    {
+        icon: '🌊', shortTitle: 'Emergency Flooding', severity: 'critical', service: 'Mitigation & Emergency Services',
+        title: 'Flooding or Burst Pipe Water Damage',
+        desc: 'Standing water from a burst pipe, appliance failure, or storm flooding requires immediate response. Every hour the water sits multiplies the damage.',
+        risk: 'Flooring, subfloor, drywall, and framing all absorb water rapidly. Mold begins within 24-48 hours of saturation.',
+        solution: 'We respond same day — extract water, dry structure, remove all saturated materials, treat for mold, and fully reconstruct.',
+        chain: ['Water event occurs', 'Flooring & subfloor saturate', 'Drywall wicks moisture up', 'Mold starts at 24-48 hrs', 'Full mitigation + reconstruction'],
+    },
+    {
+        icon: '🔨', shortTitle: 'Outdated Bathroom', severity: 'medium', service: 'Bathroom Remodeling',
+        title: 'Old or Failing Bathroom Fixtures & Tile',
+        desc: 'Worn grout, cracked tile, old caulk, or outdated fixtures are more than cosmetic — they allow water to seep behind walls over time.',
+        risk: 'What looks like old tile is often hiding years of slow water damage to the backer board and subfloor beneath.',
+        solution: 'Complete bathroom remodel — new tile, waterproof backer, modern fixtures, proper ventilation, and durable finishes.',
+        chain: ['Tile or grout cracks', 'Slow water leak behind wall', 'Backer board deteriorates', 'Subfloor begins to rot', 'Full bath gut & remodel'],
+    },
+    {
+        icon: '🏚️', shortTitle: 'Wood Rot', severity: 'high', service: 'Siding & Restoration',
+        title: 'Wood Rot on Siding, Trim, or Eaves',
+        desc: 'Soft, dark, or crumbling wood on exterior trim or siding means the rot is already spreading into adjacent healthy material.',
+        risk: 'Rot spreads to wall sheathing and framing. Pests are attracted to rotted wood and accelerate the damage further.',
+        solution: 'We remove all rotted material, treat surrounding wood, and replace with rot-resistant materials sealed against future moisture.',
+        chain: ['Paint or seal fails', 'Wood absorbs moisture', 'Rot fungus activates', 'Spreads to adjacent framing', 'Siding + framing replacement'],
+    },
+    {
+        icon: '🧱', shortTitle: 'Warped Floors', severity: 'high', service: 'Remodeling & Restoration',
+        title: 'Warping, Buckling, or Lifting Flooring',
+        desc: 'Hardwood, laminate, or vinyl that warps or lifts at the edges means moisture is coming up from below — a sign of subfloor or plumbing issues.',
+        risk: 'Subfloor damage. Mold grows underneath the flooring where you cannot see it. Joists deteriorate if not caught.',
+        solution: 'We identify and stop the moisture source, replace the subfloor, treat for mold, and install new flooring with proper vapor barrier.',
+        chain: ['Moisture reaches subfloor', 'Flooring absorbs & expands', 'Buckling becomes visible', 'Mold grows underneath', 'Subfloor + flooring replacement'],
+    },
 ];
 
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
@@ -264,12 +375,16 @@ export default function Home() {
                         </h2>
                     </div>
                     <div className={styles.servicesGrid}>
-                        {HOME_SERVICES.map((svc) => (
+                        {HOME_SERVICES.map((svc, idx) => (
                             <Link href="/services" key={svc.key} className={styles.serviceCard}>
-                                <div className={styles.serviceIcon}>{svc.icon}</div>
+                                <div className={styles.serviceCardNum}>
+                                    <span className={styles.serviceCardIndex}>{String(idx + 1).padStart(2, '0')}</span>
+                                    <span className={styles.serviceCardTotal}>&nbsp;/ {String(HOME_SERVICES.length).padStart(2, '0')}</span>
+                                    <span className={styles.serviceCardCat}>{svc.category}</span>
+                                </div>
                                 <div className={styles.serviceName}>{t[svc.key]}</div>
-                                <p className={styles.serviceDesc}>{t.servicesIntro?.slice(0, 80)}...</p>
-                                <span className={styles.serviceLink}>{t.learnMore}</span>
+                                <p className={styles.serviceDesc}>{svc.desc}</p>
+                                <span className={styles.serviceLink}>{t.learnMore} &rarr;</span>
                             </Link>
                         ))}
                     </div>
@@ -296,6 +411,50 @@ export default function Home() {
                             J&amp;R NW <em>Construction</em>
                         </h2>
                         <p>{t.companyDesc}</p>
+                    </div>
+                </div>
+            </section>
+
+            {/* ── WARNING SIGNS ── */}
+            <WarningSigns onCta={handleEstimateClick} />
+
+            {/* ── FAQ / OBJECTION HANDLING ── */}
+            <section className={styles.faqSection}>
+                <div className={styles.faqInner}>
+                    <div className={styles.sectionHeader}>
+                        <div className={styles.sectionLabel}>Got Questions?</div>
+                        <h2 className={styles.sectionTitle}>Common <em>Questions</em></h2>
+                    </div>
+                    <div className={styles.faqGrid}>
+                        <div className={styles.faqItem}>
+                            <h4>How fast can you start?</h4>
+                            <p>We typically respond within 2 hours and can schedule a free estimate the same or next day. Many emergency jobs start same day.</p>
+                        </div>
+                        <div className={styles.faqItem}>
+                            <h4>How much does it cost?</h4>
+                            <p>Every project is different. We offer free, no-obligation estimates with detailed written quotes. No hidden fees, no surprises.</p>
+                        </div>
+                        <div className={styles.faqItem}>
+                            <h4>Are you licensed and insured?</h4>
+                            <p>Yes. Oregon CCB #232708. Fully licensed, bonded, and insured. We carry full liability and workers' compensation coverage on every job.</p>
+                        </div>
+                        <div className={styles.faqItem}>
+                            <h4>Do you work with insurance claims?</h4>
+                            <p>Yes. We regularly work alongside insurance adjusters for water damage, fire, and structural repairs. We document everything for your claim.</p>
+                        </div>
+                        <div className={styles.faqItem}>
+                            <h4>What areas do you serve?</h4>
+                            <p>Serving Portland, Tigard, Tualatin, Gresham, Happy Valley, Oregon City, Milwaukie, Hillsboro &amp; Beaverton.</p>
+                        </div>
+                        <div className={styles.faqItem}>
+                            <h4>Do you guarantee your work?</h4>
+                            <p>We do it right the first time — every time. Our crew takes full ownership of every project. 5-star ratings on Yelp and Google reflect the standard we hold ourselves to on every single job.</p>
+                        </div>
+                    </div>
+                    <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+                        <button className={styles.btnPrimary} onClick={handleEstimateClick}>
+                            Get Your Free Estimate <ArrowIcon />
+                        </button>
                     </div>
                 </div>
             </section>
@@ -403,9 +562,9 @@ const handleSubmit = async (e) => {
                     <label>{t.projectType}</label>
                     <select value={form.projectType} required
                         onChange={e => setForm({ ...form, projectType: e.target.value })}>
-                        <option value="" disabled>{t.selectServiceType}</option>
+                        <option value="" disabled>Select Service Type</option>
                         {PROJECT_TYPES.map(pt => (
-                            <option key={pt.key} value={pt.en}>{t[pt.key]}</option>
+                            <option key={pt.key} value={pt.en}>{pt.en}</option>
                         ))}
                     </select>
                 </div>
@@ -425,7 +584,7 @@ const handleSubmit = async (e) => {
                     <LockIcon />
                     {t.fastResponse?.replace('🔒 ', '') || 'Fast Response · No Obligation'}
                 </div>
-                {status === 'success' && <p className={styles.formSuccess}>{t.successMsg?.replace('✅ ', '')}</p>}
+                {status === 'success' && <p className={styles.formSuccess}>Julio will call you within 2 hours. Need faster help? Call <a href="tel:+15039982340" style={{ color: 'inherit', fontWeight: 700 }}>(503) 998-2340</a></p>}
                 {status === 'error' && <p className={styles.formError}>{t.errorMsg}</p>}
             </form>
         </div>

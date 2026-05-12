@@ -71,6 +71,8 @@ const translations = {
 
         // Project types
         pt1: 'Interior Construction & Remodeling',
+        ptBath: 'Bathroom Remodel',
+        ptKit: 'Kitchen Remodel',
         pt2: 'Restoration & Reconstruction',
         pt3: 'Mitigation & Emergency Services',
         pt4: 'General Repairs & Carpentry',
@@ -215,6 +217,8 @@ const translations = {
 
         // Project types
         pt1: 'Construcción y Remodelación Interior',
+        ptBath: 'Remodelación de Baño',
+        ptKit: 'Remodelación de Cocina',
         pt2: 'Restauración y Reconstrucción',
         pt3: 'Mitigación y Servicios de Emergencia',
         pt4: 'Reparaciones Generales y Carpintería',

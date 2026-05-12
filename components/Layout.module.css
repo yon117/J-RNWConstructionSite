@@ -631,3 +631,135 @@
         min-height: -webkit-fill-available;
     }
 }
+
+/* ── SEASONAL BANNER ── */
+.seasonalBanner {
+    background: #1a1200;
+    border-bottom: 2px solid #D4AF37;
+    color: #f0d060;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 9px 1.5rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    position: relative;
+    z-index: 200;
+}
+.seasonalIcon {
+    font-size: 1rem;
+    margin-right: 4px;
+}
+.seasonalText {
+    text-align: center;
+}
+.seasonalLink {
+    color: #D4AF37;
+    font-weight: 700;
+    text-decoration: underline;
+    white-space: nowrap;
+}
+.bannerClose {
+    background: none;
+    border: none;
+    color: #D4AF37;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    opacity: 0.7;
+    flex-shrink: 0;
+    line-height: 1;
+}
+.bannerClose:hover { opacity: 1; }
+
+/* ── EMERGENCY BUTTON ── */
+.emergencyWrap {
+    position: fixed;
+    bottom: 170px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+.emergencyBtn {
+    background: #b84040;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 13px 20px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 24px rgba(184,64,64,0.4);
+    transition: background 0.2s, box-shadow 0.2s;
+    white-space: nowrap;
+}
+.emergencyBtn:hover { background: #c94a4a; box-shadow: 0 6px 30px rgba(184,64,64,0.6); }
+.emergencyDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #fff;
+    animation: pulse 1.4s infinite;
+    flex-shrink: 0;
+}
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.4; transform: scale(1.5); }
+}
+.emergencyPanel {
+    background: #1a0000;
+    border: 2px solid #c0392b;
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    max-width: 280px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+}
+.emergencyTitle {
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0 0 1rem;
+}
+.emergencyCall {
+    display: block;
+    background: #c0392b;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 0.6rem;
+    transition: background 0.2s;
+}
+.emergencyCall:hover { background: #e74c3c; }
+.emergencySub {
+    color: #aaa;
+    font-size: 0.75rem;
+    margin: 0 0 1rem;
+}
+.emergencyClose {
+    background: none;
+    border: 1px solid #444;
+    color: #888;
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+.emergencyClose:hover { color: #fff; border-color: #888; }
+@media (max-width: 600px) {
+    .seasonalBanner { font-size: 0.75rem; padding: 7px 0.75rem; }
+    .emergencyWrap { bottom: 80px; right: 16px; }
+    .emergencyPanel { max-width: 240px; }
+}

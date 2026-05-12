@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLang } from '../context/LanguageContext';
 import styles from './Layout.module.css';
 
@@ -59,9 +59,71 @@ const SITE_URL = 'https://jandrnw.com';
 const DEFAULT_DESCRIPTION = 'J&R NW Construction — Portland\'s trusted general contractor. Home remodeling, siding installation, water damage restoration & repairs. Licensed, bonded & insured. CCB #232708. Call (503) 998-2340.';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/assets/home-hero-bg.jpg`;
 
+const SEASONAL_MESSAGES = {
+    winter: [
+        { text: 'Frozen or burst pipes? Structural ice damage? We respond same day — call (503) 998-2340.', icon: '🌨' },
+        { text: 'Ice dams on your roof cause hidden water damage. Free inspection available now.', icon: '❄️' },
+        { text: 'Atmospheric rivers hitting Oregon hard — flooding in your basement? We fix it fast.', icon: '🌊' },
+        { text: 'Wind storm knocked something loose? Emergency structural repairs — call us today.', icon: '💨' },
+    ],
+    spring: [
+        { text: 'Spring flooding & landslide season — Free water damage assessment. Don\'t let mold set in.', icon: '🌧' },
+        { text: 'Snowmelt + spring rain = foundation flooding risk. Get a free inspection before it worsens.', icon: '🌱' },
+        { text: 'Mold from winter moisture trapped inside? We find it and fix it. Free assessment.', icon: '🔍' },
+        { text: 'Roof damage from winter storms showing up now? Don\'t wait — free estimate available.', icon: '🏠' },
+    ],
+    summer: [
+        { text: 'Wildfire season in Oregon — protect your home\'s exterior before smoke & heat cause damage.', icon: '🔥' },
+        { text: 'Heat cracking your exterior paint or siding? Free estimate before it gets worse.', icon: '☀️' },
+        { text: 'Dry rot on decks and siding peaks in summer. Catch it early — free inspection.', icon: '🌡️' },
+        { text: 'Summer is the best time for exterior projects — book now before slots fill up.', icon: '🏗️' },
+    ],
+    fall: [
+        { text: 'Fall windstorm season approaching — schedule exterior repairs before winter arrives.', icon: '🍂' },
+        { text: 'Clogged gutters cause ice dams and roof damage. Clean & repair before first freeze.', icon: '🍁' },
+        { text: 'Gaps in caulking and siding let Oregon rains in — waterproofing estimates available now.', icon: '🌂' },
+        { text: 'Pre-winter inspection season — catch problems now before cold locks them in. Free estimate.', icon: '🏡' },
+    ],
+};
+
+function getSeasonMessages() {
+    const m = new Date().getMonth();
+    if (m === 11 || m <= 1) return SEASONAL_MESSAGES.winter;
+    if (m >= 2 && m <= 4)   return SEASONAL_MESSAGES.spring;
+    if (m >= 5 && m <= 8)   return SEASONAL_MESSAGES.summer;
+    return SEASONAL_MESSAGES.fall;
+}
+
 export default function Layout({ children, title = 'J&R NW Construction | Portland General Contractor', description = DEFAULT_DESCRIPTION, canonical, onContactClick }) {
     const { t, lang, chooseLang } = useLang();
     const [menuOpen, setMenuOpen] = useState(false);
+    const [showBanner, setShowBanner] = useState(false);
+    const [showEmergency, setShowEmergency] = useState(false);
+    const [bannerIdx, setBannerIdx] = useState(0);
+    const seasonMsgs = getSeasonMessages();
+    const banner = seasonMsgs[bannerIdx];
+
+    useEffect(() => {
+        const dismissed = sessionStorage.getItem('bannerDismissed');
+        if (!dismissed) setShowBanner(true);
+    }, []);
+
+    useEffect(() => {
+        if (!showBanner) return;
+        const id = setInterval(() => {
+            setBannerIdx(i => (i + 1) % seasonMsgs.length);
+        }, 7000);
+        return () => clearInterval(id);
+    }, [showBanner, seasonMsgs.length]);
+
+    const dismissBanner = () => {
+        setShowBanner(false);
+        sessionStorage.setItem('bannerDismissed', '1');
+    };
+
+    const handleEmergency = () => {
+        fetch('/api/monitor/click', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'emergency_click' }), keepalive: true }).catch(() => {});
+    };
     const canonicalUrl = canonical ? `${SITE_URL}${canonical}` : SITE_URL;
 
     return (
@@ -117,6 +179,18 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                 <div className={styles.topbarDivider} />
                 <div className={styles.topbarItem}>{t.navAvailability}</div>
             </div>
+
+            {/* ── SEASONAL BANNER ── */}
+            {showBanner && (
+                <div className={styles.seasonalBanner}>
+                    <span className={styles.seasonalText}>
+                        <span className={styles.seasonalIcon}>{banner.icon}</span>
+                        {banner.text}
+                        {' '}<a href="tel:+15039982340" className={styles.seasonalLink} onClick={() => { fetch('/api/monitor/click', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'phone_click' }), keepalive: true }).catch(() => {}); }}>Call (503) 998-2340</a>
+                    </span>
+                    <button className={styles.bannerClose} onClick={dismissBanner} aria-label="Dismiss">✕</button>
+                </div>
+            )}
 
             {/* ── NAVBAR ── */}
             <nav className={styles.nav}>
@@ -303,6 +377,33 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                     </div>
                 </div>
             </footer>
+
+            {/* ── EMERGENCY BUTTON ── */}
+            <div className={styles.emergencyWrap}>
+                {showEmergency && (
+                    <div className={styles.emergencyPanel}>
+                        <p className={styles.emergencyTitle}>Emergency? We respond immediately.</p>
+                        <a
+                            href="tel:+15039982340"
+                            className={styles.emergencyCall}
+                            onClick={handleEmergency}
+                        >
+                            Call (503) 998-2340 Now
+                        </a>
+                        <p className={styles.emergencySub}>Tap to call · We answer 24/7 for emergencies</p>
+                        <button className={styles.emergencyClose} onClick={() => setShowEmergency(false)}>✕ Close</button>
+                    </div>
+                )}
+                <button
+                    className={styles.emergencyBtn}
+                    onClick={() => setShowEmergency(v => !v)}
+                    aria-label="Emergency contact"
+                >
+                    <span className={styles.emergencyDot} />
+                    <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.948V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 7V5z"/></svg>
+                    EMERGENCY – 24/7
+                </button>
+            </div>
         </div>
     );
 }

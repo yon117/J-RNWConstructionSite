@@ -276,7 +276,7 @@
 /* Stats block — bottom right of hero */
 .heroStats {
     position: absolute;
-    bottom: 40px;
+    bottom: 18vh;
     right: 40px;
     display: flex;
     gap: 34px;
@@ -454,81 +454,101 @@
 }
 
 .serviceCard {
-    background: var(--dark-card);
-    padding: 32px 28px;
+    background: #0e1622;
+    padding: 28px 24px;
     cursor: pointer;
-    transition: background 0.25s;
+    transition: background 0.25s, border-color 0.25s;
     position: relative;
-    overflow: hidden;
     text-decoration: none;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #1a2535;
 }
 
+/* Top-left corner bracket */
+.serviceCard::before {
+    content: '';
+    position: absolute;
+    top: 10px; left: 10px;
+    width: 14px; height: 14px;
+    border-top: 2px solid #D4AF37;
+    border-left: 2px solid #D4AF37;
+    transition: width 0.2s, height 0.2s;
+}
+
+/* Bottom-right corner bracket */
 .serviceCard::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: var(--gold);
-    transform: scaleX(0);
-    transition: transform 0.3s;
+    bottom: 10px; right: 10px;
+    width: 14px; height: 14px;
+    border-bottom: 2px solid #D4AF37;
+    border-right: 2px solid #D4AF37;
+    transition: width 0.2s, height 0.2s;
 }
 
-.serviceCard:hover {
-    background: #1d3045;
-}
+.serviceCard:hover { background: #131e30; border-color: #253548; }
+.serviceCard:hover::before,
+.serviceCard:hover::after { width: 22px; height: 22px; }
 
-.serviceCard:hover::after {
-    transform: scaleX(1);
-}
-
-.serviceIcon {
-    width: 42px;
-    height: 42px;
-    border-radius: 4px;
-    background: rgba(200, 150, 30, 0.1);
-    border: 1px solid rgba(200, 150, 30, 0.2);
+/* Number row */
+.serviceCardNum {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: baseline;
     margin-bottom: 18px;
-    color: var(--gold);
 }
-
-.serviceIcon svg {
-    width: 20px;
-    height: 20px;
+.serviceCardIndex {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #D4AF37;
+    letter-spacing: 0.02em;
+}
+.serviceCardTotal {
+    font-size: 0.78rem;
+    color: #3a4a5a;
+    font-weight: 500;
+}
+.serviceCardCat {
+    margin-left: auto;
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    color: #4a5a6a;
 }
 
 .serviceName {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 19px;
-    font-weight: 700;
+    font-size: 1.45rem;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.03em;
-    margin-bottom: 8px;
-    color: var(--white);
+    letter-spacing: 0.02em;
+    margin-bottom: 10px;
+    color: #fff;
+    line-height: 1.15;
 }
 
 .serviceDesc {
-    font-size: 13px;
-    color: var(--gray);
-    line-height: 1.6;
-    margin-bottom: 14px;
+    font-size: 0.82rem;
+    color: #7a8a9a;
+    line-height: 1.65;
+    margin-bottom: 0;
+    flex: 1;
 }
 
 .serviceLink {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--gold);
-    letter-spacing: 0.08em;
+    gap: 6px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #D4AF37;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     text-decoration: none;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid #1a2535;
 }
 
 .servicesViewAll {
@@ -1148,4 +1168,259 @@
 .floatingContactBtn {
     bottom: 28px;
     left: 28px;  /* ya está a la izquierda */
+}
+
+/* ── ANNOUNCEMENT BANNER ── */
+.announcementBar {
+    background: #D4AF37;
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 10px 1.5rem;
+    position: relative;
+    z-index: 100;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+.announcementText a {
+    color: #111;
+    font-weight: 700;
+    text-decoration: underline;
+}
+.announcementClose {
+    background: none;
+    border: none;
+    color: #111;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    opacity: 0.7;
+    flex-shrink: 0;
+}
+.announcementClose:hover { opacity: 1; }
+
+/* ── SERVICE CARD FEATURED ── */
+.serviceCardFeatured {
+    border: 2px solid #D4AF37 !important;
+    position: relative;
+}
+.popularBadge {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #D4AF37;
+    color: #111;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+/* ── WARNING SIGNS SECTION ── */
+.warningSection { padding: 5rem 1.5rem; background: #0d0d0d; border-top: 1px solid #1e1e1e; }
+.warningInner { max-width: 720px; margin: 0 auto; }
+.warningSubtitle { color: #888; font-size: 0.95rem; margin-top: 0.6rem; line-height: 1.6; }
+
+@keyframes warnFadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Featured card */
+.warnFeatCard {
+    background: #111;
+    border: 1px solid #242424;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    animation: warnFadeIn 0.5s ease;
+}
+.warnDivider { height: 1px; background: #222; margin: 0.25rem 0; }
+
+/* Severity */
+.warnFeatSev {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+.sev_critical { color: #e74c3c; }
+.sev_high     { color: #e67e22; }
+.sev_medium   { color: #D4AF37; }
+.warnFeatDot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: currentColor;
+    animation: pulse 1.4s infinite;
+}
+
+/* Title area */
+.warnFeatService {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #D4AF37;
+    margin-bottom: -0.5rem;
+}
+.warnFeatTitle {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    margin: 0;
+}
+.warnFeatDesc { color: #888; font-size: 0.88rem; line-height: 1.65; margin: 0; }
+
+/* Progression */
+.warnProgLabel {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #555;
+}
+.warnProgression {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    width: 100%;
+}
+.warnProgStep {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex: 0 0 auto;
+    max-width: 90px;
+}
+.warnProgNum {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 2px solid;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.85rem;
+    background: transparent;
+    flex-shrink: 0;
+}
+.warnProgLine {
+    flex: 1; height: 2px;
+    align-self: flex-start;
+    margin-top: 16px;
+    min-width: 20px;
+}
+.warnProgStepLabel {
+    font-size: 0.68rem; color: #888;
+    text-align: center; line-height: 1.3;
+}
+
+/* Risk + Fix */
+.warnRiskFix {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+.warnRFLabel {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #D4AF37;
+    margin-bottom: 0.4rem;
+}
+.warnRiskFix > div:first-child p { color: #c07070; font-size: 0.83rem; line-height: 1.6; margin: 0; }
+.warnRiskFix > div:last-child  p { color: #70a870; font-size: 0.83rem; line-height: 1.6; margin: 0; }
+
+/* Bottom CTA */
+.warnFeatBottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.warnCtaText {
+    background: none; border: none; cursor: pointer;
+    font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em;
+    color: #888;
+    transition: color 0.2s;
+}
+.warnCtaText:hover { color: #D4AF37; }
+.warnCtaBtn {
+    background: none;
+    border: 1px solid #333;
+    color: #D4AF37;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em;
+    padding: 8px 18px; border-radius: 4px; cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+.warnCtaBtn:hover { background: #D4AF37; color: #111; border-color: #D4AF37; }
+
+/* Dots */
+.warnPagination { display: flex; justify-content: center; gap: 6px; margin-top: 1.75rem; flex-wrap: wrap; }
+.warnDot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #2a2a2a; border: none; cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+}
+.warnDotActive { background: #D4AF37; transform: scale(1.4); }
+
+@media (max-width: 600px) {
+    .warnFeatTitle { font-size: 1.1rem; }
+    .warnRiskFix { grid-template-columns: 1fr; gap: 1rem; }
+    .warnProgression { gap: 0; }
+    .warnProgStep { max-width: 65px; }
+    .warnProgStepLabel { font-size: 0.6rem; }
+}
+
+/* ── FAQ SECTION ── */
+.faqSection {
+    padding: 5rem 1.5rem;
+    background: #0d0d0d;
+}
+.faqInner {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+.faqGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+}
+.faqItem {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: border-color 0.2s;
+}
+.faqItem:hover {
+    border-color: #D4AF37;
+}
+.faqItem h4 {
+    color: #D4AF37;
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+}
+.faqItem p {
+    color: #aaa;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0;
+}
+@media (max-width: 900px) {
+    .faqGrid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+    .faqGrid { grid-template-columns: 1fr; }
+    .announcementBar { font-size: 0.8rem; padding: 8px 1rem; }
 }
