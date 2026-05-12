@@ -282,10 +282,6 @@
     display: flex;
     gap: 34px;
 }
-/* Hide stats at mid-screen where they overlap the form panel */
-@media (min-width: 769px) and (max-width: 1350px) {
-    .heroStats { display: none !important; }
-}
 
 @media (max-width: 1130px) {
     .heroInner {
