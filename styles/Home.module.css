@@ -273,11 +273,12 @@
     font-size: 12px;
 }
 
-/* Stats block — bottom left of hero (below hero text, clear of form) */
+/* Stats block — bottom right of hero */
 .heroStats {
     position: absolute;
-    bottom: 40px;
-    left: 40px;
+    bottom: 18vh;
+    right: 40px;
+    z-index: 1;
     display: flex;
     gap: 34px;
     z-index: 2;
