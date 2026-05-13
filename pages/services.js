@@ -34,6 +34,8 @@ export default function Services({ services }) {
     const { t, lang } = useLang();
     const [displayServices, setDisplayServices] = useState(services);
 
+    useEffect(() => { window.scrollTo(0, 0); }, []);
+
     useEffect(() => {
         if (!lang || lang === 'en') { setDisplayServices(services); return; }
         let cancelled = false;

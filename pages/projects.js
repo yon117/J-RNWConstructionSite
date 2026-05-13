@@ -34,6 +34,8 @@ export default function Projects({ projects }) {
     const [showContactModal, setShowContactModal] = useState(false);
     const [activeFilter, setActiveFilter] = useState('all');
 
+    useEffect(() => { window.scrollTo(0, 0); }, []);
+
     // Fetch images when a project is selected
     useEffect(() => {
         if (selectedProject) {
