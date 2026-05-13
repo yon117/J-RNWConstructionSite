@@ -22,27 +22,6 @@ export default function Document() {
           fetchPriority="high"
         />
 
-        {/* BBB Seal — sin cambios */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              var bbb = bbb || [];
-              bbb.push(["bbbid", "greatwestpacific"]);
-              bbb.push(["bid", "1000117288"]);
-              bbb.push(["chk", "A690EB6EA0"]);
-              bbb.push(["pos", "bottom-left"]);
-              (function () {
-                var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
-                var bbb = document.createElement("script");
-                bbb.type = "text/javascript";
-                bbb.async = true;
-                bbb.src = scheme + "seal-alaskaoregonwesternwashington.bbb.org/badge/badge.min.js";
-                var s = document.getElementsByTagName("script")[0];
-                s.parentNode.insertBefore(bbb, s);
-              })();
-            `,
-          }}
-        />
 
         {/* LocalBusiness JSON-LD */}
         <script
@@ -99,24 +78,6 @@ export default function Document() {
           }}
         />
 
-        {/* GA4 */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-8GM4CDHB35" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-8GM4CDHB35');`,
-          }}
-        />
-
-        {/* GTM — solo aquí, NO en _app.tsx */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-K44RZ5FM');`,
-          }}
-        />
       </Head>
       <body>
         <noscript>

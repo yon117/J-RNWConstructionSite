@@ -5,7 +5,7 @@ import ContactFormSection from '../components/ContactFormSection';
 import { getDb } from '../lib/db';
 import { useLang } from '../context/LanguageContext';
 import { imageUrl } from '../utils/imageUrl';
-import { translateArray } from '../utils/translate';
+
 import pageStyles from '../styles/Projects.module.css';
 
 // Filter categories — adjust to match your actual project types
@@ -23,7 +23,8 @@ const FILTERS = [
 const CARD_PATTERNS = ['wide', '', 'tall', '', '', 'wide', '', ''];
 
 export default function Projects({ projects }) {
-    const { t } = useLang();
+    const { t, lang } = useLang();
+    const [displayProjects, setDisplayProjects] = useState(projects);
     const [selectedProject, setSelectedProject] = useState(null);
     const [projectImages, setProjectImages] = useState([]);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -57,10 +58,23 @@ export default function Projects({ projects }) {
     const handlePrevImage = () =>
         setCurrentImageIndex(prev => (prev - 1 + projectImages.length) % projectImages.length);
 
+    useEffect(() => {
+        if (!lang || lang === 'en') { setDisplayProjects(projects); return; }
+        let cancelled = false;
+        async function translate() {
+            const { translateArray } = await import('../utils/translate');
+            const titles = await translateArray(projects.map(p => p.title), lang);
+            const descs  = await translateArray(projects.map(p => p.description), lang);
+            if (!cancelled) setDisplayProjects(projects.map((p, i) => ({ ...p, title: titles[i], description: descs[i] })));
+        }
+        translate();
+        return () => { cancelled = true; };
+    }, [lang, projects]);
+
     // Filter projects — simple term match in title, description, or category
     const filteredProjects = activeFilter === 'all'
-        ? projects
-        : projects.filter(p => {
+        ? displayProjects
+        : displayProjects.filter(p => {
             const active = FILTERS.find(f => f.id === activeFilter);
             const terms = active?.terms || [activeFilter];
             const haystack = `${p.title || ''} ${p.description || ''} ${p.category || ''}`.toLowerCase();
@@ -255,60 +269,67 @@ export default function Projects({ projects }) {
     );
 }
 
-export async function getServerSideProps({ req }) {
-    const db = await getDb();
+let _projectsCache = null;
+let _projectsCacheTime = 0;
+const CACHE_TTL = 55_000;
 
-    const host = req.headers.host || '';
-    const isLocal = host.startsWith('localhost') || host.startsWith('127.0.0.1');
-
-    function resolveImage(imgPath) {
-        if (!imgPath) return '';
-        if (imgPath.startsWith('http')) return imgPath;
-        if (isLocal && imgPath.startsWith('/uploads/')) {
-            return `/api/image-proxy?path=${encodeURIComponent(imgPath)}`;
-        }
-        return imgPath;
+export async function getStaticProps() {
+    const now = Date.now();
+    if (_projectsCache && (now - _projectsCacheTime) < CACHE_TTL) {
+        return { props: { projects: _projectsCache }, revalidate: 60 };
     }
+
+    const db = await getDb();
 
     const projectsResult = await db.execute(
         'SELECT id, title, description, details, image FROM projects ORDER BY created_at DESC'
     );
 
-    const lang = req.cookies?.lang || 'en';
     const rows = projectsResult.rows || [];
-    const titles = await translateArray(rows.map(p => p.title || ''), lang);
-    const descs = await translateArray(rows.map(p => p.description || ''), lang);
 
-    const projects = rows.map((p, i) => ({
+    const projects = rows.map(p => ({
         id:          p.id,
-        title:       titles[i],
-        description: descs[i],
+        title:       p.title || '',
+        description: p.description || '',
         details:     p.details || '',
-        image:       resolveImage(p.image),
-        imageCount:  1, // updated below
+        image:       p.image || '',
+        imageCount:  1,
     }));
 
-    // Get first image and image count per project
-    for (let project of projects) {
-        try {
-            const imageResult = await db.execute({
-                sql: 'SELECT image_path FROM project_images WHERE project_id = ? ORDER BY display_order ASC LIMIT 1',
-                args: [project.id]
-            });
-            if (imageResult.rows.length > 0 && imageResult.rows[0].image_path) {
-                project.image = resolveImage(imageResult.rows[0].image_path);
-            }
+    // Batch fetch first image + count per project (2 queries total, not N*2)
+    const [firstImagesResult, countsResult] = await Promise.all([
+        db.execute(`
+            SELECT pi.project_id, pi.image_path
+            FROM project_images pi
+            INNER JOIN (
+                SELECT project_id, MIN(display_order) AS min_order
+                FROM project_images
+                GROUP BY project_id
+            ) first ON pi.project_id = first.project_id AND pi.display_order = first.min_order
+        `),
+        db.execute(`
+            SELECT project_id, COUNT(*) as count
+            FROM project_images
+            GROUP BY project_id
+        `)
+    ]);
 
-            // Get total image count for badge
-            const countResult = await db.execute({
-                sql: 'SELECT COUNT(*) as count FROM project_images WHERE project_id = ?',
-                args: [project.id]
-            });
-            project.imageCount = countResult.rows[0]?.count || 1;
-        } catch (err) {
-            console.warn('Could not fetch project_images for project', project.id, err.message);
-        }
+    const firstImageMap = {};
+    for (const row of firstImagesResult.rows || []) {
+        firstImageMap[row.project_id] = row.image_path;
     }
 
-    return { props: { projects } };
+    const countMap = {};
+    for (const row of countsResult.rows || []) {
+        countMap[row.project_id] = row.count;
+    }
+
+    for (const project of projects) {
+        if (firstImageMap[project.id]) project.image = firstImageMap[project.id];
+        project.imageCount = countMap[project.id] || 1;
+    }
+
+    _projectsCache = projects;
+    _projectsCacheTime = Date.now();
+    return { props: { projects }, revalidate: 60 };
 }

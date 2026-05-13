@@ -4,9 +4,8 @@ import ContactFormSection from '../components/ContactFormSection';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getDb } from '../lib/db';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLang } from '../context/LanguageContext';
-import { translateArray } from '../utils/translate';
 import { imageUrl } from '../utils/imageUrl';
 import { sanitizeServiceText } from '../utils/sanitizeServiceText';
 import pageStyles from '../styles/Services.module.css';
@@ -32,7 +31,21 @@ const SERVICE_TAGS = [
 
 export default function Services({ services }) {
     const [showContactModal, setShowContactModal] = useState(false);
-    const { t } = useLang();
+    const { t, lang } = useLang();
+    const [displayServices, setDisplayServices] = useState(services);
+
+    useEffect(() => {
+        if (!lang || lang === 'en') { setDisplayServices(services); return; }
+        let cancelled = false;
+        async function translate() {
+            const { translateArray } = await import('../utils/translate');
+            const titles = await translateArray(services.map(s => s.title), lang);
+            const descs  = await translateArray(services.map(s => s.description), lang);
+            if (!cancelled) setDisplayServices(services.map((s, i) => ({ ...s, title: titles[i], description: descs[i] })));
+        }
+        translate();
+        return () => { cancelled = true; };
+    }, [lang, services]);
     const SERVICE_TAG_KEYS = [
         'serviceTag1',
         'serviceTag2',
@@ -68,7 +81,7 @@ export default function Services({ services }) {
 
                     {/* ── SERVICE ITEMS ── */}
                     <div className={pageStyles.serviceList}>
-                        {services.map((service, index) => {
+                        {displayServices.map((service, index) => {
                             const slug = service.slug
                                 || (service.title
                                     ? service.title
@@ -87,10 +100,14 @@ export default function Services({ services }) {
                                 <div className={pageStyles.serviceItem} key={service.id}>
                                     {/* Image */}
                                     <div className={pageStyles.serviceImgWrap}>
-                                        <img
+                                        <Image
                                             src={imageUrl(service.image_url)}
                                             alt={serviceTitle}
+                                            fill
+                                            sizes="(max-width: 900px) 100vw, 50vw"
                                             className={pageStyles.serviceImg}
+                                            priority={index === 0}
+                                            style={{ objectFit: 'cover' }}
                                         />
                                     </div>
 
@@ -138,35 +155,29 @@ export default function Services({ services }) {
     );
 }
 
-export async function getServerSideProps({ req }) {
+let _servicesCache = null;
+let _servicesCacheTime = 0;
+const CACHE_TTL = 55_000;
+
+export async function getStaticProps() {
+    const now = Date.now();
+    if (_servicesCache && (now - _servicesCacheTime) < CACHE_TTL) {
+        return { props: { services: _servicesCache }, revalidate: 60 };
+    }
+
     const db = await getDb();
     const result = await db.execute(
         'SELECT id, title, description, image, slug FROM services'
     );
-
-    const host = req.headers.host || '';
-    const isLocal = host.startsWith('localhost') || host.startsWith('127.0.0.1');
-
-    function resolveImage(imgPath) {
-        if (!imgPath) return '/assets/placeholder.jpg';
-        if (imgPath.startsWith('http')) return imgPath;
-        if (isLocal && imgPath.startsWith('/uploads/')) {
-            return `/api/image-proxy?path=${encodeURIComponent(imgPath)}`;
-        }
-        return imgPath;
-    }
-
     const rows = result.rows || [];
-    const lang = req.cookies?.lang || 'en';
-    const titles = await translateArray(rows.map(s => s.title || ''), lang);
-    const descs = await translateArray(rows.map(s => s.description || ''), lang);
-    const services = rows.map((s, i) => ({
+    const services = rows.map(s => ({
         id:          s.id,
-        title:       titles[i],
-        description: descs[i],
-        image_url:   resolveImage(s.image),
+        title:       s.title || '',
+        description: s.description || '',
+        image_url:   s.image || '/assets/placeholder.jpg',
         slug:        s.slug || '',
     }));
-
-    return { props: { services } };
+    _servicesCache = services;
+    _servicesCacheTime = Date.now();
+    return { props: { services }, revalidate: 60 };
 }

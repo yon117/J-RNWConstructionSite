@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import Script from "next/script";
 import { LanguageProvider } from "../context/LanguageContext";
 import { Barlow, Barlow_Condensed } from "next/font/google";
 import dynamic from "next/dynamic";
@@ -93,6 +94,38 @@ export default function App({ Component, pageProps }: AppProps) {
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         </Head>
+        {!isAdmin && (
+          <>
+            <Script
+              src="https://www.googletagmanager.com/gtag/js?id=G-8GM4CDHB35"
+              strategy="afterInteractive"
+            />
+            <Script id="ga4-init" strategy="afterInteractive">{`
+              window.dataLayer=window.dataLayer||[];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js',new Date());
+              gtag('config','G-8GM4CDHB35');
+            `}</Script>
+            <Script id="gtm-init" strategy="afterInteractive">{`
+              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer','GTM-K44RZ5FM');
+            `}</Script>
+            <Script id="bbb-badge" strategy="afterInteractive">{`
+              var bbb=bbb||[];
+              bbb.push(["bbbid","greatwestpacific"]);
+              bbb.push(["bid","1000117288"]);
+              bbb.push(["chk","A690EB6EA0"]);
+              bbb.push(["pos","bottom-left"]);
+              (function(){var s=(("https:"==document.location.protocol)?"https://":"http://");
+              var b=document.createElement("script");b.type="text/javascript";b.async=true;
+              b.src=s+"seal-alaskaoregonwesternwashington.bbb.org/badge/badge.min.js";
+              var x=document.getElementsByTagName("script")[0];x.parentNode.insertBefore(b,x);})();
+            `}</Script>
+          </>
+        )}
         <Component {...pageProps} />
         {!isAdmin && (
           <Bubble
