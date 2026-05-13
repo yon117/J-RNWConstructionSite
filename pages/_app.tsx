@@ -50,8 +50,14 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      history.scrollRestoration = 'manual';
+    }
+    const scrollTop = () => window.scrollTo({ top: 0, behavior: 'instant' as any });
+    router.events.on('routeChangeStart', scrollTop);
+
     const track = (url: string) => {
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, behavior: 'instant' as any });
       if (url.startsWith('/adminside') || url.startsWith('/admin')) return;
       const device_type = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
       fetch('/api/monitor/pageview', {
@@ -82,6 +88,7 @@ export default function App({ Component, pageProps }: AppProps) {
     window.addEventListener('error', handleError);
 
     return () => {
+      router.events.off('routeChangeStart', scrollTop);
       router.events.off('routeChangeComplete', track);
       window.removeEventListener('error', handleError);
     };

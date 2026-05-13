@@ -422,38 +422,41 @@ export default function Home() {
             <section className={styles.faqSection}>
                 <div className={styles.faqInner}>
                     <div className={styles.sectionHeader}>
-                        <div className={styles.sectionLabel}>Got Questions?</div>
-                        <h2 className={styles.sectionTitle}>Common <em>Questions</em></h2>
+                        <div className={styles.sectionLabel}>{t.faqLabel || 'Got Questions?'}</div>
+                        <h2 className={styles.sectionTitle}>
+                            {(t.faqTitle || 'Common Questions').split(' ')[0]}{' '}
+                            <em>{(t.faqTitle || 'Common Questions').split(' ').slice(1).join(' ')}</em>
+                        </h2>
                     </div>
                     <div className={styles.faqGrid}>
                         <div className={styles.faqItem}>
-                            <h4>How fast can you start?</h4>
-                            <p>We typically respond within 2 hours and can schedule a free estimate the same or next day. Many emergency jobs start same day.</p>
+                            <h4>{t.faqQ1}</h4>
+                            <p>{t.faqA1}</p>
                         </div>
                         <div className={styles.faqItem}>
-                            <h4>How much does it cost?</h4>
-                            <p>Every project is different. We offer free, no-obligation estimates with detailed written quotes. No hidden fees, no surprises.</p>
+                            <h4>{t.faqQ2}</h4>
+                            <p>{t.faqA2}</p>
                         </div>
                         <div className={styles.faqItem}>
-                            <h4>Are you licensed and insured?</h4>
-                            <p>Yes. Oregon CCB #232708. Fully licensed, bonded, and insured. We carry full liability and workers' compensation coverage on every job.</p>
+                            <h4>{t.faqQ3}</h4>
+                            <p>{t.faqA3}</p>
                         </div>
                         <div className={styles.faqItem}>
-                            <h4>Do you work with insurance claims?</h4>
-                            <p>Yes. We regularly work alongside insurance adjusters for water damage, fire, and structural repairs. We document everything for your claim.</p>
+                            <h4>{t.faqQ4}</h4>
+                            <p>{t.faqA4}</p>
                         </div>
                         <div className={styles.faqItem}>
-                            <h4>What areas do you serve?</h4>
-                            <p>Serving Portland, Tigard, Tualatin, Gresham, Happy Valley, Oregon City, Milwaukie, Hillsboro &amp; Beaverton.</p>
+                            <h4>{t.faqQ5}</h4>
+                            <p>{t.faqA5}</p>
                         </div>
                         <div className={styles.faqItem}>
-                            <h4>Do you guarantee your work?</h4>
-                            <p>We do it right the first time — every time. Our crew takes full ownership of every project. 5-star ratings on Yelp and Google reflect the standard we hold ourselves to on every single job.</p>
+                            <h4>{t.faqQ6}</h4>
+                            <p>{t.faqA6}</p>
                         </div>
                     </div>
                     <div style={{ textAlign: 'center', marginTop: '2rem' }}>
                         <button className={styles.btnPrimary} onClick={handleEstimateClick}>
-                            Get Your Free Estimate <ArrowIcon />
+                            {t.getEstimate} <ArrowIcon />
                         </button>
                     </div>
                 </div>

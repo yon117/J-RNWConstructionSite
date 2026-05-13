@@ -18,24 +18,24 @@ export default async function handler(req, res) {
         }
 
         if (req.method === 'POST') {
-            const { title, description, image_url, details } = req.body;
+            const { title, description, image_url, details, category } = req.body;
             await db.execute({
-                sql: 'INSERT INTO projects (title, description, details, image, created_at) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)',
-                args: [title || '', description || '', details || '', image_url || '']
+                sql: 'INSERT INTO projects (title, description, details, image, category, created_at) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)',
+                args: [title || '', description || '', details || '', image_url || '', category || '']
             });
             return res.status(201).json({ success: true });
 
         } else if (req.method === 'PUT') {
-            const { id, title, description, image_url, details } = req.body;
+            const { id, title, description, image_url, details, category } = req.body;
             if (image_url !== undefined) {
                 await db.execute({
-                    sql: 'UPDATE projects SET title = ?, description = ?, details = ?, image = ? WHERE id = ?',
-                    args: [title || '', description || '', details || '', image_url, id]
+                    sql: 'UPDATE projects SET title = ?, description = ?, details = ?, image = ?, category = ? WHERE id = ?',
+                    args: [title || '', description || '', details || '', image_url, category ?? '', id]
                 });
             } else {
                 await db.execute({
-                    sql: 'UPDATE projects SET title = ?, description = ?, details = ? WHERE id = ?',
-                    args: [title || '', description || '', details || '', id]
+                    sql: 'UPDATE projects SET title = ?, description = ?, details = ?, category = ? WHERE id = ?',
+                    args: [title || '', description || '', details || '', category ?? '', id]
                 });
             }
             return res.status(200).json({ success: true });

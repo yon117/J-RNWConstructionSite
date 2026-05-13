@@ -8,9 +8,9 @@ export default function AdminProjects() {
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
     const [editingId, setEditingId] = useState(null);
-    const [editForm, setEditForm] = useState({ title: '', description: '', details: '' });
+    const [editForm, setEditForm] = useState({ title: '', description: '', details: '', category: '' });
     const [showAddForm, setShowAddForm] = useState(false);
-    const [newProject, setNewProject] = useState({ title: '', description: '', details: '', images: [] });
+    const [newProject, setNewProject] = useState({ title: '', description: '', details: '', category: '', images: [] });
     const [managingImagesId, setManagingImagesId] = useState(null);
     const [projectImages, setProjectImages] = useState([]);
     const [originalImages, setOriginalImages] = useState([]);
@@ -53,7 +53,8 @@ export default function AdminProjects() {
         setEditForm({
             title: project.title,
             description: project.description,
-            details: project.details || ''
+            details: project.details || '',
+            category: project.category || ''
         });
     };
 
@@ -117,6 +118,7 @@ export default function AdminProjects() {
                     title: newProject.title,
                     description: newProject.description,
                     details: newProject.details,
+                    category: newProject.category || '',
                     image_url: '/assets/placeholder.jpg'
                 })
             });
@@ -454,6 +456,21 @@ export default function AdminProjects() {
                             />
                         </div>
                         <div className={styles.formGroup}>
+                            <label>Category</label>
+                            <select
+                                value={newProject.category}
+                                onChange={(e) => setNewProject({ ...newProject, category: e.target.value })}
+                                style={{ padding: '10px', background: 'rgba(255,255,255,0.1)', border: '1px solid #555', color: 'var(--text-light)', borderRadius: '4px' }}
+                            >
+                                <option value="">-- No Category --</option>
+                                <option value="remodeling">Remodeling</option>
+                                <option value="siding">Siding</option>
+                                <option value="restoration">Restoration</option>
+                                <option value="drywall">Drywall</option>
+                                <option value="emergency">Emergency</option>
+                            </select>
+                        </div>
+                        <div className={styles.formGroup}>
                             <label>Images (Multiple)</label>
                             <input
                                 type="file"
@@ -552,6 +569,23 @@ export default function AdminProjects() {
                                                 />
                                             </td>
                                             <td>
+                                                <select
+                                                    value={editForm.category}
+                                                    onChange={(e) => setEditForm({ ...editForm, category: e.target.value })}
+                                                    style={{ width: '100%', padding: '8px', background: '#2a2a2a', border: '1px solid #555', color: '#fff', borderRadius: '4px' }}
+                                                >
+                                                    <option value="" style={{background:'#2a2a2a',color:'#fff'}}>-- No Category --</option>
+                                                    <option value="remodeling" style={{background:'#2a2a2a',color:'#fff'}}>Remodeling</option>
+                                                    <option value="siding" style={{background:'#2a2a2a',color:'#fff'}}>Siding</option>
+                                                    <option value="restoration" style={{background:'#2a2a2a',color:'#fff'}}>Restoration</option>
+                                                    <option value="drywall" style={{background:'#2a2a2a',color:'#fff'}}>Drywall</option>
+                                                    <option value="emergency" style={{background:'#2a2a2a',color:'#fff'}}>Emergency</option>
+                                                    <option value="painting" style={{background:'#2a2a2a',color:'#fff'}}>Painting</option>
+                                                    <option value="waterproofing" style={{background:'#2a2a2a',color:'#fff'}}>Waterproofing</option>
+                                                    <option value="mitigation" style={{background:'#2a2a2a',color:'#fff'}}>Mitigation</option>
+                                                </select>
+                                            </td>
+                                            <td>
                                                 <button onClick={handleSave} className={styles.actionBtn + ' ' + styles.editBtn}>
                                                     Save
                                                 </button>
@@ -565,6 +599,7 @@ export default function AdminProjects() {
                                             <td>{project.title}</td>
                                             <td>{project.description}</td>
                                             <td>{project.details || 'N/A'}</td>
+                                            <td>{project.category || '—'}</td>
                                             <td>
                                                 <button onClick={() => handleEdit(project)} className={styles.actionBtn + ' ' + styles.editBtn}>
                                                     Edit

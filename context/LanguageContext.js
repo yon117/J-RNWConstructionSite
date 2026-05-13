@@ -94,6 +94,22 @@ const translations = {
         copyright: '© 2025 J&R NW Construction LLC',
         callUsNow: 'Call Us Now!!',
 
+        // FAQ
+        faqLabel: 'Got Questions?',
+        faqTitle: 'Common Questions',
+        faqQ1: 'How fast can you start?',
+        faqA1: 'We typically respond within 2 hours and can schedule a free estimate the same or next day. Many emergency jobs start same day.',
+        faqQ2: 'How much does it cost?',
+        faqA2: 'Every project is different. We offer free, no-obligation estimates with detailed written quotes. No hidden fees, no surprises.',
+        faqQ3: 'Are you licensed and insured?',
+        faqA3: 'Yes. Oregon CCB #232708. Fully licensed, bonded, and insured. We carry full liability and workers\' compensation coverage on every job.',
+        faqQ4: 'Do you work with insurance claims?',
+        faqA4: 'Yes. We regularly work alongside insurance adjusters for water damage, fire, and structural repairs. We document everything for your claim.',
+        faqQ5: 'What areas do you serve?',
+        faqA5: 'Serving Portland, Tigard, Tualatin, Gresham, Happy Valley, Oregon City, Milwaukie, Hillsboro & Beaverton.',
+        faqQ6: 'Do you guarantee your work?',
+        faqA6: 'We do it right the first time — every time. Our crew takes full ownership of every project. 5-star ratings on Yelp and Google reflect the standard we hold ourselves to on every single job.',
+
         // Reviews section
         whatClientsSay: 'What Our Clients Say',
         realReviews: 'Real reviews from real customers',
@@ -131,6 +147,9 @@ const translations = {
         filterRestoration: 'Restoration',
         filterDrywall: 'Drywall',
         filterEmergency: 'Emergency',
+        filterPainting: 'Painting',
+        filterWaterproofing: 'Waterproofing',
+        filterMitigation: 'Mitigation',
 
         // Service detail page
         ourProcess: 'Our Process',
@@ -240,6 +259,22 @@ const translations = {
         copyright: '© 2025 J&R NW Construction LLC',
         callUsNow: '¡Llámanos Ahora!!',
 
+        // FAQ
+        faqLabel: '¿Tienes Preguntas?',
+        faqTitle: 'Preguntas Frecuentes',
+        faqQ1: '¿Qué tan rápido pueden empezar?',
+        faqA1: 'Normalmente respondemos en 2 horas y podemos programar un estimado gratuito el mismo día o al siguiente. Muchos trabajos de emergencia comienzan el mismo día.',
+        faqQ2: '¿Cuánto cuesta?',
+        faqA2: 'Cada proyecto es diferente. Ofrecemos estimados gratuitos y sin compromiso con presupuestos detallados por escrito. Sin cargos ocultos, sin sorpresas.',
+        faqQ3: '¿Están licenciados y asegurados?',
+        faqA3: 'Sí. Oregon CCB #232708. Totalmente licenciados, asegurados y garantizados. Contamos con seguro de responsabilidad civil y compensación de trabajadores en cada trabajo.',
+        faqQ4: '¿Trabajan con reclamaciones de seguros?',
+        faqA4: 'Sí. Trabajamos regularmente con ajustadores de seguros para daños por agua, incendio y reparaciones estructurales. Documentamos todo para su reclamación.',
+        faqQ5: '¿Qué áreas sirven?',
+        faqA5: 'Servimos Portland, Tigard, Tualatin, Gresham, Happy Valley, Oregon City, Milwaukie, Hillsboro y Beaverton.',
+        faqQ6: '¿Garantizan su trabajo?',
+        faqA6: 'Lo hacemos bien desde la primera vez, siempre. Nuestro equipo asume total responsabilidad de cada proyecto. Las calificaciones de 5 estrellas en Yelp y Google reflejan el estándar que mantenemos en cada trabajo.',
+
         // Reviews section
         whatClientsSay: 'Lo Que Dicen Nuestros Clientes',
         realReviews: 'Reseñas reales de clientes reales',
@@ -277,6 +312,9 @@ const translations = {
         filterRestoration: 'Restauración',
         filterDrywall: 'Tablaroca',
         filterEmergency: 'Emergencia',
+        filterPainting: 'Pintura',
+        filterWaterproofing: 'Impermeabilización',
+        filterMitigation: 'Mitigación',
 
         // Service detail page
         ourProcess: 'Nuestro Proceso',

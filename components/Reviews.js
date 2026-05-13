@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import styles from '../styles/Reviews.module.css';
+import { useLang } from '../context/LanguageContext';
 
 const Reviews = () => {
+    const { t } = useLang();
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -170,7 +172,7 @@ const Reviews = () => {
 
     if (loading) return (
         <section className={styles.reviewsSection}>
-            <div className={styles.container}><div className={styles.header}><h2>What Our Clients Say</h2><p>Loading reviews...</p></div></div>
+            <div className={styles.container}><div className={styles.header}><h2>{t.whatClientsSay || 'What Our Clients Say'}</h2><p>{t.loadingReviews || 'Loading reviews...'}</p></div></div>
         </section>
     );
 
@@ -178,8 +180,8 @@ const Reviews = () => {
         <section className={styles.reviewsSection}>
             <div className={styles.container}>
                 <div className={styles.header}>
-                    <h2>What Our Clients Say</h2>
-                    <p>Real reviews from real customers</p>
+                    <h2>{t.whatClientsSay || 'What Our Clients Say'}</h2>
+                    <p>{t.realReviews || 'Real reviews from real customers'}</p>
                 </div>
 
                 <div

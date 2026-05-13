@@ -10,12 +10,15 @@ import pageStyles from '../styles/Projects.module.css';
 
 // Filter categories — adjust to match your actual project types
 const FILTERS = [
-    { id: 'all', labelKey: 'filterAll', terms: [] },
-    { id: 'remodeling', labelKey: 'filterRemodeling', terms: ['remodeling', 'remodelación', 'remodelaciones'] },
-    { id: 'siding', labelKey: 'filterSiding', terms: ['siding', 'revestimiento'] },
-    { id: 'restoration', labelKey: 'filterRestoration', terms: ['restoration', 'restauración'] },
-    { id: 'drywall', labelKey: 'filterDrywall', terms: ['drywall', 'tablaroca'] },
-    { id: 'emergency', labelKey: 'filterEmergency', terms: ['emergency', 'emergencia'] },
+    { id: 'all',          labelKey: 'filterAll',          label: 'All' },
+    { id: 'remodeling',   labelKey: 'filterRemodeling',   label: 'Remodeling' },
+    { id: 'siding',       labelKey: 'filterSiding',       label: 'Siding' },
+    { id: 'restoration',  labelKey: 'filterRestoration',  label: 'Restoration' },
+    { id: 'drywall',      labelKey: 'filterDrywall',      label: 'Drywall' },
+    { id: 'emergency',    labelKey: 'filterEmergency',    label: 'Emergency' },
+    { id: 'painting',     labelKey: 'filterPainting',     label: 'Painting' },
+    { id: 'waterproofing',labelKey: 'filterWaterproofing',label: 'Waterproofing' },
+    { id: 'mitigation',   labelKey: 'filterMitigation',   label: 'Mitigation' },
 ];
 
 // Assign grid layout classes in a repeating pattern
@@ -63,23 +66,19 @@ export default function Projects({ projects }) {
         let cancelled = false;
         async function translate() {
             const { translateArray } = await import('../utils/translate');
-            const titles = await translateArray(projects.map(p => p.title), lang);
-            const descs  = await translateArray(projects.map(p => p.description), lang);
-            if (!cancelled) setDisplayProjects(projects.map((p, i) => ({ ...p, title: titles[i], description: descs[i] })));
+            const titles   = await translateArray(projects.map(p => p.title), lang);
+            const descs    = await translateArray(projects.map(p => p.description), lang);
+            const details  = await translateArray(projects.map(p => p.details), lang);
+            if (!cancelled) setDisplayProjects(projects.map((p, i) => ({ ...p, title: titles[i], description: descs[i], details: details[i] })));
         }
         translate();
         return () => { cancelled = true; };
     }, [lang, projects]);
 
-    // Filter projects — simple term match in title, description, or category
+    // Filter projects by exact category field
     const filteredProjects = activeFilter === 'all'
         ? displayProjects
-        : displayProjects.filter(p => {
-            const active = FILTERS.find(f => f.id === activeFilter);
-            const terms = active?.terms || [activeFilter];
-            const haystack = `${p.title || ''} ${p.description || ''} ${p.category || ''}`.toLowerCase();
-            return terms.some(term => term && haystack.includes(term));
-        });
+        : displayProjects.filter(p => p.category === activeFilter);
 
     return (
         <Layout
@@ -113,15 +112,22 @@ export default function Projects({ projects }) {
 
                     {/* ── FILTERS ── */}
                     <div className={pageStyles.filterBar}>
-                        {FILTERS.map(filter => (
-                            <button
-                                key={filter.id}
-                                className={`${pageStyles.filterBtn} ${activeFilter === filter.id ? pageStyles.filterBtnActive : ''}`}
-                                onClick={() => setActiveFilter(filter.id)}
-                            >
-                                {t[filter.labelKey] || filter.labelKey}
-                            </button>
-                        ))}
+                        {FILTERS.map(filter => {
+                            const count = filter.id === 'all'
+                                ? displayProjects.length
+                                : displayProjects.filter(p => p.category === filter.id).length;
+                            if (filter.id !== 'all' && count === 0) return null;
+                            return (
+                                <button
+                                    key={filter.id}
+                                    className={`${pageStyles.filterBtn} ${activeFilter === filter.id ? pageStyles.filterBtnActive : ''}`}
+                                    onClick={() => setActiveFilter(filter.id)}
+                                >
+                                    {t[filter.labelKey] || filter.label}
+                                    {filter.id !== 'all' && <span className={pageStyles.filterCount}>{count}</span>}
+                                </button>
+                            );
+                        })}
                     </div>
 
                     {/* ── PROJECTS GRID ── */}
@@ -133,6 +139,7 @@ export default function Projects({ projects }) {
                                     key={project.id}
                                     className={`${pageStyles.projectCard} ${pattern ? pageStyles[pattern] : ''}`}
                                     onClick={() => handleProjectClick(project)}
+                                    style={{ animationDelay: `${index * 60}ms` }}
                                 >
                                     <img
                                         src={imageUrl(project.image)}
@@ -268,7 +275,7 @@ export async function getStaticProps() {
     const db = await getDb();
 
     const projectsResult = await db.execute(
-        'SELECT id, title, description, details, image FROM projects ORDER BY created_at DESC'
+        'SELECT id, title, description, details, image, category FROM projects ORDER BY created_at DESC'
     );
 
     const rows = projectsResult.rows || [];
@@ -279,6 +286,7 @@ export async function getStaticProps() {
         description: p.description || '',
         details:     p.details || '',
         image:       p.image || '',
+        category:    p.category || '',
         imageCount:  1,
     }));
 
