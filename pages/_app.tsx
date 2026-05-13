@@ -6,7 +6,7 @@ import { LanguageProvider } from "../context/LanguageContext";
 import { Barlow, Barlow_Condensed } from "next/font/google";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 
 const Bubble = dynamic(
   () => import("@typebot.io/react").then((mod) => mod.Bubble),
@@ -49,8 +49,8 @@ if (typeof window !== "undefined") {
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
-  useEffect(() => {
-    requestAnimationFrame(() => window.scrollTo(0, 0));
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
   }, [router.pathname]);
 
   useEffect(() => {
