@@ -1,5 +1,9 @@
 
 
+html, body {
+  scroll-behavior: auto !important;
+}
+
 :root {
   --gold: #C8961E;
   --gold-light: #E8B84B;

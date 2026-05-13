@@ -8,6 +8,10 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+if (typeof window !== 'undefined') {
+  history.scrollRestoration = 'manual';
+}
+
 const Bubble = dynamic(
   () => import("@typebot.io/react").then((mod) => mod.Bubble),
   { ssr: false }
@@ -50,9 +54,22 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   useEffect(() => {
-    const resetScroll = () => setTimeout(() => window.scrollTo(0, 0), 0);
+    const resetScroll = () => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      }, 50);
+    };
+    router.events.on('routeChangeStart', resetScroll);
     router.events.on('routeChangeComplete', resetScroll);
-    return () => router.events.off('routeChangeComplete', resetScroll);
+    return () => {
+      router.events.off('routeChangeStart', resetScroll);
+      router.events.off('routeChangeComplete', resetScroll);
+    };
   }, [router.events]);
 
   useEffect(() => {
