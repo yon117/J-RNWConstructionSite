@@ -6,7 +6,7 @@ import { LanguageProvider } from "../context/LanguageContext";
 import { Barlow, Barlow_Condensed } from "next/font/google";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect } from "react";
 
 const Bubble = dynamic(
   () => import("@typebot.io/react").then((mod) => mod.Bubble),
@@ -49,9 +49,11 @@ if (typeof window !== "undefined") {
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
-  useLayoutEffect(() => {
-    window.scrollTo(0, 0);
-  }, [router.pathname]);
+  useEffect(() => {
+    const resetScroll = () => setTimeout(() => window.scrollTo(0, 0), 0);
+    router.events.on('routeChangeComplete', resetScroll);
+    return () => router.events.off('routeChangeComplete', resetScroll);
+  }, [router.events]);
 
   useEffect(() => {
     const track = (url: string) => {
