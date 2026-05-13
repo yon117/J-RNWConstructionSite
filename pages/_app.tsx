@@ -51,6 +51,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     const track = (url: string) => {
+      window.scrollTo(0, 0);
       if (url.startsWith('/adminside') || url.startsWith('/admin')) return;
       const device_type = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
       fetch('/api/monitor/pageview', {
