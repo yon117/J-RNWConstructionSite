@@ -346,16 +346,6 @@ export default function ServiceDetails({ service, images, randomProjects }) {
                     </div>
                 )}
 
-                {/* ── Floating Contact Button ──────────────────────────── */}
-                <button
-                    className={styles.floatingContactBtn}
-                    onClick={() => setShowContactModal(true)}
-                    aria-label={t.getEstimate}
-                >
-                    <span className={styles.floatingBtnIcon}>💬</span>
-                    <span className={styles.floatingBtnText}>{t.getEstimate}</span>
-                </button>
-
                 {/* ── Contact Form Modal ───────────────────────────────── */}
                 {showContactModal && (
                     <Modal title={t.getInTouch} onClose={() => setShowContactModal(false)}>
