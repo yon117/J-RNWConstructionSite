@@ -50,6 +50,10 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [router.pathname]);
+
+  useEffect(() => {
     if (typeof window !== 'undefined') {
       history.scrollRestoration = 'manual';
     }
