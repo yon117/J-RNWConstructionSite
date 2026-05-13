@@ -98,12 +98,22 @@ export default function Analytics() {
     const [advice, setAdvice]       = useState(null);
     const [aiError, setAiError]     = useState('');
 
+    const [projectStats, setProjectStats]       = useState({ categoryData: [], total: 0 });
+    const [projAdvice, setProjAdvice]           = useState(null);
+    const [projAdviceLoading, setProjAdviceLoading] = useState(false);
+    const [projAdviceError, setProjAdviceError] = useState('');
+
     useEffect(() => {
         fetch('/api/messages')
             .then(r => r.json())
             .then(data => setAllMessages(Array.isArray(data) ? data : []))
             .catch(() => {})
             .finally(() => setLoading(false));
+
+        fetch('/api/analytics/project-stats')
+            .then(r => r.json())
+            .then(data => setProjectStats(data))
+            .catch(() => {});
     }, []);
 
     const messages = filterByRange(allMessages, range.days);
@@ -183,6 +193,30 @@ export default function Analytics() {
             setAiLoading(false);
         }
     }, [total, contacted, convRate, topService, bestMonth, byService, byStatus]);
+
+    const getProjectAdvice = useCallback(async () => {
+        setProjAdviceLoading(true);
+        setProjAdviceError('');
+        setProjAdvice(null);
+        try {
+            const res = await fetch('/api/analytics/project-advice', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    projectsByCategory: projectStats.categoryData,
+                    leadsByService: byService,
+                    totalProjects: projectStats.total,
+                }),
+            });
+            const data = await res.json();
+            if (data.advice) setProjAdvice(data.advice);
+            else setProjAdviceError(data.error || 'Failed to generate advice');
+        } catch {
+            setProjAdviceError('Network error. Try again.');
+        } finally {
+            setProjAdviceLoading(false);
+        }
+    }, [projectStats, byService]);
 
     if (loading) {
         return (
@@ -334,6 +368,76 @@ export default function Analytics() {
                     </table>
                 </div>
 
+
+                {/* Portfolio Balance */}
+                <div className={styles.chartsRow} style={{ marginTop: 24 }}>
+                    <div className={styles.chartCard}>
+                        <SectionTitle>Projects Uploaded by Category</SectionTitle>
+                        {projectStats.categoryData.length > 0 ? (
+                            <ResponsiveContainer width="100%" height={260}>
+                                <BarChart data={projectStats.categoryData} margin={{ top: 5, right: 10, left: -10, bottom: 40 }}>
+                                    <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" />
+                                    <XAxis dataKey="name" tick={{ fill: '#aaa', fontSize: 11 }} angle={-30} textAnchor="end" interval={0} />
+                                    <YAxis tick={{ fill: '#aaa', fontSize: 11 }} allowDecimals={false} />
+                                    <Tooltip content={<CustomTooltip />} />
+                                    <Bar dataKey="count" name="Projects" fill="#4CAF50" radius={[4,4,0,0]} animationDuration={900} />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        ) : <div className={styles.empty}>No projects with categories yet</div>}
+                        <div style={{ textAlign: 'center', color: '#aaa', fontSize: 13, marginTop: 8 }}>
+                            Total: <strong style={{ color: '#D4AF37' }}>{projectStats.total}</strong> projects
+                        </div>
+                    </div>
+
+                    <div className={styles.chartCard}>
+                        <SectionTitle>Lead Demand by Service</SectionTitle>
+                        {serviceData.length > 0 ? (
+                            <ResponsiveContainer width="100%" height={260}>
+                                <BarChart data={serviceData} margin={{ top: 5, right: 10, left: -10, bottom: 60 }}>
+                                    <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" />
+                                    <XAxis dataKey="name" tick={{ fill: '#aaa', fontSize: 11 }} angle={-35} textAnchor="end" interval={0} />
+                                    <YAxis tick={{ fill: '#aaa', fontSize: 11 }} allowDecimals={false} />
+                                    <Tooltip content={<CustomTooltip />} />
+                                    <Bar dataKey="count" name="Leads" fill="#2196F3" radius={[4,4,0,0]} animationDuration={900} />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        ) : <div className={styles.empty}>No leads data yet</div>}
+                    </div>
+                </div>
+
+                {/* AI Project Upload Advisor */}
+                <div className={`${styles.chartCard} ${styles.aiCard}`} style={{ marginTop: 24 }}>
+                    <SectionTitle>AI Project Upload Advisor</SectionTitle>
+                    <p className={styles.aiDesc}>
+                        Compares your uploaded projects vs. lead demand to recommend what to post next for better balance.
+                    </p>
+                    <button
+                        className={styles.aiBtn}
+                        onClick={getProjectAdvice}
+                        disabled={projAdviceLoading || projectStats.total === 0}
+                    >
+                        {projAdviceLoading ? 'Analyzing...' : 'Get Upload Recommendations'}
+                    </button>
+                    {projectStats.total === 0 && <div className={styles.aiDesc} style={{ color: '#666', marginTop: 8 }}>Assign categories to projects first.</div>}
+                    {projAdviceError && <div className={styles.aiError}>{projAdviceError}</div>}
+                    {projAdviceLoading && <div className={styles.aiLoadingBar}><div className={styles.aiLoadingFill} /></div>}
+                    {projAdvice && (
+                        <div className={styles.adviceGrid}>
+                            {projAdvice.map((item, i) => (
+                                <div key={i} className={styles.adviceCard} style={{ animationDelay: `${i * 100}ms` }}>
+                                    <div className={styles.adviceHeader}>
+                                        <span className={styles.adviceTitle}>{item.title}</span>
+                                        <span className={styles.priority} style={{ background: PRIORITY_COLOR[item.priority] || '#888' }}>
+                                            {item.priority}
+                                        </span>
+                                    </div>
+                                    <div className={styles.adviceWhy}>{item.why}</div>
+                                    <div className={styles.adviceAction}><strong>Action:</strong> {item.action}</div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
 
                 {/* AI Advisor */}
                 <div className={`${styles.chartCard} ${styles.aiCard}`} style={{ marginTop: 24 }}>
