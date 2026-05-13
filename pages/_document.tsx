@@ -23,6 +23,28 @@ export default function Document() {
         />
 
 
+        {/* BBB Seal */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              var bbb = bbb || [];
+              bbb.push(["bbbid", "greatwestpacific"]);
+              bbb.push(["bid", "1000117288"]);
+              bbb.push(["chk", "A690EB6EA0"]);
+              bbb.push(["pos", "bottom-left"]);
+              (function () {
+                var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
+                var bbb = document.createElement("script");
+                bbb.type = "text/javascript";
+                bbb.async = true;
+                bbb.src = scheme + "seal-alaskaoregonwesternwashington.bbb.org/badge/badge.min.js";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(bbb, s);
+              })();
+            `,
+          }}
+        />
+
         {/* LocalBusiness JSON-LD */}
         <script
           type="application/ld+json"

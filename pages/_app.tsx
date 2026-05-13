@@ -113,17 +113,6 @@ export default function App({ Component, pageProps }: AppProps) {
               'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
               })(window,document,'script','dataLayer','GTM-K44RZ5FM');
             `}</Script>
-            <Script id="bbb-badge" strategy="afterInteractive">{`
-              var bbb=bbb||[];
-              bbb.push(["bbbid","greatwestpacific"]);
-              bbb.push(["bid","1000117288"]);
-              bbb.push(["chk","A690EB6EA0"]);
-              bbb.push(["pos","bottom-left"]);
-              (function(){var s=(("https:"==document.location.protocol)?"https://":"http://");
-              var b=document.createElement("script");b.type="text/javascript";b.async=true;
-              b.src=s+"seal-alaskaoregonwesternwashington.bbb.org/badge/badge.min.js";
-              var x=document.getElementsByTagName("script")[0];x.parentNode.insertBefore(b,x);})();
-            `}</Script>
           </>
         )}
         <Component {...pageProps} />
