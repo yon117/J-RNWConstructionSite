@@ -72,7 +72,6 @@ const translations = {
         // Project types
         pt1: 'Interior Construction & Remodeling',
         ptBath: 'Bathroom Remodel',
-        ptKit: 'Kitchen Remodel',
         pt2: 'Restoration & Reconstruction',
         pt3: 'Mitigation & Emergency Services',
         pt4: 'General Repairs & Carpentry',

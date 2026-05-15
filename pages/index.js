@@ -109,6 +109,53 @@ const GridIcon = () => (
     </svg>
 );
 
+const PackageIcon = () => (
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+    </svg>
+);
+
+const TrashIcon = () => (
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+    </svg>
+);
+
+const SweepIcon = () => (
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+    </svg>
+);
+
+// ─── HOW WE WORK ─────────────────────────────────────────────────────────────
+const HowWeWorkPhoneIcon = () => (
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} width={26} height={26}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.948V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 7V6a1 1 0 000-1z" />
+    </svg>
+);
+const HowWeWorkClipboardIcon = () => (
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} width={26} height={26}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+    </svg>
+);
+const HowWeWorkHammerIcon = () => (
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} width={26} height={26}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+    </svg>
+);
+const HowWeWorkCheckIcon = () => (
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} width={26} height={26}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+);
+
+const PROCESS_STEPS = [
+    { Icon: HowWeWorkPhoneIcon,    num: '01', title: 'Free Consultation',  desc: 'Tell us about your project. We listen before we plan.' },
+    { Icon: HowWeWorkClipboardIcon, num: '02', title: 'Custom Plan & Quote', desc: 'Transparent pricing with no hidden surprises.'          },
+    { Icon: HowWeWorkHammerIcon,   num: '03', title: 'Quality Construction', desc: 'We build with care, on schedule and on budget.'        },
+    { Icon: HowWeWorkCheckIcon,    num: '04', title: 'Final Walkthrough',   desc: 'Your satisfaction is the only sign-off that counts.'   },
+];
+
 // Static service cards for the home preview
 const HOME_SERVICES = [
     { key: 'pt1', category: 'REMODEL',     desc: 'Kitchens, bathrooms, additions. Permits pulled, subs coordinated, finish carpentry in-house.' },
@@ -122,7 +169,6 @@ const HOME_SERVICES = [
 const PROJECT_TYPES = [
     { key: 'pt1',   en: 'Interior Construction & Remodeling' },
     { key: 'ptBath', en: 'Bathroom Remodel' },
-    { key: 'ptKit',  en: 'Kitchen Remodel' },
     { key: 'pt2',   en: 'Restoration & Reconstruction' },
     { key: 'pt3',   en: 'Mitigation & Emergency Services' },
     { key: 'pt4',   en: 'General Repairs & Carpentry' },
@@ -130,6 +176,13 @@ const PROJECT_TYPES = [
     { key: 'pt6',   en: 'Siding' },
     { key: 'pt7',   en: 'Drywall' },
     { key: 'pt8',   en: 'Other (describe in message below)' },
+];
+
+const HANDLE_ITEMS = [
+    { Icon: PackageIcon, title: 'Materials Sourced & Delivered', desc: 'We source all materials at contractor pricing and deliver to site. No hardware store runs for you.' },
+    { Icon: TrashIcon, title: 'Debris Removal & Hauling', desc: 'All demo waste and packaging gets hauled away. You never rent a dumpster or lift a bag.' },
+    { Icon: SweepIcon, title: 'Full Site Cleanup', desc: 'Every room swept, surfaces wiped, tools removed. We leave your space cleaner than we found it.' },
+    { Icon: ShieldIcon, title: 'Left Like New — Guaranteed', desc: "When we're done, your home looks finished — not like a job site. 100% satisfaction or we come back." },
 ];
 
 // WARNING SIGNS moved to components/WarningSigns.js
@@ -243,33 +296,8 @@ const _REMOVED = [
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 export default function Home() {
     const [showContactModal, setShowContactModal] = useState(false);
-    const [showFloatingBtn, setShowFloatingBtn] = useState(false);
-    const [projectCount, setProjectCount] = useState(null);
+    const [openFaq, setOpenFaq] = useState(null);
     const { t } = useLang();
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setShowFloatingBtn(window.scrollY > window.innerHeight * 0.85);
-        };
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    useEffect(() => {
-        const loadProjectCount = async () => {
-            try {
-                const res = await fetch('/api/projects');
-                if (!res.ok) return;
-                const data = await res.json();
-                if (Array.isArray(data)) {
-                    setProjectCount(data.length);
-                }
-            } catch (error) {
-                console.warn('Unable to fetch project count', error);
-            }
-        };
-        loadProjectCount();
-    }, []);
 
     const handleEstimateClick = () => {
         setShowContactModal(true);
@@ -290,9 +318,9 @@ export default function Home() {
         >
 
             {/* ── HERO ── */}
-            <section className={styles.hero}>
+            <section className={styles.hero} data-anim="hero-section">
                 {/* ✅ Después */}
-<div className={styles.heroBg} />
+<div className={styles.heroBg} data-anim="hero-bg" />
                 <div className={styles.heroAccentLine} />
                 <div className={styles.heroInner}>
                 <div className={styles.heroContent}>
@@ -307,7 +335,8 @@ export default function Home() {
                     <p className={styles.heroDesc}>
     {t.heroItem1}.<br />
     {t.heroItem2}.<br />
-    {t.heroItem3}.
+    {t.heroItem3}.<br />
+    <span style={{ fontSize: '13px', opacity: 0.7 }}>Portland · Tigard · Tualatin · Gresham · Happy Valley · Oregon City</span>
 </p>
                     <div className={styles.heroActions}>
                         <button className={styles.btnPrimary} onClick={handleEstimateClick}>
@@ -339,6 +368,11 @@ export default function Home() {
                             <StarIcon />
                             BBB {t.accredited || 'Accredited'}
                         </div>
+                        <span className={styles.trustSep}>·</span>
+                        <div className={styles.trustItem}>
+                            <CheckIcon />
+                            100% Satisfaction Guarantee
+                        </div>
                     </div>
                 </div>
                 <div className={styles.heroFormPanel}>
@@ -348,19 +382,44 @@ export default function Home() {
 
                 {/* Stats */}
                 <div className={styles.heroStats}>
-                    <div className={styles.statBox}>
-                        <div className={styles.statNum}>20+</div>
+                    <div className={styles.statBox} data-anim="stat">
+                        <div className={styles.statNum} data-anim="stat-num">20+</div>
                         <div className={styles.statLabel}>{t.yearsExp || 'Years Exp.'}</div>
                     </div>
-                    <div className={styles.statBox}>
-                        <div className={styles.statNum}>
-                            {projectCount !== null ? `${projectCount}+` : '...'}
-                        </div>
-                        <div className={styles.statLabel}>{t.projectsDone || 'Projects'}</div>
+                    <div className={styles.statBox} data-anim="stat">
+                        <div className={styles.statNum} data-anim="stat-num">50+</div>
+                        <div className={styles.statLabel}>Families Served</div>
                     </div>
-                    <div className={styles.statBox}>
-                        <div className={styles.statNum}>★ 5.0</div>
+                    <div className={styles.statBox} data-anim="stat">
+                        <div className={styles.statNum} data-anim="stat-num">★ 5.0</div>
                         <div className={styles.statLabel}>{t.rating || 'Rating'}</div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ── WE HANDLE EVERYTHING ── */}
+            <section className={styles.handleSection}>
+                <div className={styles.handleInner}>
+                    <div className={styles.sectionHeader} data-anim="fade-up">
+                        <div className={styles.sectionLabel}>One Call. Zero Stress.</div>
+                        <h2 className={styles.sectionTitle}>
+                            We Handle <em>Everything</em>
+                        </h2>
+                        <p className={styles.handleSubtitle}>
+                            Materials, disposal, cleanup — we own the whole job start to finish. You come home to a space that looks like new.
+                        </p>
+                    </div>
+                    <div className={styles.handleGrid}>
+                        {HANDLE_ITEMS.map((item, i) => (
+                            <div key={i} className={styles.handleCard}>
+                                <div className={styles.handleCardTop}>
+                                    <div className={styles.handleIcon}><item.Icon /></div>
+                                    <span className={styles.handleStepNum}>0{i + 1}</span>
+                                </div>
+                                <h3 className={styles.handleCardTitle}>{item.title}</h3>
+                                <p className={styles.handleCardDesc}>{item.desc}</p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>
@@ -368,7 +427,7 @@ export default function Home() {
             {/* ── SERVICES PREVIEW ── */}
             <section className={styles.servicesSection}>
                 <div className={styles.servicesInner}>
-                    <div className={styles.sectionHeader}>
+                    <div className={styles.sectionHeader} data-anim="fade-up">
                         <div className={styles.sectionLabel}>{t.ourServicesLabel || 'What We Do'}</div>
                         <h2 className={styles.sectionTitle}>
                             {t.ourServices.split(' ')[0]} <em>{t.ourServices.split(' ').slice(1).join(' ')}</em>
@@ -376,7 +435,8 @@ export default function Home() {
                     </div>
                     <div className={styles.servicesGrid}>
                         {HOME_SERVICES.map((svc, idx) => (
-                            <Link href="/services" key={svc.key} className={styles.serviceCard}>
+                            <Link href="/services" key={svc.key} className={styles.serviceCard} data-anim="service-card">
+                                <div className={styles.serviceCardGhostNum}>{String(idx + 1).padStart(2, '0')}</div>
                                 <div className={styles.serviceCardNum}>
                                     <span className={styles.serviceCardIndex}>{String(idx + 1).padStart(2, '0')}</span>
                                     <span className={styles.serviceCardTotal}>&nbsp;/ {String(HOME_SERVICES.length).padStart(2, '0')}</span>
@@ -388,6 +448,17 @@ export default function Home() {
                             </Link>
                         ))}
                     </div>
+                    <div className={styles.emergencyStrip}>
+                        <div className={styles.emergencyStripContent}>
+                            <div>
+                                <h3 className={styles.emergencyStripTitle}>Need Immediate Assistance?</h3>
+                                <p className={styles.emergencyStripDesc}>Our emergency response teams are on standby 24/7 to handle critical property damage and restoration needs.</p>
+                            </div>
+                            <a href="tel:5039982340" className={styles.emergencyStripBtn} onClick={() => { if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'phone_click', { event_category: 'contact', event_label: 'emergency_strip' }); }}>
+                                Emergency Hotline
+                            </a>
+                        </div>
+                    </div>
                     <div className={styles.servicesViewAll}>
                         <Link href="/services" className={styles.btnSecondary}>
                             {t.ourServices} <ArrowIcon />
@@ -396,16 +467,41 @@ export default function Home() {
                 </div>
             </section>
 
+            {/* ── WARNING SIGNS ── */}
+            <WarningSigns onCta={handleEstimateClick} />
+
             {/* ── REVIEWS ── */}
             <Reviews />
+
+            {/* ── HOW WE WORK ── */}
+            <section className={styles.hwwSection}>
+                <div className={styles.hwwInner}>
+                    <div className={styles.sectionHeader}>
+                        <div className={styles.sectionLabel}>How We Work</div>
+                        <h2 className={styles.sectionTitle}>
+                            From First Call to <em>Final Nail</em>
+                        </h2>
+                    </div>
+                    <div className={styles.hwwSteps}>
+                        {PROCESS_STEPS.map((step, i) => (
+                            <div key={step.num} className={styles.hwwStep} data-anim="fade-up">
+                                <div className={styles.hwwNum}>{step.num}</div>
+                                <div className={styles.hwwIcon}><step.Icon /></div>
+                                <h3 className={styles.hwwStepTitle}>{step.title}</h3>
+                                <p className={styles.hwwStepDesc}>{step.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
 
             {/* ── ABOUT ── */}
             <section className={styles.aboutSection}>
                 <div className={styles.aboutInner}>
-                    <div className={styles.aboutLogoWrap}>
+                    <div className={styles.aboutLogoWrap} data-anim="about-logo">
                         <Image src="/logo.png" alt="J&R NW Construction" width={340} height={340} style={{ borderRadius: '50%' }} />
                     </div>
-                    <div className={styles.aboutContent}>
+                    <div className={styles.aboutContent} data-anim="fade-up">
                         <div className={styles.sectionLabel}>{t.weWorkForYou}</div>
                         <h2 className={styles.sectionTitle}>
                             J&amp;R NW <em>Construction</em>
@@ -415,60 +511,161 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* ── WARNING SIGNS ── */}
-            <WarningSigns onCta={handleEstimateClick} />
+            {/* ── PORTFOLIO PREVIEW ── */}
+            <section className={styles.projectsSection}>
+                <div className={styles.projectsInner}>
+                    <div className={styles.projectsHeader}>
+                        <div>
+                            <div className={styles.sectionLabel}>Recent Work</div>
+                            <h2 className={styles.sectionTitle}>
+                                Our <em>Projects</em>
+                            </h2>
+                        </div>
+                        <Link href="/projects" className={styles.btnSecondary}>
+                            View All Work <ArrowIcon />
+                        </Link>
+                    </div>
+                    <div className={styles.projectsGrid}>
+                        <div className={`${styles.projectCard} ${styles.featured}`} style={{ position: 'relative' }}>
+                            <Image src="/assets/bathroom-reno-2.png" alt="Bathroom Renovation" fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover', filter: 'brightness(0.7)' }} />
+                            <div className={styles.projectOverlay}>
+                                <span className={styles.projectCategory}>Remodel</span>
+                                <div className={styles.projectTitle}>Bathroom Renovation</div>
+                            </div>
+                        </div>
+                        <div className={styles.projectCard} style={{ position: 'relative' }}>
+                            <Image src="/assets/bathroom-reno-1.png" alt="Bathroom Renovation" fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover', filter: 'brightness(0.7)' }} />
+                            <div className={styles.projectOverlay}>
+                                <span className={styles.projectCategory}>Remodel</span>
+                                <div className={styles.projectTitle}>Bathroom Renovation</div>
+                            </div>
+                        </div>
+                        <div className={styles.projectCard} style={{ position: 'relative' }}>
+                            <Image src="/assets/siding-project-1.png" alt="Siding Project" fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover', filter: 'brightness(0.7)' }} />
+                            <div className={styles.projectOverlay}>
+                                <span className={styles.projectCategory}>Siding</span>
+                                <div className={styles.projectTitle}>Exterior Siding</div>
+                            </div>
+                        </div>
+                        <div className={styles.projectCard} style={{ position: 'relative' }}>
+                            <Image src="/assets/fire-damage.png" alt="Fire Damage Restoration" fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover', filter: 'brightness(0.7)' }} />
+                            <div className={styles.projectOverlay}>
+                                <span className={styles.projectCategory}>Restoration</span>
+                                <div className={styles.projectTitle}>Fire Damage Restoration</div>
+                            </div>
+                        </div>
+                        <div className={styles.projectCard} style={{ position: 'relative' }}>
+                            <Image src="/assets/drywall.png" alt="Drywall & Finishing" fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover', filter: 'brightness(0.7)' }} />
+                            <div className={styles.projectOverlay}>
+                                <span className={styles.projectCategory}>Drywall</span>
+                                <div className={styles.projectTitle}>Drywall & Finishing</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ── SERVICE AREAS ── */}
+            <section className={styles.areasSection}>
+                <div className={styles.areasInner}>
+                    <div className={styles.areasLeft}>
+                        <div className={styles.sectionLabel}>Where We Work</div>
+                        <h2 className={styles.sectionTitle}>
+                            Serving <em>Portland Metro</em>
+                        </h2>
+                        <p className={styles.areasDesc}>
+                            Licensed contractor serving 9 cities across the Portland metro area. CCB #232708. Available 24/7 for emergencies.
+                        </p>
+                        <div className={styles.areasGrid}>
+                            {['Portland', 'Tigard', 'Tualatin', 'Gresham', 'Happy Valley', 'Oregon City', 'Milwaukie', 'Hillsboro', 'Beaverton'].map(city => (
+                                <div key={city} className={styles.areaChip}>
+                                    <CheckIcon /> {city}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className={styles.areasMap}>
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d178918.09!2d-122.6784!3d45.5051!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x54950b0b7da97427%3A0x1c36b9e6f6d18591!2sPortland%2C%20OR!5e0!3m2!1sen!2sus"
+                            width="100%"
+                            height="400"
+                            style={{ border: 0, borderRadius: 4, filter: 'invert(90%) hue-rotate(180deg)', display: 'block' }}
+                            allowFullScreen=""
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                            title="J&R NW Construction service area map"
+                        />
+                    </div>
+                </div>
+            </section>
 
             {/* ── FAQ / OBJECTION HANDLING ── */}
             <section className={styles.faqSection}>
                 <div className={styles.faqInner}>
-                    <div className={styles.sectionHeader}>
+                    <div className={styles.sectionHeader} data-anim="fade-up">
                         <div className={styles.sectionLabel}>{t.faqLabel || 'Got Questions?'}</div>
                         <h2 className={styles.sectionTitle}>
                             {(t.faqTitle || 'Common Questions').split(' ')[0]}{' '}
                             <em>{(t.faqTitle || 'Common Questions').split(' ').slice(1).join(' ')}</em>
                         </h2>
                     </div>
-                    <div className={styles.faqGrid}>
-                        <div className={styles.faqItem}>
-                            <h4>{t.faqQ1}</h4>
-                            <p>{t.faqA1}</p>
-                        </div>
-                        <div className={styles.faqItem}>
-                            <h4>{t.faqQ2}</h4>
-                            <p>{t.faqA2}</p>
-                        </div>
-                        <div className={styles.faqItem}>
-                            <h4>{t.faqQ3}</h4>
-                            <p>{t.faqA3}</p>
-                        </div>
-                        <div className={styles.faqItem}>
-                            <h4>{t.faqQ4}</h4>
-                            <p>{t.faqA4}</p>
-                        </div>
-                        <div className={styles.faqItem}>
-                            <h4>{t.faqQ5}</h4>
-                            <p>{t.faqA5}</p>
-                        </div>
-                        <div className={styles.faqItem}>
-                            <h4>{t.faqQ6}</h4>
-                            <p>{t.faqA6}</p>
-                        </div>
-                    </div>
-                    <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-                        <button className={styles.btnPrimary} onClick={handleEstimateClick}>
-                            {t.getEstimate} <ArrowIcon />
-                        </button>
+                    <div className={styles.faqList}>
+                        {[
+                            { cat: 'Timeline',   q: t.faqQ1, a: t.faqA1 },
+                            { cat: 'Pricing',    q: t.faqQ2, a: t.faqA2 },
+                            { cat: 'Compliance', q: t.faqQ3, a: t.faqA3 },
+                            { cat: 'Claims',     q: t.faqQ4, a: t.faqA4 },
+                            { cat: 'Logistics',  q: t.faqQ5, a: t.faqA5 },
+                            { cat: 'Quality',    q: t.faqQ6, a: t.faqA6 },
+                        ].map((item, i) => (
+                            <div key={i} className={`${styles.faqAccordion} ${openFaq === i ? styles.faqOpen : ''}`}>
+                                <button className={styles.faqTrigger} onClick={() => setOpenFaq(openFaq === i ? null : i)}>
+                                    <div className={styles.faqTriggerLeft}>
+                                        <span className={styles.faqChip}>{item.cat}</span>
+                                        <h4 className={styles.faqQ}>{item.q}</h4>
+                                    </div>
+                                    <span className={styles.faqChevron}>
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </span>
+                                </button>
+                                <div className={styles.faqAnswer}>
+                                    <p>{item.a}</p>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>
 
-            {/* Floating button */}
-            {showFloatingBtn && (
-                <button className={styles.floatingContactBtn} onClick={handleEstimateClick} aria-label={t.getEstimate}>
-                    <span className={styles.floatingBtnIcon}><ChatIcon /></span>
-                    <span className={styles.floatingBtnText}>{t.getEstimate}</span>
-                </button>
-            )}
+            {/* ── BOTTOM CTA ── */}
+            <section className={styles.bottomCtaSection}>
+                <div className={styles.bottomCtaInner}>
+                    <div className={styles.sectionLabel}>Ready to Start?</div>
+                    <h2 className={styles.bottomCtaTitle}>
+                        Get Your Free Estimate <em>Today</em>
+                    </h2>
+                    <p className={styles.bottomCtaDesc}>
+                        No obligation. No pressure. Just a straight answer on what your project costs and how fast we can start.
+                    </p>
+                    <div className={styles.bottomCtaActions}>
+                        <button className={styles.btnPrimary} onClick={handleEstimateClick}>
+                            Get Free Estimate <ArrowIcon />
+                        </button>
+                        <a href="tel:5039982340" className={styles.btnSecondary} style={{ whiteSpace: 'nowrap' }}>
+                            <PhoneIcon /> (503) 998-2340
+                        </a>
+                    </div>
+                    <div className={styles.bottomCtaTrust}>
+                        <span>★★★★★ 5.0 on Google</span>
+                        <span className={styles.trustSep}>·</span>
+                        <span>Licensed &amp; Insured · CCB #232708</span>
+                        <span className={styles.trustSep}>·</span>
+                        <span>50+ Families Served</span>
+                    </div>
+                </div>
+            </section>
 
             {/* Contact Modal */}
             {showContactModal && (

@@ -5,7 +5,6 @@ import ContactFormSection from '../components/ContactFormSection';
 import { getDb } from '../lib/db';
 import { useLang } from '../context/LanguageContext';
 import { imageUrl } from '../utils/imageUrl';
-
 import pageStyles from '../styles/Projects.module.css';
 
 // Filter categories — adjust to match your actual project types

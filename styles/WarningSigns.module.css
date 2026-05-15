@@ -43,20 +43,108 @@
 
 /* Card stage */
 .stage {
-  max-width: 480px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
-.card {
-  position: relative;
-  background: #0E1822;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 2px;
+.twoCol {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 2px;
+  background: rgba(200,150,30,0.07);
+  border: 1px solid rgba(200,150,30,0.1);
+  border-radius: 3px;
   overflow: hidden;
   transition: opacity 0.35s ease, transform 0.35s ease;
 }
 .cardIn  { opacity: 1; transform: translateY(0); }
 .cardOut { opacity: 0; transform: translateY(6px); }
+
+.card {
+  position: relative;
+  background: #0E1822;
+  overflow: hidden;
+}
+
+/* Code tag in header */
+.codeTag {
+  font-family: 'Barlow Condensed', system-ui, sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.2);
+  text-transform: uppercase;
+}
+
+/* Evidence Log panel */
+.evidencePanel {
+  background: #0b1520;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid rgba(255,255,255,0.05);
+}
+.evidenceImgWrap {
+  position: relative;
+  height: 180px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.evidenceBody {
+  padding: 18px;
+  flex: 1;
+}
+.evidenceTitle {
+  font-family: 'Barlow Condensed', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--white, #fff);
+  margin-bottom: 8px;
+}
+.evidenceDesc {
+  font-size: 11px;
+  color: var(--gray, #8a93a0);
+  line-height: 1.55;
+  margin: 0 0 14px;
+}
+.evidenceList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.evidenceItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text, #B8BCC4);
+  line-height: 1.4;
+}
+.evidenceItem svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+@media (max-width: 720px) {
+  .twoCol {
+    grid-template-columns: 1fr;
+  }
+  .evidencePanel {
+    border-left: 0;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    flex-direction: row;
+  }
+  .evidenceImgWrap {
+    width: 140px;
+    height: auto;
+    flex-shrink: 0;
+  }
+  .evidenceBody { padding: 14px; }
+}
 
 /* Entrance animations */
 .fadeIn { animation: fadeIn 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both; }

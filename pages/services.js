@@ -3,6 +3,7 @@ import Modal from '../components/Modal';
 import ContactFormSection from '../components/ContactFormSection';
 import Link from 'next/link';
 import Image from 'next/image';
+import Head from 'next/head';
 import { getDb } from '../lib/db';
 import { useState, useEffect } from 'react';
 import { useLang } from '../context/LanguageContext';
@@ -57,6 +58,31 @@ export default function Services({ services }) {
         'serviceTag8',
     ];
 
+    const serviceSchema = {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "J&R NW Construction Services",
+        "description": "Full-service contractor in Portland OR — remodeling, siding, restoration, painting, drywall & emergency services.",
+        "url": "https://jandrnw.com/services",
+        "itemListElement": displayServices.map((s, i) => ({
+            "@type": "ListItem",
+            "position": i + 1,
+            "item": {
+                "@type": "Service",
+                "name": s.title,
+                "description": s.description || "",
+                "provider": {
+                    "@type": "LocalBusiness",
+                    "name": "J&R NW Construction LLC",
+                    "telephone": "+15039982340",
+                    "url": "https://jandrnw.com"
+                },
+                "areaServed": "Portland Metro, OR",
+                "url": `https://jandrnw.com/services/${s.id}`
+            }
+        }))
+    };
+
     return (
         <Layout
             title="Construction Services Portland OR | Remodeling, Siding & Restoration | J&R NW Construction"
@@ -64,6 +90,9 @@ export default function Services({ services }) {
             canonical="/services"
             onContactClick={() => setShowContactModal(true)}
         >
+            <Head>
+                <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+            </Head>
             <div className={pageStyles.servicesPage}>
                 <div className={pageStyles.servicesContent}>
 

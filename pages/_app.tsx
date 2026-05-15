@@ -52,22 +52,14 @@ if (typeof window !== "undefined") {
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
-
   useEffect(() => {
     const resetScroll = () => {
       window.scrollTo(0, 0);
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
-      }, 50);
     };
-    router.events.on('routeChangeStart', resetScroll);
     router.events.on('routeChangeComplete', resetScroll);
     return () => {
-      router.events.off('routeChangeStart', resetScroll);
       router.events.off('routeChangeComplete', resetScroll);
     };
   }, [router.events]);
