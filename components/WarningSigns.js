@@ -10,7 +10,7 @@ const WARNINGS = [
     chain: ['Water\nentry', 'Drywall\nsaturates', 'Mold in\n48 hrs', 'Framing\nrots'],
     risk: 'Drywall loses structural integrity. Mold colonies form within 24–48 hours.',
     fix: 'Stop the source, remove damaged drywall, treat for mold, rebuild and finish.',
-    evidence: { code: 'WS-MOISTURE-01', img: '/assets/mitigation.png', tools: ['Non-invasive moisture testing', 'Thermal imaging of wet areas'] },
+    evidence: { code: 'WS-MOISTURE-01', img: '/assets/ws-ceiling-stains.png', tools: ['Non-invasive moisture testing', 'Thermal imaging of wet areas'] },
   },
   {
     sev: 'crit', sevLabel: 'Critical Severity', tag: 'Remodeling & Restoration',
@@ -19,7 +19,7 @@ const WARNINGS = [
     chain: ['Hidden\nleak', 'Subfloor\nswells', 'Joists\nrot', 'Floor\nfails'],
     risk: 'Floor collapse can occur suddenly. Cost rises sharply once joists are involved.',
     fix: 'Open the floor, replace subfloor and joists as needed, treat for mold, refinish to match.',
-    evidence: { code: 'WS-FLOOR-02', img: '/assets/drywall.png', tools: ['Subfloor moisture probe', 'Structural load assessment'] },
+    evidence: { code: 'WS-FLOOR-02', img: '/assets/ws-floor-rot.png', tools: ['Subfloor moisture probe', 'Structural load assessment'] },
   },
   {
     sev: 'crit', sevLabel: 'Critical Severity', tag: 'Mitigation & Emergency',
@@ -28,7 +28,7 @@ const WARNINGS = [
     chain: ['Water\nevent', 'Materials\nsaturate', 'Mold\nat 48 hrs', 'Full\nrebuild'],
     risk: 'Flooring, subfloor, drywall, and framing all absorb water rapidly. Mold starts fast.',
     fix: 'Same-day response — extract water, dry structure, remove saturated materials, rebuild.',
-    evidence: { code: 'WS-EMERG-03', img: '/assets/emergency.png', tools: ['Commercial water extraction', 'Industrial drying equipment'] },
+    evidence: { code: 'WS-EMERG-03', img: '/assets/ws-flooding.png', tools: ['Commercial water extraction', 'Industrial drying equipment'] },
   },
   {
     sev: 'high', sevLabel: 'High Severity', tag: 'Bathroom Remodeling',
@@ -37,7 +37,7 @@ const WARNINGS = [
     chain: ['Grout\nfails', 'Water\nbehind tile', 'Drywall\nmold', 'Subfloor\nrots'],
     risk: 'Mold eats through drywall and reaches the subfloor. Full tile removal becomes unavoidable.',
     fix: 'Remove tile and drywall, treat mold, install moisture-resistant board, retile and refinish.',
-    evidence: { code: 'WS-BATH-04', img: '/assets/bathroom-reno-1.png', tools: ['Air quality sampling', 'Mold species identification'] },
+    evidence: { code: 'WS-BATH-04', img: '/assets/ws-bathroom-mold.png', tools: ['Air quality sampling', 'Mold species identification'] },
   },
   {
     sev: 'high', sevLabel: 'High Severity', tag: 'Siding & Restoration',
@@ -46,7 +46,7 @@ const WARNINGS = [
     chain: ['Seal\nfails', 'Wood\nwet', 'Rot\nspreads', 'Frame\ndamage'],
     risk: 'Rot spreads to wall sheathing and framing. Pests are attracted and accelerate damage.',
     fix: 'Remove all rotted material, treat surrounding wood, replace with rot-resistant sealed material.',
-    evidence: { code: 'WS-SIDING-05', img: '/assets/siding-project-1.png', tools: ['Probe testing for rot depth', 'Moisture content readings'] },
+    evidence: { code: 'WS-SIDING-05', img: '/assets/ws-siding-rot.png', tools: ['Probe testing for rot depth', 'Moisture content readings'] },
   },
 ];
 
