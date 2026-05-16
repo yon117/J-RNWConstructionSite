@@ -422,7 +422,7 @@ export default function Home() {
                             <div className={styles.projectOverlay}>
                                 <span className={styles.projectCategory}>Remodel</span>
                                 <div className={styles.projectTitle}>Bathroom Renovation</div>
-                                <div className={styles.projectMeta}>Tigard · $14,500 · 3 weeks</div>
+                                <div className={styles.projectMeta}>Tigard</div>
                             </div>
                         </div>
                         <div className={styles.projectCard} style={{ position: 'relative' }}>
@@ -430,7 +430,7 @@ export default function Home() {
                             <div className={styles.projectOverlay}>
                                 <span className={styles.projectCategory}>Remodel</span>
                                 <div className={styles.projectTitle}>Kitchen Remodel</div>
-                                <div className={styles.projectMeta}>Portland · $22,000 · 5 weeks</div>
+                                <div className={styles.projectMeta}>Portland</div>
                             </div>
                         </div>
                         <div className={styles.projectCard} style={{ position: 'relative' }}>
@@ -438,7 +438,7 @@ export default function Home() {
                             <div className={styles.projectOverlay}>
                                 <span className={styles.projectCategory}>Siding</span>
                                 <div className={styles.projectTitle}>Exterior Siding</div>
-                                <div className={styles.projectMeta}>Beaverton · $9,800 · 2 weeks</div>
+                                <div className={styles.projectMeta}>Beaverton</div>
                             </div>
                         </div>
                         <div className={styles.projectCard} style={{ position: 'relative' }}>
@@ -454,7 +454,7 @@ export default function Home() {
                             <div className={styles.projectOverlay}>
                                 <span className={styles.projectCategory}>Drywall</span>
                                 <div className={styles.projectTitle}>Drywall & Finishing</div>
-                                <div className={styles.projectMeta}>Happy Valley · $3,200 · 4 days</div>
+                                <div className={styles.projectMeta}>Happy Valley</div>
                             </div>
                         </div>
                     </div>
