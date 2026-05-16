@@ -41,14 +41,14 @@
 
 .rangeBtn:hover {
     background: rgba(212,175,55,0.12);
-    color: #D4AF37;
-    border-color: #D4AF37;
+    color: var(--gold);
+    border-color: var(--gold);
 }
 
 .rangeBtnActive {
     background: rgba(212,175,55,0.18);
-    color: #D4AF37;
-    border-color: #D4AF37;
+    color: var(--gold);
+    border-color: var(--gold);
     font-weight: 600;
 }
 
@@ -85,7 +85,7 @@
 
 .statCard {
     background: rgba(255,255,255,0.04);
-    border: 1px solid #D4AF37;
+    border: 1px solid var(--gold);
     border-radius: 10px;
     padding: 20px 16px;
     text-align: center;
@@ -146,7 +146,7 @@
 }
 
 .sectionTitle {
-    color: #D4AF37;
+    color: var(--gold);
     font-size: 1rem;
     font-weight: 600;
     margin: 0 0 16px 0;
@@ -168,7 +168,7 @@
 }
 
 .tooltipLabel {
-    color: #D4AF37;
+    color: var(--gold);
     font-weight: 600;
     margin-bottom: 4px;
 }
@@ -226,7 +226,7 @@
 .vitalName {
     font-size: 1rem;
     font-weight: 700;
-    color: #D4AF37;
+    color: var(--gold);
     letter-spacing: 0.08em;
     margin-bottom: 10px;
 }
@@ -334,7 +334,7 @@
 
 .step span {
     background: rgba(212,175,55,0.2);
-    color: #D4AF37;
+    color: var(--gold);
     border-radius: 50%;
     width: 20px;
     height: 20px;
@@ -355,7 +355,7 @@
 }
 
 .loading {
-    color: #D4AF37;
+    color: var(--gold);
     text-align: center;
     padding: 60px;
     font-size: 1rem;
@@ -533,8 +533,8 @@
 /* Dependency health */
 .depBtn {
     background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(212,175,55,0.06));
-    border: 1px solid #D4AF37;
-    color: #D4AF37;
+    border: 1px solid var(--gold);
+    color: var(--gold);
     border-radius: 8px;
     padding: 9px 24px;
     font-size: 0.9rem;

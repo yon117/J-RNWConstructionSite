@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-15T00:00:00Z",
+  "title": "Design System: J-RNW Construction",
+  "extensions": {
+    "colorMeta": {
+      "gold":            { "role": "primary",   "displayName": "Construction Gold",  "canonical": "#C8961E", "tonalRamp": ["#2a1e05","#4a3509","#6b4d0d","#8c6512","#C8961E","#d4a83a","#dcb85c","#e8cc90"] },
+      "gold-light":      { "role": "primary",   "displayName": "Gold Hover",         "canonical": "#E8B84B", "tonalRamp": ["#2e2107","#54390b","#7a5210","#9f6c15","#E8B84B","#edca70","#f2d898","#f7e8c4"] },
+      "gold-antique":    { "role": "secondary",  "displayName": "Antique Gold",       "canonical": "#D4AF37", "tonalRamp": ["#28200a","#4a3c12","#6d591a","#8f7422","#D4AF37","#dcbe60","#e5ce8a","#eedeb8"] },
+      "deep-midnight":   { "role": "neutral",    "displayName": "Deep Midnight",      "canonical": "#0F1923", "tonalRamp": ["#060c12","#0F1923","#1a2736","#243343","#2e4055","#3b5068","#547080","#7d98a8"] },
+      "dark-slate":      { "role": "neutral",    "displayName": "Dark Slate",         "canonical": "#1A2736", "tonalRamp": ["#090f16","#0f1820","#1A2736","#243545","#2e4456","#3a5268","#517285","#7a95a5"] },
+      "dark-card":       { "role": "neutral",    "displayName": "Dark Card",          "canonical": "#1E2F40", "tonalRamp": ["#0a1219","#121e2c","#1E2F40","#283f55","#31506b","#3f6282","#5a849e","#8aaabb"] },
+      "footer-black":    { "role": "neutral",    "displayName": "Footer Black",       "canonical": "#080F16", "tonalRamp": ["#030608","#080F16","#0f1923","#162436","#1e3049","#273d5d","#3e5c80","#6a88a3"] },
+      "warm-offwhite":   { "role": "neutral",    "displayName": "Warm Off-White",     "canonical": "#F5F3EF", "tonalRamp": ["#2a2820","#504d43","#787366","#a09a8c","#c8c2b5","#E0DDD5","#F5F3EF","#fdfcfa"] },
+      "muted-linen":     { "role": "neutral",    "displayName": "Muted Linen",        "canonical": "#D4CFC8", "tonalRamp": ["#252218","#433f35","#615d51","#807b6d","#9f9a8e","#bab5ac","#D4CFC8","#ece9e4"] },
+      "steel-blue-gray": { "role": "neutral",    "displayName": "Steel Blue-Gray",    "canonical": "#8A9BAA", "tonalRamp": ["#131c24","#233442","#354d60","#46677e","#647f94","#8A9BAA","#adbdca","#d1dde6"] },
+      "emergency-red":   { "role": "tertiary",   "displayName": "Emergency Red",      "canonical": "#B84040", "tonalRamp": ["#1a0808","#4a1414","#7a2020","#B84040","#cc5a5a","#da7e7e","#e8a8a8","#f5d4d4"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display",  "purpose": "Hero H1 only. Gold em span on one phrase." },
+      "headline": { "displayName": "Headline", "purpose": "Section h2. Uppercase with gold em pattern." },
+      "title":    { "displayName": "Title",    "purpose": "Card titles, FAQ questions, component headings." },
+      "body":     { "displayName": "Body",     "purpose": "Paragraphs, descriptions. Max 65-75ch. Muted Linen on dark." },
+      "label":    { "displayName": "Label",    "purpose": "Section eyebrows, form labels, badge text, nav links." }
+    },
+    "shadows": [
+      { "name": "nav-scroll",     "value": "0 4px 24px rgba(0,0,0,0.5)",          "purpose": "Sticky nav after scroll; pairs with backdrop-filter blur(8px)." },
+      { "name": "hero-form-lift", "value": "0 28px 80px rgba(0,0,0,0.35)",        "purpose": "Hero quote form panel only. Establishes it as primary conversion surface." },
+      { "name": "gold-glow-float","value": "0 4px 20px rgba(200,150,30,0.4)",     "purpose": "Floating contact CTA button. Warm ambient glow; fixed position only." },
+      { "name": "emergency-glow", "value": "0 4px 24px rgba(184,64,64,0.4)",      "purpose": "Emergency contact button only." },
+      { "name": "step-halo",      "value": "0 4px 18px rgba(212,175,55,0.38)",    "purpose": "Process step number circles." }
+    ],
+    "motion": [
+      { "name": "ease-standard",  "value": "cubic-bezier(0.25,0,0,1)",    "purpose": "Default state transitions (color, border, background). 0.2s duration." },
+      { "name": "ease-lift",      "value": "cubic-bezier(0.25,0,0,1)",    "purpose": "translateY hover lifts. 0.2s duration." },
+      { "name": "ease-reveal",    "value": "cubic-bezier(0.16,1,0.3,1)",  "purpose": "Mobile drawer max-height expand. 0.35s duration." },
+      { "name": "ease-image",     "value": "cubic-bezier(0.25,0,0,1)",    "purpose": "Project photo scale on hover. 0.5s duration." }
+    ],
+    "breakpoints": [
+      { "name": "mobile",  "value": "480px" },
+      { "name": "tablet",  "value": "768px" },
+      { "name": "desktop", "value": "1024px" },
+      { "name": "wide",    "value": "1200px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Main CTA. Gold background, dark text. At most one per viewport section.",
+      "html": "<button class=\"ds-btn-primary\">GET A FREE QUOTE</button>",
+      "css": ".ds-btn-primary { background: #C8961E; color: #0F1923; padding: 14px 28px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border: none; border-radius: 3px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; transition: background 0.2s, transform 0.2s; } .ds-btn-primary:hover { background: #E8B84B; transform: translateY(-1px); } .ds-btn-primary:focus-visible { outline: 2px solid #C8961E; outline-offset: 3px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Secondary action. Transparent with white-tint border; border and text shift to gold on hover.",
+      "html": "<button class=\"ds-btn-ghost\">VIEW OUR WORK</button>",
+      "css": ".ds-btn-ghost { background: transparent; color: #F5F3EF; padding: 13px 24px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2); border-radius: 3px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; transition: border-color 0.2s, color 0.2s; } .ds-btn-ghost:hover { border-color: #C8961E; color: #C8961E; } .ds-btn-ghost:focus-visible { outline: 2px solid #C8961E; outline-offset: 3px; }"
+    },
+    {
+      "name": "Service Card",
+      "kind": "card",
+      "description": "Distinctive corner-bracket pattern. Brackets expand on hover. Ghost numeral watermark.",
+      "html": "<a class=\"ds-service-card\"><span class=\"ds-card-num\">01</span><h3 class=\"ds-card-name\">ROOFING</h3><p class=\"ds-card-desc\">Full roof replacement and repair for residential and commercial properties.</p><span class=\"ds-card-link\">LEARN MORE →</span></a>",
+      "css": ".ds-service-card { position: relative; background: #0e1622; border: 1px solid #1a2535; padding: 28px 24px; display: flex; flex-direction: column; text-decoration: none; cursor: pointer; transition: background 0.25s, border-color 0.25s; } .ds-service-card::before { content: ''; position: absolute; top: 10px; left: 10px; width: 14px; height: 14px; border-top: 2px solid #D4AF37; border-left: 2px solid #D4AF37; transition: width 0.2s, height 0.2s; } .ds-service-card::after { content: ''; position: absolute; bottom: 10px; right: 10px; width: 14px; height: 14px; border-bottom: 2px solid #D4AF37; border-right: 2px solid #D4AF37; transition: width 0.2s, height 0.2s; } .ds-service-card:hover { background: #131e30; border-color: #253548; } .ds-service-card:hover::before, .ds-service-card:hover::after { width: 22px; height: 22px; } .ds-card-num { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; color: #D4AF37; margin-bottom: 18px; } .ds-card-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.45rem; font-weight: 800; text-transform: uppercase; color: #fff; margin: 0 0 10px; line-height: 1.15; } .ds-card-desc { font-size: 0.82rem; color: #8a9aaa; line-height: 1.65; flex: 1; } .ds-card-link { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; font-weight: 700; color: #D4AF37; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid #1a2535; }"
+    },
+    {
+      "name": "Form Input",
+      "kind": "input",
+      "description": "Minimal stroke-based input. Gold border on focus.",
+      "html": "<div class=\"ds-form-group\"><label class=\"ds-label\">YOUR NAME</label><input class=\"ds-input\" type=\"text\" placeholder=\"John Smith\" /></div>",
+      "css": ".ds-form-group { display: flex; flex-direction: column; gap: 6px; } .ds-label { font-family: 'Barlow', sans-serif; font-size: 10px; font-weight: 600; color: #8A9BAA; letter-spacing: 0.1em; text-transform: uppercase; } .ds-input { background: #1A2736; border: 1px solid rgba(255,255,255,0.08); border-radius: 3px; padding: 12px 14px; color: #F5F3EF; font-family: 'Barlow', sans-serif; font-size: 14px; outline: none; min-height: 48px; transition: border-color 0.2s; width: 100%; } .ds-input::placeholder { color: #8A9BAA; } .ds-input:focus { border-color: #C8961E; } .ds-input:focus-visible { border-color: #C8961E; }"
+    },
+    {
+      "name": "Section Label",
+      "kind": "custom",
+      "description": "Gold rule + uppercase eyebrow. Opens every section. Signature system-wide pattern.",
+      "html": "<div class=\"ds-section-label\">OUR SERVICES</div>",
+      "css": ".ds-section-label { display: flex; align-items: center; gap: 10px; font-family: 'Barlow', sans-serif; font-size: 11px; font-weight: 600; color: #C8961E; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 12px; } .ds-section-label::before { content: ''; width: 24px; height: 2px; background: #C8961E; flex-shrink: 0; }"
+    },
+    {
+      "name": "Nav CTA",
+      "kind": "button",
+      "refersTo": "nav-cta",
+      "description": "Compact gold CTA in the navbar. No underline pseudo-element.",
+      "html": "<a class=\"ds-nav-cta\">GET A QUOTE</a>",
+      "css": ".ds-nav-cta { background: #C8961E; color: #0F1923; padding: 9px 18px; border-radius: 3px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; display: inline-flex; align-items: center; white-space: nowrap; transition: background 0.2s; border: none; cursor: pointer; } .ds-nav-cta:hover { background: #E8B84B; } .ds-nav-cta:focus-visible { outline: 2px solid #C8961E; outline-offset: 3px; }"
+    },
+    {
+      "name": "Area Chip",
+      "kind": "chip",
+      "description": "Service area tags. Gold-tinted border and background. Gold map pin icon.",
+      "html": "<span class=\"ds-area-chip\"><svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#C8961E\" stroke-width=\"2\"><path d=\"M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z\"/></svg>Portland</span>",
+      "css": ".ds-area-chip { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; background: rgba(200,150,30,0.06); border: 1px solid rgba(200,150,30,0.12); border-radius: 3px; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 600; color: #F5F3EF; letter-spacing: 0.02em; }"
+    },
+    {
+      "name": "Footer Social Icon",
+      "kind": "custom",
+      "description": "Social icon square. Muted at rest; gold border and icon on hover.",
+      "html": "<a class=\"ds-social-icon\" href=\"#\" aria-label=\"Facebook\"><svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z\"/></svg></a>",
+      "css": ".ds-social-icon { width: 34px; height: 34px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #8A9BAA; text-decoration: none; transition: border-color 0.2s, color 0.2s; flex-shrink: 0; } .ds-social-icon:hover { border-color: #C8961E; color: #C8961E; } .ds-social-icon:focus-visible { outline: 2px solid #C8961E; outline-offset: 3px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Foreman's Gold Standard",
+    "overview": "J-RNW is built the way a foreman runs a job site: everything in its place, no wasted motion, every element accountable. The deep navy palette commands attention at arm's length on a phone screen in bright daylight. The gold accent is the mark of earned confidence. Every interface decision answers to one question: does this make a skeptical homeowner more likely to pick up the phone?\n\nThe system rejects SaaS cream, low-budget contractor clichés, and cold corporate palettes by name. The result is a committed dark system with a single saturated accent. Navy surfaces stack in four lightness steps. Gold appears on at most 15% of any given screen; its scarcity is its authority.",
+    "keyCharacteristics": [
+      "Deep navy in four tonal steps; no pure black, no gray without blue",
+      "Gold is earned: CTA, icon accent, active state, section label; never decoration",
+      "Barlow Condensed for every headline; Barlow for body; no third typeface",
+      "Corners are almost square: 2-4px max on interactive elements",
+      "Grid gaps of 2-3px create seams; sections feel architectural",
+      "Section labels use a 24px gold rule before the text; consistent system-wide"
+    ],
+    "rules": [
+      { "name": "The Scarcity Rule",       "body": "Construction Gold (#C8961E) appears on no more than 15% of any given screen. Never fill a section background with gold.", "section": "colors" },
+      { "name": "The Seam Rule",           "body": "Use rgba(200,150,30,0.06) on grid wrappers and 2-3px gaps on cells. These seams are structural, not decorative.", "section": "colors" },
+      { "name": "The Uppercase Contract",  "body": "Every Barlow Condensed instance is text-transform: uppercase. No exceptions.", "section": "typography" },
+      { "name": "The Gold Em Rule",        "body": "In display and headline text, exactly one phrase per heading gets gold color via an em span (font-style: normal). One voice elevated. Not two, not zero.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule","body": "Service cards, project cards, contact form, FAQ accordion: no box-shadow at rest. Shadows are earned by floating, scroll-response, or emergency contexts only.", "section": "elevation" }
+    ],
+    "dos": [
+      "Use Construction Gold (#C8961E) as the single accent. One voice, one color.",
+      "Use the four-step dark surface stack to create depth before reaching for shadows.",
+      "Keep Barlow Condensed at 800 weight and uppercase on every headline.",
+      "Put at most one primary gold CTA button in each viewport section.",
+      "Use the 24px gold rule + uppercase label before every section heading.",
+      "Use the corner bracket ::before/::after pattern on service cards.",
+      "Use rgba(200,150,30,0.06) as grid wrapper background with 2-3px gaps.",
+      "Size all tap targets to minimum 48px height on mobile.",
+      "Pair every h2 with the gold-em pattern: one phrase in gold via font-style:normal em."
+    ],
+    "donts": [
+      "Don't use SaaS cream: soft whites, Inter on beige, rounded-everything aesthetic.",
+      "Don't use low-budget contractor stock clichés: clip-art hammers, safety-yellow CTAs.",
+      "Don't use cold corporate palettes: all-blue with zero warmth.",
+      "Don't use border-radius above 4px on buttons, cards, or inputs.",
+      "Don't fill any content section with a gold background.",
+      "Don't add a second typeface. Barlow and Barlow Condensed are the entire type system.",
+      "Don't use glassmorphism decoratively. Nav blur is state-driven and purposeful only.",
+      "Don't use gradient text (background-clip: text). Gold text is always solid color.",
+      "Don't add shadows to static card or list elements.",
+      "Don't use the hero-metric template as a standalone section pattern."
+    ]
+  }
+}

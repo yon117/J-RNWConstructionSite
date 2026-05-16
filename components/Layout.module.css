@@ -569,6 +569,15 @@
     }
 }
 
+@media (max-width: 480px) {
+    .topbarItem:not(:first-child) {
+        display: none;
+    }
+    .topbarDivider {
+        display: none;
+    }
+}
+
 @media (max-width: 768px) {
     .topbar {
         font-size: 11px;
@@ -643,7 +652,7 @@
 /* ── SEASONAL BANNER ── */
 .seasonalBanner {
     background: #1a1200;
-    border-bottom: 2px solid #D4AF37;
+    border-bottom: 2px solid var(--gold);
     color: #f0d060;
     display: flex;
     align-items: center;
@@ -663,7 +672,7 @@
     text-align: center;
 }
 .seasonalLink {
-    color: #D4AF37;
+    color: var(--gold);
     font-weight: 700;
     text-decoration: underline;
     white-space: nowrap;
@@ -671,7 +680,7 @@
 .bannerClose {
     background: none;
     border: none;
-    color: #D4AF37;
+    color: var(--gold);
     cursor: pointer;
     font-size: 0.9rem;
     font-weight: 700;
@@ -768,6 +777,6 @@
 .emergencyClose:hover { color: #fff; border-color: #888; }
 @media (max-width: 600px) {
     .seasonalBanner { font-size: 0.75rem; padding: 7px 0.75rem; }
-    .emergencyWrap { bottom: 160px; right: 16px; }
+    .emergencyWrap { bottom: 90px; right: 16px; }
     .emergencyPanel { max-width: 240px; }
 }

@@ -10,7 +10,7 @@ import { useLang } from '../context/LanguageContext';
 
 // ─── SVG ICONS ───────────────────────────────────────────────────────────────
 const ShieldIcon = () => (
-    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+    <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
     </svg>
 );
@@ -53,11 +53,11 @@ const MapIcon = () => (
 );
 
 const YelpLogoIcon = () => (
-    <Image src="/yelp-logo.png" alt="Yelp" width={130} height={40} style={{ objectFit: 'contain' }} />
+    <Image src="/yelp-logo.png" alt="Yelp" width={100} height={31} style={{ objectFit: 'contain' }} />
 );
 
 const GoogleLogoIcon = () => (
-    <Image src="/google-logo.png" alt="Google" width={130} height={130} style={{ objectFit: 'contain' }} />
+    <Image src="/google-logo.png" alt="Google" width={62} height={62} style={{ objectFit: 'contain' }} />
 );
 
 const LockIcon = () => (
@@ -186,117 +186,11 @@ const HANDLE_ITEMS = [
 ];
 
 // WARNING SIGNS moved to components/WarningSigns.js
-const _REMOVED = [
-    {
-        icon: '💧', shortTitle: 'Water Stains', severity: 'critical', service: 'Restoration & Mitigation',
-        title: 'Water Stains on Ceiling or Walls',
-        desc: 'Yellow or brown stains signal active water intrusion from a pipe, failed caulk, or window seal. Every day it sits, the damage gets deeper.',
-        risk: 'Drywall saturates and loses structural integrity. Mold colonies form within 24-48 hours and spread behind walls.',
-        solution: 'We stop the source, remove damaged drywall, treat for mold, and restore the wall — painted and finished.',
-        chain: ['Water enters wall', 'Drywall softens & stains', 'Mold grows within 48 hrs', 'Framing begins to rot', 'Full wall reconstruction required'],
-    },
-    {
-        icon: '🤢', shortTitle: 'Musty Odor', severity: 'high', service: 'Restoration & Mitigation',
-        title: 'Musty or Mold Smell Inside the Home',
-        desc: 'A persistent musty smell means mold is already active somewhere in your walls, floors, or crawl space — you just cannot see it yet.',
-        risk: 'Mold spreads through wall cavities and into adjacent rooms. Health risk grows the longer it goes untreated.',
-        solution: 'We locate the moisture source, remove all affected drywall and insulation, treat for mold, and rebuild properly.',
-        chain: ['Hidden moisture accumulates', 'Mold starts growing behind surfaces', 'Spreads to adjacent walls', 'HVAC circulates spores', 'Full remediation & drywall replacement'],
-    },
-    {
-        icon: '🎨', shortTitle: 'Paint Failure', severity: 'high', service: 'Painting & Siding',
-        title: 'Cracked or Peeling Exterior Paint',
-        desc: 'Paint that peels, cracks, or bubbles is no longer sealing your home. Water is already getting behind it and saturating the surface below.',
-        risk: 'Moisture reaches siding and sheathing. Wood rot starts — and once it spreads, paint alone cannot fix it.',
-        solution: 'We remove failed paint, replace rotted sections, prime properly, and apply a durable exterior finish that holds.',
-        chain: ['Paint seal fails', 'Water reaches siding surface', 'Siding begins to rot', 'Rot spreads to wall sheathing', 'Siding replacement + repaint required'],
-    },
-    {
-        icon: '🪵', shortTitle: 'Siding Damage', severity: 'high', service: 'Siding',
-        title: 'Gaps, Cracks, or Damaged Siding Panels',
-        desc: 'Missing caulk, cracked panels, or separated siding boards are open invitations for water and pests to get inside your wall system.',
-        risk: 'Water infiltrates insulation and sheathing. Interior drywall begins to absorb moisture from the outside in.',
-        solution: 'We remove damaged panels, treat any underlying rot, install new siding properly sealed against Oregon weather.',
-        chain: ['Siding gap or crack forms', 'Water enters wall cavity', 'Insulation gets saturated', 'Drywall absorbs moisture', 'Mold + full siding replacement'],
-    },
-    {
-        icon: '👣', shortTitle: 'Soft Floors', severity: 'critical', service: 'Remodeling & Restoration',
-        title: 'Soft, Spongy, or Bouncy Floor Spots',
-        desc: 'Soft areas under your feet — especially near bathrooms or kitchen — mean the subfloor is water-damaged and actively failing underneath.',
-        risk: 'Subfloor panels break down. Joists below start to rot. In severe cases, floors can partially collapse.',
-        solution: 'We remove flooring, replace rotted subfloor and joists, treat for mold, and install new flooring with proper moisture barrier.',
-        chain: ['Water reaches subfloor', 'OSB/plywood softens', 'Joists begin to rot', 'Structural failure risk increases', 'Full subfloor + joist replacement'],
-    },
-    {
-        icon: '🚿', shortTitle: 'Bathroom Mold', severity: 'high', service: 'Bathroom Remodeling',
-        title: 'Mold or Discoloration in Bathroom Walls',
-        desc: 'Black or green growth on grout lines, caulk, or wall surfaces means water is already behind your tile and into the drywall.',
-        risk: 'Mold eats through drywall and reaches the subfloor. Full tile removal and wall replacement becomes unavoidable.',
-        solution: 'We remove all affected tile and drywall, treat for mold, install moisture-resistant board, retile, and refinish properly.',
-        chain: ['Grout or caulk fails', 'Water reaches drywall behind tile', 'Mold grows on wall cavity', 'Subfloor gets wet', 'Full bathroom gut & rebuild'],
-    },
-    {
-        icon: '🧱', shortTitle: 'Drywall Damage', severity: 'medium', service: 'Drywall',
-        title: 'Cracks, Holes, or Bulging Drywall',
-        desc: 'Drywall that cracks, bulges, or has visible damage is not just cosmetic — it often signals moisture, settling, or impact damage that needs addressing.',
-        risk: 'Cracks let moisture in. Bulging drywall means water is already trapped behind it. Ignored, it leads to mold and structural issues.',
-        solution: 'We assess the cause, repair or replace affected sections, tape, mud, sand, and repaint to a seamless finish.',
-        chain: ['Crack or damage forms', 'Moisture enters through gap', 'Paper face deteriorates', 'Mold grows behind wall', 'Section replacement + mold treatment'],
-    },
-    {
-        icon: '🖌️', shortTitle: 'Interior Paint', severity: 'medium', service: 'Interior Painting',
-        title: 'Bubbling or Peeling Interior Paint',
-        desc: 'Interior paint that bubbles, peels, or flakes off walls is almost always caused by moisture behind the surface — not just poor application.',
-        risk: 'The wall behind is already holding moisture. Mold grows on the paper backing of drywall before the paint even falls off.',
-        solution: 'We identify the moisture source, remove and treat affected drywall if needed, and repaint with appropriate primer and finish.',
-        chain: ['Moisture gets behind wall', 'Paint adhesion fails', 'Bubbles & peeling appear', 'Drywall paper gets moldy', 'Wall repair + repaint'],
-    },
-    {
-        icon: '💨', shortTitle: 'Air Leaks', severity: 'medium', service: 'Remodeling & Siding',
-        title: 'Drafts Around Windows, Doors, or Walls',
-        desc: 'Feeling air movement around window frames or exterior walls means your home envelope is compromised — and water follows wherever air goes.',
-        risk: 'Water infiltrates wall cavities. Drywall absorbs moisture. Insulation loses effectiveness. Mold follows.',
-        solution: 'We seal penetrations, replace failed caulk and flashing, repair damaged siding or trim, and restore the water barrier.',
-        chain: ['Seal fails around frame', 'Air & water enter wall cavity', 'Insulation gets wet', 'Drywall absorbs moisture', 'Mold + wall repair required'],
-    },
-    {
-        icon: '🌊', shortTitle: 'Emergency Flooding', severity: 'critical', service: 'Mitigation & Emergency Services',
-        title: 'Flooding or Burst Pipe Water Damage',
-        desc: 'Standing water from a burst pipe, appliance failure, or storm flooding requires immediate response. Every hour the water sits multiplies the damage.',
-        risk: 'Flooring, subfloor, drywall, and framing all absorb water rapidly. Mold begins within 24-48 hours of saturation.',
-        solution: 'We respond same day — extract water, dry structure, remove all saturated materials, treat for mold, and fully reconstruct.',
-        chain: ['Water event occurs', 'Flooring & subfloor saturate', 'Drywall wicks moisture up', 'Mold starts at 24-48 hrs', 'Full mitigation + reconstruction'],
-    },
-    {
-        icon: '🔨', shortTitle: 'Outdated Bathroom', severity: 'medium', service: 'Bathroom Remodeling',
-        title: 'Old or Failing Bathroom Fixtures & Tile',
-        desc: 'Worn grout, cracked tile, old caulk, or outdated fixtures are more than cosmetic — they allow water to seep behind walls over time.',
-        risk: 'What looks like old tile is often hiding years of slow water damage to the backer board and subfloor beneath.',
-        solution: 'Complete bathroom remodel — new tile, waterproof backer, modern fixtures, proper ventilation, and durable finishes.',
-        chain: ['Tile or grout cracks', 'Slow water leak behind wall', 'Backer board deteriorates', 'Subfloor begins to rot', 'Full bath gut & remodel'],
-    },
-    {
-        icon: '🏚️', shortTitle: 'Wood Rot', severity: 'high', service: 'Siding & Restoration',
-        title: 'Wood Rot on Siding, Trim, or Eaves',
-        desc: 'Soft, dark, or crumbling wood on exterior trim or siding means the rot is already spreading into adjacent healthy material.',
-        risk: 'Rot spreads to wall sheathing and framing. Pests are attracted to rotted wood and accelerate the damage further.',
-        solution: 'We remove all rotted material, treat surrounding wood, and replace with rot-resistant materials sealed against future moisture.',
-        chain: ['Paint or seal fails', 'Wood absorbs moisture', 'Rot fungus activates', 'Spreads to adjacent framing', 'Siding + framing replacement'],
-    },
-    {
-        icon: '🧱', shortTitle: 'Warped Floors', severity: 'high', service: 'Remodeling & Restoration',
-        title: 'Warping, Buckling, or Lifting Flooring',
-        desc: 'Hardwood, laminate, or vinyl that warps or lifts at the edges means moisture is coming up from below — a sign of subfloor or plumbing issues.',
-        risk: 'Subfloor damage. Mold grows underneath the flooring where you cannot see it. Joists deteriorate if not caught.',
-        solution: 'We identify and stop the moisture source, replace the subfloor, treat for mold, and install new flooring with proper vapor barrier.',
-        chain: ['Moisture reaches subfloor', 'Flooring absorbs & expands', 'Buckling becomes visible', 'Mold grows underneath', 'Subfloor + flooring replacement'],
-    },
-];
 
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 export default function Home() {
     const [showContactModal, setShowContactModal] = useState(false);
-    const [openFaq, setOpenFaq] = useState(null);
+    const [openFaqs, setOpenFaqs] = useState(new Set());
     const { t } = useLang();
 
     const handleEstimateClick = () => {
@@ -321,7 +215,6 @@ export default function Home() {
             <section className={styles.hero} data-anim="hero-section">
                 {/* ✅ Después */}
 <div className={styles.heroBg} data-anim="hero-bg" />
-                <div className={styles.heroAccentLine} />
                 <div className={styles.heroInner}>
                 <div className={styles.heroContent}>
                     <div className={styles.heroBadge}>
@@ -339,7 +232,11 @@ export default function Home() {
     <span style={{ fontSize: '13px', opacity: 0.7 }}>Portland · Tigard · Tualatin · Gresham · Happy Valley · Oregon City</span>
 </p>
                     <div className={styles.heroActions}>
-                        <button className={styles.btnPrimary} onClick={handleEstimateClick}>
+                        <button className={styles.btnPrimary} onClick={() => {
+                            const el = document.getElementById('hero-form');
+                            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            else handleEstimateClick();
+                        }}>
                             {t.getFreeEstimate} <ArrowIcon />
                         </button>
                         <Link href="/projects" className={styles.btnSecondary}>
@@ -355,27 +252,9 @@ export default function Home() {
                                 <span className={styles.heroReviewStars}>★★★★★</span>
                             </div>
                         </div>
-                        <div className={styles.heroReviewGuarantee}>100% Satisfaction Guarantee</div>
-                        <div className={styles.heroReviewCcb}>CCB: 232708</div>
-                    </div>
-                    <div className={styles.heroTrust}>
-                        <div className={styles.trustItem}>
-                            <ShieldIcon />
-                            {t.licensed}, {t.insured} &amp; {t.bonded}
-                        </div>
-                        <span className={styles.trustSep}>·</span>
-                        <div className={styles.trustItem}>
-                            <StarIcon />
-                            BBB {t.accredited || 'Accredited'}
-                        </div>
-                        <span className={styles.trustSep}>·</span>
-                        <div className={styles.trustItem}>
-                            <CheckIcon />
-                            100% Satisfaction Guarantee
-                        </div>
                     </div>
                 </div>
-                <div className={styles.heroFormPanel}>
+                <div className={styles.heroFormPanel} id="hero-form">
                     <HomeContactForm t={t} />
                 </div>
             </div>
@@ -387,12 +266,41 @@ export default function Home() {
                         <div className={styles.statLabel}>{t.yearsExp || 'Years Exp.'}</div>
                     </div>
                     <div className={styles.statBox} data-anim="stat">
-                        <div className={styles.statNum} data-anim="stat-num">50+</div>
-                        <div className={styles.statLabel}>Families Served</div>
+                        <div className={styles.statNum} data-anim="stat-num">200+</div>
+                        <div className={styles.statLabel}>{t.projectsCompleted || 'Projects'}</div>
                     </div>
                     <div className={styles.statBox} data-anim="stat">
                         <div className={styles.statNum} data-anim="stat-num">★ 5.0</div>
                         <div className={styles.statLabel}>{t.rating || 'Rating'}</div>
+                    </div>
+                </div>
+                {/* Credential strip */}
+                <div className={styles.heroCredentials}>
+                    <span><ShieldIcon /> {t.licensed}, {t.insured} &amp; {t.bonded}</span>
+                    <span>CCB #232708</span>
+                    <span>BBB {t.accredited || 'Accredited'}</span>
+                    <span>100% Satisfaction Guarantee</span>
+                </div>
+            </section>
+
+            {/* ── HOW WE WORK ── */}
+            <section className={styles.hwwSection}>
+                <div className={styles.hwwInner}>
+                    <div className={styles.sectionHeader}>
+                        <div className={styles.sectionLabel}>How We Work</div>
+                        <h2 className={styles.sectionTitle}>
+                            From First Call to <em>Final Nail</em>
+                        </h2>
+                    </div>
+                    <div className={styles.hwwSteps}>
+                        {PROCESS_STEPS.map((step, i) => (
+                            <div key={step.num} className={styles.hwwStep} data-anim="fade-up">
+                                <div className={styles.hwwNum}>{step.num}</div>
+                                <div className={styles.hwwIcon}><step.Icon /></div>
+                                <h3 className={styles.hwwStepTitle}>{step.title}</h3>
+                                <p className={styles.hwwStepDesc}>{step.desc}</p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>
@@ -472,28 +380,6 @@ export default function Home() {
 
             {/* ── REVIEWS ── */}
             <Reviews />
-
-            {/* ── HOW WE WORK ── */}
-            <section className={styles.hwwSection}>
-                <div className={styles.hwwInner}>
-                    <div className={styles.sectionHeader}>
-                        <div className={styles.sectionLabel}>How We Work</div>
-                        <h2 className={styles.sectionTitle}>
-                            From First Call to <em>Final Nail</em>
-                        </h2>
-                    </div>
-                    <div className={styles.hwwSteps}>
-                        {PROCESS_STEPS.map((step, i) => (
-                            <div key={step.num} className={styles.hwwStep} data-anim="fade-up">
-                                <div className={styles.hwwNum}>{step.num}</div>
-                                <div className={styles.hwwIcon}><step.Icon /></div>
-                                <h3 className={styles.hwwStepTitle}>{step.title}</h3>
-                                <p className={styles.hwwStepDesc}>{step.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
 
             {/* ── ABOUT ── */}
             <section className={styles.aboutSection}>
@@ -618,8 +504,8 @@ export default function Home() {
                             { cat: 'Logistics',  q: t.faqQ5, a: t.faqA5 },
                             { cat: 'Quality',    q: t.faqQ6, a: t.faqA6 },
                         ].map((item, i) => (
-                            <div key={i} className={`${styles.faqAccordion} ${openFaq === i ? styles.faqOpen : ''}`}>
-                                <button className={styles.faqTrigger} onClick={() => setOpenFaq(openFaq === i ? null : i)}>
+                            <div key={i} className={`${styles.faqAccordion} ${openFaqs.has(i) ? styles.faqOpen : ''}`}>
+                                <button className={styles.faqTrigger} onClick={() => setOpenFaqs(prev => { const n = new Set(prev); n.has(i) ? n.delete(i) : n.add(i); return n; })}>
                                     <div className={styles.faqTriggerLeft}>
                                         <span className={styles.faqChip}>{item.cat}</span>
                                         <h4 className={styles.faqQ}>{item.q}</h4>
@@ -644,7 +530,7 @@ export default function Home() {
                 <div className={styles.bottomCtaInner}>
                     <div className={styles.sectionLabel}>Ready to Start?</div>
                     <h2 className={styles.bottomCtaTitle}>
-                        Get Your Free Estimate <em>Today</em>
+                        {t.getFreeEstimate} <em>Today</em>
                     </h2>
                     <p className={styles.bottomCtaDesc}>
                         No obligation. No pressure. Just a straight answer on what your project costs and how fast we can start.
@@ -662,7 +548,7 @@ export default function Home() {
                         <span className={styles.trustSep}>·</span>
                         <span>Licensed &amp; Insured · CCB #232708</span>
                         <span className={styles.trustSep}>·</span>
-                        <span>50+ Families Served</span>
+                        <span>200+ Projects Completed</span>
                     </div>
                 </div>
             </section>
@@ -727,7 +613,7 @@ const handleSubmit = async (e) => {
 
     return (
         <div className={styles.contactForm}>
-            <div className={styles.formTitle}>{t.requestFreeQuote} {t.freeQuote}</div>
+            <div className={styles.formTitle}>{t.requestFreeQuote}</div>
             <form onSubmit={handleSubmit}>
                 <div className={styles.formRow}>
                     <div className={styles.formGroup}>

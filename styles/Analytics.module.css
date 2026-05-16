@@ -18,7 +18,7 @@
 
 .statCard {
     background: rgba(255, 255, 255, 0.04);
-    border: 1px solid #D4AF37;
+    border: 1px solid var(--gold);
     border-radius: 10px;
     padding: 20px 16px;
     text-align: center;
@@ -82,7 +82,7 @@
 }
 
 .sectionTitle {
-    color: #D4AF37;
+    color: var(--gold);
     font-size: 1rem;
     font-weight: 600;
     margin: 0 0 16px 0;
@@ -104,7 +104,7 @@
 }
 
 .tooltipLabel {
-    color: #D4AF37;
+    color: var(--gold);
     font-weight: 600;
     margin-bottom: 4px;
 }
@@ -179,7 +179,7 @@
 }
 
 .loading {
-    color: #D4AF37;
+    color: var(--gold);
     text-align: center;
     padding: 60px;
     font-size: 1rem;
@@ -213,14 +213,14 @@
 
 .rangeBtn:hover {
     background: rgba(212,175,55,0.12);
-    color: #D4AF37;
-    border-color: #D4AF37;
+    color: var(--gold);
+    border-color: var(--gold);
 }
 
 .rangeBtnActive {
     background: rgba(212,175,55,0.18);
-    color: #D4AF37;
-    border-color: #D4AF37;
+    color: var(--gold);
+    border-color: var(--gold);
     font-weight: 600;
 }
 
@@ -232,7 +232,7 @@
 .exportBtn {
     background: rgba(212,175,55,0.1);
     border: 1px solid rgba(212,175,55,0.4);
-    color: #D4AF37;
+    color: var(--gold);
     border-radius: 6px;
     padding: 6px 16px;
     font-size: 0.85rem;
@@ -293,7 +293,7 @@
 }
 
 .calloutValue {
-    color: #D4AF37;
+    color: var(--gold);
     font-size: 1.1rem;
     font-weight: 700;
 }
@@ -341,7 +341,7 @@
 
 .step span {
     background: rgba(212,175,55,0.2);
-    color: #D4AF37;
+    color: var(--gold);
     border-radius: 50%;
     width: 20px;
     height: 20px;
@@ -380,8 +380,8 @@
 
 .aiBtn {
     background: linear-gradient(135deg, rgba(212,175,55,0.2), rgba(212,175,55,0.08));
-    border: 1px solid #D4AF37;
-    color: #D4AF37;
+    border: 1px solid var(--gold);
+    color: var(--gold);
     border-radius: 8px;
     padding: 10px 28px;
     font-size: 0.95rem;
@@ -421,7 +421,7 @@
 
 .aiLoadingFill {
     height: 100%;
-    background: linear-gradient(90deg, #D4AF37, #ffe680, #D4AF37);
+    background: linear-gradient(90deg, var(--gold), #ffe680, var(--gold));
     background-size: 200% 100%;
     animation: shimmer 1.4s linear infinite;
     border-radius: 2px;
