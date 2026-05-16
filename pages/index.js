@@ -158,9 +158,9 @@ const PROCESS_STEPS = [
 
 // Static service cards for the home preview
 const HOME_SERVICES = [
-    { key: 'pt1', category: 'REMODEL',     desc: 'Kitchens, bathrooms, additions. Permits pulled, subs coordinated, finish carpentry in-house.' },
     { key: 'pt3', category: 'EMERGENCY',   desc: 'Burst pipes, fire, windstorm damage. We dispatch within the hour and stabilize the same day.' },
     { key: 'pt2', category: 'RESTORATION', desc: 'Source repair, structural drying, antimicrobial treatment, then finish-grade rebuild.' },
+    { key: 'pt1', category: 'REMODEL',     desc: 'Kitchens, bathrooms, additions. Permits pulled, subs coordinated, finish carpentry in-house.' },
     { key: 'pt6', category: 'SIDING',      desc: 'Full replacement, repairs, and paint. Hardie board, LP SmartSide, vinyl — all weather-sealed.' },
     { key: 'pt5', category: 'PAINTING',    desc: 'Interior and exterior. Surface prep, primer coat, finish — clean lines and lasting color.' },
     { key: 'pt7', category: 'DRYWALL',     desc: 'Hanging, taping, mudding, and finishing. Seamless texture matching and full room repairs.' },
@@ -243,6 +243,10 @@ export default function Home() {
                             {t.viewOurWork}
                         </Link>
                     </div>
+                    <a href="tel:5039982340" className={styles.heroCallLink}
+                        onClick={() => { if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'phone_click', { event_category: 'contact', event_label: 'hero_call' }); }}>
+                        <PhoneIcon /> (503) 998-2340 — Tap to Call
+                    </a>
                     <div className={styles.heroReviewBlock}>
                         <div className={styles.heroReviewRow}>
                             <span className={styles.heroReviewLabel}>{t.lookUsUp}</span>
@@ -250,6 +254,7 @@ export default function Home() {
                                 <span className={styles.heroReviewIcon}><YelpLogoIcon /></span>
                                 <span className={styles.heroReviewIcon}><GoogleLogoIcon /></span>
                                 <span className={styles.heroReviewStars}>★★★★★</span>
+                                <span className={styles.heroReviewCount}>50+ reviews</span>
                             </div>
                         </div>
                     </div>
@@ -363,7 +368,7 @@ export default function Home() {
                                 <p className={styles.emergencyStripDesc}>Our emergency response teams are on standby 24/7 to handle critical property damage and restoration needs.</p>
                             </div>
                             <a href="tel:5039982340" className={styles.emergencyStripBtn} onClick={() => { if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'phone_click', { event_category: 'contact', event_label: 'emergency_strip' }); }}>
-                                Emergency Hotline
+                                Call (503) 998-2340
                             </a>
                         </div>
                     </div>
@@ -559,6 +564,17 @@ export default function Home() {
                     <HomeContactForm t={t} />
                 </Modal>
             )}
+
+            {/* ── MOBILE STICKY CTA BAR ── */}
+            <div className={styles.mobileStickyBar}>
+                <a href="tel:5039982340" className={styles.mobileStickyCall}
+                    onClick={() => { if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'phone_click', { event_category: 'contact', event_label: 'mobile_sticky' }); }}>
+                    <PhoneIcon /> (503) 998-2340
+                </a>
+                <button className={styles.mobileStickyQuote} onClick={handleEstimateClick}>
+                    Get Free Quote
+                </button>
+            </div>
         </Layout>
     );
 }
@@ -658,6 +674,10 @@ const handleSubmit = async (e) => {
                     <label>{t.message}</label>
                     <textarea placeholder={t.projectDescription} rows={3}
                         value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} />
+                </div>
+                <div className={styles.formPromise}>
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    Julio will call you within 2 hours
                 </div>
                 <button type="submit" className={styles.formSubmit} disabled={status === 'sending'}
                     onClick={() => {

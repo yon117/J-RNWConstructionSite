@@ -4,6 +4,12 @@ html, body {
   scroll-behavior: auto;
 }
 
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 56px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
