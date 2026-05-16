@@ -257,6 +257,24 @@ export default function Home() {
                                 <span className={styles.heroReviewCount}>50+ reviews</span>
                             </div>
                         </div>
+                        <div className={styles.heroReviewGuarantee}>100% Satisfaction Guarantee</div>
+                        <div className={styles.heroReviewCcb}>CCB: 232708</div>
+                    </div>
+                    <div className={styles.heroTrust}>
+                        <div className={styles.trustItem}>
+                            <ShieldIcon />
+                            {t.licensed}, {t.insured} &amp; {t.bonded}
+                        </div>
+                        <span className={styles.trustSep}>·</span>
+                        <div className={styles.trustItem}>
+                            <StarIcon />
+                            BBB {t.accredited || 'Accredited'}
+                        </div>
+                        <span className={styles.trustSep}>·</span>
+                        <div className={styles.trustItem}>
+                            <CheckIcon />
+                            100% Satisfaction Guarantee
+                        </div>
                     </div>
                 </div>
                 <div className={styles.heroFormPanel} id="hero-form">
@@ -271,8 +289,8 @@ export default function Home() {
                         <div className={styles.statLabel}>{t.yearsExp || 'Years Exp.'}</div>
                     </div>
                     <div className={styles.statBox} data-anim="stat">
-                        <div className={styles.statNum} data-anim="stat-num">200+</div>
-                        <div className={styles.statLabel}>{t.projectsCompleted || 'Projects'}</div>
+                        <div className={styles.statNum} data-anim="stat-num">50+</div>
+                        <div className={styles.statLabel}>Families Served</div>
                     </div>
                     <div className={styles.statBox} data-anim="stat">
                         <div className={styles.statNum} data-anim="stat-num">★ 5.0</div>
@@ -558,7 +576,7 @@ export default function Home() {
                         <span className={styles.trustSep}>·</span>
                         <span>Licensed &amp; Insured · CCB #232708</span>
                         <span className={styles.trustSep}>·</span>
-                        <span>200+ Projects Completed</span>
+                        <span>50+ Families Served</span>
                     </div>
                 </div>
             </section>
