@@ -703,7 +703,7 @@ const handleSubmit = async (e) => {
                 </div>
                 <div className={styles.formPromise}>
                     <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                    Julio will call you within 2 hours
+                    We'll be in touch within 2 hours
                 </div>
                 <button type="submit" className={styles.formSubmit} disabled={status === 'sending'}
                     onClick={() => {
