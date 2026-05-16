@@ -451,7 +451,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 9990;
+    z-index: 500;
     height: 56px;
     background: var(--dark);
     border-top: 1px solid rgba(200, 150, 30, 0.2);
