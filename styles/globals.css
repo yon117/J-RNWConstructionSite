@@ -53,6 +53,18 @@ a {
   text-decoration: none;
 }
 
+/* Typebot bubble glow */
+[data-testid="typebot-bubble-button"],
+.typebot-bubble-button {
+  animation: typebotGlow 2s ease-in-out infinite !important;
+  box-shadow: 0 0 0 0 rgba(200, 150, 30, 0.7) !important;
+}
+
+@keyframes typebotGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(200, 150, 30, 0.7); }
+  50%       { box-shadow: 0 0 0 10px rgba(200, 150, 30, 0); }
+}
+
 button {
   cursor: pointer;
   font-family: inherit;

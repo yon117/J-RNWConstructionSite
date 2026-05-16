@@ -5,6 +5,13 @@
     flex-direction: column;
 }
 
+/* ─── STICKY HEADER WRAPPER ─────────────────────── */
+.stickyHeader {
+    position: sticky;
+    top: 0;
+    z-index: 210;
+}
+
 /* ─── TOPBAR ─────────────────────────────────────── */
 .topbar {
     background: var(--gold);
@@ -576,9 +583,6 @@
         padding: 5px 12px;
         justify-content: center;
         text-align: center;
-        position: sticky;
-        top: 0;
-        z-index: 201;
         flex-wrap: wrap;
     }
 
@@ -588,9 +592,8 @@
 
     .nav {
         padding: 10px 16px;
-        position: sticky;
-        top: 27px;
-        z-index: 200;
+        position: relative;
+        top: auto;
     }
 
     .mobileMenu {
@@ -790,6 +793,6 @@
 .emergencyClose:hover { color: #fff; border-color: #888; }
 @media (max-width: 600px) {
     .seasonalBanner { font-size: 0.75rem; padding: 7px 0.75rem; }
-    .emergencyWrap { bottom: 200px; right: 16px; }
+    .emergencyWrap { bottom: 80px; right: 16px; }
     .emergencyPanel { max-width: 240px; }
 }
