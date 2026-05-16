@@ -199,7 +199,6 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                 />
             </Head>
 
-            <div className={styles.stickyHeader}>
             {/* ── TOPBAR ── */}
             <div className={styles.topbar}>
                 <div className={styles.topbarItem}>
@@ -359,7 +358,6 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                 </div>
             </div>
 
-            </div>
             {/* ── MAIN ── */}
             <main className={styles.main}>{children}</main>
 
