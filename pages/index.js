@@ -7,6 +7,8 @@ import WarningSigns from '../components/WarningSigns';
 import styles from '../styles/Home.module.css';
 import { useState, useEffect } from 'react';
 import { useLang } from '../context/LanguageContext';
+import { getDb } from '../lib/db';
+import { imageUrl } from '../utils/imageUrl';
 
 // ─── SVG ICONS ───────────────────────────────────────────────────────────────
 const ShieldIcon = () => (
@@ -188,7 +190,7 @@ const HANDLE_ITEMS = [
 // WARNING SIGNS moved to components/WarningSigns.js
 
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
-export default function Home() {
+export default function Home({ projects = [] }) {
     const [showContactModal, setShowContactModal] = useState(false);
     const [openFaqs, setOpenFaqs] = useState(new Set());
     const { t } = useLang();
@@ -435,46 +437,25 @@ export default function Home() {
                         </Link>
                     </div>
                     <div className={styles.projectsGrid}>
-                        <div className={`${styles.projectCard} ${styles.featured}`} style={{ position: 'relative' }}>
-                            <Image src="/assets/bathroom-reno-2.png" alt="Bathroom Renovation" fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover', filter: 'brightness(0.7)' }} />
-                            <div className={styles.projectOverlay}>
-                                <span className={styles.projectCategory}>Remodel</span>
-                                <div className={styles.projectTitle}>Bathroom Renovation</div>
-                                <div className={styles.projectMeta}>Tigard</div>
+                        {projects.slice(0, 5).map((project, idx) => (
+                            <div
+                                key={project.id}
+                                className={`${styles.projectCard} ${idx === 0 ? styles.featured : ''}`}
+                                style={{ position: 'relative' }}
+                            >
+                                <Image
+                                    src={imageUrl(project.firstImage || project.image)}
+                                    alt={project.title}
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                    style={{ objectFit: 'cover', filter: 'brightness(0.7)' }}
+                                />
+                                <div className={styles.projectOverlay}>
+                                    <span className={styles.projectCategory}>{project.category || 'Remodel'}</span>
+                                    <div className={styles.projectTitle}>{project.title}</div>
+                                </div>
                             </div>
-                        </div>
-                        <div className={styles.projectCard} style={{ position: 'relative' }}>
-                            <Image src="/assets/kitchen-remodel-1.png" alt="Kitchen Remodel" fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover', filter: 'brightness(0.7)' }} />
-                            <div className={styles.projectOverlay}>
-                                <span className={styles.projectCategory}>Remodel</span>
-                                <div className={styles.projectTitle}>Kitchen Remodel</div>
-                                <div className={styles.projectMeta}>Portland</div>
-                            </div>
-                        </div>
-                        <div className={styles.projectCard} style={{ position: 'relative' }}>
-                            <Image src="/assets/siding-project-1.png" alt="Siding Project" fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover', filter: 'brightness(0.7)' }} />
-                            <div className={styles.projectOverlay}>
-                                <span className={styles.projectCategory}>Siding</span>
-                                <div className={styles.projectTitle}>Exterior Siding</div>
-                                <div className={styles.projectMeta}>Beaverton</div>
-                            </div>
-                        </div>
-                        <div className={styles.projectCard} style={{ position: 'relative' }}>
-                            <Image src="/assets/fire-damage.png" alt="Fire Damage Restoration" fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover', filter: 'brightness(0.7)' }} />
-                            <div className={styles.projectOverlay}>
-                                <span className={styles.projectCategory}>Restoration</span>
-                                <div className={styles.projectTitle}>Fire Damage Restoration</div>
-                                <div className={styles.projectMeta}>Gresham · Insurance claim</div>
-                            </div>
-                        </div>
-                        <div className={styles.projectCard} style={{ position: 'relative' }}>
-                            <Image src="/assets/drywall.png" alt="Drywall & Finishing" fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover', filter: 'brightness(0.7)' }} />
-                            <div className={styles.projectOverlay}>
-                                <span className={styles.projectCategory}>Drywall</span>
-                                <div className={styles.projectTitle}>Drywall & Finishing</div>
-                                <div className={styles.projectMeta}>Happy Valley</div>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </section>
@@ -711,4 +692,43 @@ const handleSubmit = async (e) => {
             </form>
         </div>
     );
+}
+
+// ─── DATA FETCHING ────────────────────────────────────────────────────────────
+export async function getStaticProps() {
+    try {
+        const db = await getDb();
+
+        const result = await db.execute(
+            'SELECT id, title, image, category FROM projects ORDER BY created_at DESC LIMIT 5'
+        );
+        const rows = result.rows || [];
+
+        // Fetch first image from project_images for each project
+        const firstImagesResult = await db.execute(`
+            SELECT pi.project_id, pi.image_path
+            FROM project_images pi
+            INNER JOIN (
+                SELECT project_id, MIN(display_order) AS min_order
+                FROM project_images GROUP BY project_id
+            ) first ON pi.project_id = first.project_id AND pi.display_order = first.min_order
+        `);
+
+        const firstImageMap = {};
+        for (const row of (firstImagesResult.rows || [])) {
+            firstImageMap[row.project_id] = row.image_path;
+        }
+
+        const projects = rows.map(p => ({
+            id: p.id,
+            title: p.title || '',
+            image: p.image || null,
+            category: p.category || '',
+            firstImage: firstImageMap[p.id] || p.image || null,
+        }));
+
+        return { props: { projects }, revalidate: 60 };
+    } catch (e) {
+        return { props: { projects: [] }, revalidate: 30 };
+    }
 }
