@@ -588,16 +588,6 @@ export default function Home() {
                 </Modal>
             )}
 
-            {/* ── MOBILE STICKY CTA BAR ── */}
-            <div className={styles.mobileStickyBar}>
-                <a href="tel:5039982340" className={styles.mobileStickyCall}
-                    onClick={() => { if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'phone_click', { event_category: 'contact', event_label: 'mobile_sticky' }); }}>
-                    <PhoneIcon /> (503) 998-2340
-                </a>
-                <button className={styles.mobileStickyQuote} onClick={handleEstimateClick}>
-                    Get Free Quote
-                </button>
-            </div>
         </Layout>
     );
 }
