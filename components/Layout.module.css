@@ -6,10 +6,13 @@
 }
 
 .stickyHeader {
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 210;
-    background: var(--dark);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 

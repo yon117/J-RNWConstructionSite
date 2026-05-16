@@ -232,6 +232,13 @@ export default function Home() {
     <span style={{ fontSize: '13px', opacity: 0.7 }}>Portland · Tigard · Tualatin · Gresham · Happy Valley · Oregon City</span>
 </p>
                     <div className={styles.heroActions}>
+                        <button className={styles.btnPrimary} onClick={() => {
+                            const el = document.getElementById('hero-form');
+                            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            else handleEstimateClick();
+                        }}>
+                            {t.getFreeEstimate} <ArrowIcon />
+                        </button>
                         <Link href="/projects" className={styles.btnSecondary}>
                             {t.viewOurWork}
                         </Link>
