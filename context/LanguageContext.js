@@ -18,7 +18,7 @@ const translations = {
         callUs: 'Call Us Now!! 24/7 Phone |',
 
         // Hero
-        yourTrusted: 'Your Trusted',
+        yourTrusted: "Portland's #1",
         generalContractor: 'General Contractor',
         inOregon: 'in Oregon',
         licensed: 'Licensed',

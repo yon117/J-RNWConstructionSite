@@ -843,6 +843,14 @@
     margin-bottom: 5px;
 }
 
+.projectMeta {
+    font-size: 11px;
+    color: var(--gray);
+    font-weight: 500;
+    margin-top: 4px;
+    letter-spacing: 0.02em;
+}
+
 .projectTitle {
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 18px;

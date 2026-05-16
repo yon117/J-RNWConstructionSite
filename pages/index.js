@@ -159,7 +159,7 @@ const PROCESS_STEPS = [
 // Static service cards for the home preview
 const HOME_SERVICES = [
     { key: 'pt3', category: 'EMERGENCY',   desc: 'Burst pipes, fire, windstorm damage. We dispatch within the hour and stabilize the same day.' },
-    { key: 'pt2', category: 'RESTORATION', desc: 'Source repair, structural drying, antimicrobial treatment, then finish-grade rebuild.' },
+    { key: 'pt2', category: 'RESTORATION', desc: 'We work with your insurance adjuster. Source repair, structural drying, antimicrobial treatment, finish-grade rebuild.' },
     { key: 'pt1', category: 'REMODEL',     desc: 'Kitchens, bathrooms, additions. Permits pulled, subs coordinated, finish carpentry in-house.' },
     { key: 'pt6', category: 'SIDING',      desc: 'Full replacement, repairs, and paint. Hardie board, LP SmartSide, vinyl — all weather-sealed.' },
     { key: 'pt5', category: 'PAINTING',    desc: 'Interior and exterior. Surface prep, primer coat, finish — clean lines and lasting color.' },
@@ -288,6 +288,9 @@ export default function Home() {
                 </div>
             </section>
 
+            {/* ── REVIEWS ── */}
+            <Reviews />
+
             {/* ── HOW WE WORK ── */}
             <section className={styles.hwwSection}>
                 <div className={styles.hwwInner}>
@@ -383,9 +386,6 @@ export default function Home() {
             {/* ── WARNING SIGNS ── */}
             <WarningSigns onCta={handleEstimateClick} />
 
-            {/* ── REVIEWS ── */}
-            <Reviews />
-
             {/* ── ABOUT ── */}
             <section className={styles.aboutSection}>
                 <div className={styles.aboutInner}>
@@ -422,13 +422,15 @@ export default function Home() {
                             <div className={styles.projectOverlay}>
                                 <span className={styles.projectCategory}>Remodel</span>
                                 <div className={styles.projectTitle}>Bathroom Renovation</div>
+                                <div className={styles.projectMeta}>Tigard · $14,500 · 3 weeks</div>
                             </div>
                         </div>
                         <div className={styles.projectCard} style={{ position: 'relative' }}>
-                            <Image src="/assets/bathroom-reno-1.png" alt="Bathroom Renovation" fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover', filter: 'brightness(0.7)' }} />
+                            <Image src="/assets/kitchen-remodel-1.png" alt="Kitchen Remodel" fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover', filter: 'brightness(0.7)' }} />
                             <div className={styles.projectOverlay}>
                                 <span className={styles.projectCategory}>Remodel</span>
-                                <div className={styles.projectTitle}>Bathroom Renovation</div>
+                                <div className={styles.projectTitle}>Kitchen Remodel</div>
+                                <div className={styles.projectMeta}>Portland · $22,000 · 5 weeks</div>
                             </div>
                         </div>
                         <div className={styles.projectCard} style={{ position: 'relative' }}>
@@ -436,6 +438,7 @@ export default function Home() {
                             <div className={styles.projectOverlay}>
                                 <span className={styles.projectCategory}>Siding</span>
                                 <div className={styles.projectTitle}>Exterior Siding</div>
+                                <div className={styles.projectMeta}>Beaverton · $9,800 · 2 weeks</div>
                             </div>
                         </div>
                         <div className={styles.projectCard} style={{ position: 'relative' }}>
@@ -443,6 +446,7 @@ export default function Home() {
                             <div className={styles.projectOverlay}>
                                 <span className={styles.projectCategory}>Restoration</span>
                                 <div className={styles.projectTitle}>Fire Damage Restoration</div>
+                                <div className={styles.projectMeta}>Gresham · Insurance claim</div>
                             </div>
                         </div>
                         <div className={styles.projectCard} style={{ position: 'relative' }}>
@@ -450,6 +454,7 @@ export default function Home() {
                             <div className={styles.projectOverlay}>
                                 <span className={styles.projectCategory}>Drywall</span>
                                 <div className={styles.projectTitle}>Drywall & Finishing</div>
+                                <div className={styles.projectMeta}>Happy Valley · $3,200 · 4 days</div>
                             </div>
                         </div>
                     </div>
@@ -587,10 +592,11 @@ function HomeContactForm({ t }) {
     const [phoneError, setPhoneError] = useState('');
 
     const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    const validatePhone = (phone) => phone === '' || /^[0-9\s\-\(\)]+$/.test(phone);
+    const validatePhone = (phone) => phone.replace(/\D/g, '').length >= 10;
 
 const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validatePhone(form.phone)) { setPhoneError('Please enter a valid phone number (10 digits)'); return; }
     if (!validateEmail(form.email)) { setEmailError(t.validEmailError); return; }
     setStatus('sending');
     try {
@@ -629,7 +635,7 @@ const handleSubmit = async (e) => {
 
     return (
         <div className={styles.contactForm}>
-            <div className={styles.formTitle}>{t.requestFreeQuote}</div>
+            <div className={styles.formTitle}>{t.requestFreeQuote} {t.freeQuote}</div>
             <form onSubmit={handleSubmit}>
                 <div className={styles.formRow}>
                     <div className={styles.formGroup}>
@@ -639,13 +645,15 @@ const handleSubmit = async (e) => {
                     </div>
                     <div className={styles.formGroup}>
                         <label>{t.phoneNumber}</label>
-                        <input type="tel" placeholder="(503) 000-0000"
+                        <input type="tel" placeholder="(503) 000-0000" required
                             value={form.phone}
                             onChange={e => {
-                                if (validatePhone(e.target.value)) {
-                                    setForm({ ...form, phone: e.target.value });
-                                    setPhoneError('');
-                                } else setPhoneError(t.onlyNumbersError);
+                                setForm({ ...form, phone: e.target.value });
+                                setPhoneError('');
+                            }}
+                            onBlur={e => {
+                                if (e.target.value && !validatePhone(e.target.value))
+                                    setPhoneError('Please enter a valid 10-digit phone number');
                             }} />
                         {phoneError && <p className={styles.validationError}>{phoneError}</p>}
                     </div>
