@@ -128,6 +128,23 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
         sessionStorage.setItem('bannerDismissed', '1');
     };
 
+    useEffect(() => {
+        if (typeof window === 'undefined' || window.innerWidth > 768) return;
+        const header = document.getElementById('site-header');
+        const main = document.querySelector('main');
+        if (!header || !main) return;
+        header.style.position = 'fixed';
+        header.style.top = '0';
+        header.style.left = '0';
+        header.style.right = '0';
+        header.style.zIndex = '210';
+        const update = () => { main.style.paddingTop = header.offsetHeight + 'px'; };
+        update();
+        const obs = new ResizeObserver(update);
+        obs.observe(header);
+        return () => { obs.disconnect(); };
+    }, [showBanner]);
+
     const handleEmergency = () => {
         fetch('/api/monitor/click', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'emergency_click' }), keepalive: true }).catch(() => {});
     };
@@ -199,7 +216,7 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                 />
             </Head>
 
-            <div className={styles.stickyHeader}>
+            <div className={styles.stickyHeader} id="site-header">
             {/* ── TOPBAR ── */}
             <div className={styles.topbar}>
                 <div className={styles.topbarItem}>

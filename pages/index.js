@@ -672,10 +672,6 @@ const handleSubmit = async (e) => {
                     <textarea placeholder={t.projectDescription} rows={3}
                         value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} />
                 </div>
-                <div className={styles.formPromise}>
-                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                    We'll be in touch within 2 hours
-                </div>
                 <button type="submit" className={styles.formSubmit} disabled={status === 'sending'}
                     onClick={() => {
                         if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'form_submit_click', { event_category: 'contact', event_label: 'free_estimate_form' });
