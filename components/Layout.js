@@ -129,21 +129,11 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
     };
 
     useEffect(() => {
-        if (typeof window === 'undefined' || window.innerWidth > 768) return;
-        const header = document.getElementById('site-header');
-        const main = document.querySelector('main');
-        if (!header || !main) return;
-        header.style.position = 'fixed';
-        header.style.top = '0';
-        header.style.left = '0';
-        header.style.right = '0';
-        header.style.zIndex = '210';
-        const update = () => { main.style.paddingTop = header.offsetHeight + 'px'; };
-        update();
-        const obs = new ResizeObserver(update);
-        obs.observe(header);
-        return () => { obs.disconnect(); };
-    }, [showBanner]);
+        if (!menuOpen) return;
+        const prev = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        return () => { document.body.style.overflow = prev; };
+    }, [menuOpen]);
 
     const handleEmergency = () => {
         fetch('/api/monitor/click', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'emergency_click' }), keepalive: true }).catch(() => {});
@@ -216,9 +206,34 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                 />
             </Head>
 
-            <div className={styles.stickyHeader} id="site-header">
+            <header id="site-header" className={styles.stickyHeader}>
             {/* ── TOPBAR ── */}
             <div className={styles.topbar}>
+                <div className={styles.topbarMobile}>
+                    <div className={styles.topbarRow}>
+                        <PhoneIcon />
+                        <a href="tel:+15039982340"
+                            onClick={() => {
+                                if (typeof gtag_report_conversion !== 'undefined') gtag_report_conversion('tel:+15039982340');
+                                if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'phone_click', { event_category: 'contact', event_label: 'topbar' });
+                                fetch('/api/monitor/click', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'phone_click' }), keepalive: true }).catch(() => {});
+                            }}>
+                            (503) 998-2340
+                        </a>
+                    </div>
+                    <div className={styles.topbarRow}>
+                        <MailIcon />
+                        <a href="mailto:jandrnwconstruction@gmail.com"
+                            onClick={() => {
+                                if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'email_click', { event_category: 'contact', event_label: 'topbar' });
+                                fetch('/api/monitor/click', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'email_click' }), keepalive: true }).catch(() => {});
+                            }}>
+                            jandrnwconstruction@gmail.com
+                        </a>
+                    </div>
+                    <div className={styles.topbarRow}>{t.navAvailability}</div>
+                </div>
+                <div className={styles.topbarDesktop}>
                 <div className={styles.topbarItem}>
                     <PhoneIcon />
                     <a href="tel:+15039982340"
@@ -243,6 +258,7 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                 </div>
                 <div className={styles.topbarDivider} />
                 <div className={styles.topbarItem}>{t.navAvailability}</div>
+                </div>
             </div>
 
             {/* ── SEASONAL BANNER ── */}
@@ -375,8 +391,8 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                     </div>
                 </div>
             </div>
+            </header>
 
-            </div>{/* /stickyHeader */}
             {/* ── MAIN ── */}
             <main className={styles.main}>{children}</main>
 
