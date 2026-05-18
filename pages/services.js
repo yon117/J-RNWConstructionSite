@@ -126,7 +126,7 @@ export default function Services({ services }) {
                             const serviceDescription = sanitizeServiceText(service.description) || '';
 
                             return (
-                                <div className={pageStyles.serviceItem} key={service.id}>
+                                <div className={pageStyles.serviceItem} key={service.id} data-anim="service-item">
                                     {/* Image */}
                                     <div className={pageStyles.serviceImgWrap}>
                                         <Image

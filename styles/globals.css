@@ -28,7 +28,9 @@ html.lenis body {
   html.scroll-motion-ready [data-anim="stat"],
   html.scroll-motion-ready [data-anim="about-logo"],
   html.scroll-motion-ready [data-anim="hero-reveal"],
-  html.scroll-motion-ready [data-anim="faq-item"] {
+  html.scroll-motion-ready [data-anim="faq-item"],
+  html.scroll-motion-ready [data-anim="service-item"],
+  html.scroll-motion-ready [data-anim="project-card"] {
     visibility: hidden;
   }
 }

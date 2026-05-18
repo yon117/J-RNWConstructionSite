@@ -139,6 +139,7 @@ export default function Projects({ projects }) {
                                     className={`${pageStyles.projectCard} ${pattern ? pageStyles[pattern] : ''}`}
                                     onClick={() => handleProjectClick(project)}
                                     style={{ animationDelay: `${index * 60}ms` }}
+                                    data-anim="project-card"
                                 >
                                     <img
                                         src={imageUrl(project.image)}

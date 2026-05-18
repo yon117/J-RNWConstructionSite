@@ -96,6 +96,14 @@ function setupAnimations() {
         revealFromSide(el, i, { strength: 1.15, y: 80, duration: 0.95 });
     });
 
+    gsap.utils.toArray('[data-anim="service-item"]').forEach((el, i) => {
+        revealFromSide(el, i, { strength: 1.1, y: 70, duration: 0.9 });
+    });
+
+    gsap.utils.toArray('[data-anim="project-card"]').forEach((el, i) => {
+        revealFromSide(el, i, { strength: 0.9, y: 60, duration: 0.85 });
+    });
+
     gsap.utils.toArray('[data-anim="faq-item"]').forEach((el, i) => {
         gsap.fromTo(
             el,
