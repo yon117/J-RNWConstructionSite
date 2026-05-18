@@ -17,6 +17,8 @@ const Bubble = dynamic(
   { ssr: false }
 );
 
+const ScrollMotion = dynamic(() => import("../components/ScrollMotion"), { ssr: false });
+
 const barlow = Barlow({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
@@ -131,6 +133,7 @@ export default function App({ Component, pageProps }: AppProps) {
           </>
         )}
         <Component {...pageProps} />
+        {!isAdmin && <ScrollMotion />}
         {!isAdmin && (
           <Bubble
             typebot="j-r-nw-construction-bot-jo87vrh"

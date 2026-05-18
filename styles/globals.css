@@ -13,6 +13,25 @@ html, body {
   }
 }
 
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.scroll-motion-ready [data-anim="fade-up"],
+  html.scroll-motion-ready [data-anim="service-card"],
+  html.scroll-motion-ready [data-anim="stat"],
+  html.scroll-motion-ready [data-anim="about-logo"],
+  html.scroll-motion-ready [data-anim="hero-reveal"],
+  html.scroll-motion-ready [data-anim="faq-item"] {
+    visibility: hidden;
+  }
+}
 
 :root {
   --gold: #C8961E;

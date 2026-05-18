@@ -218,7 +218,7 @@ export default function Home({ projects = [] }) {
                 {/* ✅ Después */}
 <div className={styles.heroBg} data-anim="hero-bg" />
                 <div className={styles.heroInner}>
-                <div className={styles.heroContent}>
+                <div className={styles.heroContent} data-anim="hero-reveal">
                     <div className={styles.heroBadge}>
                         <div className={styles.heroBadgeDot} />
                         {t.navSubtitle}
@@ -279,7 +279,7 @@ export default function Home({ projects = [] }) {
                         </div>
                     </div>
                 </div>
-                <div className={styles.heroFormPanel} id="hero-form">
+                <div className={styles.heroFormPanel} id="hero-form" data-anim="hero-reveal">
                     <HomeContactForm t={t} />
                 </div>
             </div>
@@ -513,7 +513,7 @@ export default function Home({ projects = [] }) {
                             { cat: 'Logistics',  q: t.faqQ5, a: t.faqA5 },
                             { cat: 'Quality',    q: t.faqQ6, a: t.faqA6 },
                         ].map((item, i) => (
-                            <div key={i} className={`${styles.faqAccordion} ${openFaqs.has(i) ? styles.faqOpen : ''}`}>
+                            <div key={i} className={`${styles.faqAccordion} ${openFaqs.has(i) ? styles.faqOpen : ''}`} data-anim="faq-item">
                                 <button className={styles.faqTrigger} onClick={() => setOpenFaqs(prev => { const n = new Set(prev); n.has(i) ? n.delete(i) : n.add(i); return n; })}>
                                     <div className={styles.faqTriggerLeft}>
                                         <span className={styles.faqChip}>{item.cat}</span>
