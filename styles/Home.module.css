@@ -13,10 +13,10 @@
     position: relative;
     z-index: 2;
     display: grid;
-    grid-template-columns: minmax(320px, 1fr) 420px;
-    gap: 32px;
+    grid-template-columns: minmax(340px, 0.95fr) minmax(480px, 600px) 456px;
+    gap: 18px;
     align-items: start;
-    padding: 60px 30px 80px 30px;
+    padding: 44px 24px 72px;
     width: 100%;
     max-width: none;
     margin: 0;
@@ -47,7 +47,7 @@
     border-radius: 4px;
     padding: 28px 26px;
     min-width: 100%;
-    max-width: 420px;
+    max-width: 456px;
     box-shadow: 0 28px 80px rgba(0, 0, 0, 0.35);
     align-self: start;
     margin-top: -18px;
@@ -165,6 +165,83 @@
     font-style: normal;
     color: var(--gold);
     display: block;
+}
+
+/* Vertical cut-reveal headline (fin.ai-inspired scale) */
+.heroCutHeadline {
+    margin-bottom: 4px;
+}
+
+.heroCutLineWrap {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.05em;
+}
+
+.heroCutLineInner {
+    display: block;
+    will-change: transform;
+}
+
+.heroCutLineTitle {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(40px, 6.2vw, 76px);
+    font-weight: 800;
+    line-height: 0.96;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--white);
+}
+
+.heroCutLineTitleAccent {
+    color: var(--gold);
+}
+
+.heroCutLineBody {
+    font-family: 'Barlow', sans-serif;
+    font-size: clamp(14px, 1.65vw, 17px);
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--text);
+    text-transform: none;
+    letter-spacing: 0;
+    padding-top: 0.4em;
+}
+
+.heroCutLineCities {
+    font-size: 13px;
+    opacity: 0.7;
+    padding-top: 0.55em;
+}
+
+.heroCycler {
+    margin: 12px 0 20px;
+    max-width: 540px;
+}
+
+.heroHouseCol {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 620px;
+    z-index: 2;
+    align-self: start;
+    justify-self: center;
+    transform: translateX(-8px);
+}
+
+.heroFormCol {
+    display: flex;
+    width: 100%;
+    max-width: 456px;
+    z-index: 2;
+    align-self: start;
+    justify-self: start;
+}
+
+.heroFormCol .heroFormPanel {
+    margin-top: 0;
+    max-width: none;
 }
 
 .heroDesc {
@@ -285,6 +362,13 @@
     .heroInner {
         grid-template-columns: 1fr;
         padding: 60px 30px 60px 30px;
+    }
+
+    .heroHouseCol,
+    .heroFormCol {
+        max-width: 420px;
+        justify-self: start;
+        transform: none;
     }
 
     .heroStats {
@@ -585,6 +669,32 @@
 .servicesInner {
     max-width: 1200px;
     margin: 0 auto;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 60px;
+    align-items: start;
+}
+
+/* Sticky left label column */
+.servicesLeft {
+    position: sticky;
+    top: 100px;
+    align-self: start;
+    padding-top: 4px;
+}
+
+.servicesLeftDesc {
+    color: var(--gray);
+    font-size: 14px;
+    line-height: 1.7;
+    margin-top: 16px;
+    max-width: 220px;
+}
+
+.servicesRight {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
 }
 
 .servicesGrid {
@@ -702,6 +812,77 @@
 }
 @media (max-width: 640px) {
     .emergencyStripContent { flex-direction: column; align-items: flex-start; padding: 20px; }
+}
+
+/* ─── INSURANCE / DIRECT CLIENT BANNER ──────────────────── */
+.insuranceBanner {
+    margin-top: 28px;
+    margin-bottom: 8px;
+    max-width: 560px;
+    border-left: 3px solid var(--gold);
+    padding-left: 16px;
+}
+
+.insuranceBannerHeader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+}
+
+.insuranceBannerDot {
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: pulse 2s infinite;
+}
+
+.insuranceBannerCards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 32px;
+}
+
+.insuranceBannerCard {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.insuranceBannerCardTitle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+.insuranceBannerCardTitle svg {
+    color: var(--gold);
+    flex-shrink: 0;
+}
+
+.insuranceBannerCardDesc {
+    font-size: 13px;
+    color: #fff;
+    line-height: 1.55;
+    margin: 0;
+}
+
+@media (max-width: 480px) {
+    .insuranceBanner { max-width: 100%; }
+    .insuranceBannerCards { grid-template-columns: 1fr; gap: 16px 0; }
 }
 
 /* Number row */
@@ -831,7 +1012,8 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 22px;
+    gap: 6px;
+    padding: 18px 18px 20px;
 }
 
 .projectCategory {
@@ -840,28 +1022,46 @@
     color: var(--gold);
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    margin-bottom: 5px;
+    margin-bottom: 0;
 }
 
 .projectMeta {
     font-size: 11px;
     color: var(--gray);
     font-weight: 500;
-    margin-top: 4px;
+    margin-top: 0;
     letter-spacing: 0.02em;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.projectMeta:empty {
+    display: none;
 }
 
 .projectTitle {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 800;
     text-transform: uppercase;
-    line-height: 1.05;
+    line-height: 1.08;
     color: var(--white);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .projectCard.featured .projectTitle {
     font-size: 26px;
+    -webkit-line-clamp: 3;
+}
+
+.projectCard:not(.featured) .projectMeta {
+    display: none;
 }
 
 .photoBadge {
@@ -1212,6 +1412,12 @@
         margin-top: 18px;
     }
 
+    .servicesInner {
+        grid-template-columns: 1fr;
+    }
+    .servicesLeft {
+        position: static;
+    }
     .servicesGrid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -1268,6 +1474,14 @@
         align-items: stretch;
         margin-bottom: 16px;
         gap: 10px;
+    }
+
+    .heroCallLink {
+        margin-top: 10px;
+    }
+
+    .heroReviewBlock {
+        margin-top: 24px;
     }
 
     .btnPrimary,
@@ -1475,7 +1689,7 @@
 
 /* ── BOTTOM CTA ── */
 .bottomCtaSection {
-    padding: 96px 40px;
+    padding: 72px 40px;
     background: var(--dark-mid);
     border-top: 1px solid rgba(200,150,30,0.18);
     text-align: center;
@@ -2016,4 +2230,616 @@
 @media (max-width: 500px) {
   .hwwSteps { grid-template-columns: 1fr; }
   .hwwSection { padding: 60px 20px; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   BENTO SECTION (How We Work + Handle Everything merged)
+═══════════════════════════════════════════════════════ */
+.bentoSection {
+  background: var(--dark);
+  border-top: 1px solid rgba(200, 150, 30, 0.08);
+}
+.bentoGrid {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 0;
+}
+.bentoPrimary {
+  background: var(--dark);
+  padding: 52px 48px;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+.bentoStack {
+  display: flex;
+  flex-direction: column;
+  background: var(--dark-mid);
+}
+.bentoTopCard {
+  padding: 40px 36px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.bentoHandleGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.04);
+  flex: 1;
+}
+.bentoCard {
+  background: var(--dark-mid);
+  padding: 24px 22px;
+}
+.hwwStepsCompact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 32px;
+  margin-top: 28px;
+}
+.hwwStepCompact {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.hwwNumSmall {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════
+   SPLIT ROWS (Projects+About, Areas+FAQ)
+═══════════════════════════════════════════════════════ */
+.splitRow {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  border-top: 1px solid rgba(200, 150, 30, 0.08);
+}
+.splitRowAlt {
+  grid-template-columns: 2fr 3fr;
+}
+/* Kill double borders from child sections */
+.splitRow > section {
+  border-top: none !important;
+  margin: 0 !important;
+}
+/* Divider between split children */
+.splitRow > section:last-child,
+.splitRow > div:last-child {
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+}
+/* Tighten section padding inside split rows */
+.splitRow .projectsSection,
+.splitRow .aboutSection,
+.splitRow .areasSection,
+.splitRow .faqSection {
+  padding: 52px 40px;
+}
+.splitRow .aboutInner {
+  flex-direction: column;
+  gap: 24px;
+  max-width: none;
+}
+.splitRow .aboutLogoWrap {
+  width: auto;
+}
+.splitRow .projectsInner {
+  max-width: none;
+  padding: 0;
+}
+.splitRow .projectsGrid {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 240px 240px;
+}
+.splitRow .projectOverlay {
+  gap: 4px;
+  padding: 14px 16px 16px;
+}
+.splitRow .projectTitle {
+  font-size: 14px;
+  line-height: 1.08;
+  -webkit-line-clamp: 2;
+}
+.splitRow .projectCard.featured .projectTitle {
+  font-size: 18px;
+  -webkit-line-clamp: 3;
+}
+.splitRow .areasSection {
+  background: var(--dark-mid);
+}
+.splitRow .areasInner {
+  grid-template-columns: 1fr;
+  gap: 28px;
+  max-width: none;
+}
+.splitRow .areasMap iframe {
+  height: 260px;
+}
+.splitRow .faqSection {
+  background: var(--dark);
+}
+.splitRow .faqInner {
+  max-width: none;
+}
+
+@media (max-width: 1024px) {
+  .bentoGrid { grid-template-columns: 1fr; }
+  .bentoPrimary { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .splitRow,
+  .splitRowAlt { grid-template-columns: 1fr; }
+  .splitRow > section:last-child,
+  .splitRow > div:last-child { border-left: none; border-top: 1px solid rgba(255,255,255,0.05); }
+  .splitRow .projectsGrid { grid-template-columns: 1fr 1fr; grid-template-rows: 220px 220px; }
+}
+@media (max-width: 600px) {
+  .hwwStepsCompact { grid-template-columns: 1fr; }
+  .bentoHandleGrid { grid-template-columns: 1fr; }
+  .splitRow .projectsGrid { grid-template-columns: 1fr; }
+}
+
+/* ═══════════════════════════════════════════════════
+   CONTAINER SCROLL CARD
+═══════════════════════════════════════════════════ */
+.scrollCard {
+  position: relative;
+  overflow: hidden;
+}
+.scrollCardOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(7,12,19,0.92) 0%, rgba(7,12,19,0.2) 55%, transparent 100%);
+  display: flex;
+  align-items: flex-end;
+  padding: 36px 48px;
+}
+.scrollCardStats {
+  display: flex;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+.scrollStat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.scrollStatNum {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.scrollStatLabel {
+  font-family: 'Barlow', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
+@media (max-width: 600px) {
+  .scrollCardOverlay { padding: 20px 24px; }
+  .scrollCardStats { gap: 24px; }
+  .scrollStatNum { font-size: 26px; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   HORIZ ROW — side-by-side section pairs (OpenAI/Verge style)
+═══════════════════════════════════════════════════════ */
+.horizRow {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  border-top: 1px solid rgba(200, 150, 30, 0.08);
+  align-items: start;
+  /* Right-column background fills any gap below the sticky card */
+  background: var(--dark);
+}
+
+/* Strip any top borders / top margins from direct children */
+.horizRow > * {
+  border-top: none !important;
+  margin-top: 0 !important;
+}
+
+/* Left column: sticky (taller right content scrolls past it) */
+.horizRow > *:first-child {
+  position: sticky;
+  top: 88px;
+  align-self: start;
+}
+
+/* Right column: normal scroll + divider */
+.horizRow > *:not(:first-child) {
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Flip variant: right column sticks, left scrolls (when left is taller) */
+.horizRowFlip > *:first-child {
+  position: static;
+  align-self: auto;
+}
+.horizRowFlip > *:not(:first-child) {
+  position: sticky;
+  top: 88px;
+  align-self: start;
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ── Services adapts to the narrow right column ── */
+.horizRow .servicesSection {
+  padding: 52px 32px;
+  background: var(--dark);
+}
+.horizRow .servicesSection .servicesInner {
+  grid-template-columns: 1fr;
+  gap: 24px;
+  max-width: none;
+}
+.horizRow .servicesSection .servicesLeft {
+  position: static;
+  padding-top: 0;
+}
+.horizRow .servicesSection .servicesLeftDesc {
+  max-width: none;
+}
+.horizRow .servicesSection .servicesRight {
+  gap: 0;
+}
+.horizRow .servicesSection .servicesGrid {
+  grid-template-columns: 1fr 1fr;
+}
+
+/* ── Photo bento card (replaces ContainerScroll) ── */
+.photoBentoCard {
+  position: relative;
+  overflow: hidden;
+  min-height: 540px;
+  display: flex;
+  flex-direction: column;
+  background: var(--dark);
+}
+
+.photoBentoImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.38) saturate(0.65);
+}
+
+.photoBentoOverlay {
+  position: relative;
+  z-index: 1;
+  padding: 44px 36px;
+  background: linear-gradient(to top, rgba(6, 12, 20, 0.97) 0%, rgba(6, 12, 20, 0.55) 65%, transparent 100%);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.photoBentoDesc {
+  font-size: 14px;
+  color: var(--gray);
+  line-height: 1.7;
+  margin-top: 10px;
+  max-width: 340px;
+}
+
+.photoBentoStatsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: rgba(200, 150, 30, 0.08);
+  margin-top: 28px;
+  border: 1px solid rgba(200, 150, 30, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.photoBentoStat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 10px;
+  background: rgba(8, 16, 26, 0.88);
+  text-align: center;
+  gap: 3px;
+}
+
+/* ── Responsive collapse ── */
+@media (max-width: 1100px) {
+  .horizRow {
+    grid-template-columns: 1fr;
+  }
+  .horizRow > *:not(:first-child) {
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+  }
+  .horizRow .servicesSection .servicesGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .photoBentoCard {
+    min-height: 400px;
+  }
+
+  /* Kill sticky on mobile — columns stack, sticky causes empty gaps */
+  .horizRow > *:first-child,
+  .horizRowFlip > *:not(:first-child) {
+    position: static !important;
+    align-self: auto;
+    top: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .horizRow .servicesSection {
+    padding: 52px 20px;
+  }
+  .horizRow .servicesSection .servicesGrid {
+    grid-template-columns: 1fr;
+  }
+  .photoBentoCard {
+    min-height: 340px;
+  }
+  .photoBentoOverlay {
+    padding: 28px 24px;
+  }
+}
+
+:global([data-theme="light"]) .heroBg {
+  background:
+    linear-gradient(105deg, rgba(15, 25, 35, 0.96) 42%, rgba(15, 25, 35, 0.68) 100%),
+    url('/assets/home-hero-bg.webp') center / cover no-repeat;
+}
+
+:global([data-theme="light"]) .heroFormPanel,
+:global([data-theme="light"]) .contactForm,
+:global([data-theme="light"]) .serviceCard,
+:global([data-theme="light"]) .projectCard,
+:global([data-theme="light"]) .photoBadge,
+:global([data-theme="light"]) .emergencyStrip {
+  box-shadow: 0 18px 44px rgba(15, 25, 35, 0.08);
+}
+
+:global([data-theme="light"]) .heroFormPanel,
+:global([data-theme="light"]) .contactForm {
+  background: rgba(252, 248, 242, 0.92);
+  border-color: rgba(15, 25, 35, 0.12);
+}
+
+:global([data-theme="light"]) .heroDesc,
+:global([data-theme="light"]) .statLabel,
+:global([data-theme="light"]) .areasDesc,
+:global([data-theme="light"]) .bottomCtaDesc {
+  color: rgba(15, 25, 35, 0.78);
+}
+
+:global([data-theme="light"]) .heroCutLineBody,
+:global([data-theme="light"]) .heroCutLineCities,
+:global([data-theme="light"]) .trustItem,
+:global([data-theme="light"]) .heroCredentials {
+  color: rgba(245, 243, 239, 0.9);
+}
+
+:global([data-theme="light"]) .heroReviewCount,
+:global([data-theme="light"]) .heroReviewCcb {
+  color: rgba(245, 243, 239, 0.76);
+}
+
+:global([data-theme="light"]) .sectionTitle,
+:global([data-theme="light"]) .serviceName,
+:global([data-theme="light"]) .projectTitle,
+:global([data-theme="light"]) .emergencyStripTitle,
+:global([data-theme="light"]) .bottomCtaTitle,
+:global([data-theme="light"]) .areaChip {
+  color: #0f1923;
+}
+
+:global([data-theme="light"]) .hero .heroCutLineTitle {
+  color: #F5F3EF;
+}
+
+:global([data-theme="light"]) .hero .btnSecondary {
+  background: rgba(255, 249, 240, 0.88);
+  color: #0f1923;
+  border-color: rgba(15, 25, 35, 0.14);
+}
+
+:global([data-theme="light"]) .hero .btnSecondary:hover {
+  background: #fffdf9;
+  color: #0f1923;
+  border-color: rgba(200, 150, 30, 0.4);
+}
+
+:global([data-theme="light"]) .servicesGrid,
+:global([data-theme="light"]) .projectsGrid,
+:global([data-theme="light"]) .photoBentoStatsGrid {
+  background: rgba(15, 25, 35, 0.06);
+  border-color: rgba(15, 25, 35, 0.1);
+}
+
+:global([data-theme="light"]) .serviceCard {
+  background: var(--surface-1);
+  border-color: rgba(15, 25, 35, 0.1);
+}
+
+:global([data-theme="light"]) .bentoSection {
+  background: var(--surface-2);
+  border-top-color: rgba(15, 25, 35, 0.08);
+}
+
+:global([data-theme="light"]) .bentoPrimary,
+:global([data-theme="light"]) .bentoStack,
+:global([data-theme="light"]) .bentoTopCard,
+:global([data-theme="light"]) .bentoCard {
+  background: var(--surface-1);
+}
+
+:global([data-theme="light"]) .bentoPrimary {
+  border-right-color: rgba(15, 25, 35, 0.08);
+}
+
+:global([data-theme="light"]) .bentoTopCard {
+  border-bottom-color: rgba(15, 25, 35, 0.08);
+}
+
+:global([data-theme="light"]) .bentoHandleGrid {
+  background: rgba(15, 25, 35, 0.06);
+}
+
+:global([data-theme="light"]) .serviceCard:hover {
+  background: #fffdf9;
+  border-color: rgba(200, 150, 30, 0.32);
+}
+
+:global([data-theme="light"]) .serviceCardTotal,
+:global([data-theme="light"]) .serviceCardCat,
+:global([data-theme="light"]) .servicesLeftDesc,
+:global([data-theme="light"]) .projectMeta,
+:global([data-theme="light"]) .photoBentoDesc,
+:global([data-theme="light"]) .serviceDesc,
+:global([data-theme="light"]) .emergencyStripDesc,
+:global([data-theme="light"]) .handleSubtitle,
+:global([data-theme="light"]) .handleCardDesc,
+:global([data-theme="light"]) .hwwStepDesc {
+  color: #6b7280;
+}
+
+:global([data-theme="light"]) .serviceLink {
+  border-top-color: rgba(15, 25, 35, 0.1);
+}
+
+:global([data-theme="light"]) .emergencyStrip {
+  background: #fff8f6;
+  border-color: rgba(231, 76, 60, 0.22);
+}
+
+:global([data-theme="light"]) .projectOverlay,
+:global([data-theme="light"]) .photoBentoOverlay {
+  background: linear-gradient(to top, rgba(245, 243, 239, 0.96) 0%, rgba(245, 243, 239, 0.72) 56%, rgba(245, 243, 239, 0.18) 100%);
+}
+
+:global([data-theme="light"]) .projectCategory {
+  color: #8b6a16;
+}
+
+:global([data-theme="light"]) .photoBentoDesc,
+:global([data-theme="light"]) .scrollStatLabel {
+  color: rgba(15, 25, 35, 0.68);
+}
+
+:global([data-theme="light"]) .hwwStepTitle,
+:global([data-theme="light"]) .handleCardTitle {
+  color: #0f1923;
+}
+
+:global([data-theme="light"]) .photoBadge {
+  background: rgba(255, 253, 249, 0.86);
+  border-color: rgba(200, 150, 30, 0.34);
+}
+
+:global([data-theme="light"]) .photoBentoStat {
+  background: rgba(255, 252, 246, 0.88);
+}
+
+:global([data-theme="light"]) .contactForm .formTitle,
+:global([data-theme="light"]) .contactForm .formGroup label,
+:global([data-theme="light"]) .contactForm .formNote {
+  color: rgba(15, 25, 35, 0.74);
+}
+
+:global([data-theme="light"]) .faqAccordion,
+:global([data-theme="light"]) .faqTrigger,
+:global([data-theme="light"]) .faqTriggerLeft {
+  color: #0f1923;
+}
+
+:global([data-theme="light"]) .faqAccordion .faqQ,
+:global([data-theme="light"]) .faqAccordion h4 {
+  color: #0f1923 !important;
+}
+
+:global([data-theme="light"]) .faqAccordion .faqAnswer,
+:global([data-theme="light"]) .faqAccordion .faqAnswer p {
+  color: rgba(15, 25, 35, 0.82) !important;
+}
+
+:global([data-theme="light"]) .faqChip {
+  background: rgba(255, 249, 240, 0.92);
+  color: #8b6a16;
+  border-color: rgba(200, 150, 30, 0.32);
+}
+
+:global([data-theme="light"]) .faqSection,
+:global([data-theme="light"]) .splitRow .faqSection {
+  background: var(--surface-2);
+  border-top-color: rgba(15, 25, 35, 0.08);
+}
+
+:global([data-theme="light"]) .faqSection .sectionTitle {
+  color: #0f1923;
+}
+
+:global([data-theme="light"]) .faqAccordion {
+  background: var(--surface-1);
+  border-color: rgba(15, 25, 35, 0.1);
+  box-shadow: 0 14px 34px rgba(15, 25, 35, 0.05);
+}
+
+:global([data-theme="light"]) .faqTrigger:hover {
+  background: #fffdf9;
+}
+
+:global([data-theme="light"]) .faqQ {
+  color: #0f1923;
+}
+
+:global([data-theme="light"]) .faqAnswer p {
+  color: #4b5563;
+  border-left-color: rgba(200, 150, 30, 0.32);
+}
+
+@media (max-width: 768px) {
+  :global([data-theme="light"]) .heroBg {
+    background:
+      linear-gradient(180deg, rgba(15, 25, 35, 0.55) 0%, rgba(15, 25, 35, 0.98) 100%),
+      url('/assets/home-hero-bg.webp') center / cover no-repeat;
+  }
+
+  :global([data-theme="light"]) .heroReviewBlock {
+    background: rgba(255, 249, 240, 0.9);
+    border: 1px solid rgba(15, 25, 35, 0.08);
+    border-radius: 4px;
+    padding: 16px 14px;
+    box-shadow: 0 14px 30px rgba(15, 25, 35, 0.06);
+    margin-top: 12px;
+  }
+
+  :global([data-theme="light"]) .heroReviewLabel,
+  :global([data-theme="light"]) .heroReviewGuarantee {
+    color: #0f1923;
+  }
+
+  :global([data-theme="light"]) .heroReviewCount,
+  :global([data-theme="light"]) .heroReviewCcb {
+    color: rgba(15, 25, 35, 0.62);
+  }
+
+  :global([data-theme="light"]) .heroTrust,
+  :global([data-theme="light"]) .heroCredentials {
+    border-top-color: rgba(15, 25, 35, 0.08);
+  }
+
+  :global([data-theme="light"]) .heroActions .btnSecondary {
+    background: rgba(255, 249, 240, 0.94);
+    color: #0f1923;
+    border-color: rgba(15, 25, 35, 0.14);
+  }
 }

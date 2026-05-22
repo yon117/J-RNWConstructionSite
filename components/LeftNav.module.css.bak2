@@ -1,0 +1,105 @@
+/* Fixed left section navigation — desktop only */
+.nav {
+  position: fixed;
+  left: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  pointer-events: auto;
+}
+
+/* Vertical connecting line */
+.track {
+  position: absolute;
+  left: 5px;
+  top: 12px;
+  bottom: 12px;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Each nav button */
+.item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.25);
+  transition: color 0.22s ease;
+  position: relative;
+  text-align: left;
+}
+
+.item:hover,
+.itemActive {
+  color: #C8961E;
+}
+
+/* Dot indicator */
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  flex-shrink: 0;
+  position: relative;
+  transition: transform 0.22s ease, background 0.22s ease;
+  background: transparent;
+}
+
+.item:hover .dot,
+.itemActive .dot {
+  background: currentColor;
+  transform: scale(1.25);
+}
+
+/* Number + label */
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  overflow: hidden;
+  max-width: 0;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition:
+    max-width 0.28s ease,
+    opacity    0.22s ease,
+    transform  0.22s ease;
+  white-space: nowrap;
+}
+
+.item:hover .meta,
+.itemActive .meta {
+  max-width: 120px;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.label {
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Hide below 1100px — too narrow for sidebar */
+@media (max-width: 1100px) {
+  .nav { display: none; }
+}

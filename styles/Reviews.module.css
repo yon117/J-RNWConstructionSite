@@ -1,260 +1,457 @@
 .reviewsSection {
-    padding: 80px 20px;
-    background: linear-gradient(135deg, #1a252f 0%, #2d3e50 100%);
     position: relative;
     overflow: hidden;
+    padding: 88px 20px 96px;
+    background:
+        linear-gradient(180deg, rgba(247, 243, 236, 0.98) 0%, rgba(243, 236, 226, 0.96) 58%, rgba(239, 231, 220, 0.82) 100%),
+        radial-gradient(circle at top, rgba(212, 175, 55, 0.1), transparent 38%);
 }
 
-.reviewsSection::before {
+.reviewsSection::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background:
-        radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+    inset: auto 0 0;
+    height: 160px;
+    background: linear-gradient(180deg, rgba(239, 231, 220, 0) 0%, rgba(239, 231, 220, 0.95) 100%);
     pointer-events: none;
 }
 
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
     position: relative;
     z-index: 1;
+    max-width: 1440px;
+    margin: 0 auto;
 }
 
 .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 42px;
     text-align: center;
-    margin-bottom: 60px;
 }
 
 .header h2 {
-    font-size: 2.5rem;
-    color: #ffffff;
-    margin-bottom: 15px;
+    margin: 0;
+    color: #101723;
+    font-size: clamp(2.2rem, 4vw, 3.7rem);
     font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 0.96;
 }
 
 .header p {
-    font-size: 1.1rem;
-    color: #d4af37;
-    font-weight: 300;
+    margin: 0;
+    max-width: 520px;
+    color: rgba(16, 23, 35, 0.66);
+    font-size: 1rem;
+    line-height: 1.7;
 }
 
-.reviewsWrapper {
-    width: 100%;
-    overflow: hidden;
-    /* Important: disable native horizontal scroll to allow JS transform control */
-    cursor: grab;
-    padding: 20px 0;
-    touch-action: none;
-    /* Changed from pan-y to none for better iOS control */
-    position: relative;
-    /* iOS Safari specific fixes */
-    -webkit-overflow-scrolling: touch;
-    -webkit-user-select: none;
-    user-select: none;
-}
-
-.reviewsWrapper:active {
-    cursor: grabbing;
-}
-
-.reviewsTrack {
+.marqueeStack {
     display: flex;
-    gap: 30px;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.marqueeViewport {
+    position: relative;
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+}
+
+.marqueeTrack {
+    display: flex;
     width: max-content;
-    will-change: transform;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -webkit-perspective: 1000px;
-    perspective: 1000px;
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
+    gap: 22px;
+}
+
+.isPaused .marqueeTrack,
+.marqueeViewport:hover .marqueeTrack {
+    animation-play-state: paused;
+}
+
+.marqueeTrackTop {
+    animation: marquee-right 42s linear infinite;
+}
+
+.marqueeTrackBottom {
+    animation: marquee-left 34s linear infinite;
 }
 
 .reviewCard {
-    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+    width: min(332px, 82vw);
+    min-height: 212px;
+    padding: 22px;
+    border: 1px solid rgba(16, 23, 35, 0.08);
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 18px 40px rgba(26, 37, 47, 0.06);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(212, 175, 55, 0.2);
-    border-radius: 16px;
-    padding: 30px;
-    flex: 0 0 400px;
-    max-width: 90vw;
-    user-select: none;
-    /* Do NOT add generic transitions here as they interfere with track transform */
-    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    text-align: left;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .reviewCard:hover {
-    transform: translateY(-8px);
-    border-color: rgba(212, 175, 55, 0.5);
-    box-shadow: 0 12px 40px rgba(212, 175, 55, 0.2);
-    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-3px);
+    border-color: rgba(16, 23, 35, 0.14);
+    box-shadow: 0 20px 42px rgba(26, 37, 47, 0.1);
 }
 
-.reviewHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 20px;
+.reviewCard:focus-visible {
+    outline: 2px solid rgba(212, 175, 55, 0.8);
+    outline-offset: 3px;
 }
 
-.avatarSection {
+.reviewCardTop {
     display: flex;
     align-items: center;
-    gap: 15px;
+    justify-content: space-between;
+    gap: 12px;
 }
 
-.avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+.reviewQuoteWrap {
     display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.quoteMark {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 12px;
+    background: rgba(212, 175, 55, 0.12);
+    color: #b78712;
+    font-size: 1.3rem;
+    line-height: 1;
     font-weight: 700;
-    color: #1a252f;
-    font-size: 1.1rem;
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-}
-
-.reviewerInfo h4 {
-    color: #ffffff;
-    font-size: 1.1rem;
-    margin: 0 0 5px 0;
-    font-weight: 600;
-}
-
-.date {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.85rem;
-}
-
-.platformBadge {
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.platformBadge.google {
-    background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
-    color: #ffffff;
-    box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
-}
-
-.platformBadge.yelp {
-    background: linear-gradient(135deg, #d32323 0%, #ff1a1a 100%);
-    color: #ffffff;
-    box-shadow: 0 4px 12px rgba(211, 35, 35, 0.3);
 }
 
 .stars {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 15px;
-    font-size: 1.3rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+    color: #d4af37;
+    font-size: 0.82rem;
 }
 
 .starFilled {
     color: #d4af37;
-    text-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
 }
 
 .starEmpty {
-    color: rgba(212, 175, 55, 0.2);
+    color: rgba(212, 175, 55, 0.28);
 }
 
 .reviewText {
-    color: rgba(255, 255, 255, 0.9);
-    line-height: 1.7;
-    font-size: 1rem;
     margin: 0;
-}
-
-.scrollIndicator {
-    width: 200px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
-    margin: 40px auto 0;
-    position: relative;
+    color: #111927;
+    font-size: 0.96rem;
+    line-height: 1.62;
+    overflow-wrap: anywhere;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.scrollProgress {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    background: #d4af37;
-    border-radius: 2px;
+.reviewMeta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .reviewsSection {
-        padding: 60px 15px;
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #d4af37 0%, #f0cb58 100%);
+    color: #101723;
+    font-size: 0.92rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.platformBadge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-size: 0.69rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+.platformBadge.google {
+    background: rgba(66, 133, 244, 0.12);
+    color: #2460d8;
+    border: 1px solid rgba(66, 133, 244, 0.2);
+}
+
+.platformBadge.yelp {
+    background: rgba(211, 35, 35, 0.09);
+    color: #c42121;
+    border: 1px solid rgba(211, 35, 35, 0.18);
+}
+
+.reviewerInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.reviewerInfo h4 {
+    margin: 0;
+    color: #101723;
+    font-size: 0.98rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.designation {
+    margin: 0;
+    color: rgba(16, 23, 35, 0.58);
+    font-size: 0.82rem;
+    line-height: 1.4;
+    text-transform: none;
+}
+
+.reviewOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(8, 12, 18, 0.58);
+    backdrop-filter: blur(8px);
+}
+
+.reviewModal {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    width: min(680px, calc(100vw - 32px));
+    max-height: min(78vh, 760px);
+    padding: 28px;
+    overflow: auto;
+    border-radius: 28px;
+    border: 1px solid rgba(16, 23, 35, 0.08);
+    background: rgba(255, 252, 247, 0.98);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.24);
+}
+
+.reviewModalTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.closeButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(16, 23, 35, 0.1);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.88);
+    color: #101723;
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.closeButton:hover {
+    background: #ffffff;
+}
+
+.reviewTextFull {
+    display: block;
+    overflow: visible;
+    font-size: 1rem;
+    line-height: 1.78;
+}
+
+:global([data-theme="dark"]) .reviewsSection {
+    background:
+        linear-gradient(180deg, #0d1c2f 0%, #10243b 54%, #132a45 100%),
+        radial-gradient(circle at top, rgba(82, 125, 193, 0.18), transparent 40%);
+}
+
+:global([data-theme="dark"]) .reviewsSection::after {
+    background: linear-gradient(180deg, rgba(19, 42, 69, 0) 0%, rgba(13, 28, 47, 0.96) 100%);
+}
+
+:global([data-theme="dark"]) .header h2 {
+    color: #f7f9fc;
+}
+
+:global([data-theme="dark"]) .header p {
+    color: rgba(247, 249, 252, 0.62);
+}
+
+:global([data-theme="dark"]) .reviewCard {
+    background: rgba(17, 30, 48, 0.9);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.22);
+}
+
+:global([data-theme="dark"]) .reviewModal {
+    background: rgba(20, 31, 47, 0.98);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.42);
+}
+
+:global([data-theme="dark"]) .closeButton {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #f7f9fc;
+}
+
+:global([data-theme="dark"]) .closeButton:hover {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+:global([data-theme="dark"]) .reviewText,
+:global([data-theme="dark"]) .reviewerInfo h4 {
+    color: #f7f9fc;
+}
+
+:global([data-theme="dark"]) .designation {
+    color: rgba(247, 249, 252, 0.58);
+}
+
+:global([data-theme="dark"]) .platformBadge.google {
+    background: rgba(123, 156, 255, 0.14);
+    color: #8faafc;
+    border-color: rgba(123, 156, 255, 0.24);
+}
+
+:global([data-theme="dark"]) .platformBadge.yelp {
+    background: rgba(255, 128, 111, 0.12);
+    color: #ff9d8f;
+    border-color: rgba(255, 128, 111, 0.22);
+}
+
+:global([data-theme="dark"]) .quoteMark {
+    background: rgba(212, 175, 55, 0.16);
+    color: #f0cb58;
+}
+
+:global([data-theme="dark"]) .starFilled {
+    color: #f0cb58;
+}
+
+:global([data-theme="dark"]) .starEmpty {
+    color: rgba(240, 203, 88, 0.24);
+}
+
+@keyframes marquee-left {
+    from {
+        transform: translate3d(0, 0, 0);
     }
 
-    .header h2 {
-        font-size: 2rem;
+    to {
+        transform: translate3d(calc(-50% - 11px), 0, 0);
+    }
+}
+
+@keyframes marquee-right {
+    from {
+        transform: translate3d(calc(-50% - 11px), 0, 0);
+    }
+
+    to {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@media (max-width: 900px) {
+    .reviewsSection {
+        padding: 72px 16px 84px;
+    }
+
+    .reviewCard {
+        width: min(300px, 86vw);
+        min-height: 204px;
+        padding: 20px;
+    }
+
+    .marqueeTrackTop {
+        animation-duration: 36s;
+    }
+
+    .marqueeTrackBottom {
+        animation-duration: 30s;
+    }
+}
+
+@media (max-width: 640px) {
+    .reviewsSection {
+        padding: 64px 12px 78px;
+    }
+
+    .header {
+        margin-bottom: 32px;
     }
 
     .header p {
-        font-size: 1rem;
+        font-size: 0.95rem;
+    }
+
+    .marqueeStack {
+        gap: 16px;
+    }
+
+    .marqueeViewport {
+        mask-image: none;
+        -webkit-mask-image: none;
     }
 
     .reviewCard {
-        padding: 25px;
-        flex: 0 0 320px;
-    }
-
-    .avatar {
-        width: 45px;
-        height: 45px;
-        font-size: 1rem;
-    }
-
-    .reviewerInfo h4 {
-        font-size: 1rem;
-    }
-
-    .stars {
-        font-size: 1.1rem;
+        width: min(274px, 88vw);
+        min-height: 196px;
+        padding: 18px;
+        border-radius: 24px;
     }
 
     .reviewText {
-        font-size: 0.95rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .reviewsSection {
-        padding: 50px 10px;
+        font-size: 0.92rem;
+        line-height: 1.58;
     }
 
-    .header h2 {
-        font-size: 1.75rem;
+    .quoteMark {
+        width: 32px;
+        height: 32px;
+        border-radius: 12px;
     }
 
-    .reviewCard {
+    .reviewModal {
+        width: min(100vw - 20px, 560px);
+        max-height: 82vh;
         padding: 20px;
-        flex: 0 0 280px;
-    }
-
-    .reviewHeader {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .platformBadge {
-        align-self: flex-start;
+        border-radius: 24px;
     }
 }

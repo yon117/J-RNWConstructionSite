@@ -342,7 +342,10 @@ export default function Monitor() {
                         <ResponsiveContainer width="100%" height={Math.max(180, stats.referrers.length * 36)}>
                             <BarChart
                                 layout="vertical"
-                                data={stats.referrers.slice(0, 8).map(r => ({
+                                data={stats.referrers.filter(r => {
+                                    const h = (r.referrer || '').replace(/^https?:\/\//, '').split('/')[0].split(':')[0];
+                                    return !/^(localhost|127\.0\.0\.1|0\.0\.0\.0|192\.168\.|10\.|172\.(1[6-9]|2[0-9]|3[01])\.)/.test(h);
+                                }).slice(0, 8).map(r => ({
                                     source: (r.referrer || 'Direct').replace(/^https?:\/\/(www\.)?/, '').split('/')[0].slice(0, 30),
                                     visits: Number(r.count),
                                 }))}

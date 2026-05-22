@@ -108,6 +108,8 @@ export default function Services({ services }) {
                         </div>
                     </div>
 
+                    {/* ── CONTAINER SCROLL PIN ── */}
+
                     {/* ── SERVICE ITEMS ── */}
                     <div className={pageStyles.serviceList}>
                         {displayServices.map((service, index) => {
@@ -196,3 +198,5 @@ export async function getStaticProps() {
     _servicesCacheTime = Date.now();
     return { props: { services }, revalidate: 60 };
 }
+
+

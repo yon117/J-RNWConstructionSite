@@ -1,0 +1,109 @@
+import { useEffect, useRef, useState, useCallback } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import styles from './LeftNav.module.css';
+
+const SECTIONS = [
+  { id: 'section-services', label: 'Services'    , num: '01' },
+  { id: 'section-process',  label: 'How We Work' , num: '02' },
+  { id: 'section-portfolio',label: 'Portfolio'   , num: '03' },
+  { id: 'section-contact',  label: 'Contact'     , num: '04' },
+];
+
+export default function LeftNav() {
+  const [active,   setActive]   = useState(null);
+  const [progress, setProgress] = useState({});
+  const [visible,  setVisible]  = useState(false);
+  const navRef = useRef(null);
+
+  const handleProgress = useCallback((id, p) => {
+    setProgress(prev => ({ ...prev, [id]: p }));
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Appear when services enters view
+    const firstEl = document.getElementById(SECTIONS[0].id);
+    if (firstEl) {
+      ScrollTrigger.create({
+        trigger: firstEl,
+        start: 'top 75%',
+        onEnter:     () => setVisible(true),
+        onLeaveBack: () => setVisible(false),
+      });
+    }
+
+    // Per-section: track active + progress
+    const triggers = SECTIONS.map(({ id }) => {
+      const el = document.getElementById(id);
+      if (!el) return null;
+      return ScrollTrigger.create({
+        trigger: el,
+        start: 'top 50%',
+        end:   'bottom 50%',
+        onEnter:     () => setActive(id),
+        onEnterBack: () => setActive(id),
+        onLeave:     () => setActive(null),
+        onLeaveBack: () => setActive(null),
+        onUpdate:    (st) => handleProgress(id, st.progress),
+      });
+    });
+
+    return () => {
+      triggers.forEach(t => t?.kill());
+      ScrollTrigger.getAll().forEach(t => t.kill());
+    };
+  }, [handleProgress]);
+
+  // Slide nav in/out
+  useEffect(() => {
+    if (!navRef.current) return;
+    gsap.to(navRef.current, {
+      x:          visible ? 0 : -240,
+      autoAlpha:  visible ? 1 : 0,
+      duration:   0.52,
+      ease:       visible ? 'power3.out' : 'power3.in',
+    });
+  }, [visible]);
+
+  const scrollTo = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  return (
+    <nav
+      ref={navRef}
+      className={styles.nav}
+      style={{ transform: 'translateX(-240px)', opacity: 0, visibility: 'hidden' }}
+      aria-label="Page sections"
+    >
+      {SECTIONS.map(({ id, label, num }) => {
+        const isActive = active === id;
+        const prog     = isActive ? (progress[id] ?? 0) : 0;
+        return (
+          <button
+            key={id}
+            className={`${styles.item} ${isActive ? styles.active : ''}`}
+            onClick={() => scrollTo(id)}
+            aria-label={`Go to ${label}`}
+          >
+            <div className={styles.row}>
+              <span className={styles.num}>{num}</span>
+              <span className={styles.label}>{label.toUpperCase()}</span>
+            </div>
+            {/* progress bar — fills as you scroll through section */}
+            <div className={styles.bar}>
+              <span
+                className={styles.fill}
+                style={{ transform: `scaleX(${prog})` }}
+              />
+            </div>
+          </button>
+        );
+      })}
+    </nav>
+  );
+}

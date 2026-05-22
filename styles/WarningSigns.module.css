@@ -409,3 +409,39 @@
   .split { grid-template-columns: 1fr; }
   .col + .col { border-left: 0; border-top: 1px solid rgba(255, 255, 255, 0.06); }
 }
+
+:global([data-theme="light"]) .section {
+  background: var(--dark-mid);
+  border-top-color: rgba(15, 25, 35, 0.08);
+}
+
+:global([data-theme="light"]) .twoCol {
+  background: rgba(15, 25, 35, 0.06);
+  border-color: rgba(15, 25, 35, 0.1);
+  box-shadow: 0 18px 44px rgba(15, 25, 35, 0.06);
+}
+
+:global([data-theme="light"]) .card,
+:global([data-theme="light"]) .evidencePanel,
+:global([data-theme="light"]) .chain,
+:global([data-theme="light"]) .cta,
+:global([data-theme="light"]) .dot {
+  background: var(--surface-1);
+}
+
+:global([data-theme="light"]) .evidencePanel,
+:global([data-theme="light"]) .chain,
+:global([data-theme="light"]) .h,
+:global([data-theme="light"]) .col + .col,
+:global([data-theme="light"]) .cta {
+  border-color: rgba(15, 25, 35, 0.08);
+}
+
+:global([data-theme="light"]) .codeTag {
+  color: rgba(15, 25, 35, 0.28);
+}
+
+:global([data-theme="light"]) .pill,
+:global([data-theme="light"]) .dotBtn {
+  background: rgba(15, 25, 35, 0.08);
+}

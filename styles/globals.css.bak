@@ -1,0 +1,176 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  scroll-behavior: auto;
+}
+
+/* ── Vertical Cut Reveal keyframes ── */
+@keyframes vcr-reveal {
+  from { transform: translateY(112%); }
+  to   { transform: translateY(0);    }
+}
+@keyframes vcr-reveal-reverse {
+  from { transform: translateY(-112%); }
+  to   { transform: translateY(0);     }
+}
+@media (prefers-reduced-motion: reduce) {
+  @keyframes vcr-reveal         { from, to { transform: none; } }
+  @keyframes vcr-reveal-reverse { from, to { transform: none; } }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.scroll-motion-ready [data-anim="fade-up"],
+  html.scroll-motion-ready [data-anim="service-card"],
+  html.scroll-motion-ready [data-anim="stat"],
+  html.scroll-motion-ready [data-anim="about-logo"],
+  html.scroll-motion-ready [data-anim="faq-item"],
+  html.scroll-motion-ready [data-anim="service-item"],
+  html.scroll-motion-ready [data-anim="project-card"] {
+    visibility: hidden;
+  }
+
+  /* Hero animates on load in HeroSection — never leave it invisible */
+  html.scroll-motion-ready [data-anim="hero-section"] [data-cut-line],
+  html.scroll-motion-ready [data-anim="hero-section"] [data-hero-fade],
+  html.scroll-motion-ready [data-anim="hero-bg"] {
+    visibility: visible;
+  }
+}
+
+:root {
+  --gold: #C8961E;
+  --gold-light: #E8B84B;
+  --dark: #0F1923;
+  --dark-mid: #1A2736;
+  --dark-card: #1E2F40;
+  --white: #F5F3EF;
+  --gray: #8A9BAA;
+  --text: #D4CFC8;
+  --primary: var(--dark);
+  --secondary: var(--white);
+  --accent: var(--gold);
+  --text-dark: #333333;
+  --text-light: var(--white);
+  --font-family: 'Barlow', sans-serif;
+}
+
+/* Light mode — toggled via ThemeContext on <html data-theme="light"> */
+[data-theme="light"] {
+  --dark:       #F5F3EF;
+  --dark-mid:   #E8E4DD;
+  --dark-card:  #DDD8D0;
+  --white:      #0F1923;
+  --text:       #1A2736;
+  --gray:       #4A5568;
+  --primary:    #F5F3EF;
+  --secondary:  #0F1923;
+  --text-light: #0F1923;
+  /* gold accent unchanged in both modes */
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: var(--font-family);
+  background-color: var(--dark);
+  color: var(--white);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: var(--text-light);
+}
+
+.btn-accent {
+  background-color: var(--accent);
+  color: var(--primary);
+}
+
+.btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: var(--text-light);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  padding: 0 10px;
+}
+
+.text-accent {
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 1.8rem;
+    line-height: 1.3;
+    padding: 0 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+}

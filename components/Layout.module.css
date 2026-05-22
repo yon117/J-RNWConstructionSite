@@ -358,12 +358,26 @@
     height: 2px;
     background: var(--white);
     border-radius: 2px;
+    transition: transform 0.28s ease, opacity 0.2s ease;
+}
+
+/* X animation when menu is open — gap:5px + height:2px = 7px between centers */
+.hamburgerOpen .hamburgerLines span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+.hamburgerOpen .hamburgerLines span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+.hamburgerOpen .hamburgerLines span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
 }
 
 /* ─── MOBILE MENU ────────────────────────────────── */
 .mobileMenu {
     display: none;
-    background: var(--dark-mid);
+    background: rgba(10, 14, 20, 0.78);
+    backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(200, 150, 30, 0.15);
     overflow: hidden;
     max-height: 0;
@@ -373,6 +387,15 @@
 .mobileMenu.open {
     max-height: calc(100vh - 80px);
     overflow-y: auto;
+}
+
+.mobileMenuPanel {
+    background: var(--dark-mid);
+    min-height: 100%;
+}
+
+.mobileMenuHeader {
+    display: none;
 }
 
 .mobileMenuList {
@@ -472,6 +495,16 @@
 .mobileLang {
     display: flex;
     gap: 6px;
+}
+
+.mobileThemeToggle {
+    display: flex;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.mobileMenuClose {
+    display: none;
 }
 
 /* ─── MAIN ───────────────────────────────────────── */
@@ -651,9 +684,9 @@
         display: block;
         position: fixed;
         inset: 0;
-        z-index: 200;
+        z-index: 220;
         max-height: none;
-        padding-top: min(42vh, 220px);
+        padding-top: 0;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         opacity: 0;
@@ -666,6 +699,34 @@
         opacity: 1;
         visibility: visible;
         pointer-events: auto;
+    }
+
+    .mobileMenuPanel {
+        min-height: 100dvh;
+        transform: translateY(-18px);
+        transition: transform 0.28s ease;
+    }
+
+    .mobileMenu.open .mobileMenuPanel {
+        transform: translateY(0);
+    }
+
+    .mobileMenuHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 18px 16px 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background: rgba(26, 37, 47, 0.98);
+        backdrop-filter: blur(12px);
+    }
+
+    .mobileMenuClose {
+        display: flex;
     }
 
     .footerTop {
@@ -835,6 +896,144 @@
 .emergencyClose:hover { color: #fff; border-color: #888; }
 @media (max-width: 600px) {
     .seasonalBanner { font-size: 0.75rem; padding: 7px 0.75rem; }
-    .emergencyWrap { bottom: 90px; right: 16px; }
+    .emergencyWrap { bottom: calc(env(safe-area-inset-bottom, 0px) + 80px); right: 16px; }
     .emergencyPanel { max-width: 240px; }
+    .emergencyBtn {
+        padding: 10px 14px;
+        gap: 6px;
+        font-size: 0.68rem;
+        letter-spacing: 0.08em;
+    }
+}
+
+@media (max-width: 420px) {
+    .emergencyWrap { bottom: calc(env(safe-area-inset-bottom, 0px) + 88px); right: 16px; }
+    .emergencyBtn {
+        padding: 9px 12px;
+        gap: 6px;
+        font-size: 0.64rem;
+        letter-spacing: 0.08em;
+    }
+    .emergencyDot {
+        width: 7px;
+        height: 7px;
+    }
+}
+
+:global([data-theme="light"]) .nav {
+    background: rgba(255, 249, 240, 0.97);
+    border-bottom-color: rgba(15, 25, 35, 0.1);
+    box-shadow: 0 8px 24px rgba(15, 25, 35, 0.06);
+}
+
+:global([data-theme="light"]) .navBrandText,
+:global([data-theme="light"]) .navLinks a,
+:global([data-theme="light"]) .hamburgerLabel,
+:global([data-theme="light"]) .footer .navBrandText {
+    color: #0f1923 !important;
+}
+
+:global([data-theme="light"]) .navBrandText span,
+:global([data-theme="light"]) .footer .navBrandText span {
+    color: rgba(15, 25, 35, 0.84);
+}
+
+:global([data-theme="light"]) .hamburgerLines span {
+    background: #0f1923;
+}
+
+:global([data-theme="light"]) .navSocialIcon,
+:global([data-theme="light"]) .footerSocialIcon {
+    border-color: rgba(15, 25, 35, 0.12);
+    color: rgba(15, 25, 35, 0.68);
+}
+
+:global([data-theme="light"]) .navScrolled {
+    background: rgba(255, 249, 240, 0.98);
+    border-bottom-color: rgba(15, 25, 35, 0.12);
+    box-shadow: 0 8px 24px rgba(15, 25, 35, 0.08);
+}
+
+:global([data-theme="light"]) .navScrolled .navBrandText,
+:global([data-theme="light"]) .navScrolled .navLinks a,
+:global([data-theme="light"]) .navScrolled .hamburgerLabel {
+    color: #0f1923 !important;
+}
+
+:global([data-theme="light"]) .navScrolled .navBrandText span {
+    color: rgba(15, 25, 35, 0.84);
+}
+
+:global([data-theme="light"]) .navScrolled .hamburgerLines span {
+    background: #0f1923;
+}
+
+:global([data-theme="light"]) .mobileMenu {
+    background: rgba(245, 243, 239, 0.72);
+}
+
+:global([data-theme="light"]) .mobileMenuPanel,
+:global([data-theme="light"]) .mobileMenuHeader {
+    background: rgba(245, 243, 239, 0.98);
+}
+
+:global([data-theme="light"]) .mobileMenuHeader {
+    border-bottom-color: rgba(15, 25, 35, 0.08);
+}
+
+:global([data-theme="light"]) .mobileMenuList li a,
+:global([data-theme="light"]) .mobileMenuList li button {
+    color: #0f1923;
+    border-bottom-color: rgba(15, 25, 35, 0.08);
+}
+
+:global([data-theme="light"]) .mobileMenuList li a:hover,
+:global([data-theme="light"]) .mobileMenuList li button:hover {
+    background: rgba(15, 25, 35, 0.04);
+}
+
+:global([data-theme="light"]) .mobileBottom {
+    border-top-color: rgba(15, 25, 35, 0.08);
+}
+
+:global([data-theme="light"]) .mobileSocials a {
+    border-color: rgba(15, 25, 35, 0.12);
+    color: rgba(15, 25, 35, 0.68);
+}
+
+:global([data-theme="light"]) .mobileMenuHeader .navBrandText,
+:global([data-theme="light"]) .mobileMenuHeader .hamburgerLabel {
+    color: #0f1923 !important;
+}
+
+:global([data-theme="light"]) .mobileMenuHeader .navBrandText span {
+    color: rgba(15, 25, 35, 0.84);
+}
+
+:global([data-theme="light"]) .mobileMenuHeader .hamburgerLines span {
+    background: #0f1923;
+}
+
+/* ── FOOTER: stays dark in both modes — force dark-mode text colors ── */
+:global([data-theme="light"]) .footer .navBrandText {
+    color: #F5F3EF !important;
+}
+:global([data-theme="light"]) .footer .navBrandText span {
+    color: rgba(245, 243, 239, 0.65);
+}
+:global([data-theme="light"]) .footerCol h4 {
+    color: #F5F3EF;
+}
+:global([data-theme="light"]) .footerBrand p,
+:global([data-theme="light"]) .footerCol ul li,
+:global([data-theme="light"]) .footerCol ul li a {
+    color: #8A9BAA;
+}
+:global([data-theme="light"]) .footerCopyright {
+    color: #8A9BAA;
+}
+:global([data-theme="light"]) .footerBadge {
+    color: #D4CFC8;
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
 }

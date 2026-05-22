@@ -1,0 +1,321 @@
+[    1261ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:15305
+[    1353ms] [ERROR] Refused to execute script from 'http://localhost:3000/_next/static/development/_clientMiddlewareManifest.js' because its MIME type ('application/json') is not executable, and strict MIME type checking is enabled. @ http://localhost:3000/:0
+[    1366ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[    1778ms] [WARNING] Image with src "/google-logo.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[    2696ms] [WARNING] [Meta pixel] 1471794151322307 is unavailable on this website due to it's traffic permission settings. Go to https://www.facebook.com/business/help/572690630080597 to learn more. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  142254ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  142283ms] [LOG] [Fast Refresh] done in 92ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  157366ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  157417ms] [LOG] [Fast Refresh] done in 63ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  176297ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  176513ms] [LOG] [Fast Refresh] done in 320ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  178109ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  178109ms] [LOG] [Fast Refresh] done in 111ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  178805ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  178909ms] [LOG] [Fast Refresh] done in 210ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  179047ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  179183ms] [LOG] [Fast Refresh] done in 257ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  186162ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[  186191ms] [LOG] [Fast Refresh] done in 139ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 1805258ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 1805315ms] [ERROR] ./components/HeroSection.js:5:1
+Module not found: Can't resolve './InteractiveHouse'
+  3 | import { useGSAP } from '@gsap/react';
+  4 | import gsap from 'gsap';
+> 5 | import InteractiveHouse from './InteractiveHouse';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import WordCycler from './WordCycler';
+  7 | import { VerticalCutReveal } from './ui/VerticalCutReveal';
+  8 | import styles from '../styles/Home.module.css';
+
+Import traces:
+  Browser:
+    ./components/HeroSection.js
+    ./pages/index.js
+
+  SSR:
+    ./components/HeroSection.js
+    ./pages/index.js
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[ 1831745ms] [ERROR] ./components/HeroSection.js:5:1
+Module not found: Can't resolve './InteractiveHouse'
+  3 | import { useGSAP } from '@gsap/react';
+  4 | import gsap from 'gsap';
+> 5 | import InteractiveHouse from './InteractiveHouse';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import WordCycler from './WordCycler';
+  7 | import { VerticalCutReveal } from './ui/VerticalCutReveal';
+  8 | import styles from '../styles/Home.module.css';
+
+Import traces:
+  Browser:
+    ./components/HeroSection.js
+    ./pages/index.js
+
+  SSR:
+    ./components/HeroSection.js
+    ./pages/index.js
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[ 1831759ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 1831866ms] [ERROR] ./components/HeroSection.js:5:1
+Module not found: Can't resolve './InteractiveHouse'
+  3 | import { useGSAP } from '@gsap/react';
+  4 | import gsap from 'gsap';
+> 5 | import InteractiveHouse from './InteractiveHouse';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import WordCycler from './WordCycler';
+  7 | import { VerticalCutReveal } from './ui/VerticalCutReveal';
+  8 | import styles from '../styles/Home.module.css';
+
+Import traces:
+  Browser:
+    ./components/HeroSection.js
+    ./pages/index.js
+
+  SSR:
+    ./components/HeroSection.js
+    ./pages/index.js
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[ 1831925ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 1917892ms] [ERROR] ./components/HeroSection.js:5:1
+Module not found: Can't resolve './InteractiveHouse'
+  3 | import { useGSAP } from '@gsap/react';
+  4 | import gsap from 'gsap';
+> 5 | import InteractiveHouse from './InteractiveHouse';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import WordCycler from './WordCycler';
+  7 | import { VerticalCutReveal } from './ui/VerticalCutReveal';
+  8 | import styles from '../styles/Home.module.css';
+
+Import traces:
+  Browser:
+    ./components/HeroSection.js
+    ./pages/index.js
+
+  SSR:
+    ./components/HeroSection.js
+    ./pages/index.js
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[ 1917934ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 1917995ms] [ERROR] ./components/HeroSection.js:5:1
+Module not found: Can't resolve './InteractiveHouse'
+  3 | import { useGSAP } from '@gsap/react';
+  4 | import gsap from 'gsap';
+> 5 | import InteractiveHouse from './InteractiveHouse';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import WordCycler from './WordCycler';
+  7 | import { VerticalCutReveal } from './ui/VerticalCutReveal';
+  8 | import styles from '../styles/Home.module.css';
+
+Import traces:
+  Browser:
+    ./components/HeroSection.js
+    ./pages/index.js
+
+  SSR:
+    ./components/HeroSection.js
+    ./pages/index.js
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[ 1918055ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 1932631ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 1932767ms] [ERROR] ./components/HeroSection.js:5:1
+Module not found: Can't resolve './InteractiveHouse'
+  3 | import { useGSAP } from '@gsap/react';
+  4 | import gsap from 'gsap';
+> 5 | import InteractiveHouse from './InteractiveHouse';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 | import WordCycler from './WordCycler';
+  7 | import { VerticalCutReveal } from './ui/VerticalCutReveal';
+  8 | import styles from '../styles/Home.module.css';
+
+Import traces:
+  Browser:
+    ./components/HeroSection.js
+    ./pages/index.js
+
+  SSR:
+    ./components/HeroSection.js
+    ./pages/index.js
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[ 1932937ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 1933165ms] [LOG] [Fast Refresh] done in 284ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 1935213ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:15305
+[ 1935313ms] [ERROR] Refused to execute script from 'http://localhost:3000/_next/static/development/_clientMiddlewareManifest.js' because its MIME type ('application/json') is not executable, and strict MIME type checking is enabled. @ http://localhost:3000/:0
+[ 1935320ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 1935632ms] [WARNING] Image with src "/google-logo.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 1936483ms] [WARNING] [Meta pixel] 1471794151322307 is unavailable on this website due to it's traffic permission settings. Go to https://www.facebook.com/business/help/572690630080597 to learn more. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 1971607ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 1971692ms] [ERROR] ./components/InteractiveHouse.js:3:1
+Module not found: Can't resolve './InteractiveHouse.module.css'
+  1 | import Link from 'next/link';
+  2 | import { useMemo, useState } from 'react';
+> 3 | import styles from './InteractiveHouse.module.css';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | const EXTERIOR_HOTSPOTS = [
+  6 |   {
+
+Import traces:
+  Browser:
+    ./components/InteractiveHouse.js
+    ./components/HeroSection.js
+    ./pages/index.js
+
+  SSR:
+    ./components/InteractiveHouse.js
+    ./components/HeroSection.js
+    ./pages/index.js
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[ 1994386ms] [ERROR] ./components/InteractiveHouse.js:3:1
+Module not found: Can't resolve './InteractiveHouse.module.css'
+  1 | import Link from 'next/link';
+  2 | import { useMemo, useState } from 'react';
+> 3 | import styles from './InteractiveHouse.module.css';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | const EXTERIOR_HOTSPOTS = [
+  6 |   {
+
+Import traces:
+  Browser:
+    ./components/InteractiveHouse.js
+    ./components/HeroSection.js
+    ./pages/index.js
+
+  SSR:
+    ./components/InteractiveHouse.js
+    ./components/HeroSection.js
+    ./pages/index.js
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[ 1994430ms] [ERROR] ./components/InteractiveHouse.js:3:1
+Module not found: Can't resolve './InteractiveHouse.module.css'
+  1 | import Link from 'next/link';
+  2 | import { useMemo, useState } from 'react';
+> 3 | import styles from './InteractiveHouse.module.css';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | const EXTERIOR_HOTSPOTS = [
+  6 |   {
+
+Import traces:
+  Browser:
+    ./components/InteractiveHouse.js
+    ./components/HeroSection.js
+    ./pages/index.js
+
+  SSR:
+    ./components/InteractiveHouse.js
+    ./components/HeroSection.js
+    ./pages/index.js
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[ 1994491ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 1994553ms] [ERROR] ./components/InteractiveHouse.js:3:1
+Module not found: Can't resolve './InteractiveHouse.module.css'
+  1 | import Link from 'next/link';
+  2 | import { useMemo, useState } from 'react';
+> 3 | import styles from './InteractiveHouse.module.css';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | const EXTERIOR_HOTSPOTS = [
+  6 |   {
+
+Import traces:
+  Browser:
+    ./components/InteractiveHouse.js
+    ./components/HeroSection.js
+    ./pages/index.js
+
+  SSR:
+    ./components/InteractiveHouse.js
+    ./components/HeroSection.js
+    ./pages/index.js
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[ 1994612ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 2035599ms] [ERROR] ./components/InteractiveHouse.js:3:1
+Module not found: Can't resolve './InteractiveHouse.module.css'
+  1 | import Link from 'next/link';
+  2 | import { useMemo, useState } from 'react';
+> 3 | import styles from './InteractiveHouse.module.css';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | const EXTERIOR_HOTSPOTS = [
+  6 |   {
+
+Import traces:
+  Browser:
+    ./components/InteractiveHouse.js
+    ./components/HeroSection.js
+    ./pages/index.js
+
+  SSR:
+    ./components/InteractiveHouse.js
+    ./components/HeroSection.js
+    ./pages/index.js
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[ 2035646ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 2035691ms] [ERROR] ./components/InteractiveHouse.js:3:1
+Module not found: Can't resolve './InteractiveHouse.module.css'
+  1 | import Link from 'next/link';
+  2 | import { useMemo, useState } from 'react';
+> 3 | import styles from './InteractiveHouse.module.css';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | const EXTERIOR_HOTSPOTS = [
+  6 |   {
+
+Import traces:
+  Browser:
+    ./components/InteractiveHouse.js
+    ./components/HeroSection.js
+    ./pages/index.js
+
+  SSR:
+    ./components/InteractiveHouse.js
+    ./components/HeroSection.js
+    ./pages/index.js
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[ 2035753ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 2048957ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 2049081ms] [ERROR] ./components/InteractiveHouse.js:3:1
+Module not found: Can't resolve './InteractiveHouse.module.css'
+  1 | import Link from 'next/link';
+  2 | import { useMemo, useState } from 'react';
+> 3 | import styles from './InteractiveHouse.module.css';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | const EXTERIOR_HOTSPOTS = [
+  6 |   {
+
+Import traces:
+  Browser:
+    ./components/InteractiveHouse.js
+    ./components/HeroSection.js
+    ./pages/index.js
+
+  SSR:
+    ./components/InteractiveHouse.js
+    ./components/HeroSection.js
+    ./pages/index.js
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1945
+[ 2049207ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 2049372ms] [LOG] [Fast Refresh] done in 246ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 2050530ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_react-dom_0bruynb._.js:15305
+[ 2050572ms] [ERROR] Refused to execute script from 'http://localhost:3000/_next/static/development/_clientMiddlewareManifest.js' because its MIME type ('application/json') is not executable, and strict MIME type checking is enabled. @ http://localhost:3000/:0
+[ 2050838ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 2051080ms] [WARNING] Image with src "/google-logo.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 2051634ms] [WARNING] [Meta pixel] 1471794151322307 is unavailable on this website due to it's traffic permission settings. Go to https://www.facebook.com/business/help/572690630080597 to learn more. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 2105416ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226
+[ 2105473ms] [LOG] [Fast Refresh] done in 156ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0k8zr~w._.js:1226

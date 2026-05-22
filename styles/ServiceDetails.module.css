@@ -928,3 +928,35 @@
     display: none !important;
 }
 
+:global([data-theme="light"]) .heroOverlay {
+    background: linear-gradient(135deg, rgba(245, 243, 239, 0.82) 0%, rgba(245, 243, 239, 0.48) 100%);
+}
+
+:global([data-theme="light"]) .heroContent h1 {
+    color: var(--white);
+    text-shadow: none;
+}
+
+:global([data-theme="light"]) .shortDescription,
+:global([data-theme="light"]) .showcaseSubtitle,
+:global([data-theme="light"]) .projectCardDesc,
+:global([data-theme="light"]) .kspDesc {
+    color: rgba(15, 25, 35, 0.68);
+}
+
+:global([data-theme="light"]) .copyBlock,
+:global([data-theme="light"]) .projectCard,
+:global([data-theme="light"]) .modalDetailItem {
+    background: rgba(255, 251, 245, 0.86);
+    border-color: rgba(15, 25, 35, 0.1);
+    box-shadow: 0 14px 34px rgba(15, 25, 35, 0.06);
+}
+
+:global([data-theme="light"]) .projectCardOverlay {
+    background: linear-gradient(to top, rgba(245, 243, 239, 0.82) 0%, transparent 60%);
+}
+
+:global([data-theme="light"]) .projectCardViewBtn {
+    background: rgba(255, 251, 245, 0.8);
+}
+

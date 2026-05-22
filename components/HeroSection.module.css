@@ -1,0 +1,247 @@
+.hero {
+  min-height: 100vh;
+  background-color: var(--dark);
+  display: flex;
+  align-items: center;
+  padding: 110px 0 64px;
+}
+
+.grid {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 52px;
+  align-items: start;
+  width: 100%;
+}
+
+/* ── LEFT COLUMN ── */
+.leftCol {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.eyebrow {
+  font-family: 'Barlow', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.headline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(26px, 4.2vw, 52px);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+
+/* Cut-reveal machinery */
+.lineWrap {
+  overflow: hidden;
+  display: block;
+}
+
+.lineInner {
+  display: block;
+  will-change: transform;
+}
+
+.cyclerWrap {
+  margin-top: 4px;
+}
+
+/* CTAs */
+.ctaRow {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 28px;
+  background: var(--gold);
+  color: var(--dark);
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 3px;
+  text-decoration: none;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.btnPrimary:hover {
+  background: #E8B84B;
+}
+
+.btnSecondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 13px 24px;
+  border: 1.5px solid rgba(200, 150, 30, 0.35);
+  color: var(--white);
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border-radius: 3px;
+  text-decoration: none;
+  transition: border-color 0.2s;
+  white-space: nowrap;
+}
+
+.btnSecondary:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* Trust row */
+.trustRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-family: 'Barlow', sans-serif;
+  font-size: 12px;
+  color: var(--gray);
+  flex-wrap: wrap;
+  line-height: 1;
+}
+
+.trustDot {
+  color: rgba(138, 155, 170, 0.4);
+}
+
+/* ── RIGHT COLUMN ── */
+.rightCol {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  will-change: transform, opacity;
+}
+
+/* Quick contact form */
+.quickForm {
+  background: var(--dark-card);
+  border: 1px solid rgba(200, 150, 30, 0.14);
+  border-radius: 4px;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.formTitle {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.input,
+.textarea {
+  background: var(--dark-mid);
+  border: 1px solid rgba(138, 155, 170, 0.18);
+  border-radius: 3px;
+  padding: 10px 14px;
+  color: var(--white);
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  width: 100%;
+  transition: border-color 0.18s;
+  box-sizing: border-box;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--gray);
+  opacity: 0.7;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+  background: rgba(26, 39, 54, 0.9);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 76px;
+}
+
+.formBtn {
+  padding: 12px 24px;
+  background: var(--gold);
+  color: var(--dark);
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.18s;
+  margin-top: 4px;
+}
+
+.formBtn:hover {
+  background: #E8B84B;
+}
+
+/* ── MOBILE ── */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .hero {
+    padding: 96px 0 52px;
+  }
+}
+
+@media (max-width: 768px) {
+  .headline {
+    font-size: clamp(24px, 7.5vw, 38px);
+  }
+
+  .ctaRow {
+    flex-direction: column;
+  }
+
+  .btnPrimary,
+  .btnSecondary {
+    text-align: center;
+    justify-content: center;
+  }
+
+  .grid {
+    padding: 0 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    padding: 0 14px;
+  }
+
+  .quickForm {
+    padding: 18px 16px;
+  }
+}

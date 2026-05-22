@@ -1,0 +1,59 @@
+/* Outer scroll driver — tall enough to give scroll room */
+.container {
+  height: 220vh;
+  position: relative;
+  background: var(--dark);
+  border-top: 1px solid rgba(200, 150, 30, 0.08);
+}
+
+/* Sticky inner — stays in center while outer scrolls */
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 40px 30px 0;
+}
+
+/* Title area */
+.titleWrap {
+  text-align: center;
+  margin-bottom: 36px;
+  transform-origin: center top;
+  z-index: 2;
+}
+
+/* 3D perspective wrapper */
+.perspective {
+  perspective: 1000px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* The animated card */
+.card {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--dark-mid);
+  border: 1px solid rgba(200, 150, 30, 0.12);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.04),
+    0 40px 100px rgba(0, 0, 0, 0.65);
+  transform-origin: center top;
+  will-change: transform;
+}
+
+/* Mobile — disable 3D effect, show content normally */
+@media (max-width: 768px) {
+  .container { height: auto; }
+  .sticky {
+    position: relative;
+    height: auto;
+    padding: 60px 20px;
+  }
+}

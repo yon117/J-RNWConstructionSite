@@ -1,0 +1,32 @@
+.wrap {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  column-gap: 0.35em;
+  row-gap: 0.15em;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(1.35rem, 2.6vw, 2.1rem);
+  font-weight: 600;
+  line-height: 1.2;
+  min-height: 1.35em;
+}
+
+.prefix {
+  color: rgba(245, 243, 239, 0.55);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.word {
+  display: inline-block;
+  color: var(--gold);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  will-change: transform, opacity;
+}
+
+@media (max-width: 760px) {
+  .wrap {
+    font-size: clamp(1.2rem, 5vw, 1.65rem);
+  }
+}

@@ -1,0 +1,64 @@
+.curtainWrap {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+}
+
+/* Top panel — origin at top, falls downward */
+.curtainTop {
+  flex: 1;
+  transform-origin: top center;
+  transform: scaleY(0);
+  will-change: transform;
+  /* 3-phase: 275ms fall, instant switch, 275ms rise */
+  transition: transform 275ms cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* Bottom panel — origin at bottom, rises upward */
+.curtainBot {
+  flex: 1;
+  transform-origin: bottom center;
+  transform: scaleY(0);
+  will-change: transform;
+  transition: transform 275ms cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.toggleBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 1.5px solid var(--gold);
+  border-radius: 3px;
+  color: var(--gold);
+  cursor: pointer;
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.toggleBtn:hover {
+  background: rgba(200, 150, 30, 0.12);
+  transform: scale(1.1);
+}
+
+.toggleBtn:active {
+  transform: scale(0.96);
+}
+
+.icon {
+  font-size: 1rem;
+  line-height: 1;
+  display: block;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.toggleBtn:hover .icon {
+  transform: rotate(20deg);
+}

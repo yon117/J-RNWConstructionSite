@@ -1,0 +1,813 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  user-select: none;
+}
+
+.modeBtns {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  width: fit-content;
+  border-radius: 16px;
+  background: rgba(15, 25, 35, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.24);
+}
+
+.modeBtn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: rgba(245, 243, 239, 0.68);
+  font-family: 'Barlow', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.modeBtn:hover {
+  color: #f5f3ef;
+}
+
+.modeBtn.active {
+  background: linear-gradient(135deg, #d4af37 0%, #f0cb58 100%);
+  color: #101723;
+}
+
+.sceneWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 0.78;
+  overflow: hidden;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.12), transparent 36%),
+    linear-gradient(180deg, rgba(12, 21, 34, 0.96) 0%, rgba(14, 27, 43, 0.96) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 30px 64px rgba(0, 0, 0, 0.28);
+}
+
+.sceneFrame {
+  position: absolute;
+  inset: 0;
+}
+
+.skyGlow,
+.interiorGlow {
+  position: absolute;
+  inset: 6% 12% auto;
+  height: 38%;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(77, 120, 194, 0.36), transparent 72%);
+  filter: blur(22px);
+}
+
+.groundPlane {
+  position: absolute;
+  inset: auto 6% 7%;
+  height: 30%;
+  border-radius: 50% 50% 16% 16%;
+  background:
+    linear-gradient(180deg, rgba(28, 55, 41, 0.2), rgba(26, 55, 39, 0.66)),
+    linear-gradient(90deg, rgba(65, 84, 105, 0.82), rgba(35, 51, 71, 0.94));
+  transform: perspective(900px) rotateX(72deg);
+}
+
+.houseShadow,
+.roomShadow {
+  position: absolute;
+  left: 19%;
+  right: 16%;
+  bottom: 12%;
+  height: 16%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(2, 6, 12, 0.42), transparent 70%);
+  filter: blur(16px);
+}
+
+.houseShell {
+  position: absolute;
+  left: 14%;
+  top: 12%;
+  width: 72%;
+  height: 72%;
+}
+
+.roofMain,
+.roofWing,
+.chimney,
+.wallFront,
+.wallSide,
+.gableFace,
+.foundation,
+.garageBlock,
+.garageDoorLeft,
+.garageDoorRight,
+.entryBlock,
+.frontDoor,
+.windowFrontLeft,
+.windowFrontRight,
+.windowUpper,
+.windowSide,
+.trimBand,
+.backWall,
+.sideWall,
+.floorPlane,
+.baseTrim,
+.windowCutout,
+.cabinetStack,
+.counterTop,
+.vanityFront,
+.sinkTop,
+.showerFrame,
+.wallPatch,
+.waterTrack {
+  position: absolute;
+}
+
+.roofMain {
+  left: 18%;
+  top: 2%;
+  width: 49%;
+  height: 28%;
+  background: linear-gradient(180deg, #23446d 0%, #163052 100%);
+  clip-path: polygon(8% 100%, 52% 0%, 100% 82%, 60% 100%);
+}
+
+.roofWing {
+  left: 47%;
+  top: 8%;
+  width: 35%;
+  height: 22%;
+  background: linear-gradient(180deg, #28507e 0%, #193657 100%);
+  clip-path: polygon(10% 100%, 52% 0%, 100% 58%, 72% 100%);
+}
+
+.chimney {
+  left: 57%;
+  top: 1%;
+  width: 10%;
+  height: 22%;
+  background: linear-gradient(90deg, #e8ecf5 0%, #cfd8e6 100%);
+  border-radius: 4px 4px 0 0;
+  box-shadow: inset -10px 0 0 rgba(20, 41, 67, 0.16);
+}
+
+.chimney::before {
+  content: '';
+  position: absolute;
+  left: -6%;
+  top: -10%;
+  width: 112%;
+  height: 18%;
+  background: linear-gradient(180deg, #264a75 0%, #173154 100%);
+  border-radius: 4px;
+}
+
+.wallFront {
+  left: 23%;
+  top: 24%;
+  width: 43%;
+  height: 42%;
+  border-radius: 2px;
+}
+
+.wallSide {
+  left: 56%;
+  top: 29%;
+  width: 25%;
+  height: 34%;
+  transform: skewY(-18deg);
+  transform-origin: left top;
+}
+
+.gableFace {
+  left: 30%;
+  top: 18%;
+  width: 16%;
+  height: 18%;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.foundation {
+  left: 22%;
+  top: 60%;
+  width: 57%;
+  height: 10%;
+  background: linear-gradient(90deg, #2d3a48 0%, #1a2430 100%);
+  clip-path: polygon(0 0, 91% 0, 100% 100%, 3% 100%);
+}
+
+.garageBlock {
+  left: 23%;
+  top: 42%;
+  width: 31%;
+  height: 20%;
+  background: rgba(24, 36, 52, 0.12);
+  border-radius: 8px 8px 4px 4px;
+}
+
+.garageDoorLeft,
+.garageDoorRight {
+  top: 45%;
+  width: 13%;
+  height: 14%;
+  border-radius: 4px;
+  background:
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0 8%, rgba(0, 0, 0, 0.06) 8% 16%),
+    linear-gradient(180deg, #6e645f 0%, #544b47 100%);
+}
+
+.garageDoorLeft {
+  left: 25%;
+}
+
+.garageDoorRight {
+  left: 40%;
+}
+
+.entryBlock {
+  left: 55%;
+  top: 40%;
+  width: 12%;
+  height: 21%;
+  background: linear-gradient(180deg, rgba(245, 243, 239, 0.3), rgba(20, 35, 54, 0.06));
+  border-radius: 4px;
+}
+
+.frontDoor {
+  left: 58%;
+  top: 43%;
+  width: 5%;
+  height: 15%;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #294b72 0%, #162d4e 100%);
+}
+
+.windowFrontLeft,
+.windowFrontRight,
+.windowUpper,
+.windowSide,
+.windowCutout {
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.88) 0 12%, transparent 12% 46%, rgba(255, 255, 255, 0.88) 46% 54%, transparent 54% 88%, rgba(255, 255, 255, 0.88) 88%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0 12%, transparent 12% 46%, rgba(255, 255, 255, 0.88) 46% 54%, transparent 54% 88%, rgba(255, 255, 255, 0.88) 88%),
+    linear-gradient(180deg, #9ec0ef 0%, #5d7da8 100%);
+  border-radius: 4px;
+  box-shadow: 0 0 0 4px rgba(241, 239, 232, 0.9);
+}
+
+.windowFrontLeft {
+  left: 30%;
+  top: 34%;
+  width: 8%;
+  height: 12%;
+}
+
+.windowFrontRight {
+  left: 66%;
+  top: 45%;
+  width: 10%;
+  height: 13%;
+}
+
+.windowUpper {
+  left: 42%;
+  top: 30%;
+  width: 8%;
+  height: 11%;
+}
+
+.windowSide {
+  left: 73%;
+  top: 36%;
+  width: 6%;
+  height: 10%;
+  transform: skewY(-18deg);
+  transform-origin: left top;
+}
+
+.trimBand {
+  left: 23%;
+  top: 23%;
+  width: 55%;
+  height: 2%;
+  background: linear-gradient(90deg, #f6f3ef 0%, #ddd4c4 100%);
+  border-radius: 999px;
+}
+
+.sceneInterior .groundPlane,
+.sceneInterior .houseShadow,
+.sceneInterior .houseShell {
+  display: none;
+}
+
+.roomBox {
+  position: absolute;
+  left: 13%;
+  top: 12%;
+  width: 74%;
+  height: 72%;
+}
+
+.backWall {
+  left: 7%;
+  top: 6%;
+  width: 70%;
+  height: 42%;
+  border-radius: 10px 10px 0 0;
+}
+
+.sideWall {
+  right: 7%;
+  top: 12%;
+  width: 19%;
+  height: 39%;
+  transform: skewY(18deg);
+  transform-origin: left top;
+}
+
+.floorPlane {
+  left: 6%;
+  bottom: 9%;
+  width: 76%;
+  height: 25%;
+  transform: perspective(900px) rotateX(69deg);
+  border-radius: 18px 18px 10px 10px;
+}
+
+.baseTrim {
+  left: 8%;
+  bottom: 31%;
+  width: 70%;
+  height: 3%;
+  border-radius: 999px;
+}
+
+.windowCutout {
+  left: 57%;
+  top: 16%;
+  width: 13%;
+  height: 16%;
+}
+
+.cabinetStack {
+  left: 52%;
+  bottom: 29%;
+  width: 18%;
+  height: 18%;
+  border-radius: 8px;
+}
+
+.counterTop {
+  left: 49%;
+  bottom: 44%;
+  width: 24%;
+  height: 4%;
+  border-radius: 999px;
+}
+
+.vanityFront {
+  left: 54%;
+  bottom: 28%;
+  width: 12%;
+  height: 10%;
+  border-radius: 4px;
+}
+
+.sinkTop {
+  left: 58%;
+  bottom: 43%;
+  width: 6%;
+  height: 3%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #f4f5f8 0%, #cfd8e6 100%);
+}
+
+.showerFrame {
+  left: 16%;
+  bottom: 30%;
+  width: 19%;
+  height: 21%;
+  border-radius: 8px;
+  border: 4px solid rgba(248, 250, 252, 0.88);
+  background: rgba(165, 190, 224, 0.18);
+}
+
+.wallPatch {
+  left: 19%;
+  top: 18%;
+  width: 14%;
+  height: 12%;
+  border-radius: 8px;
+}
+
+.waterTrack {
+  left: 28%;
+  top: 13%;
+  width: 8%;
+  height: 40%;
+  border-radius: 999px;
+}
+
+.showcaseRoof,
+.showcaseSiding,
+.showcaseVinyl,
+.showcasePaint,
+.showcaseEmergency,
+.showcaseRemodeling,
+.showcaseDrywall,
+.showcaseInteriorPaint,
+.showcaseInteriorRestoration,
+.showcaseMitigation,
+.showcaseInteriorRemodeling {
+  box-sizing: border-box;
+}
+
+.showcaseRoof {
+  background:
+    linear-gradient(90deg, #556a83 0 50%, #244569 50% 100%),
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0 9%, rgba(0, 0, 0, 0.07) 9% 18%);
+}
+
+.showcaseSiding,
+.showcaseVinyl,
+.showcasePaint,
+.showcaseDrywall,
+.showcaseInteriorPaint,
+.showcaseInteriorRestoration {
+  background:
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0 6%, rgba(0, 0, 0, 0.05) 6% 12%),
+    linear-gradient(90deg, #d9d0c3 0 50%, #f4efe6 50% 100%);
+}
+
+.showcaseEmergency,
+.showcaseMitigation {
+  background: linear-gradient(90deg, rgba(123, 82, 48, 0.92) 0 50%, rgba(45, 65, 88, 0.68) 50% 100%);
+}
+
+.showcaseRemodeling,
+.showcaseInteriorRemodeling {
+  background: linear-gradient(90deg, #75655b 0 50%, #27486f 50% 100%);
+}
+
+.sceneFrame[data-service='restoration'] .showcaseRoof {
+  background:
+    linear-gradient(90deg, #535d69 0 50%, #244a72 50% 100%),
+    linear-gradient(115deg, transparent 0 28%, rgba(34, 18, 12, 0.64) 28% 39%, transparent 39% 100%);
+}
+
+.sceneFrame[data-service='restoration'] .windowUpper,
+.sceneFrame[data-service='restoration'] .windowCutout {
+  box-shadow: 0 0 0 4px rgba(241, 239, 232, 0.9), inset 0 0 0 999px rgba(20, 35, 54, 0.08);
+}
+
+.sceneFrame[data-service='siding'] .wallFront,
+.sceneFrame[data-service='siding'] .gableFace {
+  background:
+    repeating-linear-gradient(180deg, rgba(79, 59, 44, 0.22) 0 6%, rgba(0, 0, 0, 0.12) 6% 12%),
+    linear-gradient(90deg, #8f806d 0 50%, #f3ede2 50% 100%);
+}
+
+.sceneFrame[data-service='vinyl'] .wallSide,
+.sceneFrame[data-service='vinyl'] .windowSide {
+  background:
+    repeating-linear-gradient(180deg, rgba(78, 88, 101, 0.22) 0 6%, rgba(0, 0, 0, 0.08) 6% 12%),
+    linear-gradient(90deg, #8f98a3 0 50%, #eef2f7 50% 100%);
+}
+
+.sceneFrame[data-service='painting'] .wallFront,
+.sceneFrame[data-service='painting'] .wallSide,
+.sceneFrame[data-service='painting'] .gableFace,
+.sceneFrame[data-service='painting'] .trimBand,
+.sceneFrame[data-service='painting'] .windowFrontLeft,
+.sceneFrame[data-service='painting'] .windowFrontRight,
+.sceneFrame[data-service='painting'] .windowUpper,
+.sceneFrame[data-service='painting'] .windowSide {
+  background:
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0 6%, rgba(0, 0, 0, 0.05) 6% 12%),
+    linear-gradient(90deg, #c8b198 0 50%, #f4f2ea 50% 100%);
+}
+
+.sceneFrame[data-service='emergency'] .foundation,
+.sceneFrame[data-service='emergency'] .entryBlock,
+.sceneFrame[data-service='emergency'] .windowFrontLeft,
+.sceneFrame[data-service='emergency'] .windowFrontRight {
+  background:
+    linear-gradient(90deg, rgba(95, 59, 44, 0.96) 0 50%, rgba(140, 182, 229, 0.98) 50% 100%);
+}
+
+.sceneFrame[data-service='emergency'] .houseShadow {
+  background: radial-gradient(circle, rgba(161, 85, 38, 0.32), transparent 72%);
+}
+
+.sceneFrame[data-service='remodeling'] .garageDoorLeft,
+.sceneFrame[data-service='remodeling'] .garageDoorRight,
+.sceneFrame[data-service='remodeling'] .frontDoor,
+.sceneFrame[data-service='remodeling'] .entryBlock {
+  background:
+    linear-gradient(90deg, #72635a 0 50%, #21486d 50% 100%),
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0 8%, rgba(0, 0, 0, 0.06) 8% 16%);
+}
+
+.backWall {
+  background: linear-gradient(90deg, #c9b7a6 0 50%, #f4f1ec 50% 100%);
+}
+
+.sideWall {
+  background: linear-gradient(90deg, #d2c7b9 0 50%, #f7f4ef 50% 100%);
+}
+
+.floorPlane {
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0 8%, rgba(0, 0, 0, 0.05) 8% 16%),
+    linear-gradient(90deg, #8e765e 0 50%, #af9272 50% 100%);
+}
+
+.baseTrim {
+  background: linear-gradient(90deg, #6f5d50 0 50%, #f6f3ef 50% 100%);
+}
+
+.cabinetStack,
+.vanityFront {
+  background:
+    linear-gradient(90deg, #897565 0 50%, #f4efe8 50% 100%),
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0 10%, rgba(0, 0, 0, 0.06) 10% 20%);
+}
+
+.counterTop {
+  background: linear-gradient(90deg, #b8a694 0 50%, #f4f5f8 50% 100%);
+}
+
+.wallPatch {
+  background: linear-gradient(90deg, rgba(109, 89, 72, 0.82) 0 50%, rgba(245, 241, 233, 0.96) 50% 100%);
+}
+
+.waterTrack {
+  background: linear-gradient(180deg, rgba(108, 84, 57, 0.82) 0 50%, rgba(116, 163, 213, 0.55) 50% 100%);
+}
+
+.sceneFrame[data-service='drywall'] .backWall,
+.sceneFrame[data-service='drywall'] .sideWall,
+.sceneFrame[data-service='drywall'] .wallPatch,
+.sceneFrame[data-service='drywall'] .showerFrame {
+  background:
+    linear-gradient(90deg, #ab9077 0 50%, #f5f2ec 50% 100%),
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0 8%, rgba(0, 0, 0, 0.05) 8% 16%);
+}
+
+.sceneFrame[data-service='painting'] .backWall,
+.sceneFrame[data-service='painting'] .sideWall,
+.sceneFrame[data-service='painting'] .baseTrim {
+  background: linear-gradient(90deg, #c4a98f 0 50%, #fbf8f2 50% 100%);
+}
+
+.sceneFrame[data-service='mitigation'] .floorPlane,
+.sceneFrame[data-service='mitigation'] .waterTrack,
+.sceneFrame[data-service='mitigation'] .baseTrim {
+  background: linear-gradient(90deg, #6d5a4e 0 50%, #6d8dae 50% 100%);
+}
+
+.sceneFrame[data-service='restoration'] .backWall,
+.sceneFrame[data-service='restoration'] .windowCutout,
+.sceneFrame[data-service='restoration'] .showerFrame,
+.sceneFrame[data-service='restoration'] .waterTrack {
+  background: linear-gradient(90deg, #8f7a67 0 50%, #eaf2fb 50% 100%);
+}
+
+.sceneFrame[data-service='remodeling'] .cabinetStack,
+.sceneFrame[data-service='remodeling'] .counterTop,
+.sceneFrame[data-service='remodeling'] .vanityFront,
+.sceneFrame[data-service='remodeling'] .sinkTop {
+  background: linear-gradient(90deg, #746153 0 50%, #24486c 50% 100%);
+}
+
+.hotspotLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+}
+
+.hotspotBtn {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.hotspotBtnActive .hotspotDot,
+.hotspotBtn:hover .hotspotDot {
+  transform: scale(1.08);
+  box-shadow: 0 0 0 6px rgba(212, 175, 55, 0.12);
+}
+
+.hotspotBtnActive .hotspotLabel,
+.hotspotBtn:hover .hotspotLabel,
+.hotspotBtn:focus-visible .hotspotLabel {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hotspotBtn:focus-visible {
+  outline: none;
+}
+
+.hotspotDot {
+  position: relative;
+  z-index: 2;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #d4af37;
+  border: 2px solid rgba(255, 255, 255, 0.94);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.28);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hotspotPulse {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.18);
+  animation: hotspotPulse 2.2s ease-out infinite;
+}
+
+.hotspotLabel {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: rgba(10, 18, 29, 0.92);
+  border: 1px solid rgba(212, 175, 55, 0.34);
+  color: #f6f3ef;
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.modeLabel {
+  position: absolute;
+  right: 18px;
+  bottom: 14px;
+  z-index: 5;
+  color: rgba(245, 243, 239, 0.54);
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.detailPanel {
+  padding: 18px 18px 16px;
+  border-radius: 22px;
+  background: rgba(12, 22, 35, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 22px 46px rgba(0, 0, 0, 0.24);
+}
+
+.detailEyebrow {
+  margin-bottom: 8px;
+  color: rgba(212, 175, 55, 0.86);
+  font-family: 'Barlow', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.detailRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.detailTitle {
+  margin: 0 0 6px;
+  color: #f6f3ef;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 30px;
+  line-height: 0.96;
+  letter-spacing: -0.03em;
+}
+
+.detailText {
+  margin: 0;
+  max-width: 420px;
+  color: rgba(246, 243, 239, 0.78);
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.detailLink {
+  flex-shrink: 0;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #d4af37 0%, #f0cb58 100%);
+  color: #101723;
+  font-family: 'Barlow', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.compareHint {
+  margin-top: 12px;
+  color: rgba(246, 243, 239, 0.48);
+  font-family: 'Barlow', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@keyframes hotspotPulse {
+  0% {
+    transform: scale(0.72);
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .sceneWrap {
+    aspect-ratio: 1 / 0.92;
+    border-radius: 24px;
+  }
+
+  .modeBtn {
+    padding: 9px 16px;
+    font-size: 11px;
+  }
+
+  .detailRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .detailTitle {
+    font-size: 24px;
+  }
+
+  .detailText {
+    font-size: 13px;
+  }
+
+  .detailLink {
+    width: 100%;
+    text-align: center;
+  }
+
+  .hotspotLabel {
+    font-size: 9px;
+  }
+
+  .hotspotBtn {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hotspotPulse {
+    animation: none;
+    opacity: 0;
+  }
+
+  .modeBtn,
+  .reviewCard,
+  .detailLink,
+  .hotspotDot,
+  .hotspotLabel {
+    transition: none;
+  }
+}

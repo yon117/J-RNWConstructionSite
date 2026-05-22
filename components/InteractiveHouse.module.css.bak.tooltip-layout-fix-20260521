@@ -1,0 +1,238 @@
+.wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.modeBtns {
+  display: inline-flex;
+  padding: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 24px 48px rgba(15, 25, 35, 0.18);
+}
+
+.modeBtn {
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 28px;
+  background: transparent;
+  color: #334155;
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.modeBtn:hover {
+  background: rgba(241, 245, 249, 0.92);
+}
+
+.modeBtn.active {
+  background: #0e3a5b;
+  color: #ffffff;
+  box-shadow: 0 14px 28px rgba(14, 58, 91, 0.26);
+}
+
+.sceneWrap {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 32px;
+  background: #ffffff;
+  box-shadow: 0 34px 72px rgba(15, 25, 35, 0.24);
+}
+
+.baseImage,
+.fadeImage {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.fadeImage {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+.fadeIn {
+  opacity: 1;
+}
+
+.sceneOverlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.2), transparent 38%, transparent);
+}
+
+.hotspotWrap {
+  position: absolute;
+  z-index: 20;
+}
+
+.hotspotBtn {
+  position: relative;
+  display: flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  background: #a3e635;
+  color: #ffffff;
+  font-family: 'Barlow', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 24px 48px rgba(15, 25, 35, 0.3);
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.hotspotBtn:hover,
+.hotspotBtnActive {
+  transform: scale(1.1);
+}
+
+.hotspotBtnActive {
+  background: #3b82f6;
+}
+
+.hotspotPing {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  background: rgba(163, 230, 53, 0.3);
+  animation: ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.hotspotPlus {
+  position: relative;
+  margin-top: -3px;
+}
+
+.hotspotCard {
+  position: absolute;
+  left: 56px;
+  top: 50%;
+  width: 288px;
+  transform: translateY(-50%) scale(0.95);
+  padding: 16px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #0f172a;
+  text-align: left;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 28px 56px rgba(15, 25, 35, 0.22);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.hotspotCardActive {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+.hotspotTitle {
+  margin: 0;
+  font-family: 'Barlow', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.hotspotDesc {
+  margin: 8px 0 0;
+  color: #475569;
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.detailPanel {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 16px;
+  z-index: 10;
+  max-width: 440px;
+  padding: 16px;
+  border-radius: 24px;
+  background: rgba(2, 6, 23, 0.85);
+  color: #ffffff;
+  backdrop-filter: blur(12px);
+}
+
+.detailEyebrow {
+  margin: 0;
+  color: #bef264;
+  font-family: 'Barlow', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.detailTitle {
+  margin: 4px 0 0;
+  font-family: 'Barlow', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.detailText {
+  margin: 8px 0 0;
+  color: #cbd5e1;
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+@keyframes ping {
+  75%,
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .modeBtns {
+    padding: 6px;
+  }
+
+  .modeBtn {
+    padding: 10px 22px;
+    font-size: 13px;
+  }
+
+  .sceneWrap {
+    border-radius: 24px;
+  }
+
+  .hotspotCard {
+    left: 50%;
+    top: 60px;
+    width: min(288px, calc(100vw - 88px));
+    transform: translateX(-50%) scale(0.95);
+  }
+
+  .hotspotCardActive {
+    transform: translateX(-50%) scale(1);
+  }
+
+  .detailPanel {
+    left: 16px;
+    right: 16px;
+    bottom: 12px;
+    max-width: none;
+  }
+}

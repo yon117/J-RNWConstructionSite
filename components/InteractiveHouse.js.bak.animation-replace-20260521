@@ -1,0 +1,282 @@
+import Image from 'next/image';
+import { useMemo, useState } from 'react';
+import styles from './InteractiveHouse.module.css';
+
+const EXTERIOR_HOTSPOTS = [
+  {
+    id: 'siding',
+    label: 'Siding',
+    short: 'Front siding',
+    description: 'Exterior damage preview with repaired siding, vinyl and paint.',
+    x: '42%',
+    y: '43%',
+  },
+  {
+    id: 'emergency',
+    label: 'Emergency',
+    short: 'Storm response',
+    description: 'Storm, fire, flooding, roof damage and urgent response preview.',
+    x: '66%',
+    y: '29%',
+    tooltipSide: 'left',
+  },
+  {
+    id: 'remodeling',
+    label: 'Remodeling',
+    short: 'Before + after',
+    description: 'Before and after remodeling transformation preview.',
+    x: '35%',
+    y: '54%',
+  },
+];
+
+const EXTERIOR_VARIANTS = {
+  default: '/images/house-main.png',
+  siding: '/images/house-siding-before-after.png',
+  emergency: '/images/house-emergency.png',
+  remodeling: '/images/house-remodeling-before-after.png',
+};
+
+const INTERIOR_HOTSPOTS = [
+  {
+    id: 'drywall',
+    label: 'Drywall',
+    short: 'Main wall',
+    description: 'Drywall repair, patching, texture matching, and finish prep on damaged wall areas.',
+    x: '43%',
+    y: '28%',
+    href: '/services/drywall',
+  },
+  {
+    id: 'painting',
+    label: 'Painting',
+    short: 'Wall + trim',
+    description: 'Interior wall painting, trim work, and clean finish updates across the room.',
+    x: '75%',
+    y: '31%',
+    href: '/services/paint',
+    tooltipSide: 'left',
+  },
+  {
+    id: 'restoration',
+    label: 'Restoration',
+    short: 'Fireplace wall',
+    description: 'Restoration around the fireplace wall, damaged plaster, trim, and finish details.',
+    x: '49%',
+    y: '48%',
+    href: '/services/restoration-and-reconstruction',
+  },
+  {
+    id: 'remodeling',
+    label: 'Remodeling',
+    short: 'Living area',
+    description: 'Living room remodel work including fireplace surrounds, built-ins, and layout upgrades.',
+    x: '70%',
+    y: '66%',
+    href: '/services/interior-construction-and-remodeling',
+    tooltipSide: 'left',
+  },
+  {
+    id: 'mitigation',
+    label: 'Mitigation',
+    short: 'Floor zone',
+    description: 'Floor-level drying, moisture mitigation, and emergency response after water intrusion.',
+    x: '33%',
+    y: '79%',
+    href: '/services/mitigation-and-emergency-services',
+  },
+];
+
+function HotspotButton({ item, active, onActivate }) {
+  return (
+    <button
+      type="button"
+      className={`${styles.hotspotBtn} ${active ? styles.hotspotBtnActive : ''} ${item.tooltipSide === 'left' ? styles.hotspotBtnLeft : ''}`}
+      style={{ left: item.x, top: item.y }}
+      onMouseEnter={() => onActivate(item.id)}
+      onFocus={() => onActivate(item.id)}
+      onClick={() => onActivate(item.id)}
+      aria-label={item.label}
+      aria-pressed={active}
+    >
+      <span className={styles.hotspotDot} />
+      <span className={styles.hotspotTooltip}>
+        <span className={styles.hotspotTitle}>{item.label}</span>
+        <span className={styles.hotspotDesc}>{item.description}</span>
+      </span>
+    </button>
+  );
+}
+
+function ExteriorScene({ activeId, onActivate, onClear }) {
+  const activeSrc = activeId ? EXTERIOR_VARIANTS[activeId] : EXTERIOR_VARIANTS.default;
+
+  return (
+    <div
+      className={styles.sceneVisual}
+      onMouseLeave={onClear}
+      role="img"
+      aria-label="Exterior house service preview"
+    >
+      <Image
+        src={activeSrc}
+        alt="Exterior house service preview"
+        fill
+        priority={false}
+        sizes="(max-width: 768px) 100vw, 420px"
+        className={styles.sceneImage}
+        draggable={false}
+      />
+      <div className={styles.sceneOverlay} />
+
+      <div className={styles.sceneChip}>{activeId ? activeId.toUpperCase() : 'EXTERIOR'}</div>
+
+      <div className={styles.hotspotLayer}>
+        {EXTERIOR_HOTSPOTS.map((item) => (
+          <HotspotButton
+            key={item.id}
+            item={item}
+            active={activeId === item.id}
+            onActivate={onActivate}
+          />
+        ))}
+      </div>
+
+      <div className={styles.modeLabel}>EXTERIOR SERVICE MAP</div>
+    </div>
+  );
+}
+
+function InteriorScene() {
+  return (
+    <svg
+      viewBox="0 0 900 620"
+      className={styles.sceneSvg}
+      role="img"
+      aria-label="Interior room service illustration"
+    >
+      <defs>
+        <linearGradient id="int-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#f8f5ef" />
+          <stop offset="100%" stopColor="#eee8dd" />
+        </linearGradient>
+        <linearGradient id="floor-wood" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#d9be97" />
+          <stop offset="100%" stopColor="#bf9f74" />
+        </linearGradient>
+      </defs>
+
+      <rect x="0" y="0" width="900" height="620" rx="32" fill="url(#int-bg)" />
+      <rect x="0" y="0" width="900" height="450" fill="#f8f6f1" />
+      <rect x="0" y="450" width="900" height="170" fill="url(#floor-wood)" />
+
+      {Array.from({ length: 22 }, (_, index) => (
+        <line
+          key={`floor-board-${index}`}
+          x1={index * 44}
+          y1="450"
+          x2={index * 44 + 22}
+          y2="620"
+          className={styles.floorBoard}
+        />
+      ))}
+
+      <rect x="290" y="120" width="180" height="300" rx="12" fill="#f4f1ea" />
+      <rect x="323" y="356" width="114" height="92" rx="8" fill="#1f2430" />
+      <rect x="308" y="343" width="144" height="22" rx="6" fill="#e7dfd1" />
+      <path d="M318 356H442" className={styles.trimStroke} />
+      <path d="M332 134H430" className={styles.trimStroke} />
+
+      <rect x="315" y="250" width="132" height="110" rx="10" fill="#e9e1d2" />
+      <rect x="332" y="267" width="98" height="72" rx="8" fill="#f6f1e9" />
+
+      <rect x="92" y="270" width="164" height="106" rx="8" fill="#ebe7de" stroke="#ffffff" strokeWidth="5" />
+      <path d="M560 288H744V404H560Z" fill="#f2ece6" stroke="#ffffff" strokeWidth="5" />
+
+      <path d="M596 446C692 446 758 436 806 418C822 490 816 544 780 574H558C534 532 544 480 596 446Z" fill="#252a31" />
+      <path d="M116 520L190 446L262 464L220 560Z" fill="#20252c" />
+      <path d="M172 428L236 390L290 474L220 486Z" fill="#b4834f" />
+      <path d="M106 424L166 470L138 558L74 510Z" fill="#1f2530" />
+
+      <rect x="240" y="500" width="274" height="84" rx="10" fill="#232227" />
+      <path d="M246 508H508" className={styles.tableVein} />
+      <path d="M280 566H474" className={styles.tableVein} />
+      <circle cx="392" cy="516" r="14" fill="#746f7a" />
+
+      <rect x="214" y="424" width="18" height="122" rx="9" fill="#d5ccb8" />
+      <rect x="720" y="120" width="18" height="256" rx="9" fill="#d5ccb8" />
+
+      <line x1="0" y1="450" x2="900" y2="450" className={styles.baseDivider} />
+    </svg>
+  );
+}
+
+export default function InteractiveHouse() {
+  const [mode, setMode] = useState('exterior');
+  const [activeExteriorId, setActiveExteriorId] = useState('');
+  const [activeInteriorId, setActiveInteriorId] = useState('');
+
+  const hotspots = mode === 'exterior' ? EXTERIOR_HOTSPOTS : INTERIOR_HOTSPOTS;
+  const activeId = mode === 'exterior' ? activeExteriorId : activeInteriorId;
+
+  const activeHotspot = useMemo(
+    () => hotspots.find((item) => item.id === activeId) || hotspots[0],
+    [activeId, hotspots]
+  );
+
+  function changeMode(nextMode) {
+    setMode(nextMode);
+  }
+
+  return (
+    <div className={styles.wrap}>
+      <div className={styles.modeBtns} role="group" aria-label="House view mode">
+        <button
+          type="button"
+          className={`${styles.modeBtn} ${mode === 'exterior' ? styles.active : ''}`}
+          onClick={() => changeMode('exterior')}
+        >
+          Exterior
+        </button>
+        <button
+          type="button"
+          className={`${styles.modeBtn} ${mode === 'interior' ? styles.active : ''}`}
+          onClick={() => changeMode('interior')}
+        >
+          Interior
+        </button>
+      </div>
+
+      <div className={styles.sceneWrap}>
+        {mode === 'exterior' ? (
+          <ExteriorScene
+            activeId={activeExteriorId}
+            onActivate={setActiveExteriorId}
+            onClear={() => setActiveExteriorId('')}
+          />
+        ) : (
+          <div
+            className={styles.sceneVisual}
+            aria-label="Interior room service preview"
+            onMouseLeave={() => setActiveInteriorId('')}
+          >
+            <InteriorScene />
+            <div className={styles.sceneOverlay} />
+            <div className={styles.sceneChip}>{activeId ? activeHotspot.label.toUpperCase() : 'INTERIOR'}</div>
+            <div className={styles.hotspotLayer}>
+              {hotspots.map((item) => (
+                <HotspotButton
+                  key={`${mode}-${item.id}`}
+                  item={item}
+                  active={activeInteriorId === item.id}
+                  onActivate={setActiveInteriorId}
+                />
+              ))}
+            </div>
+            <div className={styles.modeLabel}>INTERIOR SERVICE MAP</div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

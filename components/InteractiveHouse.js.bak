@@ -1,0 +1,384 @@
+import Link from 'next/link';
+import { useMemo, useState } from 'react';
+import styles from './InteractiveHouse.module.css';
+
+const EXTERIOR_HOTSPOTS = [
+  {
+    id: 'restoration',
+    label: 'Restoration',
+    short: 'Roof + chimney',
+    description: 'Storm-hit roof and chimney repairs, structural rebuilds, and exterior restoration.',
+    x: '66%',
+    y: '20%',
+    href: '/services/restoration-and-reconstruction',
+  },
+  {
+    id: 'siding',
+    label: 'Siding',
+    short: 'Front siding',
+    description: 'Front elevation siding replacement and moisture-protected wall cladding.',
+    x: '38%',
+    y: '45%',
+    href: '/services/siding',
+  },
+  {
+    id: 'vinyl',
+    label: 'Vinyl',
+    short: 'Side siding',
+    description: 'Vinyl siding installation and replacement on weather-exposed side walls.',
+    x: '74%',
+    y: '47%',
+    href: '/services/siding',
+  },
+  {
+    id: 'painting',
+    label: 'Painting',
+    short: 'Trim + facade',
+    description: 'Exterior paint, trim refresh, and finish work on siding, fascia, and casing.',
+    x: '53%',
+    y: '57%',
+    href: '/services/paint',
+  },
+  {
+    id: 'remodeling',
+    label: 'Remodeling',
+    short: 'Entry + garage',
+    description: 'Entry upgrades, garage-facing remodel work, and curb appeal improvements.',
+    x: '59%',
+    y: '70%',
+    href: '/services/interior-construction-and-remodeling',
+  },
+  {
+    id: 'emergency',
+    label: 'Emergency',
+    short: 'Foundation zone',
+    description: 'Water intrusion response, emergency dry-out, and lower-envelope stabilization.',
+    x: '24%',
+    y: '72%',
+    href: '/services/mitigation-and-emergency-services',
+  },
+];
+
+const INTERIOR_HOTSPOTS = [
+  {
+    id: 'drywall',
+    label: 'Drywall',
+    short: 'Main wall',
+    description: 'Drywall repair, patching, texture matching, and finish prep on damaged wall areas.',
+    x: '43%',
+    y: '28%',
+    href: '/services/drywall',
+  },
+  {
+    id: 'painting',
+    label: 'Painting',
+    short: 'Wall + trim',
+    description: 'Interior wall painting, trim work, and clean finish updates across the room.',
+    x: '75%',
+    y: '31%',
+    href: '/services/paint',
+  },
+  {
+    id: 'restoration',
+    label: 'Restoration',
+    short: 'Fireplace wall',
+    description: 'Restoration around the fireplace wall, damaged plaster, trim, and finish details.',
+    x: '49%',
+    y: '48%',
+    href: '/services/restoration-and-reconstruction',
+  },
+  {
+    id: 'remodeling',
+    label: 'Remodeling',
+    short: 'Living area',
+    description: 'Living room remodel work including fireplace surrounds, built-ins, and layout upgrades.',
+    x: '70%',
+    y: '66%',
+    href: '/services/interior-construction-and-remodeling',
+  },
+  {
+    id: 'mitigation',
+    label: 'Mitigation',
+    short: 'Floor zone',
+    description: 'Floor-level drying, moisture mitigation, and emergency response after water intrusion.',
+    x: '33%',
+    y: '79%',
+    href: '/services/mitigation-and-emergency-services',
+  },
+];
+
+function HotspotButton({ item, active, onActivate }) {
+  return (
+    <button
+      type="button"
+      className={`${styles.hotspotBtn} ${active ? styles.hotspotBtnActive : ''}`}
+      style={{ left: item.x, top: item.y }}
+      onMouseEnter={() => onActivate(item.id)}
+      onFocus={() => onActivate(item.id)}
+      onClick={() => onActivate(item.id)}
+      aria-label={item.label}
+      aria-pressed={active}
+    >
+      <span className={styles.hotspotDot} />
+      <span className={styles.hotspotLabel}>{item.label}</span>
+    </button>
+  );
+}
+
+function ExteriorScene() {
+  return (
+    <svg
+      viewBox="0 0 900 620"
+      className={styles.sceneSvg}
+      role="img"
+      aria-label="Exterior house service illustration"
+    >
+      <defs>
+        <linearGradient id="ext-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#f6f7fb" />
+          <stop offset="100%" stopColor="#e9edf7" />
+        </linearGradient>
+        <linearGradient id="roof-main" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#304f7d" />
+          <stop offset="100%" stopColor="#1d3960" />
+        </linearGradient>
+        <linearGradient id="roof-side" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#3a608f" />
+          <stop offset="100%" stopColor="#244668" />
+        </linearGradient>
+        <linearGradient id="wall-front" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#ffffff" />
+          <stop offset="100%" stopColor="#f3f4f9" />
+        </linearGradient>
+        <linearGradient id="wall-side" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#eef1f8" />
+          <stop offset="100%" stopColor="#dde3ef" />
+        </linearGradient>
+        <linearGradient id="garage-front" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#fefefe" />
+          <stop offset="100%" stopColor="#edf0f6" />
+        </linearGradient>
+        <radialGradient id="ground-shadow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="rgba(24, 40, 67, 0.14)" />
+          <stop offset="100%" stopColor="rgba(24, 40, 67, 0)" />
+        </radialGradient>
+      </defs>
+
+      <rect x="0" y="0" width="900" height="620" rx="32" fill="url(#ext-bg)" />
+      <ellipse cx="486" cy="548" rx="284" ry="42" fill="url(#ground-shadow)" />
+
+      <g className={styles.houseDrawing}>
+        <polygon points="150,478 428,478 428,498 150,498" fill="#2e4670" />
+        <polygon points="428,478 705,446 705,470 428,498" fill="#263d63" />
+
+        <polygon points="165,466 366,466 404,506 196,506" fill="#7bae63" />
+        <polygon points="456,476 712,450 742,485 486,510" fill="#79a45a" />
+        <circle cx="180" cy="470" r="18" fill="#678d4e" />
+        <circle cx="220" cy="464" r="24" fill="#6e9652" />
+        <circle cx="676" cy="454" r="18" fill="#62894a" />
+        <circle cx="720" cy="456" r="24" fill="#709c53" />
+
+        <polygon points="270,235 454,142 620,220 428,324" fill="url(#roof-main)" />
+        <polygon points="454,142 649,197 796,280 620,220" fill="url(#roof-side)" />
+        <polygon points="210,300 325,240 408,279 290,340" fill="url(#roof-main)" />
+        <polygon points="300,222 366,183 414,210 337,255" fill="#ffffff" />
+        <polygon points="480,125 522,125 540,145 460,145" fill="#2d507e" />
+        <rect x="488" y="145" width="34" height="96" rx="4" fill="#edf1fb" />
+
+        <polygon points="227,302 430,302 430,478 227,478" fill="url(#wall-front)" />
+        <polygon points="430,302 624,256 624,478 430,478" fill="url(#wall-side)" />
+        <polygon points="306,235 366,201 412,225 334,268" fill="#f7f8fc" />
+
+        {Array.from({ length: 11 }, (_, index) => (
+          <line
+            key={`front-line-${index}`}
+            x1="229"
+            y1={316 + index * 14}
+            x2="429"
+            y2={316 + index * 14}
+            className={styles.sidingLine}
+          />
+        ))}
+        {Array.from({ length: 11 }, (_, index) => (
+          <line
+            key={`side-line-${index}`}
+            x1="430"
+            y1={314 + index * 13}
+            x2="622"
+            y2={269 + index * 13}
+            className={styles.sidingLine}
+          />
+        ))}
+
+        <polygon points="110,332 246,296 246,478 110,478" fill="url(#garage-front)" />
+        <polygon points="80,326 196,258 274,292 246,296" fill="url(#roof-side)" />
+        {Array.from({ length: 10 }, (_, index) => (
+          <line
+            key={`garage-line-${index}`}
+            x1="112"
+            y1={346 + index * 13}
+            x2="245"
+            y2={346 + index * 13}
+            className={styles.sidingLine}
+          />
+        ))}
+
+        <rect x="138" y="362" width="78" height="116" rx="6" fill="#dce1eb" stroke="#ffffff" strokeWidth="6" />
+        <line x1="177" y1="362" x2="177" y2="478" className={styles.windowMuntin} />
+        <line x1="138" y1="420" x2="216" y2="420" className={styles.windowMuntin} />
+
+        <rect x="250" y="324" width="74" height="142" rx="6" fill="#dce1eb" stroke="#ffffff" strokeWidth="8" />
+        <line x1="287" y1="324" x2="287" y2="466" className={styles.windowMuntin} />
+        <line x1="250" y1="396" x2="324" y2="396" className={styles.windowMuntin} />
+        <circle cx="314" cy="394" r="4" fill="#9ba6b7" />
+
+        <rect x="346" y="356" width="78" height="98" rx="6" fill="#dce1eb" stroke="#ffffff" strokeWidth="8" />
+        <line x1="385" y1="356" x2="385" y2="454" className={styles.windowMuntin} />
+        <line x1="346" y1="405" x2="424" y2="405" className={styles.windowMuntin} />
+
+        <polygon points="500,344 552,330 552,432 500,438" fill="#dce1eb" stroke="#ffffff" strokeWidth="8" />
+        <line x1="526" y1="335" x2="526" y2="435" className={styles.windowMuntin} />
+        <line x1="503" y1="384" x2="549" y2="376" className={styles.windowMuntin} />
+
+        <polygon points="566,324 618,311 618,413 566,419" fill="#dce1eb" stroke="#ffffff" strokeWidth="8" />
+        <line x1="592" y1="317" x2="592" y2="416" className={styles.windowMuntin} />
+        <line x1="569" y1="368" x2="615" y2="360" className={styles.windowMuntin} />
+
+        <polygon points="278,470 328,470 350,498 258,498" fill="#f7f8fb" />
+        <polygon points="288,486 332,486 346,504 270,504" fill="#eef1f7" />
+      </g>
+    </svg>
+  );
+}
+
+function InteriorScene() {
+  return (
+    <svg
+      viewBox="0 0 900 620"
+      className={styles.sceneSvg}
+      role="img"
+      aria-label="Interior room service illustration"
+    >
+      <defs>
+        <linearGradient id="int-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#f8f5ef" />
+          <stop offset="100%" stopColor="#eee8dd" />
+        </linearGradient>
+        <linearGradient id="floor-wood" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#d9be97" />
+          <stop offset="100%" stopColor="#bf9f74" />
+        </linearGradient>
+      </defs>
+
+      <rect x="0" y="0" width="900" height="620" rx="32" fill="url(#int-bg)" />
+      <rect x="0" y="0" width="900" height="450" fill="#f8f6f1" />
+      <rect x="0" y="450" width="900" height="170" fill="url(#floor-wood)" />
+
+      {Array.from({ length: 22 }, (_, index) => (
+        <line
+          key={`floor-board-${index}`}
+          x1={index * 44}
+          y1="450"
+          x2={index * 44 + 22}
+          y2="620"
+          className={styles.floorBoard}
+        />
+      ))}
+
+      <rect x="290" y="120" width="180" height="300" rx="12" fill="#f4f1ea" />
+      <rect x="323" y="356" width="114" height="92" rx="8" fill="#1f2430" />
+      <rect x="308" y="343" width="144" height="22" rx="6" fill="#e7dfd1" />
+      <path d="M318 356H442" className={styles.trimStroke} />
+      <path d="M332 134H430" className={styles.trimStroke} />
+
+      <rect x="315" y="250" width="132" height="110" rx="10" fill="#e9e1d2" />
+      <rect x="332" y="267" width="98" height="72" rx="8" fill="#f6f1e9" />
+
+      <rect x="92" y="270" width="164" height="106" rx="8" fill="#ebe7de" stroke="#ffffff" strokeWidth="5" />
+      <path d="M560 288H744V404H560Z" fill="#f2ece6" stroke="#ffffff" strokeWidth="5" />
+
+      <path d="M596 446C692 446 758 436 806 418C822 490 816 544 780 574H558C534 532 544 480 596 446Z" fill="#252a31" />
+      <path d="M116 520L190 446L262 464L220 560Z" fill="#20252c" />
+      <path d="M172 428L236 390L290 474L220 486Z" fill="#b4834f" />
+      <path d="M106 424L166 470L138 558L74 510Z" fill="#1f2530" />
+
+      <rect x="240" y="500" width="274" height="84" rx="10" fill="#232227" />
+      <path d="M246 508H508" className={styles.tableVein} />
+      <path d="M280 566H474" className={styles.tableVein} />
+      <circle cx="392" cy="516" r="14" fill="#746f7a" />
+
+      <rect x="214" y="424" width="18" height="122" rx="9" fill="#d5ccb8" />
+      <rect x="720" y="120" width="18" height="256" rx="9" fill="#d5ccb8" />
+
+      <line x1="0" y1="450" x2="900" y2="450" className={styles.baseDivider} />
+    </svg>
+  );
+}
+
+export default function InteractiveHouse() {
+  const [mode, setMode] = useState('exterior');
+  const [activeId, setActiveId] = useState(EXTERIOR_HOTSPOTS[0].id);
+
+  const hotspots = mode === 'exterior' ? EXTERIOR_HOTSPOTS : INTERIOR_HOTSPOTS;
+
+  const activeHotspot = useMemo(
+    () => hotspots.find((item) => item.id === activeId) || hotspots[0],
+    [activeId, hotspots]
+  );
+
+  function changeMode(nextMode) {
+    setMode(nextMode);
+    setActiveId((nextMode === 'exterior' ? EXTERIOR_HOTSPOTS : INTERIOR_HOTSPOTS)[0].id);
+  }
+
+  return (
+    <div className={styles.wrap}>
+      <div className={styles.modeBtns} role="group" aria-label="House view mode">
+        <button
+          type="button"
+          className={`${styles.modeBtn} ${mode === 'exterior' ? styles.active : ''}`}
+          onClick={() => changeMode('exterior')}
+        >
+          Exterior
+        </button>
+        <button
+          type="button"
+          className={`${styles.modeBtn} ${mode === 'interior' ? styles.active : ''}`}
+          onClick={() => changeMode('interior')}
+        >
+          Interior
+        </button>
+      </div>
+
+      <div className={styles.sceneWrap}>
+        {mode === 'exterior' ? <ExteriorScene /> : <InteriorScene />}
+
+        <div className={styles.hotspotLayer}>
+          {hotspots.map((item) => (
+            <HotspotButton
+              key={`${mode}-${item.id}`}
+              item={item}
+              active={activeId === item.id}
+              onActivate={setActiveId}
+            />
+          ))}
+        </div>
+
+        <div className={styles.modeLabel}>{mode === 'exterior' ? 'Exterior service map' : 'Interior service map'}</div>
+      </div>
+
+      <div className={styles.detailPanel}>
+        <div className={styles.detailEyebrow}>{activeHotspot.short}</div>
+        <div className={styles.detailRow}>
+          <div>
+            <h3 className={styles.detailTitle}>{activeHotspot.label}</h3>
+            <p className={styles.detailText}>{activeHotspot.description}</p>
+          </div>
+          <Link href={activeHotspot.href} className={styles.detailLink}>
+            View Service
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}

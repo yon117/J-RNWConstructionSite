@@ -7,6 +7,13 @@ import { Barlow, Barlow_Condensed } from "next/font/google";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(useGSAP, ScrollTrigger);
+}
 
 if (typeof window !== 'undefined') {
   history.scrollRestoration = 'manual';
@@ -66,7 +73,38 @@ export default function App({ Component, pageProps }: AppProps) {
     };
   }, [router.events]);
 
+  // Dev only: preserve scroll position across HMR reloads
   useEffect(() => {
+    if (process.env.NODE_ENV !== 'development') return;
+    const saved = parseInt(sessionStorage.getItem('__devScrollY') || '0', 10);
+    if (saved > 0) requestAnimationFrame(() => window.scrollTo(0, saved));
+    const save = () => sessionStorage.setItem('__devScrollY', String(Math.round(window.scrollY)));
+    window.addEventListener('scroll', save, { passive: true });
+    return () => window.removeEventListener('scroll', save);
+  }, []);
+
+  useEffect(() => {
+    const reloadKey = '__chunkLoadRetry';
+
+    const isChunkLoadError = (value: unknown) => {
+      if (!value) return false;
+      if (value instanceof Error) {
+        return value.name === 'ChunkLoadError'
+          || /ChunkLoadError|Loading chunk|Failed to fetch dynamically imported module/i.test(value.message);
+      }
+      if (typeof value === 'string') {
+        return /ChunkLoadError|Loading chunk|Failed to fetch dynamically imported module/i.test(value);
+      }
+      return false;
+    };
+
+    const reloadOnce = () => {
+      if (sessionStorage.getItem(reloadKey) === '1') return false;
+      sessionStorage.setItem(reloadKey, '1');
+      window.location.reload();
+      return true;
+    };
+
     const track = (url: string) => {
       if (url.startsWith('/adminside') || url.startsWith('/admin')) return;
       const device_type = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
@@ -83,6 +121,9 @@ export default function App({ Component, pageProps }: AppProps) {
     router.events.on('routeChangeComplete', track);
 
     const handleError = (event: ErrorEvent) => {
+      if (isChunkLoadError(event.error) || isChunkLoadError(event.message)) {
+        if (reloadOnce()) return;
+      }
       fetch('/api/monitor/error', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -95,11 +136,21 @@ export default function App({ Component, pageProps }: AppProps) {
         keepalive: true,
       }).catch(() => {});
     };
+
+    const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
+      if (isChunkLoadError(event.reason)) {
+        event.preventDefault();
+        if (reloadOnce()) return;
+      }
+    };
+
     window.addEventListener('error', handleError);
+    window.addEventListener('unhandledrejection', handleUnhandledRejection);
 
     return () => {
       router.events.off('routeChangeComplete', track);
       window.removeEventListener('error', handleError);
+      window.removeEventListener('unhandledrejection', handleUnhandledRejection);
     };
   }, [router.events]);
 

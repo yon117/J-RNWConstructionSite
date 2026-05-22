@@ -1,0 +1,91 @@
+import { useState, useRef } from 'react';
+import { useTheme } from '../context/ThemeContext';
+import styles from './CurtainToggle.module.css';
+
+// Curtain color = TARGET theme background (creates seamless wipe feel)
+const THEME_BG = {
+  dark:  '#0F1923',
+  light: '#F5F3EF',
+};
+
+export default function CurtainToggle() {
+  const { theme, toggle } = useTheme();
+  const [curtainState, setCurtainState] = useState('hidden'); // 'hidden' | 'falling' | 'risen' | 'rising'
+  const [curtainColor, setCurtainColor] = useState('#0F1923');
+  const animating = useRef(false);
+  const timerRef = useRef(null);
+
+  const handleToggle = () => {
+    if (animating.current) return;
+
+    const reduced =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduced) {
+      toggle();
+      return;
+    }
+
+    animating.current = true;
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    setCurtainColor(THEME_BG[nextTheme]);
+
+    // Phase 1 — curtain falls (0 → 1), 275ms
+    setCurtainState('falling');
+
+    timerRef.current = setTimeout(() => {
+      // Phase 2 — switch theme mid-curtain
+      toggle();
+
+      // Phase 3 — curtain rises (1 → 0), 275ms
+      setCurtainState('rising');
+
+      timerRef.current = setTimeout(() => {
+        setCurtainState('hidden');
+        animating.current = false;
+      }, 280);
+    }, 280);
+  };
+
+  return (
+    <>
+      {/* Full-viewport curtain — two panels meet at center */}
+      <div
+        className={styles.curtainWrap}
+        aria-hidden="true"
+        style={{ pointerEvents: curtainState === 'hidden' ? 'none' : 'all' }}
+      >
+        <div
+          className={styles.curtainTop}
+          style={{
+            backgroundColor: curtainColor,
+            transform: curtainState === 'falling' || curtainState === 'risen'
+              ? 'scaleY(1)'
+              : 'scaleY(0)',
+          }}
+        />
+        <div
+          className={styles.curtainBot}
+          style={{
+            backgroundColor: curtainColor,
+            transform: curtainState === 'falling' || curtainState === 'risen'
+              ? 'scaleY(1)'
+              : 'scaleY(0)',
+          }}
+        />
+      </div>
+
+      <button
+        type="button"
+        onClick={handleToggle}
+        className={styles.toggleBtn}
+        aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+      >
+        <span className={styles.icon} aria-hidden="true">
+          {theme === 'dark' ? '☀' : '☾'}
+        </span>
+      </button>
+    </>
+  );
+}

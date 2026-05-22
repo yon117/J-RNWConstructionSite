@@ -1,0 +1,104 @@
+import { useEffect, useState } from 'react';
+import styles from '../styles/Reviews.module.css';
+import { useLang } from '../context/LanguageContext';
+
+const duplicateRow = (items) => [...items, ...items];
+
+const Reviews = () => {
+    const { t } = useLang();
+    const [reviews, setReviews] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+
+    useEffect(() => {
+        const fetchReviews = async () => {
+            try {
+                const response = await fetch('/api/reviews');
+                const data = await response.json();
+                if (data.reviews) {
+                    setReviews(data.reviews);
+                } else {
+                    setError(true);
+                }
+            } catch (err) {
+                console.error('Error fetching reviews:', err);
+                setError(true);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchReviews();
+    }, []);
+
+    if (loading) {
+        return (
+            <section className={styles.reviewsSection}>
+                <div className={styles.container}>
+                    <div className={styles.header}>
+                        <h2>{t.whatClientsSay || 'What Our Clients Say'}</h2>
+                        <p>{t.loadingReviews || 'Loading reviews...'}</p>
+                    </div>
+                </div>
+            </section>
+        );
+    }
+
+    if (error || reviews.length === 0) {
+        return null;
+    }
+
+    const midpoint = Math.ceil(reviews.length / 2);
+    const topRow = duplicateRow(reviews.slice(0, midpoint));
+    const bottomRow = duplicateRow(reviews.slice(midpoint));
+
+    const renderCard = (review, index, rowName) => (
+        <article
+            key={`${rowName}-${review.id}-${index}`}
+            className={styles.reviewCard}
+        >
+            <div className={styles.reviewQuoteWrap}>
+                <span className={styles.quoteMark} aria-hidden="true">{"\u201C"}</span>
+                <p className={styles.reviewText}>{review.text}</p>
+            </div>
+            <div className={styles.reviewMeta}>
+                <div className={styles.avatar}>{review.avatar}</div>
+                <div className={styles.reviewerInfo}>
+                    <h4>{review.name}</h4>
+                    <p className={styles.designation}>
+                        {review.platform} review
+                    </p>
+                </div>
+            </div>
+        </article>
+    );
+
+    return (
+        <section className={styles.reviewsSection}>
+            <div className={styles.container}>
+                <div className={styles.header}>
+                    <h2>{t.whatClientsSay || 'What Our Clients Say'}</h2>
+                    <p>{t.realReviews || 'Real reviews from real customers'}</p>
+                </div>
+
+                <div className={styles.marqueeStack}>
+                    <div className={styles.marqueeViewport}>
+                        <div className={`${styles.marqueeTrack} ${styles.marqueeTrackTop}`}>
+                            {topRow.map((review, index) => renderCard(review, index, 'top'))}
+                        </div>
+                    </div>
+
+                    {bottomRow.length > 0 && (
+                        <div className={styles.marqueeViewport}>
+                            <div className={`${styles.marqueeTrack} ${styles.marqueeTrackBottom}`}>
+                                {bottomRow.map((review, index) => renderCard(review, index, 'bottom'))}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </section>
+    );
+};
+
+export default Reviews;

@@ -1,0 +1,260 @@
+.wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.modeBtns {
+  display: inline-flex;
+  padding: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 24px 48px rgba(15, 25, 35, 0.18);
+}
+
+.modeBtn {
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 28px;
+  background: transparent;
+  color: #334155;
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.modeBtn:hover {
+  background: rgba(241, 245, 249, 0.92);
+}
+
+.modeBtn.active {
+  background: #0e3a5b;
+  color: #ffffff;
+  box-shadow: 0 14px 28px rgba(14, 58, 91, 0.26);
+}
+
+.sceneWrap {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+}
+
+.mediaFrame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 32px;
+  background: #ffffff;
+  box-shadow: 0 34px 72px rgba(15, 25, 35, 0.24);
+}
+
+.baseImage,
+.fadeImage {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.fadeImage {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+.fadeIn {
+  opacity: 1;
+}
+
+.sceneOverlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.2), transparent 38%, transparent);
+}
+
+.hotspotWrap {
+  position: absolute;
+  z-index: 20;
+}
+
+.hotspotWrapActive {
+  z-index: 40;
+}
+
+.hotspotBtn {
+  position: relative;
+  display: flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  background: #a3e635;
+  color: #ffffff;
+  font-family: 'Barlow', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 24px 48px rgba(15, 25, 35, 0.3);
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.hotspotBtn:hover,
+.hotspotBtnActive {
+  transform: scale(1.1);
+}
+
+.hotspotBtnActive {
+  background: #3b82f6;
+}
+
+.hotspotPing {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  background: rgba(163, 230, 53, 0.3);
+  animation: ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.hotspotPlus {
+  position: relative;
+  margin-top: -3px;
+}
+
+.hotspotCard {
+  position: absolute;
+  left: 56px;
+  top: 50%;
+  width: max-content;
+  max-width: 248px;
+  transform: translateY(-50%) scale(0.95);
+  padding: 14px 16px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #0f172a;
+  text-align: left;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 28px 56px rgba(15, 25, 35, 0.22);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.hotspotCardLeft {
+  left: auto;
+  right: 56px;
+}
+
+.hotspotCardTop {
+  left: 50%;
+  top: auto;
+  bottom: 56px;
+  transform: translateX(-50%) scale(0.95);
+}
+
+.hotspotCardRight {
+  left: 56px;
+  right: auto;
+}
+
+.hotspotCardActive {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+.hotspotCardTop.hotspotCardActive {
+  transform: translateX(-50%) scale(1);
+}
+
+.hotspotTitle {
+  margin: 0;
+  font-family: 'Barlow', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.hotspotDesc {
+  margin: 6px 0 0;
+  color: #475569;
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+@keyframes ping {
+  75%,
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .modeBtns {
+    padding: 6px;
+  }
+
+  .modeBtn {
+    padding: 10px 22px;
+    font-size: 13px;
+  }
+
+  .sceneWrap {
+    margin-bottom: 12px;
+  }
+
+  .mediaFrame {
+    border-radius: 24px;
+  }
+
+  .hotspotCard {
+    width: min(248px, calc(100vw - 112px));
+  }
+
+  .hotspotCardActive {
+    transform: translateY(-50%) scale(1);
+  }
+
+  .hotspotCardRight {
+    left: 50%;
+    right: auto;
+    top: 60px;
+    bottom: auto;
+    transform: translateX(-50%) scale(0.95);
+  }
+
+  .hotspotCardRight.hotspotCardActive {
+    transform: translateX(-50%) scale(1);
+  }
+
+  .hotspotCardLeft {
+    left: 50%;
+    right: auto;
+    top: 60px;
+    bottom: auto;
+    transform: translateX(-50%) scale(0.95);
+  }
+
+  .hotspotCardLeft.hotspotCardActive {
+    transform: translateX(-50%) scale(1);
+  }
+
+  .hotspotCardTop {
+    left: 50%;
+    top: auto;
+    bottom: 60px;
+    transform: translateX(-50%) scale(0.95);
+  }
+
+  .hotspotCardTop.hotspotCardActive {
+    transform: translateX(-50%) scale(1);
+  }
+}

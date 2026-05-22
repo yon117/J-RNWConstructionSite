@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Copy-Item \"C:\\\\Users\\\\Diego Ramirez\\\\J-RNWConstructionSite\\\\pages\\\\index.js\" \"C:\\\\Users\\\\Diego Ramirez\\\\J-RNWConstructionSite\\\\pages\\\\index.js.bak\")",
+      "mcp__Claude_Preview__preview_start",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "mcp__Claude_in_Chrome__browser_batch",
+      "Bash(git add *)",
+      "Bash(git commit -m 'feat: conversion tier-2 — reviews above fold, phone required, project meta, insurance copy, H1 Portland *)",
+      "Bash(git push *)",
+      "Bash(git commit -m 'fix: remove price/timeline from project cards \\(TBD\\) *)",
+      "Bash(git commit *)",
+      "Bash(dir hooks *)",
+      "Bash(git pull *)",
+      "Bash(claude plugin *)",
+      "Bash(npx skills *)",
+      "Skill(superpowers:writing-plans)",
+      "Skill(superpowers:writing-plans:*)",
+      "PowerShell(cd \"C:\\\\Users\\\\Diego Ramirez\\\\J-RNWConstructionSite\"; $env:NODE_ENV=\"development\"; npx next build 2>&1 | Select-Object -Last 15)",
+      "PowerShell(Copy-Item \"C:\\\\Users\\\\Diego Ramirez\\\\J-RNWConstructionSite\\\\pages\\\\index.js\" \"C:\\\\Users\\\\Diego Ramirez\\\\J-RNWConstructionSite\\\\pages\\\\index.js.bak4\")",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\Diego Ramirez\\\\J-RNWConstructionSite\\\\public\\\\assets\" | Where-Object { $_.Name -match \"Casa|Interior|Exterior|house\" } | Select-Object Name)",
+      "WebFetch(domain:21st.dev)",
+      "WebFetch(domain:fin.ai)",
+      "PowerShell(python \"C:/Users/Diego Ramirez/.claude/skills/banana/scripts/generate.py\" --prompt \"A beautiful two-story craftsman suburban home with freshly painted blue-grey Hardie board siding, stone accents, manicured green lawn, mature trees, flower beds along the foundation, clean concrete driveway, blue sky with wispy clouds. Captured with Canon EOS R5, 24mm lens at f/8, bright natural daylight, slight elevated angle showing full front facade and yard. Professional real estate photography, Pacific Northwest neighborhood, warm afternoon light.\" --aspect-ratio \"16:9\" --api-key \"AIzaSyBWwGKmqDij6hElBJCcgI2w1dsHjOV0pfA\" 2>&1)",
+      "mcp__plugin_context-mode_context-mode__ctx_search",
+      "mcp__plugin_context-mode_context-mode__ctx_batch_execute",
+      "PowerShell(taskkill /PID 54128 /F)",
+      "PowerShell(Stop-Process -Id 32612 -Force)",
+      "PowerShell(Start-Sleep -Seconds 8; try { $r = Invoke-WebRequest -Uri \"http://localhost:3001\" -TimeoutSec 10 -UseBasicParsing; \"HTTP $\\($r.StatusCode\\)\" } catch { \"Error: $_\" })",
+      "Bash(npm run *)"
+    ]
+  }
+}

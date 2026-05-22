@@ -4,6 +4,8 @@ import Layout from '../components/Layout';
 import Modal from '../components/Modal';
 import Reviews from '../components/Reviews';
 import WarningSigns from '../components/WarningSigns';
+import HeroSection from '../components/HeroSection';
+import LeftNav from '../components/LeftNav';
 import styles from '../styles/Home.module.css';
 import { useState, useEffect } from 'react';
 import { useLang } from '../context/LanguageContext';
@@ -167,6 +169,14 @@ const HOME_SERVICES = [
     { key: 'pt5', category: 'PAINTING',    desc: 'Interior and exterior. Surface prep, primer coat, finish — clean lines and lasting color.' },
     { key: 'pt7', category: 'DRYWALL',     desc: 'Hanging, taping, mudding, and finishing. Seamless texture matching and full room repairs.' },
 ];
+const HOME_SERVICE_SLUGS = {
+    pt1: 'interior-construction-and-remodeling',
+    pt2: 'restoration-and-reconstruction',
+    pt3: 'mitigation-and-emergency-services',
+    pt5: 'paint',
+    pt6: 'siding',
+    pt7: 'drywall',
+};
 
 const PROJECT_TYPES = [
     { key: 'pt1',   en: 'Interior Construction & Remodeling' },
@@ -185,6 +195,14 @@ const HANDLE_ITEMS = [
     { Icon: TrashIcon, title: 'Debris Removal & Hauling', desc: 'All demo waste and packaging gets hauled away. You never rent a dumpster or lift a bag.' },
     { Icon: SweepIcon, title: 'Full Site Cleanup', desc: 'Every room swept, surfaces wiped, tools removed. We leave your space cleaner than we found it.' },
     { Icon: ShieldIcon, title: 'Left Like New — Guaranteed', desc: "When we're done, your home looks finished — not like a job site. 100% satisfaction or we come back." },
+];
+
+const HOME_NAV_SECTIONS = [
+    { id: 'section-reviews', label: 'What Our Clients Say', num: '01' },
+    { id: 'section-process', label: 'How We Work', num: '02' },
+    { id: 'section-services', label: 'Services', num: '03' },
+    { id: 'section-portfolio', label: 'Projects', num: '04' },
+    { id: 'section-contact', label: 'Contact', num: '05' },
 ];
 
 // WARNING SIGNS moved to components/WarningSigns.js
@@ -214,214 +232,153 @@ export default function Home({ projects = [] }) {
         >
 
             {/* ── HERO ── */}
-            <section className={styles.hero} data-anim="hero-section">
-                {/* ✅ Después */}
-<div className={styles.heroBg} data-anim="hero-bg" />
-                <div className={styles.heroInner}>
-                <div className={styles.heroContent} data-anim="hero-reveal">
-                    <div className={styles.heroBadge}>
-                        <div className={styles.heroBadgeDot} />
-                        {t.navSubtitle}
-                    </div>
-                    <h1 className={styles.heroH1}>
-                        {t.yourTrusted}
-                        <em>{t.generalContractor}</em>
-                    </h1>
-                    <p className={styles.heroDesc}>
-    {t.heroItem1}.<br />
-    {t.heroItem2}.<br />
-    {t.heroItem3}.<br />
-    <span style={{ fontSize: '13px', opacity: 0.7 }}>Portland · Tigard · Tualatin · Gresham · Happy Valley · Oregon City</span>
-</p>
-                    <div className={styles.heroActions}>
-                        <button className={styles.btnPrimary} onClick={() => {
-                            const el = document.getElementById('hero-form');
-                            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            else handleEstimateClick();
-                        }}>
-                            {t.getFreeEstimate} <ArrowIcon />
-                        </button>
-                        <Link href="/projects" className={styles.btnSecondary}>
-                            {t.viewOurWork}
-                        </Link>
-                    </div>
-                    <a href="tel:5039982340" className={styles.heroCallLink}
-                        onClick={() => { if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'phone_click', { event_category: 'contact', event_label: 'hero_call' }); }}>
-                        <PhoneIcon /> (503) 998-2340 — Tap to Call
-                    </a>
-                    <div className={styles.heroReviewBlock}>
-                        <div className={styles.heroReviewRow}>
-                            <span className={styles.heroReviewLabel}>{t.lookUsUp}</span>
-                            <div className={styles.heroReviewItems}>
-                                <span className={styles.heroReviewIcon}><YelpLogoIcon /></span>
-                                <span className={styles.heroReviewIcon}><GoogleLogoIcon /></span>
-                                <span className={styles.heroReviewStars}>★★★★★</span>
-                                <span className={styles.heroReviewCount}>50+ reviews</span>
-                            </div>
-                        </div>
-                        <div className={styles.heroReviewGuarantee}>100% Satisfaction Guarantee</div>
-                        <div className={styles.heroReviewCcb}>CCB: 232708</div>
-                    </div>
-                    <div className={styles.heroTrust}>
-                        <div className={styles.trustItem}>
-                            <ShieldIcon />
-                            {t.licensed}, {t.insured} &amp; {t.bonded}
-                        </div>
-                        <span className={styles.trustSep}>·</span>
-                        <div className={styles.trustItem}>
-                            <StarIcon />
-                            BBB {t.accredited || 'Accredited'}
-                        </div>
-                        <span className={styles.trustSep}>·</span>
-                        <div className={styles.trustItem}>
-                            <CheckIcon />
-                            100% Satisfaction Guarantee
-                        </div>
-                    </div>
-                </div>
-                <div className={styles.heroFormPanel} id="hero-form" data-anim="hero-reveal">
-                    <HomeContactForm t={t} />
-                </div>
-            </div>
+            <HeroSection
+                t={t}
+                onEstimateClick={handleEstimateClick}
+                icons={{ ShieldIcon, StarIcon, CheckIcon, ArrowIcon, PhoneIcon, YelpLogoIcon, GoogleLogoIcon }}
+            >
+                <HomeContactForm t={t} />
+            </HeroSection>
 
-                {/* Stats */}
-                <div className={styles.heroStats}>
-                    <div className={styles.statBox} data-anim="stat">
-                        <div className={styles.statNum} data-anim="stat-num">20+</div>
-                        <div className={styles.statLabel}>{t.yearsExp || 'Years Exp.'}</div>
-                    </div>
-                    <div className={styles.statBox} data-anim="stat">
-                        <div className={styles.statNum} data-anim="stat-num">50+</div>
-                        <div className={styles.statLabel}>Families Served</div>
-                    </div>
-                    <div className={styles.statBox} data-anim="stat">
-                        <div className={styles.statNum} data-anim="stat-num">★ 5.0</div>
-                        <div className={styles.statLabel}>{t.rating || 'Rating'}</div>
-                    </div>
-                </div>
-                {/* Credential strip */}
-                <div className={styles.heroCredentials}>
-                    <span><ShieldIcon /> {t.licensed}, {t.insured} &amp; {t.bonded}</span>
-                    <span>CCB #232708</span>
-                    <span>BBB {t.accredited || 'Accredited'}</span>
-                    <span>100% Satisfaction Guarantee</span>
-                </div>
-            </section>
+            {/* Left section nav — desktop only */}
+            <LeftNav sections={HOME_NAV_SECTIONS} />
 
             {/* ── REVIEWS ── */}
-            <Reviews />
+            <Reviews sectionId="section-reviews" />
 
-            {/* ── HOW WE WORK ── */}
-            <section className={styles.hwwSection}>
-                <div className={styles.hwwInner}>
-                    <div className={styles.sectionHeader}>
-                        <div className={styles.sectionLabel}>How We Work</div>
-                        <h2 className={styles.sectionTitle}>
-                            From First Call to <em>Final Nail</em>
-                        </h2>
-                    </div>
-                    <div className={styles.hwwSteps}>
-                        {PROCESS_STEPS.map((step, i) => (
-                            <div key={step.num} className={styles.hwwStep} data-anim="fade-up">
-                                <div className={styles.hwwNum}>{step.num}</div>
-                                <div className={styles.hwwIcon}><step.Icon /></div>
-                                <h3 className={styles.hwwStepTitle}>{step.title}</h3>
-                                <p className={styles.hwwStepDesc}>{step.desc}</p>
-                            </div>
-                        ))}
-                    </div>
+            {/* ── ROW: PROCESS + SERVICES ── */}
+            <div className={styles.horizRow} data-layout="horiz-row">
+
+              {/* ── BENTO: HOW WE WORK + HANDLE EVERYTHING ── */}
+              <section id="section-process" className={styles.bentoSection}>
+                  <div className={styles.bentoGrid}>
+                      <div className={styles.bentoPrimary} data-anim="fade-up">
+                          <div className={styles.sectionLabel}>How We Work</div>
+                          <h2 className={styles.sectionTitle}>From First Call to <em>Final Nail</em></h2>
+                          <div className={styles.hwwStepsCompact} data-anim="stagger-group">
+                              {PROCESS_STEPS.map((step) => (
+                                  <div key={step.num} className={styles.hwwStepCompact} data-anim-child>
+                                      <div className={styles.hwwNumSmall}>{step.num}</div>
+                                      <div>
+                                          <div className={styles.hwwIcon}><step.Icon /></div>
+                                          <h3 className={styles.hwwStepTitle}>{step.title}</h3>
+                                          <p className={styles.hwwStepDesc}>{step.desc}</p>
+                                      </div>
+                                  </div>
+                              ))}
+                          </div>
+                      </div>
+                      <div className={styles.bentoStack}>
+                          <div className={styles.bentoTopCard} data-anim="fade-up">
+                              <div className={styles.sectionLabel}>One Call. Zero Stress.</div>
+                              <h2 className={styles.sectionTitle}>We Handle <em>Everything</em></h2>
+                              <p className={styles.handleSubtitle}>Materials, disposal, cleanup — we own the whole job. You come home to a space that looks like new.</p>
+                          </div>
+                          <div className={styles.bentoHandleGrid} data-anim="stagger-group">
+                              {HANDLE_ITEMS.map((item, i) => (
+                                  <div key={i} className={styles.bentoCard} data-anim-child>
+                                      <div className={styles.handleCardTop}>
+                                          <div className={styles.handleIcon}><item.Icon /></div>
+                                          <span className={styles.handleStepNum}>0{i + 1}</span>
+                                      </div>
+                                      <h3 className={styles.handleCardTitle}>{item.title}</h3>
+                                      <p className={styles.handleCardDesc}>{item.desc}</p>
+                                  </div>
+                              ))}
+                          </div>
+                      </div>
+                  </div>
+              </section>
+
+              {/* ── SERVICES PREVIEW ── */}
+              <section id="section-services" className={styles.servicesSection}>
+                  <div className={styles.servicesInner}>
+                      <div className={styles.servicesLeft} data-anim="fade-up">
+                          <div className={styles.sectionLabel}>{t.ourServicesLabel || 'What We Do'}</div>
+                          <h2 className={styles.sectionTitle}>
+                              {t.ourServices.split(' ')[0]} <em>{t.ourServices.split(' ').slice(1).join(' ')}</em>
+                          </h2>
+                          <p className={styles.servicesLeftDesc}>
+                              From emergency response to full remodels — we handle every project under one roof.
+                          </p>
+                          <Link href="/services" className={styles.btnSecondary} style={{ marginTop: 28 }}>
+                              {t.ourServices} <ArrowIcon />
+                          </Link>
+                      </div>
+                      <div className={styles.servicesRight}>
+                          <div className={styles.servicesGrid} data-anim="stagger-group">
+                              {HOME_SERVICES.map((svc, idx) => (
+                                  <Link href={`/services/${HOME_SERVICE_SLUGS[svc.key]}`} key={svc.key} className={styles.serviceCard} data-anim="service-card">
+                                      <div className={styles.serviceCardGhostNum}>{String(idx + 1).padStart(2, '0')}</div>
+                                      <div className={styles.serviceCardNum}>
+                                          <span className={styles.serviceCardIndex}>{String(idx + 1).padStart(2, '0')}</span>
+                                          <span className={styles.serviceCardTotal}>&nbsp;/ {String(HOME_SERVICES.length).padStart(2, '0')}</span>
+                                          <span className={styles.serviceCardCat}>{svc.category}</span>
+                                      </div>
+                                      <div className={styles.serviceName}>{t[svc.key]}</div>
+                                      <p className={styles.serviceDesc}>{svc.desc}</p>
+                                      <span className={styles.serviceLink}>{t.learnMore} &rarr;</span>
+                                  </Link>
+                              ))}
+                          </div>
+                          <div className={styles.emergencyStrip}>
+                              <div className={styles.emergencyStripContent}>
+                                  <div>
+                                      <h3 className={styles.emergencyStripTitle}>Need Immediate Assistance?</h3>
+                                      <p className={styles.emergencyStripDesc}>Our emergency response teams are on standby 24/7 to handle critical property damage and restoration needs.</p>
+                                  </div>
+                                  <a href="tel:5039982340" className={styles.emergencyStripBtn} onClick={() => { if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'phone_click', { event_category: 'contact', event_label: 'emergency_strip' }); }}>
+                                      Call (503) 998-2340
+                                  </a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </section>
+
+            </div>{/* end horizRow process+services */}
+
+            {/* ── ROW: WARNING SIGNS + PHOTO STATS (flip: right sticks) ── */}
+            <div className={`${styles.horizRow} ${styles.horizRowFlip}`} data-layout="horiz-row-flip">
+
+              {/* ── WARNING SIGNS ── */}
+              <WarningSigns onCta={handleEstimateClick} />
+
+              {/* ── PHOTO STATS CARD ── */}
+              <section className={styles.photoBentoCard}>
+                <img
+                  src="/house-exterior.jpg"
+                  alt="J&R NW Construction — exterior work"
+                  className={styles.photoBentoImg}
+                />
+                <div className={styles.photoBentoOverlay}>
+                  <div className={styles.sectionLabel}>Portland&apos;s Trusted Contractor</div>
+                  <h2 className={styles.sectionTitle} style={{ fontSize: 'clamp(28px, 3vw, 42px)' }}>
+                    Built With <em>Pride</em>
+                  </h2>
+                  <p className={styles.photoBentoDesc}>
+                    Over 20 years serving Portland homes. Licensed · CCB #232708 · 5-star rated.
+                  </p>
+                  <div className={styles.photoBentoStatsGrid}>
+                    {[
+                      { num: '20+', label: 'Years Experience' },
+                      { num: '50+', label: 'Families Served' },
+                      { num: '★ 5.0', label: 'Google Rating' },
+                      { num: '24/7', label: 'Emergency' },
+                    ].map((s, i) => (
+                      <div key={i} className={styles.photoBentoStat}>
+                        <span className={styles.scrollStatNum}>{s.num}</span>
+                        <span className={styles.scrollStatLabel}>{s.label}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-            </section>
+              </section>
 
-            {/* ── WE HANDLE EVERYTHING ── */}
-            <section className={styles.handleSection}>
-                <div className={styles.handleInner}>
-                    <div className={styles.sectionHeader} data-anim="fade-up">
-                        <div className={styles.sectionLabel}>One Call. Zero Stress.</div>
-                        <h2 className={styles.sectionTitle}>
-                            We Handle <em>Everything</em>
-                        </h2>
-                        <p className={styles.handleSubtitle}>
-                            Materials, disposal, cleanup — we own the whole job start to finish. You come home to a space that looks like new.
-                        </p>
-                    </div>
-                    <div className={styles.handleGrid}>
-                        {HANDLE_ITEMS.map((item, i) => (
-                            <div key={i} className={styles.handleCard}>
-                                <div className={styles.handleCardTop}>
-                                    <div className={styles.handleIcon}><item.Icon /></div>
-                                    <span className={styles.handleStepNum}>0{i + 1}</span>
-                                </div>
-                                <h3 className={styles.handleCardTitle}>{item.title}</h3>
-                                <p className={styles.handleCardDesc}>{item.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
+            </div>{/* end horizRow warnings+stats */}
 
-            {/* ── SERVICES PREVIEW ── */}
-            <section className={styles.servicesSection}>
-                <div className={styles.servicesInner}>
-                    <div className={styles.sectionHeader} data-anim="fade-up">
-                        <div className={styles.sectionLabel}>{t.ourServicesLabel || 'What We Do'}</div>
-                        <h2 className={styles.sectionTitle}>
-                            {t.ourServices.split(' ')[0]} <em>{t.ourServices.split(' ').slice(1).join(' ')}</em>
-                        </h2>
-                    </div>
-                    <div className={styles.servicesGrid}>
-                        {HOME_SERVICES.map((svc, idx) => (
-                            <Link href="/services" key={svc.key} className={styles.serviceCard} data-anim="service-card">
-                                <div className={styles.serviceCardGhostNum}>{String(idx + 1).padStart(2, '0')}</div>
-                                <div className={styles.serviceCardNum}>
-                                    <span className={styles.serviceCardIndex}>{String(idx + 1).padStart(2, '0')}</span>
-                                    <span className={styles.serviceCardTotal}>&nbsp;/ {String(HOME_SERVICES.length).padStart(2, '0')}</span>
-                                    <span className={styles.serviceCardCat}>{svc.category}</span>
-                                </div>
-                                <div className={styles.serviceName}>{t[svc.key]}</div>
-                                <p className={styles.serviceDesc}>{svc.desc}</p>
-                                <span className={styles.serviceLink}>{t.learnMore} &rarr;</span>
-                            </Link>
-                        ))}
-                    </div>
-                    <div className={styles.emergencyStrip}>
-                        <div className={styles.emergencyStripContent}>
-                            <div>
-                                <h3 className={styles.emergencyStripTitle}>Need Immediate Assistance?</h3>
-                                <p className={styles.emergencyStripDesc}>Our emergency response teams are on standby 24/7 to handle critical property damage and restoration needs.</p>
-                            </div>
-                            <a href="tel:5039982340" className={styles.emergencyStripBtn} onClick={() => { if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'phone_click', { event_category: 'contact', event_label: 'emergency_strip' }); }}>
-                                Call (503) 998-2340
-                            </a>
-                        </div>
-                    </div>
-                    <div className={styles.servicesViewAll}>
-                        <Link href="/services" className={styles.btnSecondary}>
-                            {t.ourServices} <ArrowIcon />
-                        </Link>
-                    </div>
-                </div>
-            </section>
-
-            {/* ── WARNING SIGNS ── */}
-            <WarningSigns onCta={handleEstimateClick} />
-
-            {/* ── ABOUT ── */}
-            <section className={styles.aboutSection}>
-                <div className={styles.aboutInner}>
-                    <div className={styles.aboutLogoWrap} data-anim="about-logo">
-                        <Image src="/logo.png" alt="J&R NW Construction" width={340} height={340} style={{ borderRadius: '50%' }} />
-                    </div>
-                    <div className={styles.aboutContent} data-anim="fade-up">
-                        <div className={styles.sectionLabel}>{t.weWorkForYou}</div>
-                        <h2 className={styles.sectionTitle}>
-                            J&amp;R NW <em>Construction</em>
-                        </h2>
-                        <p>{t.companyDesc}</p>
-                    </div>
-                </div>
-            </section>
-
+            {/* ── PROJECTS + ABOUT: SPLIT ROW ── */}
+            <div id="section-portfolio" className={styles.splitRow}>
             {/* ── PORTFOLIO PREVIEW ── */}
             <section className={styles.projectsSection}>
                 <div className={styles.projectsInner}>
@@ -453,6 +410,9 @@ export default function Home({ projects = [] }) {
                                 <div className={styles.projectOverlay}>
                                     <span className={styles.projectCategory}>{project.category || 'Remodel'}</span>
                                     <div className={styles.projectTitle}>{project.title}</div>
+                                    {idx === 0 && (project.description || project.details) ? (
+                                        <p className={styles.projectMeta}>{project.description || project.details}</p>
+                                    ) : null}
                                 </div>
                             </div>
                         ))}
@@ -460,6 +420,25 @@ export default function Home({ projects = [] }) {
                 </div>
             </section>
 
+            {/* ── ABOUT ── */}
+            <section className={styles.aboutSection}>
+                <div className={styles.aboutInner}>
+                    <div className={styles.aboutLogoWrap} data-anim="about-logo">
+                        <Image src="/logo.png" alt="J&R NW Construction" width={220} height={220} style={{ borderRadius: '50%' }} />
+                    </div>
+                    <div className={styles.aboutContent} data-anim="fade-up">
+                        <div className={styles.sectionLabel}>{t.weWorkForYou}</div>
+                        <h2 className={styles.sectionTitle}>
+                            J&amp;R NW <em>Construction</em>
+                        </h2>
+                        <p>{t.companyDesc}</p>
+                    </div>
+                </div>
+            </section>
+            </div>{/* end splitRow projects+about */}
+
+            {/* ── AREAS + FAQ: SPLIT ROW ── */}
+            <div className={`${styles.splitRow} ${styles.splitRowAlt}`}>
             {/* ── SERVICE AREAS ── */}
             <section className={styles.areasSection}>
                 <div className={styles.areasInner}>
@@ -534,8 +513,10 @@ export default function Home({ projects = [] }) {
                 </div>
             </section>
 
+            </div>{/* end splitRow areas+faq */}
+
             {/* ── BOTTOM CTA ── */}
-            <section className={styles.bottomCtaSection}>
+            <section id="section-contact" className={styles.bottomCtaSection}>
                 <div className={styles.bottomCtaInner}>
                     <div className={styles.sectionLabel}>Ready to Start?</div>
                     <h2 className={styles.bottomCtaTitle}>
@@ -728,3 +709,4 @@ export async function getStaticProps() {
         return { props: { projects: [] }, revalidate: 30 };
     }
 }
+

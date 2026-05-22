@@ -35,7 +35,8 @@ const nextConfig = {
           },
         ],
       },
-      {
+      // Only apply immutable caching in production — dev needs revalidation
+      ...(process.env.NODE_ENV === 'production' ? [{
         source: '/_next/static/:path*',
         headers: [
           {
@@ -43,7 +44,7 @@ const nextConfig = {
             value: 'public, max-age=31536000, immutable',
           },
         ],
-      },
+      }] : []),
     ];
   },
 };

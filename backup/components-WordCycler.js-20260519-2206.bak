@@ -1,0 +1,64 @@
+import { useRef, useState, useEffect } from 'react';
+import gsap from 'gsap';
+import styles from './WordCycler.module.css';
+
+const WORDS = [
+  'Restaurar',
+  'Arreglar',
+  'Crear algo hermoso',
+  'Terminar el proyecto',
+  'Transformar tu espacio',
+  'Reconstruir',
+  'Mitigar el daño',
+  'Renovar',
+  'Dar nueva vida',
+  'Proteger tu hogar',
+];
+
+const INTERVAL = 2800;
+
+export default function WordCycler() {
+  const [index, setIndex] = useState(0);
+  const wordRef = useRef(null);
+
+  useEffect(() => {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return;
+
+    // Initial entrance
+    gsap.from(wordRef.current, {
+      y: 30,
+      opacity: 0,
+      duration: 0.5,
+      ease: 'power2.out',
+    });
+
+    const id = setInterval(() => {
+      gsap.to(wordRef.current, {
+        y: -22,
+        opacity: 0,
+        duration: 0.25,
+        ease: 'power2.in',
+        onComplete: () => {
+          setIndex(i => (i + 1) % WORDS.length);
+          gsap.fromTo(
+            wordRef.current,
+            { y: 26, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.3, ease: 'power2.out' }
+          );
+        },
+      });
+    }, INTERVAL);
+
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <div className={styles.wrap}>
+      <span className={styles.prefix}>Es tiempo de </span>
+      <span ref={wordRef} className={styles.word}>
+        {WORDS[index]}
+      </span>
+    </div>
+  );
+}

@@ -1,8 +1,11 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { useLang } from '../context/LanguageContext';
+import { ThemeProvider } from '../context/ThemeContext';
+import CurtainToggle from './CurtainToggle';
 import styles from './Layout.module.css';
 
 // SVG icons inline (no emoji, no extra packages)
@@ -58,6 +61,14 @@ const ArrowIcon = () => (
 const SITE_URL = 'https://jandrnw.com';
 const DEFAULT_DESCRIPTION = 'J&R NW Construction — Portland\'s trusted general contractor. Home remodeling, siding installation, water damage restoration & repairs. Licensed, bonded & insured. CCB #232708. Call (503) 998-2340.';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/assets/home-hero-bg.jpg`;
+const SERVICE_LINKS = [
+    { href: '/services/interior-construction-and-remodeling', labelKey: 'pt1' },
+    { href: '/services/restoration-and-reconstruction', labelKey: 'pt2' },
+    { href: '/services/mitigation-and-emergency-services', labelKey: 'pt3' },
+    { href: '/services/siding', labelKey: 'pt6' },
+    { href: '/services/paint', labelKey: 'pt5' },
+    { href: '/services/drywall', labelKey: 'pt7' },
+];
 
 const SEASONAL_MESSAGES = {
     winter: [
@@ -95,6 +106,7 @@ function getSeasonMessages() {
 }
 
 export default function Layout({ children, title = 'J&R NW Construction | Portland General Contractor', description = DEFAULT_DESCRIPTION, canonical, onContactClick }) {
+    const router = useRouter();
     const { t, lang, chooseLang } = useLang();
     const [menuOpen, setMenuOpen] = useState(false);
     const [showBanner, setShowBanner] = useState(false);
@@ -130,9 +142,49 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
 
     useEffect(() => {
         if (!menuOpen) return;
-        const prev = document.body.style.overflow;
+        const scrollY = window.scrollY;
+        const prevBody = document.body.style.overflow;
+        const prevBodyPosition = document.body.style.position;
+        const prevBodyTop = document.body.style.top;
+        const prevBodyWidth = document.body.style.width;
+        const prevBodyLeft = document.body.style.left;
+        const prevBodyRight = document.body.style.right;
+        const prevHtml = document.documentElement.style.overflow;
+
         document.body.style.overflow = 'hidden';
-        return () => { document.body.style.overflow = prev; };
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollY}px`;
+        document.body.style.width = '100%';
+        document.body.style.left = '0';
+        document.body.style.right = '0';
+        document.documentElement.style.overflow = 'hidden';
+
+        return () => {
+            document.body.style.overflow = prevBody;
+            document.body.style.position = prevBodyPosition;
+            document.body.style.top = prevBodyTop;
+            document.body.style.width = prevBodyWidth;
+            document.body.style.left = prevBodyLeft;
+            document.body.style.right = prevBodyRight;
+            document.documentElement.style.overflow = prevHtml;
+            window.scrollTo(0, scrollY);
+        };
+    }, [menuOpen]);
+
+    useEffect(() => {
+        router.prefetch('/services');
+        router.prefetch('/projects');
+    }, [router]);
+
+    useEffect(() => {
+        if (!menuOpen) return;
+
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape') setMenuOpen(false);
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
     }, [menuOpen]);
 
     const handleEmergency = () => {
@@ -141,6 +193,7 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
     const canonicalUrl = canonical ? `${SITE_URL}${canonical}` : SITE_URL;
 
     return (
+        <ThemeProvider>
         <div className={styles.container}>
             <Head>
                 <title>{title}</title>
@@ -333,12 +386,19 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                     ) : (
                         <Link href="/" className={styles.navCta}>{t.navEstimate}</Link>
                     )}
+
+                    {/* Day/Night toggle */}
+                    <CurtainToggle />
                 </div>
 
-               {/* Hamburger (mobile) */}
-<button className={styles.hamburger} onClick={() => setMenuOpen(!menuOpen)}
-    aria-label={t.menuLabel}>
-    <span className={styles.hamburgerLabel}>MENU</span>
+               {/* Hamburger (mobile) — toggles to X when open */}
+<button
+    className={`${styles.hamburger} ${menuOpen ? styles.hamburgerOpen : ''}`}
+    onClick={() => setMenuOpen(v => !v)}
+    aria-label={menuOpen ? 'Close menu' : (t.menuLabel || 'Open menu')}
+    aria-expanded={menuOpen}
+    aria-controls="mobile-menu">
+    <span className={styles.hamburgerLabel}>{menuOpen ? 'CLOSE' : 'MENU'}</span>
     <div className={styles.hamburgerLines}>
         <span />
         <span />
@@ -348,7 +408,36 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
             </nav>
 
             {/* ── MOBILE MENU ── */}
-            <div className={`${styles.mobileMenu} ${menuOpen ? styles.open : ''}`}>
+            <div
+                id="mobile-menu"
+                className={`${styles.mobileMenu} ${menuOpen ? styles.open : ''}`}
+                onClick={() => setMenuOpen(false)}
+            >
+                <div className={styles.mobileMenuPanel} onClick={(event) => event.stopPropagation()}>
+                <div className={styles.mobileMenuHeader}>
+                    <Link href="/" className={styles.navBrand} onClick={() => setMenuOpen(false)}>
+                        <div className={styles.navLogoCircle}>
+                            <Image src="/logo.png" alt="J&R NW Construction" width={34} height={34} />
+                        </div>
+                        <div className={styles.navBrandText}>
+                            J&amp;R NW Construction
+                            <span>{t.navSubtitle}</span>
+                        </div>
+                    </Link>
+                    <button
+                        className={`${styles.hamburger} ${styles.mobileMenuClose} ${menuOpen ? styles.hamburgerOpen : ''}`}
+                        onClick={() => setMenuOpen(false)}
+                        aria-label="Close menu"
+                        aria-expanded={menuOpen}
+                    >
+                        <span className={styles.hamburgerLabel}>CLOSE</span>
+                        <div className={styles.hamburgerLines}>
+                            <span />
+                            <span />
+                            <span />
+                        </div>
+                    </button>
+                </div>
                 <ul className={styles.mobileMenuList}>
                     <li><Link href="/" onClick={() => setMenuOpen(false)}>{t.home} <ArrowIcon /></Link></li>
                     <li><Link href="/services" onClick={() => setMenuOpen(false)}>{t.services} <ArrowIcon /></Link></li>
@@ -389,6 +478,10 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                             className={`${styles.langBtn} ${lang === 'es' ? styles.langBtnActive : ''}`}
                             onClick={() => chooseLang('es')}>ES</button>
                     </div>
+                    <div className={styles.mobileThemeToggle}>
+                        <CurtainToggle />
+                    </div>
+                </div>
                 </div>
             </div>
             </header>
@@ -428,12 +521,11 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                     <div className={styles.footerCol}>
                         <h4>{t.services}</h4>
                         <ul>
-                            <li><a href="/services">{t.pt1}</a></li>
-                            <li><a href="/services">{t.pt2}</a></li>
-                            <li><a href="/services">{t.pt3}</a></li>
-                            <li><a href="/services">{t.pt6}</a></li>
-                            <li><a href="/services">{t.pt5}</a></li>
-                            <li><a href="/services">{t.pt7}</a></li>
+                            {SERVICE_LINKS.map((serviceLink) => (
+                                <li key={serviceLink.href}>
+                                    <Link href={serviceLink.href}>{t[serviceLink.labelKey]}</Link>
+                                </li>
+                            ))}
                         </ul>
                     </div>
 
@@ -487,5 +579,6 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                 </button>
             </div>
         </div>
+        </ThemeProvider>
     );
 }

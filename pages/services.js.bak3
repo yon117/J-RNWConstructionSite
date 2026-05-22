@@ -1,0 +1,198 @@
+import Layout from '../components/Layout';
+import Modal from '../components/Modal';
+import ContactFormSection from '../components/ContactFormSection';
+import Link from 'next/link';
+import Image from 'next/image';
+import Head from 'next/head';
+import { getDb } from '../lib/db';
+import { useState, useEffect } from 'react';
+import { useLang } from '../context/LanguageContext';
+import { imageUrl } from '../utils/imageUrl';
+import { sanitizeServiceText } from '../utils/sanitizeServiceText';
+import pageStyles from '../styles/Services.module.css';
+
+// SVG arrow icon
+const ArrowIcon = () => (
+    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+    </svg>
+);
+
+// Service tag map — assign a tag label per index
+const SERVICE_TAGS = [
+    'Interior · Residential',
+    'Exterior · Protection',
+    'Restoration · Reconstruction',
+    'Emergency · 24/7',
+    'Exterior · Painting',
+    'Interior · Drywall',
+    'General · Repairs',
+    'Commercial · Residential',
+];
+
+export default function Services({ services }) {
+    const [showContactModal, setShowContactModal] = useState(false);
+    const { t, lang } = useLang();
+    const [displayServices, setDisplayServices] = useState(services);
+
+    useEffect(() => {
+        if (!lang || lang === 'en') { setDisplayServices(services); return; }
+        let cancelled = false;
+        async function translate() {
+            const { translateArray } = await import('../utils/translate');
+            const titles = await translateArray(services.map(s => s.title), lang);
+            const descs  = await translateArray(services.map(s => s.description), lang);
+            if (!cancelled) setDisplayServices(services.map((s, i) => ({ ...s, title: titles[i], description: descs[i] })));
+        }
+        translate();
+        return () => { cancelled = true; };
+    }, [lang, services]);
+    const SERVICE_TAG_KEYS = [
+        'serviceTag1',
+        'serviceTag2',
+        'serviceTag3',
+        'serviceTag4',
+        'serviceTag5',
+        'serviceTag6',
+        'serviceTag7',
+        'serviceTag8',
+    ];
+
+    const serviceSchema = {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "J&R NW Construction Services",
+        "description": "Full-service contractor in Portland OR — remodeling, siding, restoration, painting, drywall & emergency services.",
+        "url": "https://jandrnw.com/services",
+        "itemListElement": displayServices.map((s, i) => ({
+            "@type": "ListItem",
+            "position": i + 1,
+            "item": {
+                "@type": "Service",
+                "name": s.title,
+                "description": s.description || "",
+                "provider": {
+                    "@type": "LocalBusiness",
+                    "name": "J&R NW Construction LLC",
+                    "telephone": "+15039982340",
+                    "url": "https://jandrnw.com"
+                },
+                "areaServed": "Portland Metro, OR",
+                "url": `https://jandrnw.com/services/${s.id}`
+            }
+        }))
+    };
+
+    return (
+        <Layout
+            title="Construction Services Portland OR | Remodeling, Siding & Restoration | J&R NW Construction"
+            description="Portland OR construction services — remodeling, siding, water damage restoration, painting & drywall. Free estimates. Licensed contractor CCB #232708. Call (503) 998-2340."
+            canonical="/services"
+            onContactClick={() => setShowContactModal(true)}
+        >
+            <Head>
+                <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+            </Head>
+            <div className={pageStyles.servicesPage}>
+                <div className={pageStyles.servicesContent}>
+
+                    {/* ── PAGE HERO ── */}
+                    <div className={pageStyles.pageHero}>
+                        <div className={pageStyles.pageHeroInner}>
+                            <div className={pageStyles.sectionLabel}>{t.ourServicesLabel || 'What We Offer'}</div>
+                            <h1 className={pageStyles.pageTitle}>
+                                {t.ourServices.split(' ')[0]}{' '}
+                                <em>{t.ourServices.split(' ').slice(1).join(' ')}</em>
+                            </h1>
+                            <p className={pageStyles.pageSubtitle}>{t.servicesIntro}</p>
+                        </div>
+                    </div>
+
+                    {/* ── SERVICE ITEMS ── */}
+                    <div className={pageStyles.serviceList}>
+                        {displayServices.map((service, index) => {
+                            const slug = service.slug
+                                || (service.title
+                                    ? service.title
+                                        .toLowerCase()
+                                        .trim()
+                                        .replace(/&/g, 'and')
+                                        .replace(/[^a-z0-9]+/g, '-')
+                                        .replace(/^-+|-+$/g, '')
+                                    : 'service');
+                            const serviceUrl = `/services/${slug}`;
+                            const tag = t[SERVICE_TAG_KEYS[index]] || SERVICE_TAGS[index] || t.constructionOregon || 'Construction · Oregon';
+                            const serviceTitle = sanitizeServiceText(service.title) || service.title;
+                            const serviceDescription = sanitizeServiceText(service.description) || '';
+
+                            return (
+                                <div className={pageStyles.serviceItem} key={service.id} data-anim="service-item">
+                                    {/* Image */}
+                                    <div className={pageStyles.serviceImgWrap}>
+                                        <Image
+                                            src={imageUrl(service.image_url)}
+                                            alt={serviceTitle}
+                                            fill
+                                            sizes="(max-width: 900px) 100vw, 50vw"
+                                            className={pageStyles.serviceImg}
+                                            priority={index === 0}
+                                            style={{ objectFit: 'cover' }}
+                                        />
+                                    </div>
+
+                                    {/* Content */}
+                                    <div className={pageStyles.serviceContent}>
+                                        <div className={pageStyles.serviceNum}>
+                                            {String(index + 1).padStart(2, '0')}
+                                        </div>
+                                        <div className={pageStyles.serviceTag}>{tag}</div>
+                                        <div className={pageStyles.serviceName}>{serviceTitle}</div>
+                                        <p className={pageStyles.serviceDesc}>{serviceDescription}</p>
+                                        <Link href={serviceUrl} className={pageStyles.serviceCta}>
+                                            {t.learnMore} <ArrowIcon />
+                                        </Link>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                </div>
+            </div>
+
+            {/* Contact Modal */}
+            {showContactModal && (
+                <Modal title={t.getInTouch} onClose={() => setShowContactModal(false)}>
+                    <ContactFormSection />
+                </Modal>
+            )}
+        </Layout>
+    );
+}
+
+let _servicesCache = null;
+let _servicesCacheTime = 0;
+const CACHE_TTL = 55_000;
+
+export async function getStaticProps() {
+    const now = Date.now();
+    if (_servicesCache && (now - _servicesCacheTime) < CACHE_TTL) {
+        return { props: { services: _servicesCache }, revalidate: 60 };
+    }
+
+    const db = await getDb();
+    const result = await db.execute(
+        'SELECT id, title, description, image, slug FROM services'
+    );
+    const rows = result.rows || [];
+    const services = rows.map(s => ({
+        id:          s.id,
+        title:       s.title || '',
+        description: s.description || '',
+        image_url:   s.image || '/assets/placeholder.jpg',
+        slug:        s.slug || '',
+    }));
+    _servicesCache = services;
+    _servicesCacheTime = Date.now();
+    return { props: { services }, revalidate: 60 };
+}

@@ -1,0 +1,405 @@
+import { useState, useEffect, useRef } from 'react';
+import Layout from '../components/Layout';
+import Modal from '../components/Modal';
+import ContactFormSection from '../components/ContactFormSection';
+import { getDb } from '../lib/db';
+import { useLang } from '../context/LanguageContext';
+import { imageUrl } from '../utils/imageUrl';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import pageStyles from '../styles/Projects.module.css';
+
+if (typeof window !== 'undefined') gsap.registerPlugin(ScrollTrigger);
+
+// Filter categories — adjust to match your actual project types
+const FILTERS = [
+    { id: 'all',          labelKey: 'filterAll',          label: 'All' },
+    { id: 'remodeling',   labelKey: 'filterRemodeling',   label: 'Remodeling' },
+    { id: 'siding',       labelKey: 'filterSiding',       label: 'Siding' },
+    { id: 'restoration',  labelKey: 'filterRestoration',  label: 'Restoration' },
+    { id: 'drywall',      labelKey: 'filterDrywall',      label: 'Drywall' },
+    { id: 'emergency',    labelKey: 'filterEmergency',    label: 'Emergency' },
+    { id: 'painting',     labelKey: 'filterPainting',     label: 'Painting' },
+    { id: 'waterproofing',labelKey: 'filterWaterproofing',label: 'Waterproofing' },
+    { id: 'mitigation',   labelKey: 'filterMitigation',   label: 'Mitigation' },
+];
+
+// Assign grid layout classes in a repeating pattern
+// wide = spans 2 cols, tall = spans 2 rows, default = 1x1
+const CARD_PATTERNS = ['wide', '', 'tall', '', '', 'wide', '', ''];
+
+export default function Projects({ projects }) {
+    const { t, lang } = useLang();
+    const [displayProjects, setDisplayProjects] = useState(projects);
+    const [selectedProject, setSelectedProject] = useState(null);
+    const [projectImages, setProjectImages] = useState([]);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [showContactModal, setShowContactModal] = useState(false);
+    const [activeFilter, setActiveFilter] = useState('all');
+
+    // Fetch images when a project is selected
+    useEffect(() => {
+        if (selectedProject) {
+            fetch(`/api/projects/${selectedProject.id}/images`)
+                .then(res => res.json())
+                .then(data => {
+                    setProjectImages(data);
+                    setCurrentImageIndex(0);
+                })
+                .catch(err => console.error('Failed to fetch project images:', err));
+        }
+    }, [selectedProject]);
+
+    const handleProjectClick = (project) => setSelectedProject(project);
+
+    const handleCloseModal = () => {
+        setSelectedProject(null);
+        setProjectImages([]);
+        setCurrentImageIndex(0);
+    };
+
+    const handleNextImage = () =>
+        setCurrentImageIndex(prev => (prev + 1) % projectImages.length);
+
+    const handlePrevImage = () =>
+        setCurrentImageIndex(prev => (prev - 1 + projectImages.length) % projectImages.length);
+
+    useEffect(() => {
+        if (!lang || lang === 'en') { setDisplayProjects(projects); return; }
+        let cancelled = false;
+        async function translate() {
+            const { translateArray } = await import('../utils/translate');
+            const titles   = await translateArray(projects.map(p => p.title), lang);
+            const descs    = await translateArray(projects.map(p => p.description), lang);
+            const details  = await translateArray(projects.map(p => p.details), lang);
+            if (!cancelled) setDisplayProjects(projects.map((p, i) => ({ ...p, title: titles[i], description: descs[i], details: details[i] })));
+        }
+        translate();
+        return () => { cancelled = true; };
+    }, [lang, projects]);
+
+    // Filter projects by exact category field
+    const filteredProjects = activeFilter === 'all'
+        ? displayProjects
+        : displayProjects.filter(p => p.category === activeFilter);
+
+    const gridRef = useRef(null);
+
+    useEffect(() => {
+        if (!gridRef.current) return;
+
+        const mm = gsap.matchMedia();
+
+        mm.add('(prefers-reduced-motion: no-preference) and (min-width: 769px)', () => {
+            const cards = gridRef.current.querySelectorAll('[data-tilt-card]');
+            const allTriggers = [];
+
+            cards.forEach((card, i) => {
+                const skewDir = i % 2 === 0 ? 10 : -10;
+
+                // Enter: bottom of viewport → center (tilt forward into view)
+                const enterTrigger = gsap.fromTo(card,
+                    {
+                        rotationX: 70,
+                        skewX: skewDir,
+                        filter: 'blur(8px) brightness(0.15)',
+                        z: 300,
+                        transformOrigin: 'center bottom',
+                    },
+                    {
+                        rotationX: 0,
+                        skewX: 0,
+                        filter: 'blur(0px) brightness(1)',
+                        z: 0,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: card,
+                            start: 'top 95%',
+                            end: 'center 55%',
+                            scrub: 1.4,
+                        },
+                    }
+                );
+
+                // Exit: center → top of viewport (tilt back out)
+                const exitTrigger = gsap.fromTo(card,
+                    {
+                        rotationX: 0,
+                        skewX: 0,
+                        filter: 'blur(0px) brightness(1)',
+                        z: 0,
+                        transformOrigin: 'center top',
+                    },
+                    {
+                        rotationX: -70,
+                        skewX: -skewDir,
+                        filter: 'blur(8px) brightness(0.15)',
+                        z: 300,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: card,
+                            start: 'center 45%',
+                            end: 'bottom 5%',
+                            scrub: 1.4,
+                        },
+                    }
+                );
+
+                allTriggers.push(enterTrigger, exitTrigger);
+            });
+
+            return () => allTriggers.forEach(t => t.scrollTrigger?.kill());
+        });
+
+        return () => mm.revert();
+    }, [filteredProjects]);
+
+    return (
+        <Layout
+            title="Construction Projects Portfolio Portland OR | J&R NW Construction"
+            description="View completed remodeling, siding, and restoration projects by J&R NW Construction. Portland Oregon's trusted contractor for home renovations and repairs. CCB #232708."
+            canonical="/projects"
+            onContactClick={() => setShowContactModal(true)}
+        >
+            <div className={pageStyles.projectsPage}>
+                <div className={pageStyles.projectsContent}>
+
+                    {/* ── PAGE HERO ── */}
+                    <div className={pageStyles.pageHero}>
+                        <div className={pageStyles.pageHeroInner}>
+                            <div>
+                                <div className={pageStyles.sectionLabel}>{t.portfolioLabel}</div>
+                                <h1 className={pageStyles.pageTitle}>
+                                    {t.ourProjects.split(' ')[0]}{' '}
+                                    <em>{t.ourProjects.split(' ').slice(1).join(' ')}</em>
+                                </h1>
+                                <p style={{ fontSize: '15px', color: 'var(--text)', maxWidth: '480px', lineHeight: '1.7', marginTop: '10px' }}>
+                                    {t.projectsIntro}
+                                </p>
+                            </div>
+                            <div className={pageStyles.heroStat}>
+                                <div className={pageStyles.heroStatNum}>{projects.length}+</div>
+                                <div className={pageStyles.heroStatLabel}>{t.completedProjects || 'Completed Projects'}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* ── FILTERS ── */}
+                    <div className={pageStyles.filterBar}>
+                        {FILTERS.map(filter => {
+                            const count = filter.id === 'all'
+                                ? displayProjects.length
+                                : displayProjects.filter(p => p.category === filter.id).length;
+                            if (filter.id !== 'all' && count === 0) return null;
+                            return (
+                                <button
+                                    key={filter.id}
+                                    className={`${pageStyles.filterBtn} ${activeFilter === filter.id ? pageStyles.filterBtnActive : ''}`}
+                                    onClick={() => setActiveFilter(filter.id)}
+                                >
+                                    {t[filter.labelKey] || filter.label}
+                                    {filter.id !== 'all' && <span className={pageStyles.filterCount}>{count}</span>}
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    {/* ── PROJECTS GRID ── */}
+                    <div ref={gridRef} className={pageStyles.projectsGrid}>
+                        {filteredProjects.map((project, index) => {
+                            const pattern = CARD_PATTERNS[index % CARD_PATTERNS.length];
+                            return (
+                                <div
+                                    key={project.id}
+                                    data-tilt-card
+                                    className={`${pageStyles.projectCard} ${pattern ? pageStyles[pattern] : ''}`}
+                                    onClick={() => handleProjectClick(project)}
+                                    style={{ animationDelay: `${index * 60}ms` }}
+                                    data-anim="project-card"
+                                >
+                                    <img
+                                        src={imageUrl(project.image)}
+                                        alt={project.title}
+                                        className={pageStyles.projectPhoto}
+                                        loading={index < 4 ? 'eager' : 'lazy'}
+                                        decoding="async"
+                                    />
+                                    <div className={pageStyles.projectOverlay}>
+                                        <div className={pageStyles.projectCategory}>
+                                            {project.category || t.constructionOregon || 'Construction · Oregon'}
+                                        </div>
+                                        <div className={pageStyles.projectTitle}>{project.title}</div>
+                                    </div>
+                                    {project.imageCount > 1 && (
+                                        <div className={pageStyles.photoBadge}>
+                                            {project.imageCount} {t.photos || 'Photos'}
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                </div>
+            </div>
+
+            {/* ── PROJECT MODAL — keep all existing logic untouched ── */}
+         {selectedProject && (
+    <Modal onClose={handleCloseModal} title="">
+        <div>
+            {/* Header */}
+            <div className={pageStyles.modalHeader}>
+                <div className={pageStyles.modalCat}>
+                    {selectedProject.category || 'Construction · Oregon'}
+                </div>
+                <div className={pageStyles.modalTitle}>{selectedProject.title}</div>
+            </div>
+
+            {/* Main image */}
+            {projectImages.length > 0 && (
+                <div className={pageStyles.galleryMain}>
+                    <img
+                        src={imageUrl(projectImages[currentImageIndex]?.image_path)}
+                        alt={`${selectedProject.title} - Image ${currentImageIndex + 1}`}
+                        className={pageStyles.galleryImage}
+                        loading="lazy"
+                        decoding="async"
+                    />
+                    {projectImages.length > 1 && (
+                        <div className={pageStyles.galleryControls}>
+                            <button onClick={handlePrevImage} className={pageStyles.galleryBtn}>‹</button>
+                            <span className={pageStyles.galleryCounter}>
+                                {currentImageIndex + 1} / {projectImages.length}
+                            </span>
+                            <button onClick={handleNextImage} className={pageStyles.galleryBtn}>›</button>
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {/* Thumbnails */}
+            {projectImages.length > 1 && (
+                <div className={pageStyles.galleryThumbnails}>
+                    {projectImages.map((img, idx) => (
+                        <img
+                            key={img.id}
+                            src={imageUrl(img.image_path)}
+                            alt={`Thumbnail ${idx + 1}`}
+                            className={`${pageStyles.thumbnail} ${idx === currentImageIndex ? pageStyles.thumbnailActive : ''}`}
+                            onClick={() => setCurrentImageIndex(idx)}
+                        />
+                    ))}
+                </div>
+            )}
+
+           {/* Details grid */}
+<div style={{ padding: '0 0 4px' }}>
+    <div className={pageStyles.modalDetailsGrid}>
+        <div className={pageStyles.modalDetailItem}>
+            <div className={pageStyles.modalDetailLabel}>Location</div>
+            <div className={pageStyles.modalDetailValue}>{selectedProject.location || 'Oregon'}</div>
+        </div>
+        <div className={pageStyles.modalDetailItem}>
+            <div className={pageStyles.modalDetailLabel}>Service Type</div>
+            <div className={pageStyles.modalDetailValue}>{selectedProject.serviceType || t.pt2}</div>
+        </div>
+    </div>
+
+                {/* Project details */}
+                <div className={pageStyles.projectDetails}>
+                    <h3>{t.projectDetails}</h3>
+                    <p>{selectedProject.details}</p>
+                </div>
+
+                {/* Footer row */}
+                <div className={pageStyles.modalFooterRow}>
+                    <span className={pageStyles.modalCounter}>
+                        {currentImageIndex + 1} / {projectImages.length} photos
+                    </span>
+                    <button
+                        className={pageStyles.modalEstimateBtn}
+                        onClick={() => { handleCloseModal(); setShowContactModal(true); }}
+                    >
+                        {t.getEstimate} →
+                    </button>
+                </div>
+            </div>
+        </div>
+    </Modal>
+)}
+
+            {/* Contact Modal */}
+            {showContactModal && (
+                <Modal title={t.getInTouch} onClose={() => setShowContactModal(false)}>
+                    <ContactFormSection />
+                </Modal>
+            )}
+        </Layout>
+    );
+}
+
+let _projectsCache = null;
+let _projectsCacheTime = 0;
+const CACHE_TTL = 55_000;
+
+export async function getStaticProps() {
+    const now = Date.now();
+    if (_projectsCache && (now - _projectsCacheTime) < CACHE_TTL) {
+        return { props: { projects: _projectsCache }, revalidate: 60 };
+    }
+
+    const db = await getDb();
+
+    const projectsResult = await db.execute(
+        'SELECT id, title, description, details, image, category FROM projects ORDER BY created_at DESC'
+    );
+
+    const rows = projectsResult.rows || [];
+
+    const projects = rows.map(p => ({
+        id:          p.id,
+        title:       p.title || '',
+        description: p.description || '',
+        details:     p.details || '',
+        image:       p.image || '',
+        category:    p.category || '',
+        imageCount:  1,
+    }));
+
+    // Batch fetch first image + count per project (2 queries total, not N*2)
+    const [firstImagesResult, countsResult] = await Promise.all([
+        db.execute(`
+            SELECT pi.project_id, pi.image_path
+            FROM project_images pi
+            INNER JOIN (
+                SELECT project_id, MIN(display_order) AS min_order
+                FROM project_images
+                GROUP BY project_id
+            ) first ON pi.project_id = first.project_id AND pi.display_order = first.min_order
+        `),
+        db.execute(`
+            SELECT project_id, COUNT(*) as count
+            FROM project_images
+            GROUP BY project_id
+        `)
+    ]);
+
+    const firstImageMap = {};
+    for (const row of firstImagesResult.rows || []) {
+        firstImageMap[row.project_id] = row.image_path;
+    }
+
+    const countMap = {};
+    for (const row of countsResult.rows || []) {
+        countMap[row.project_id] = row.count;
+    }
+
+    for (const project of projects) {
+        if (firstImageMap[project.id]) project.image = firstImageMap[project.id];
+        project.imageCount = countMap[project.id] || 1;
+    }
+
+    _projectsCache = projects;
+    _projectsCacheTime = Date.now();
+    return { props: { projects }, revalidate: 60 };
+}

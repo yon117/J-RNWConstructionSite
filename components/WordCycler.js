@@ -1,0 +1,75 @@
+import { useRef, useState, useEffect } from 'react';
+import gsap from 'gsap';
+import { VerticalCutReveal } from './ui/VerticalCutReveal';
+import styles from './WordCycler.module.css';
+
+const PHRASES = [
+  'Restore',
+  'Fix',
+  'Create Something Beautiful',
+  'Finish the Project',
+  'Transform Your Space',
+  'Rebuild',
+  'Mitigate the Damage',
+  'Renovate',
+  'Give New Life',
+  'Protect Your Home',
+];
+
+const INTERVAL = 2800;
+
+export default function WordCycler() {
+  const [index, setIndex] = useState(0);
+  const wordRef = useRef(null);
+  const wrapRef = useRef(null);
+
+  useEffect(() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced || !wordRef.current) return;
+
+    gsap.from(wordRef.current, {
+      y: 24,
+      opacity: 0,
+      duration: 0.55,
+      ease: 'power3.out',
+    });
+
+    const id = setInterval(() => {
+      gsap.to(wordRef.current, {
+        y: -20,
+        opacity: 0,
+        duration: 0.28,
+        ease: 'power2.in',
+        onComplete: () => {
+          setIndex((i) => (i + 1) % PHRASES.length);
+          gsap.fromTo(
+            wordRef.current,
+            { y: 22, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.38, ease: 'power3.out' }
+          );
+        },
+      });
+    }, INTERVAL);
+
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <div ref={wrapRef} className={styles.wrap} aria-live="polite">
+      <VerticalCutReveal
+        splitBy="words"
+        staggerDuration={0.08}
+        staggerFrom="first"
+        transition={{ type: 'spring', stiffness: 260, damping: 30, delay: 1.05 }}
+        containerStyle={{ display: 'inline' }}
+        className={styles.prefix}
+      >
+        {'Time to'}
+      </VerticalCutReveal>
+      {' '}
+      <span ref={wordRef} className={styles.word}>
+        {PHRASES[index]}
+      </span>
+    </div>
+  );
+}

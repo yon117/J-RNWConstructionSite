@@ -1,43 +1,27 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import styles from '../styles/Reviews.module.css';
 import { useLang } from '../context/LanguageContext';
 
-const Reviews = () => {
+const duplicateRow = (items) => [...items, ...items];
+const stopKeys = ['Escape'];
+
+const Reviews = ({ sectionId }) => {
     const { t } = useLang();
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
-
-    // Refs for direct DOM manipulation (Critical for iOS Safari Performance)
-    const scrollContainerRef = useRef(null);
-    const trackRef = useRef(null);
-    const progressRef = useRef(null);
-    const posRef = useRef(0); // Current X position
-    const isPausedRef = useRef(false);
-    const isDraggingRef = useRef(false);
-
-    // UI State
-    const [isPaused, setIsPaused] = useState(false);
-    const [isDragging, setIsDragging] = useState(false);
-    const [startX, setStartX] = useState(0);
-    const [scrollPosX, setScrollPosX] = useState(0);
-
-    // Synchronize state with refs to keep the animation loop stable
-    useEffect(() => {
-        isPausedRef.current = isPaused;
-    }, [isPaused]);
-
-    useEffect(() => {
-        isDraggingRef.current = isDragging;
-    }, [isDragging]);
+    const [activeReview, setActiveReview] = useState(null);
 
     useEffect(() => {
         const fetchReviews = async () => {
             try {
                 const response = await fetch('/api/reviews');
                 const data = await response.json();
-                if (data.reviews) setReviews(data.reviews);
-                else setError(true);
+                if (data.reviews) {
+                    setReviews(data.reviews);
+                } else {
+                    setError(true);
+                }
             } catch (err) {
                 console.error('Error fetching reviews:', err);
                 setError(true);
@@ -45,193 +29,158 @@ const Reviews = () => {
                 setLoading(false);
             }
         };
+
         fetchReviews();
     }, []);
 
-    // High-performance animation loop
     useEffect(() => {
-        const track = trackRef.current;
-        const progress = progressRef.current;
-        const container = scrollContainerRef.current;
-        if (!track || !container || loading || error || reviews.length === 0) return;
-
-        let animationFrameId;
-        const scrollSpeed = 0.2; // Constant speed (slower for better readability)
-
-        const animate = () => {
-            if (!isPausedRef.current && !isDraggingRef.current) {
-                const halfWidth = track.scrollWidth / 2;
-
-                posRef.current += scrollSpeed;
-                if (posRef.current >= halfWidth) {
-                    posRef.current = 0;
-                }
-
-                // Apply GPU-accelerated transform directly
-                track.style.transform = `translate3d(${-posRef.current}px, 0, 0)`;
-
-                // Update indicator progress directly (bypass React re-render)
-                if (progress) {
-                    const percentage = (posRef.current / halfWidth) * 100;
-                    progress.style.width = `${percentage}%`;
-                }
+        const handleKeyDown = (event) => {
+            if (activeReview && stopKeys.includes(event.key)) {
+                setActiveReview(null);
             }
-
-            animationFrameId = requestAnimationFrame(animate);
         };
 
-        animationFrameId = requestAnimationFrame(animate);
-        return () => cancelAnimationFrame(animationFrameId);
-    }, [loading, error, reviews]);
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [activeReview]);
 
-    // Unified interaction handlers
-    const startInteraction = (clientX) => {
-        setIsDragging(true);
-        setIsPaused(true);
-        setStartX(clientX);
-        setScrollPosX(posRef.current);
+    if (loading) {
+        return (
+            <section id={sectionId} className={styles.reviewsSection}>
+                <div className={styles.container}>
+                    <div className={styles.header}>
+                        <h2>{t.whatClientsSay || 'What Our Clients Say'}</h2>
+                        <p>{t.loadingReviews || 'Loading reviews...'}</p>
+                    </div>
+                </div>
+            </section>
+        );
+    }
+
+    if (error || reviews.length === 0) {
+        return null;
+    }
+
+    const midpoint = Math.ceil(reviews.length / 2);
+    const topRow = duplicateRow(reviews.slice(0, midpoint));
+    const bottomRow = duplicateRow(reviews.slice(midpoint));
+
+    const handleOpenReview = (review) => {
+        setActiveReview(review);
     };
 
-    const stopInteraction = () => {
-        setIsDragging(false);
-        setIsPaused(false);
-    };
-
-    const handleInteractionMove = (clientX) => {
-        if (!isDraggingRef.current) return;
-
-        const track = trackRef.current;
-        const progress = progressRef.current;
-        if (!track) return;
-
-        const deltaX = clientX - startX;
-        const halfWidth = track.scrollWidth / 2;
-
-        // Multiplier for drag speed
-        let newPos = scrollPosX - deltaX;
-
-        // Wrapping logic for infinite feel during drag
-        if (newPos < 0) newPos = halfWidth + (newPos % halfWidth);
-        if (newPos >= halfWidth) newPos = newPos % halfWidth;
-
-        posRef.current = newPos;
-        track.style.transform = `translate3d(${-newPos}px, 0, 0)`;
-
-        if (progress) {
-            const percentage = (newPos / halfWidth) * 100;
-            progress.style.width = `${percentage}%`;
-        }
-    };
-
-    // Event Handlers for UI
-    const handleMouseDown = (e) => startInteraction(e.pageX);
-    const handleMouseMove = (e) => {
-        if (isDraggingRef.current) {
-            e.preventDefault();
-            handleInteractionMove(e.pageX);
-        }
-    };
-
-    const handleTouchStart = (e) => {
-        // Prevent default to avoid iOS Safari scroll interference
-        e.preventDefault();
-        startInteraction(e.touches[0].pageX);
-    };
-    const handleTouchMove = (e) => {
-        if (isDraggingRef.current) {
-            e.preventDefault(); // Critical for iOS Safari
-            handleInteractionMove(e.touches[0].pageX);
-        }
-    };
-
-    const handleIndicatorInteraction = (clientX) => {
-        const track = trackRef.current;
-        const progress = progressRef.current;
-        const indicator = progress?.parentElement;
-        if (!track || !indicator) return;
-
-        const rect = indicator.getBoundingClientRect();
-        const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
-        const percentage = x / rect.width;
-        const halfWidth = track.scrollWidth / 2;
-
-        posRef.current = halfWidth * percentage;
-        track.style.transform = `translate3d(${-posRef.current}px, 0, 0)`;
-        progress.style.width = `${percentage * 100}%`;
+    const handleCloseReview = () => {
+        setActiveReview(null);
     };
 
     const handleStars = (rating) => (
-        <div className={styles.stars}>
-            {[1, 2, 3, 4, 5].map((s) => (
-                <span key={s} className={s <= rating ? styles.starFilled : styles.starEmpty}>★</span>
+        <div className={styles.stars} aria-label={`${rating} out of 5 stars`}>
+            {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                    key={star}
+                    className={star <= rating ? styles.starFilled : styles.starEmpty}
+                    aria-hidden="true"
+                >
+                    {"\u2605"}
+                </span>
             ))}
         </div>
     );
 
-    const allReviews = [...reviews, ...reviews];
-
-    if (loading) return (
-        <section className={styles.reviewsSection}>
-            <div className={styles.container}><div className={styles.header}><h2>{t.whatClientsSay || 'What Our Clients Say'}</h2><p>{t.loadingReviews || 'Loading reviews...'}</p></div></div>
-        </section>
+    const renderCard = (review, index, rowName) => (
+        <button
+            key={`${rowName}-${review.id}-${index}`}
+            className={styles.reviewCard}
+            type="button"
+            onClick={() => handleOpenReview(review)}
+            aria-label={`Read full review from ${review.name}`}
+        >
+            <div className={styles.reviewCardTop}>
+                <span className={`${styles.platformBadge} ${styles[review.platform.toLowerCase()]}`}>
+                    {review.platform}
+                </span>
+                {handleStars(review.rating)}
+            </div>
+            <div className={styles.reviewQuoteWrap}>
+                <p className={styles.reviewText}>{review.text}</p>
+            </div>
+            <div className={styles.reviewMeta}>
+                <div className={styles.avatar}>{review.avatar}</div>
+                <div className={styles.reviewerInfo}>
+                    <h4>{review.name}</h4>
+                    <p className={styles.designation}>{review.date}</p>
+                </div>
+            </div>
+        </button>
     );
 
     return (
-        <section className={styles.reviewsSection}>
+        <section id={sectionId} className={styles.reviewsSection}>
             <div className={styles.container}>
                 <div className={styles.header}>
                     <h2>{t.whatClientsSay || 'What Our Clients Say'}</h2>
                     <p>{t.realReviews || 'Real reviews from real customers'}</p>
                 </div>
 
-                <div
-                    className={styles.reviewsWrapper}
-                    ref={scrollContainerRef}
-                    onMouseEnter={() => { if (window.matchMedia('(hover: hover)').matches) setIsPaused(true); }}
-                    onMouseLeave={stopInteraction}
-                    onMouseDown={handleMouseDown}
-                    onMouseUp={stopInteraction}
-                    onMouseMove={handleMouseMove}
-                    onTouchStart={handleTouchStart}
-                    onTouchMove={handleTouchMove}
-                    onTouchEnd={stopInteraction}
-                    onTouchCancel={stopInteraction}
-                >
-                    <div className={styles.reviewsTrack} ref={trackRef}>
-                        {allReviews.map((review, index) => (
-                            <div key={`${review.id}-${index}`} className={styles.reviewCard}>
-                                <div className={styles.reviewHeader}>
-                                    <div className={styles.avatarSection}>
-                                        <div className={styles.avatar}>{review.avatar}</div>
-                                        <div className={styles.reviewerInfo}>
-                                            <h4>{review.name}</h4>
-                                            <span className={styles.date}>{review.date}</span>
-                                        </div>
-                                    </div>
-                                    <span className={`${styles.platformBadge} ${styles[review.platform.toLowerCase()]}`}>
-                                        {review.platform}
-                                    </span>
-                                </div>
-                                {handleStars(review.rating)}
-                                <p className={styles.reviewText}>{review.text}</p>
-                            </div>
-                        ))}
+                <div className={`${styles.marqueeStack} ${activeReview ? styles.isPaused : ''}`}>
+                    <div className={styles.marqueeViewport}>
+                        <div className={`${styles.marqueeTrack} ${styles.marqueeTrackTop}`}>
+                            {topRow.map((review, index) => renderCard(review, index, 'top'))}
+                        </div>
                     </div>
+
+                    {bottomRow.length > 0 && (
+                        <div className={styles.marqueeViewport}>
+                            <div className={`${styles.marqueeTrack} ${styles.marqueeTrackBottom}`}>
+                                {bottomRow.map((review, index) => renderCard(review, index, 'bottom'))}
+                            </div>
+                        </div>
+                    )}
                 </div>
 
-                <div
-                    className={styles.scrollIndicator}
-                    onMouseDown={(e) => { setIsPaused(true); setIsDragging(true); handleIndicatorInteraction(e.pageX); }}
-                    onMouseMove={(e) => { if (isDragging && isPaused) handleIndicatorInteraction(e.pageX); }}
-                    onMouseUp={stopInteraction}
-                    onMouseLeave={stopInteraction}
-                    onTouchStart={(e) => { setIsPaused(true); setIsDragging(true); handleIndicatorInteraction(e.touches[0].pageX); }}
-                    onTouchMove={(e) => handleIndicatorInteraction(e.touches[0].pageX)}
-                    onTouchEnd={stopInteraction}
-                    style={{ cursor: 'pointer' }}
-                >
-                    <div ref={progressRef} className={styles.scrollProgress} />
-                </div>
+                {activeReview && (
+                    <div
+                        className={styles.reviewOverlay}
+                        role="dialog"
+                        aria-modal="true"
+                        aria-label={`Full review from ${activeReview.name}`}
+                        onClick={handleCloseReview}
+                    >
+                        <div
+                            className={styles.reviewModal}
+                            onClick={(event) => event.stopPropagation()}
+                        >
+                            <div className={styles.reviewModalTop}>
+                                <span className={`${styles.platformBadge} ${styles[activeReview.platform.toLowerCase()]}`}>
+                                    {activeReview.platform}
+                                </span>
+                                <button
+                                    type="button"
+                                    className={styles.closeButton}
+                                    onClick={handleCloseReview}
+                                    aria-label="Close full review"
+                                >
+                                    ×
+                                </button>
+                            </div>
+
+                            <div className={styles.reviewQuoteWrap}>
+                                {handleStars(activeReview.rating)}
+                                <p className={`${styles.reviewText} ${styles.reviewTextFull}`}>
+                                    {activeReview.text}
+                                </p>
+                            </div>
+
+                            <div className={styles.reviewMeta}>
+                                <div className={styles.avatar}>{activeReview.avatar}</div>
+                                <div className={styles.reviewerInfo}>
+                                    <h4>{activeReview.name}</h4>
+                                    <p className={styles.designation}>{activeReview.date}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </section>
     );

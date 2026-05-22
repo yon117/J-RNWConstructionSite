@@ -1,0 +1,103 @@
+/* Fixed left panel — matches fin.ai style */
+.nav {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) translateX(-240px);
+  z-index: 50;
+  width: 210px;
+  background: rgba(8, 13, 20, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* Each section item */
+.item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 16px 24px 14px;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.30);
+  transition: color 0.22s ease, background 0.22s ease;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.item:hover {
+  color: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.active {
+  color: rgba(255, 255, 255, 1);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Number + label row */
+.row {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.num {
+  font-family: 'Barlow Condensed', 'Barlow', monospace;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  opacity: 0.45;
+  flex-shrink: 0;
+}
+
+.active .num {
+  opacity: 0.7;
+}
+
+.label {
+  font-family: 'Barlow Condensed', 'Barlow', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 1;
+}
+
+/* Progress bar — fills left→right as section scrolls */
+.bar {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.10);
+  overflow: hidden;
+  /* only show bar on active item */
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.active .bar {
+  opacity: 1;
+}
+
+.fill {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: #C8961E;
+  transform-origin: left center;
+  transform: scaleX(0);
+  /* no transition — driven by scroll directly */
+}
+
+/* Hide on narrow screens */
+@media (max-width: 1100px) {
+  .nav {
+    display: none;
+  }
+}

@@ -1,0 +1,187 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  user-select: none;
+}
+
+/* ── Mode toggle ── */
+.modeBtns {
+  display: flex;
+  gap: 3px;
+  background: var(--dark-mid);
+  border-radius: 3px;
+  padding: 3px;
+  width: fit-content;
+}
+
+.modeBtn {
+  padding: 7px 20px;
+  border: none;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--gray);
+  font-family: 'Barlow', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.modeBtn.active {
+  background: var(--gold);
+  color: #0f1923;
+}
+
+/* ── Image container ── */
+.imageWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 4px;
+  overflow: hidden;
+  background: rgba(7, 12, 19, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 56px rgba(0, 0, 0, 0.35);
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.imageLayer {
+  position: absolute;
+  inset: 0;
+  will-change: transform, opacity;
+}
+
+.houseImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Hotspots ── */
+.hotspot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 10;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.hotspot:focus {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+
+.dot {
+  display: block;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 0 0 2px rgba(200, 150, 30, 0.4);
+}
+
+.pulse {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(200, 150, 30, 0.25);
+  transform: scale(0.65);
+  transform-origin: center;
+  opacity: 0.45;
+  z-index: 1;
+}
+
+@keyframes pulseRing {
+  0%   { transform: scale(0.55); opacity: 1; }
+  100% { transform: scale(1.9);  opacity: 0; }
+}
+
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: rgba(15, 25, 35, 0.95);
+  color: #F5F3EF;
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 2px;
+  white-space: nowrap;
+  border: 1px solid rgba(200, 150, 30, 0.35);
+  pointer-events: none;
+  z-index: 20;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+}
+
+.hotspot:hover .tooltip,
+.hotspot:focus-visible .tooltip,
+.hotspotActive .tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Mode label ── */
+.modeLabel {
+  position: absolute;
+  bottom: 10px;
+  right: 12px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .imageWrap {
+    aspect-ratio: 4 / 3;
+  }
+
+  .hotspot {
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  .tooltip {
+    font-size: 9px;
+    padding: 4px 8px;
+  }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .pulse {
+    animation: none;
+    opacity: 0;
+  }
+}

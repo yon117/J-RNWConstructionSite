@@ -1,0 +1,1133 @@
+- generic [active] [ref=e1]:
+  - button "Open chatbot" [ref=e3]:
+    - img "Bubble button icon" [ref=e4]
+    - img "Bubble Button"
+  - generic [ref=e7]:
+    - banner [ref=e8]:
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - img [ref=e12]
+          - link "(503) 998-2340" [ref=e14] [cursor=pointer]:
+            - /url: tel:+15039982340
+        - generic [ref=e16]:
+          - img [ref=e17]
+          - link "jandrnwconstruction@gmail.com" [ref=e19] [cursor=pointer]:
+            - /url: mailto:jandrnwconstruction@gmail.com
+        - generic [ref=e21]: Available 24/7 · Licensed · Bonded · Insured · CCB 232708
+      - generic [ref=e22]:
+        - generic [ref=e23]:
+          - text: 🌧Spring flooding & landslide season — Free water damage assessment. Don't let mold set in.
+          - link "Call (503) 998-2340" [ref=e24] [cursor=pointer]:
+            - /url: tel:+15039982340
+        - button "Dismiss" [ref=e25] [cursor=pointer]: ✕
+      - navigation [ref=e26]:
+        - link "J&R NW Construction J&R NW Construction Build Better, Restore Stronger" [ref=e27] [cursor=pointer]:
+          - /url: /
+          - img "J&R NW Construction" [ref=e29]
+          - generic [ref=e30]:
+            - text: J&R NW Construction
+            - generic [ref=e31]: Build Better, Restore Stronger
+        - generic [ref=e32]:
+          - list [ref=e33]:
+            - listitem [ref=e34]:
+              - link "Home" [ref=e35] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e36]:
+              - link "Services" [ref=e37] [cursor=pointer]:
+                - /url: /services
+            - listitem [ref=e38]:
+              - link "Projects" [ref=e39] [cursor=pointer]:
+                - /url: /projects
+          - generic [ref=e40]:
+            - link "Facebook" [ref=e41] [cursor=pointer]:
+              - /url: https://www.facebook.com/JRNWConstruction/
+              - img [ref=e42]
+            - link "Instagram" [ref=e44] [cursor=pointer]:
+              - /url: https://www.instagram.com/jandrnwconstruction/
+              - img [ref=e45]
+            - link "Yelp" [ref=e47] [cursor=pointer]:
+              - /url: https://m.yelp.com/biz/j-and-r-nw-construction-portland-5
+              - img "Yelp" [ref=e48]
+            - link "Google" [ref=e49] [cursor=pointer]:
+              - /url: https://www.google.com/maps/place/J%26R+NW+Construction/
+              - img [ref=e50]
+          - generic [ref=e55]:
+            - button "EN" [ref=e56] [cursor=pointer]
+            - button "ES" [ref=e57] [cursor=pointer]
+          - button "Free Estimate" [ref=e58] [cursor=pointer]
+          - button "Switch to light mode" [ref=e59] [cursor=pointer]:
+            - generic [ref=e60]: ☀
+    - main [ref=e61]:
+      - generic [ref=e62]:
+        - generic [ref=e64]:
+          - generic [ref=e65]:
+            - generic [ref=e66]: Build Better, Restore Stronger
+            - heading "Portland's number one general contractor" [level=1] [ref=e68]:
+              - 'generic "Portland''s #1" [ref=e69]':
+                - generic [ref=e71]: Portland's
+                - generic [ref=e74]: "#1"
+              - generic "General Contractor" [ref=e75]:
+                - generic [ref=e77]: General
+                - generic [ref=e80]: Contractor
+              - generic "Serving Homes & Businesses for Over 20 Years." [ref=e81]:
+                - generic [ref=e83]: Serving Homes & Businesses for Over 20 Years.
+              - generic "Remodeling · Additions · Siding · Painting." [ref=e84]:
+                - generic [ref=e86]: Remodeling · Additions · Siding · Painting.
+              - generic "Drywall · Restoration · Mitigation · Emergency Services." [ref=e87]:
+                - generic [ref=e89]: Drywall · Restoration · Mitigation · Emergency Services.
+              - generic "Portland · Tigard · Tualatin · Gresham · Happy Valley · Oregon City" [ref=e90]:
+                - generic [ref=e92]: Portland
+                - generic [ref=e95]: ·
+                - generic [ref=e98]: Tigard
+                - generic [ref=e101]: ·
+                - generic [ref=e104]: Tualatin
+                - generic [ref=e107]: ·
+                - generic [ref=e110]: Gresham
+                - generic [ref=e113]: ·
+                - generic [ref=e116]: Happy
+                - generic [ref=e119]: Valley
+                - generic [ref=e122]: ·
+                - generic [ref=e125]: Oregon
+                - generic [ref=e128]: City
+            - generic [ref=e130]:
+              - generic "Time to" [ref=e131]:
+                - generic [ref=e133]: Time
+                - generic [ref=e136]: to
+              - generic [ref=e137]: Restore
+            - generic [ref=e138]:
+              - button "Get Your Free Estimate" [ref=e139] [cursor=pointer]:
+                - text: Get Your Free Estimate
+                - img [ref=e140]
+              - link "View Our Work" [ref=e142] [cursor=pointer]:
+                - /url: /projects
+            - generic [ref=e143]:
+              - generic [ref=e144]:
+                - generic [ref=e145]: Look us up on
+                - generic [ref=e146]:
+                  - img "Yelp" [ref=e148]
+                  - img "Google" [ref=e150]
+                  - generic [ref=e151]: ★★★★★
+                  - generic [ref=e152]: 50+ reviews
+              - generic [ref=e153]: 100% Satisfaction Guarantee
+              - generic [ref=e154]: "CCB: 232708"
+            - generic [ref=e155]:
+              - generic [ref=e156]:
+                - img [ref=e157]
+                - text: Licensed, Insured & Bonded
+              - generic [ref=e159]: ·
+              - generic [ref=e160]:
+                - img [ref=e161]
+                - text: BBB Accredited
+              - generic [ref=e163]: ·
+              - generic [ref=e164]:
+                - img [ref=e165]
+                - text: 100% Satisfaction Guarantee
+          - generic [ref=e167]:
+            - generic [ref=e168]:
+              - group "House view mode" [ref=e169]:
+                - button "Exterior" [ref=e170] [cursor=pointer]
+                - button "Interior" [ref=e171] [cursor=pointer]
+              - generic [ref=e172]:
+                - img "House exterior — explore our services" [ref=e174]
+                - generic:
+                  - img "House interior — explore our services"
+                - button "Restoration" [ref=e175] [cursor=pointer]
+                - button "Remodeling" [ref=e178] [cursor=pointer]
+                - button "Siding" [ref=e181] [cursor=pointer]
+                - button "Vinyl" [ref=e184] [cursor=pointer]
+                - button "Painting" [ref=e187] [cursor=pointer]
+                - button "Emergency Services" [ref=e190] [cursor=pointer]
+                - generic: EXTERIOR VIEW
+            - generic [ref=e194]:
+              - generic [ref=e195]: Request a Free Quote
+              - generic [ref=e196]:
+                - generic [ref=e197]:
+                  - generic [ref=e198]:
+                    - generic [ref=e199]: Full Name
+                    - textbox "John Smith" [ref=e200]
+                  - generic [ref=e201]:
+                    - generic [ref=e202]: Phone Number
+                    - textbox "(503) 000-0000" [ref=e203]
+                - generic [ref=e204]:
+                  - generic [ref=e205]: Email Address
+                  - textbox "john@email.com" [ref=e206]
+                - generic [ref=e207]:
+                  - generic [ref=e208]: Project Type
+                  - combobox [ref=e209]:
+                    - option "Select Service Type" [disabled] [selected]
+                    - option "Interior Construction & Remodeling"
+                    - option "Bathroom Remodel"
+                    - option "Restoration & Reconstruction"
+                    - option "Mitigation & Emergency Services"
+                    - option "General Repairs & Carpentry"
+                    - option "Paint"
+                    - option "Siding"
+                    - option "Drywall"
+                    - option "Other (describe in message below)"
+                - generic [ref=e210]:
+                  - generic [ref=e211]: Message
+                  - textbox "Provide a brief description of your project..." [ref=e212]
+                - button "Get Free Estimate →" [ref=e213] [cursor=pointer]:
+                  - text: Get Free Estimate →
+                  - img [ref=e214]
+                - generic [ref=e216]:
+                  - img [ref=e217]
+                  - text: Fast Response · No Obligation
+        - generic [ref=e220]:
+          - generic [ref=e221]:
+            - img [ref=e222]
+            - text: Licensed, Insured & Bonded
+          - generic [ref=e224]: "CCB #232708"
+          - generic [ref=e225]: BBB Accredited
+          - generic [ref=e226]: 100% Satisfaction Guarantee
+      - generic [ref=e228]:
+        - generic [ref=e229]:
+          - heading "What Our Clients Say" [level=2] [ref=e230]
+          - paragraph [ref=e231]: Real reviews from real customers
+        - generic [ref=e233]:
+          - generic [ref=e234]:
+            - generic [ref=e235]:
+              - generic [ref=e236]: Yelp
+              - generic [ref=e237]:
+                - generic [ref=e238]: ★
+                - generic [ref=e239]: ★
+                - generic [ref=e240]: ★
+                - generic [ref=e241]: ★
+                - generic [ref=e242]: ★
+            - generic [ref=e243]: “
+            - paragraph [ref=e244]: Highly recommended. Professional, timely, good quality, and competitive pricing. We had a basement water leak after heavy rains. We scanned through Yelp and took a chance with J&R NW Construction based on recent positive reviews. Julio immediately picked up our phone call and was at our place in 30 minutes. After an assessment, he followed up with a contract and got his team scheduled for later in the day. The crew did a quality job. J&R is going into our contacts list for future home improvement/repair projects!
+            - generic [ref=e245]:
+              - generic [ref=e246]:
+                - generic [ref=e247]: SN
+                - generic [ref=e248]:
+                  - heading "Stefan N." [level=4] [ref=e249]
+                  - text: 3/14/26
+              - generic [ref=e250]: Yelp review
+          - generic [ref=e251]:
+            - generic [ref=e252]:
+              - generic [ref=e253]: Yelp
+              - generic [ref=e254]:
+                - generic [ref=e255]: ★
+                - generic [ref=e256]: ★
+                - generic [ref=e257]: ★
+                - generic [ref=e258]: ★
+                - generic [ref=e259]: ★
+            - generic [ref=e260]: “
+            - paragraph [ref=e261]: I can confidently recommend J&R NW Construction for your next project. Our family engaged Julio's team (a family affair) to remediate water that was entering our home and resulting in mold growth behind our walls. They came the same day we called them, gave us a report on the issues and a detailed estimate of what it would take to bring it back to normal. Their team communicated every day about status of arrivals, even notifying us if they were going to be late. The quality of their work has been exceptional. Overall the best people, very professional, quality work and deep expertise in codes and construction practices. Having worked most of my life with contractors, they stand out as one of the best we've worked with. We'll be using them again for sure!
+            - generic [ref=e262]:
+              - generic [ref=e263]:
+                - generic [ref=e264]: JF
+                - generic [ref=e265]:
+                  - heading "Jeff F." [level=4] [ref=e266]
+                  - text: 1/31/26
+              - generic [ref=e267]: Yelp review
+          - generic [ref=e268]:
+            - generic [ref=e269]:
+              - generic [ref=e270]: Yelp
+              - generic [ref=e271]:
+                - generic [ref=e272]: ★
+                - generic [ref=e273]: ★
+                - generic [ref=e274]: ★
+                - generic [ref=e275]: ★
+                - generic [ref=e276]: ★
+            - generic [ref=e277]: “
+            - paragraph [ref=e278]: We began by hiring Julio and his crew to replace siding on our garage. When they finished, we mentioned that we needed the exterior of our house painted. After completing that, they repaired and replaced posts on our patio cover, power washed and painted the woodwork and fiberglass cover. It looks like new and we have far more light than before. Julio and his team were courteous, professional and hard working. They consulted with me about each step of the tasks and their workmanship was excellent. In spite of having several jobs at the same time, they kept in close contact and finished each of our tasks on schedule. We intend to hire them again for any work we need in the future.
+            - generic [ref=e279]:
+              - generic [ref=e280]:
+                - generic [ref=e281]: MM
+                - generic [ref=e282]:
+                  - heading "Marcia M." [level=4] [ref=e283]
+                  - text: 1/23/26
+              - generic [ref=e284]: Yelp review
+          - generic [ref=e285]:
+            - generic [ref=e286]:
+              - generic [ref=e287]: Yelp
+              - generic [ref=e288]:
+                - generic [ref=e289]: ★
+                - generic [ref=e290]: ★
+                - generic [ref=e291]: ★
+                - generic [ref=e292]: ★
+                - generic [ref=e293]: ★
+            - generic [ref=e294]: “
+            - paragraph [ref=e295]: Very happy with the bathroom project remodel. Minor communication issues early but I would recommend them for a good job and reasonable cost. Did a good job recommending options where appropriate. Definitely would recommend to others and we would gladly use again.
+            - generic [ref=e296]:
+              - generic [ref=e297]:
+                - generic [ref=e298]: JJ
+                - generic [ref=e299]:
+                  - heading "John J." [level=4] [ref=e300]
+                  - text: 1/8/26
+              - generic [ref=e301]: Yelp review
+          - generic [ref=e302]:
+            - generic [ref=e303]:
+              - generic [ref=e304]: Yelp
+              - generic [ref=e305]:
+                - generic [ref=e306]: ★
+                - generic [ref=e307]: ★
+                - generic [ref=e308]: ★
+                - generic [ref=e309]: ★
+                - generic [ref=e310]: ★
+            - generic [ref=e311]: “
+            - paragraph [ref=e312]: Great quality work, communication as well as reasonable rates. Would use them again. Julio and his were also very fast in getting the job done. Thank you
+            - generic [ref=e313]:
+              - generic [ref=e314]:
+                - generic [ref=e315]: KM
+                - generic [ref=e316]:
+                  - heading "Kamran M." [level=4] [ref=e317]
+                  - text: 12/14/25
+              - generic [ref=e318]: Yelp review
+          - generic [ref=e319]:
+            - generic [ref=e320]:
+              - generic [ref=e321]: Yelp
+              - generic [ref=e322]:
+                - generic [ref=e323]: ★
+                - generic [ref=e324]: ★
+                - generic [ref=e325]: ★
+                - generic [ref=e326]: ★
+                - generic [ref=e327]: ★
+            - generic [ref=e328]: “
+            - paragraph [ref=e329]: Couldn't recommend J&R NW Construction enough! We hired J&R NW Construction to work on our aging detached garage. We had been noticing an increase in water intrusion as well as the structure not being sealed from pests. Julio, the business owner, came out to the property to get...
+            - generic [ref=e330]:
+              - generic [ref=e331]:
+                - generic [ref=e332]: TZ
+                - generic [ref=e333]:
+                  - heading "Tyler Z." [level=4] [ref=e334]
+                  - text: 12/5/25
+              - generic [ref=e335]: Yelp review
+          - generic [ref=e336]:
+            - generic [ref=e337]:
+              - generic [ref=e338]: Yelp
+              - generic [ref=e339]:
+                - generic [ref=e340]: ★
+                - generic [ref=e341]: ★
+                - generic [ref=e342]: ★
+                - generic [ref=e343]: ★
+                - generic [ref=e344]: ★
+            - generic [ref=e345]: “
+            - paragraph [ref=e346]: Recently hired the team for some investigation and remediation on an external wall that looked to be leaking. After a quick walk through, they got to work. They finished the work in half the time estimated and, when they discovered mold as well, we were able to work out a good deal for remediation on that as well...
+            - generic [ref=e347]:
+              - generic [ref=e348]:
+                - generic [ref=e349]: JB
+                - generic [ref=e350]:
+                  - heading "Jeremy B." [level=4] [ref=e351]
+                  - text: 11/18/25
+              - generic [ref=e352]: Yelp review
+          - generic [ref=e353]:
+            - generic [ref=e354]:
+              - generic [ref=e355]: Yelp
+              - generic [ref=e356]:
+                - generic [ref=e357]: ★
+                - generic [ref=e358]: ★
+                - generic [ref=e359]: ★
+                - generic [ref=e360]: ★
+                - generic [ref=e361]: ★
+            - generic [ref=e362]: “
+            - paragraph [ref=e363]: We hired J&R NW Construction, and Julio and his team were incredibly knowledgeable based on what we needed done. Julio and his team are professional and friendly. I definitely recommend working with them for your next project. They were able to fix our roof flashing and resolve our leak issue. Thank you, J&R NW Construction!
+            - generic [ref=e364]:
+              - generic [ref=e365]:
+                - generic [ref=e366]: AR
+                - generic [ref=e367]:
+                  - heading "Adrian R." [level=4] [ref=e368]
+                  - text: 11/13/25
+              - generic [ref=e369]: Yelp review
+          - generic [ref=e370]:
+            - generic [ref=e371]:
+              - generic [ref=e372]: Yelp
+              - generic [ref=e373]:
+                - generic [ref=e374]: ★
+                - generic [ref=e375]: ★
+                - generic [ref=e376]: ★
+                - generic [ref=e377]: ★
+                - generic [ref=e378]: ★
+            - generic [ref=e379]: “
+            - paragraph [ref=e380]: We first contacted J&R NW Construction for an estimate while we were looking for contractors to assist us with several of our home renovation projects. We had three different major projects to get bids upon and Julio was one of the several construction company representatives who responded to our calls. He was on time for our in home meeting and impressed...
+            - generic [ref=e381]:
+              - generic [ref=e382]:
+                - generic [ref=e383]: FK
+                - generic [ref=e384]:
+                  - heading "Fred K." [level=4] [ref=e385]
+                  - text: 10/4/25
+              - generic [ref=e386]: Yelp review
+          - generic [ref=e387]:
+            - generic [ref=e388]:
+              - generic [ref=e389]: Yelp
+              - generic [ref=e390]:
+                - generic [ref=e391]: ★
+                - generic [ref=e392]: ★
+                - generic [ref=e393]: ★
+                - generic [ref=e394]: ★
+                - generic [ref=e395]: ★
+            - generic [ref=e396]: “
+            - paragraph [ref=e397]: Provided high quality reconstruction of my garage after an electrical fire. Scope included wood repair, door replacement, insulation, Sheetrock, and painting. Work completed on a tight schedule and at the agreed on, very reasonable cost. Would not hesitate to recommend J & R NW and to use them on future projects.
+            - generic [ref=e398]:
+              - generic [ref=e399]:
+                - generic [ref=e400]: JZ
+                - generic [ref=e401]:
+                  - heading "John Z." [level=4] [ref=e402]
+                  - text: 8/25/25
+              - generic [ref=e403]: Yelp review
+          - generic [ref=e404]:
+            - generic [ref=e405]:
+              - generic [ref=e406]: Yelp
+              - generic [ref=e407]:
+                - generic [ref=e408]: ★
+                - generic [ref=e409]: ★
+                - generic [ref=e410]: ★
+                - generic [ref=e411]: ★
+                - generic [ref=e412]: ★
+            - generic [ref=e413]: “
+            - paragraph [ref=e414]: So recently had two bathrooms tiled, Julio and his whole team were amazing!! Everyone was so nice and respectful. Super fast, and in contact with me the whole time. I highly recommend this company! My bathrooms look amazing!!
+            - generic [ref=e415]:
+              - generic [ref=e416]:
+                - generic [ref=e417]: RJ
+                - generic [ref=e418]:
+                  - heading "R J." [level=4] [ref=e419]
+                  - text: 8/7/25
+              - generic [ref=e420]: Yelp review
+          - generic [ref=e421]:
+            - generic [ref=e422]:
+              - generic [ref=e423]: Yelp
+              - generic [ref=e424]:
+                - generic [ref=e425]: ★
+                - generic [ref=e426]: ★
+                - generic [ref=e427]: ★
+                - generic [ref=e428]: ★
+                - generic [ref=e429]: ★
+            - generic [ref=e430]: “
+            - paragraph [ref=e431]: I recommend J&R NW Construction based on their high quality of work and craftsmanship, as well as their willingness to work with me collaboratively in a warm and friendly manner and providing excellent work at a fair price. I hired J&R NW Construction for an extensive exterior...
+            - generic [ref=e432]:
+              - generic [ref=e433]:
+                - generic [ref=e434]: CL
+                - generic [ref=e435]:
+                  - heading "Cynthia L." [level=4] [ref=e436]
+                  - text: 3/24/25
+              - generic [ref=e437]: Yelp review
+          - generic [ref=e438]:
+            - generic [ref=e439]:
+              - generic [ref=e440]: Google
+              - generic [ref=e441]:
+                - generic [ref=e442]: ★
+                - generic [ref=e443]: ★
+                - generic [ref=e444]: ★
+                - generic [ref=e445]: ★
+                - generic [ref=e446]: ★
+            - generic [ref=e447]: “
+            - paragraph [ref=e448]: Very professional, hard working, personable, caring crew. Made sure to protect all the areas around the work site while they worked. Our house is 31 years old and we will be using them for all our additional face lifts! Quality work for a fair price!
+            - generic [ref=e449]:
+              - generic [ref=e450]:
+                - generic [ref=e451]: RS
+                - generic [ref=e452]:
+                  - heading "Rebecca Smith" [level=4] [ref=e453]
+                  - text: 2 months ago
+              - generic [ref=e454]: Google review
+          - generic [ref=e455]:
+            - generic [ref=e456]:
+              - generic [ref=e457]: Google
+              - generic [ref=e458]:
+                - generic [ref=e459]: ★
+                - generic [ref=e460]: ★
+                - generic [ref=e461]: ★
+                - generic [ref=e462]: ★
+                - generic [ref=e463]: ★
+            - generic [ref=e464]: “
+            - paragraph [ref=e465]: Good price. I recently had two bathrooms tiled, Julio and his whole team were amazing! Everyone was super nice and respectful. Super fast and in contact with me the whole time. I highly recommend this company. My bathrooms look amazing. I would hire them again.
+            - generic [ref=e466]:
+              - generic [ref=e467]:
+                - generic [ref=e468]: RJ
+                - generic [ref=e469]:
+                  - heading "Rachel Johnson" [level=4] [ref=e470]
+                  - text: 4 months ago
+              - generic [ref=e471]: Google review
+          - generic [ref=e472]:
+            - generic [ref=e473]:
+              - generic [ref=e474]: Google
+              - generic [ref=e475]:
+                - generic [ref=e476]: ★
+                - generic [ref=e477]: ★
+                - generic [ref=e478]: ★
+                - generic [ref=e479]: ★
+                - generic [ref=e480]: ★
+            - generic [ref=e481]: “
+            - paragraph [ref=e482]: Good price. Real deal!
+            - generic [ref=e483]:
+              - generic [ref=e484]:
+                - generic [ref=e485]: C
+                - generic [ref=e486]:
+                  - heading "CALVARY" [level=4] [ref=e487]
+                  - text: 1 month ago
+              - generic [ref=e488]: Google review
+          - generic [ref=e489]:
+            - generic [ref=e490]:
+              - generic [ref=e491]: Google
+              - generic [ref=e492]:
+                - generic [ref=e493]: ★
+                - generic [ref=e494]: ★
+                - generic [ref=e495]: ★
+                - generic [ref=e496]: ★
+                - generic [ref=e497]: ★
+            - generic [ref=e498]: “
+            - paragraph [ref=e499]: I had a squirrel infestation that had eaten through the majority of a support beam on my house. I called J&R NW Construction and they responded right away. The price was fair, the work was expedient, and Julio and his staff displayed the utmost professionalism. The repairs they made were a great improvement upon the original construction. I am confident that no more squirrels will be able to make it through to the new support beam. Also the appearance of the new column surrounding the support beam looks way better than the original construction.
+            - generic [ref=e500]:
+              - generic [ref=e501]:
+                - generic [ref=e502]: BB
+                - generic [ref=e503]:
+                  - heading "Britta Blucher" [level=4] [ref=e504]
+                  - text: 2 weeks ago
+              - generic [ref=e505]: Google review
+          - generic [ref=e506]:
+            - generic [ref=e507]:
+              - generic [ref=e508]: Google
+              - generic [ref=e509]:
+                - generic [ref=e510]: ★
+                - generic [ref=e511]: ★
+                - generic [ref=e512]: ★
+                - generic [ref=e513]: ★
+                - generic [ref=e514]: ★
+            - generic [ref=e515]: “
+            - paragraph [ref=e516]: If I could, I would give J&R NW Construction a 10 out of 5 rating, because their crew is not only exceptional, they are outstanding! Julio was exceptional in communicating with me when his crew would be here and what the plan of the day was. He is highly ethical, as well as being respectful, and I cannot say enough good things about his crew. Viktor is very talented, highly dedicated, and has great pride in producing highest quality results. The work done included installing exterior waterproofing, a French drain trench, framing a new interior wall, replacing insulation and sheathing, repairing drywall, painting the entire room, and installing subfloor and wall-to-wall carpeting. Julio's plan and estimate far surpassed all others. I am so thankful I found J&R NW Construction and will definitely use them again!
+            - generic [ref=e517]:
+              - generic [ref=e518]:
+                - generic [ref=e519]: BT
+                - generic [ref=e520]:
+                  - heading "Barb Troxel" [level=4] [ref=e521]
+                  - text: 4 weeks ago
+              - generic [ref=e522]: Google review
+          - generic [ref=e523]:
+            - generic [ref=e524]:
+              - generic [ref=e525]: Google
+              - generic [ref=e526]:
+                - generic [ref=e527]: ★
+                - generic [ref=e528]: ★
+                - generic [ref=e529]: ★
+                - generic [ref=e530]: ★
+                - generic [ref=e531]: ★
+            - generic [ref=e532]: “
+            - paragraph [ref=e533]: I highly recommend J&R NW Construction! Julio and his team recently repaired our kitchen sink pipe that was leaking. Julio was very responsive — he got us a quote and scheduled our repair quickly. His team did a great job and we will definitely be hiring them again for future projects!
+            - generic [ref=e534]:
+              - generic [ref=e535]:
+                - generic [ref=e536]: RA
+                - generic [ref=e537]:
+                  - heading "Rebecca Abramson" [level=4] [ref=e538]
+                  - text: 7 weeks ago
+              - generic [ref=e539]: Google review
+          - generic [ref=e540]:
+            - generic [ref=e541]:
+              - generic [ref=e542]: Google
+              - generic [ref=e543]:
+                - generic [ref=e544]: ★
+                - generic [ref=e545]: ★
+                - generic [ref=e546]: ★
+                - generic [ref=e547]: ★
+                - generic [ref=e548]: ★
+            - generic [ref=e549]: “
+            - paragraph [ref=e550]: J&R NW Construction did an outstanding house repair job for me. The right side garage door support post was pushed in about 6 inches by an accidental car crash. The garage door was inoperable and there was other structural damage. The estimator and manager, Julio, worked with the insurance company and got the job done quickly and professionally. Julio and the workers were friendly, fast and professional.
+            - generic [ref=e551]:
+              - generic [ref=e552]:
+                - generic [ref=e553]: MM
+                - generic [ref=e554]:
+                  - heading "Mayvis Martin" [level=4] [ref=e555]
+                  - text: 8 weeks ago
+              - generic [ref=e556]: Google review
+          - generic [ref=e557]:
+            - generic [ref=e558]:
+              - generic [ref=e559]: Yelp
+              - generic [ref=e560]:
+                - generic [ref=e561]: ★
+                - generic [ref=e562]: ★
+                - generic [ref=e563]: ★
+                - generic [ref=e564]: ★
+                - generic [ref=e565]: ★
+            - generic [ref=e566]: “
+            - paragraph [ref=e567]: Highly recommended. Professional, timely, good quality, and competitive pricing. We had a basement water leak after heavy rains. We scanned through Yelp and took a chance with J&R NW Construction based on recent positive reviews. Julio immediately picked up our phone call and was at our place in 30 minutes. After an assessment, he followed up with a contract and got his team scheduled for later in the day. The crew did a quality job. J&R is going into our contacts list for future home improvement/repair projects!
+            - generic [ref=e568]:
+              - generic [ref=e569]:
+                - generic [ref=e570]: SN
+                - generic [ref=e571]:
+                  - heading "Stefan N." [level=4] [ref=e572]
+                  - text: 3/14/26
+              - generic [ref=e573]: Yelp review
+          - generic [ref=e574]:
+            - generic [ref=e575]:
+              - generic [ref=e576]: Yelp
+              - generic [ref=e577]:
+                - generic [ref=e578]: ★
+                - generic [ref=e579]: ★
+                - generic [ref=e580]: ★
+                - generic [ref=e581]: ★
+                - generic [ref=e582]: ★
+            - generic [ref=e583]: “
+            - paragraph [ref=e584]: I can confidently recommend J&R NW Construction for your next project. Our family engaged Julio's team (a family affair) to remediate water that was entering our home and resulting in mold growth behind our walls. They came the same day we called them, gave us a report on the issues and a detailed estimate of what it would take to bring it back to normal. Their team communicated every day about status of arrivals, even notifying us if they were going to be late. The quality of their work has been exceptional. Overall the best people, very professional, quality work and deep expertise in codes and construction practices. Having worked most of my life with contractors, they stand out as one of the best we've worked with. We'll be using them again for sure!
+            - generic [ref=e585]:
+              - generic [ref=e586]:
+                - generic [ref=e587]: JF
+                - generic [ref=e588]:
+                  - heading "Jeff F." [level=4] [ref=e589]
+                  - text: 1/31/26
+              - generic [ref=e590]: Yelp review
+          - generic [ref=e591]:
+            - generic [ref=e592]:
+              - generic [ref=e593]: Yelp
+              - generic [ref=e594]:
+                - generic [ref=e595]: ★
+                - generic [ref=e596]: ★
+                - generic [ref=e597]: ★
+                - generic [ref=e598]: ★
+                - generic [ref=e599]: ★
+            - generic [ref=e600]: “
+            - paragraph [ref=e601]: We began by hiring Julio and his crew to replace siding on our garage. When they finished, we mentioned that we needed the exterior of our house painted. After completing that, they repaired and replaced posts on our patio cover, power washed and painted the woodwork and fiberglass cover. It looks like new and we have far more light than before. Julio and his team were courteous, professional and hard working. They consulted with me about each step of the tasks and their workmanship was excellent. In spite of having several jobs at the same time, they kept in close contact and finished each of our tasks on schedule. We intend to hire them again for any work we need in the future.
+            - generic [ref=e602]:
+              - generic [ref=e603]:
+                - generic [ref=e604]: MM
+                - generic [ref=e605]:
+                  - heading "Marcia M." [level=4] [ref=e606]
+                  - text: 1/23/26
+              - generic [ref=e607]: Yelp review
+          - generic [ref=e608]:
+            - generic [ref=e609]:
+              - generic [ref=e610]: Yelp
+              - generic [ref=e611]:
+                - generic [ref=e612]: ★
+                - generic [ref=e613]: ★
+                - generic [ref=e614]: ★
+                - generic [ref=e615]: ★
+                - generic [ref=e616]: ★
+            - generic [ref=e617]: “
+            - paragraph [ref=e618]: Very happy with the bathroom project remodel. Minor communication issues early but I would recommend them for a good job and reasonable cost. Did a good job recommending options where appropriate. Definitely would recommend to others and we would gladly use again.
+            - generic [ref=e619]:
+              - generic [ref=e620]:
+                - generic [ref=e621]: JJ
+                - generic [ref=e622]:
+                  - heading "John J." [level=4] [ref=e623]
+                  - text: 1/8/26
+              - generic [ref=e624]: Yelp review
+          - generic [ref=e625]:
+            - generic [ref=e626]:
+              - generic [ref=e627]: Yelp
+              - generic [ref=e628]:
+                - generic [ref=e629]: ★
+                - generic [ref=e630]: ★
+                - generic [ref=e631]: ★
+                - generic [ref=e632]: ★
+                - generic [ref=e633]: ★
+            - generic [ref=e634]: “
+            - paragraph [ref=e635]: Great quality work, communication as well as reasonable rates. Would use them again. Julio and his were also very fast in getting the job done. Thank you
+            - generic [ref=e636]:
+              - generic [ref=e637]:
+                - generic [ref=e638]: KM
+                - generic [ref=e639]:
+                  - heading "Kamran M." [level=4] [ref=e640]
+                  - text: 12/14/25
+              - generic [ref=e641]: Yelp review
+          - generic [ref=e642]:
+            - generic [ref=e643]:
+              - generic [ref=e644]: Yelp
+              - generic [ref=e645]:
+                - generic [ref=e646]: ★
+                - generic [ref=e647]: ★
+                - generic [ref=e648]: ★
+                - generic [ref=e649]: ★
+                - generic [ref=e650]: ★
+            - generic [ref=e651]: “
+            - paragraph [ref=e652]: Couldn't recommend J&R NW Construction enough! We hired J&R NW Construction to work on our aging detached garage. We had been noticing an increase in water intrusion as well as the structure not being sealed from pests. Julio, the business owner, came out to the property to get...
+            - generic [ref=e653]:
+              - generic [ref=e654]:
+                - generic [ref=e655]: TZ
+                - generic [ref=e656]:
+                  - heading "Tyler Z." [level=4] [ref=e657]
+                  - text: 12/5/25
+              - generic [ref=e658]: Yelp review
+          - generic [ref=e659]:
+            - generic [ref=e660]:
+              - generic [ref=e661]: Yelp
+              - generic [ref=e662]:
+                - generic [ref=e663]: ★
+                - generic [ref=e664]: ★
+                - generic [ref=e665]: ★
+                - generic [ref=e666]: ★
+                - generic [ref=e667]: ★
+            - generic [ref=e668]: “
+            - paragraph [ref=e669]: Recently hired the team for some investigation and remediation on an external wall that looked to be leaking. After a quick walk through, they got to work. They finished the work in half the time estimated and, when they discovered mold as well, we were able to work out a good deal for remediation on that as well...
+            - generic [ref=e670]:
+              - generic [ref=e671]:
+                - generic [ref=e672]: JB
+                - generic [ref=e673]:
+                  - heading "Jeremy B." [level=4] [ref=e674]
+                  - text: 11/18/25
+              - generic [ref=e675]: Yelp review
+          - generic [ref=e676]:
+            - generic [ref=e677]:
+              - generic [ref=e678]: Yelp
+              - generic [ref=e679]:
+                - generic [ref=e680]: ★
+                - generic [ref=e681]: ★
+                - generic [ref=e682]: ★
+                - generic [ref=e683]: ★
+                - generic [ref=e684]: ★
+            - generic [ref=e685]: “
+            - paragraph [ref=e686]: We hired J&R NW Construction, and Julio and his team were incredibly knowledgeable based on what we needed done. Julio and his team are professional and friendly. I definitely recommend working with them for your next project. They were able to fix our roof flashing and resolve our leak issue. Thank you, J&R NW Construction!
+            - generic [ref=e687]:
+              - generic [ref=e688]:
+                - generic [ref=e689]: AR
+                - generic [ref=e690]:
+                  - heading "Adrian R." [level=4] [ref=e691]
+                  - text: 11/13/25
+              - generic [ref=e692]: Yelp review
+          - generic [ref=e693]:
+            - generic [ref=e694]:
+              - generic [ref=e695]: Yelp
+              - generic [ref=e696]:
+                - generic [ref=e697]: ★
+                - generic [ref=e698]: ★
+                - generic [ref=e699]: ★
+                - generic [ref=e700]: ★
+                - generic [ref=e701]: ★
+            - generic [ref=e702]: “
+            - paragraph [ref=e703]: We first contacted J&R NW Construction for an estimate while we were looking for contractors to assist us with several of our home renovation projects. We had three different major projects to get bids upon and Julio was one of the several construction company representatives who responded to our calls. He was on time for our in home meeting and impressed...
+            - generic [ref=e704]:
+              - generic [ref=e705]:
+                - generic [ref=e706]: FK
+                - generic [ref=e707]:
+                  - heading "Fred K." [level=4] [ref=e708]
+                  - text: 10/4/25
+              - generic [ref=e709]: Yelp review
+          - generic [ref=e710]:
+            - generic [ref=e711]:
+              - generic [ref=e712]: Yelp
+              - generic [ref=e713]:
+                - generic [ref=e714]: ★
+                - generic [ref=e715]: ★
+                - generic [ref=e716]: ★
+                - generic [ref=e717]: ★
+                - generic [ref=e718]: ★
+            - generic [ref=e719]: “
+            - paragraph [ref=e720]: Provided high quality reconstruction of my garage after an electrical fire. Scope included wood repair, door replacement, insulation, Sheetrock, and painting. Work completed on a tight schedule and at the agreed on, very reasonable cost. Would not hesitate to recommend J & R NW and to use them on future projects.
+            - generic [ref=e721]:
+              - generic [ref=e722]:
+                - generic [ref=e723]: JZ
+                - generic [ref=e724]:
+                  - heading "John Z." [level=4] [ref=e725]
+                  - text: 8/25/25
+              - generic [ref=e726]: Yelp review
+          - generic [ref=e727]:
+            - generic [ref=e728]:
+              - generic [ref=e729]: Yelp
+              - generic [ref=e730]:
+                - generic [ref=e731]: ★
+                - generic [ref=e732]: ★
+                - generic [ref=e733]: ★
+                - generic [ref=e734]: ★
+                - generic [ref=e735]: ★
+            - generic [ref=e736]: “
+            - paragraph [ref=e737]: So recently had two bathrooms tiled, Julio and his whole team were amazing!! Everyone was so nice and respectful. Super fast, and in contact with me the whole time. I highly recommend this company! My bathrooms look amazing!!
+            - generic [ref=e738]:
+              - generic [ref=e739]:
+                - generic [ref=e740]: RJ
+                - generic [ref=e741]:
+                  - heading "R J." [level=4] [ref=e742]
+                  - text: 8/7/25
+              - generic [ref=e743]: Yelp review
+          - generic [ref=e744]:
+            - generic [ref=e745]:
+              - generic [ref=e746]: Yelp
+              - generic [ref=e747]:
+                - generic [ref=e748]: ★
+                - generic [ref=e749]: ★
+                - generic [ref=e750]: ★
+                - generic [ref=e751]: ★
+                - generic [ref=e752]: ★
+            - generic [ref=e753]: “
+            - paragraph [ref=e754]: I recommend J&R NW Construction based on their high quality of work and craftsmanship, as well as their willingness to work with me collaboratively in a warm and friendly manner and providing excellent work at a fair price. I hired J&R NW Construction for an extensive exterior...
+            - generic [ref=e755]:
+              - generic [ref=e756]:
+                - generic [ref=e757]: CL
+                - generic [ref=e758]:
+                  - heading "Cynthia L." [level=4] [ref=e759]
+                  - text: 3/24/25
+              - generic [ref=e760]: Yelp review
+          - generic [ref=e761]:
+            - generic [ref=e762]:
+              - generic [ref=e763]: Google
+              - generic [ref=e764]:
+                - generic [ref=e765]: ★
+                - generic [ref=e766]: ★
+                - generic [ref=e767]: ★
+                - generic [ref=e768]: ★
+                - generic [ref=e769]: ★
+            - generic [ref=e770]: “
+            - paragraph [ref=e771]: Very professional, hard working, personable, caring crew. Made sure to protect all the areas around the work site while they worked. Our house is 31 years old and we will be using them for all our additional face lifts! Quality work for a fair price!
+            - generic [ref=e772]:
+              - generic [ref=e773]:
+                - generic [ref=e774]: RS
+                - generic [ref=e775]:
+                  - heading "Rebecca Smith" [level=4] [ref=e776]
+                  - text: 2 months ago
+              - generic [ref=e777]: Google review
+          - generic [ref=e778]:
+            - generic [ref=e779]:
+              - generic [ref=e780]: Google
+              - generic [ref=e781]:
+                - generic [ref=e782]: ★
+                - generic [ref=e783]: ★
+                - generic [ref=e784]: ★
+                - generic [ref=e785]: ★
+                - generic [ref=e786]: ★
+            - generic [ref=e787]: “
+            - paragraph [ref=e788]: Good price. I recently had two bathrooms tiled, Julio and his whole team were amazing! Everyone was super nice and respectful. Super fast and in contact with me the whole time. I highly recommend this company. My bathrooms look amazing. I would hire them again.
+            - generic [ref=e789]:
+              - generic [ref=e790]:
+                - generic [ref=e791]: RJ
+                - generic [ref=e792]:
+                  - heading "Rachel Johnson" [level=4] [ref=e793]
+                  - text: 4 months ago
+              - generic [ref=e794]: Google review
+          - generic [ref=e795]:
+            - generic [ref=e796]:
+              - generic [ref=e797]: Google
+              - generic [ref=e798]:
+                - generic [ref=e799]: ★
+                - generic [ref=e800]: ★
+                - generic [ref=e801]: ★
+                - generic [ref=e802]: ★
+                - generic [ref=e803]: ★
+            - generic [ref=e804]: “
+            - paragraph [ref=e805]: Good price. Real deal!
+            - generic [ref=e806]:
+              - generic [ref=e807]:
+                - generic [ref=e808]: C
+                - generic [ref=e809]:
+                  - heading "CALVARY" [level=4] [ref=e810]
+                  - text: 1 month ago
+              - generic [ref=e811]: Google review
+          - generic [ref=e812]:
+            - generic [ref=e813]:
+              - generic [ref=e814]: Google
+              - generic [ref=e815]:
+                - generic [ref=e816]: ★
+                - generic [ref=e817]: ★
+                - generic [ref=e818]: ★
+                - generic [ref=e819]: ★
+                - generic [ref=e820]: ★
+            - generic [ref=e821]: “
+            - paragraph [ref=e822]: I had a squirrel infestation that had eaten through the majority of a support beam on my house. I called J&R NW Construction and they responded right away. The price was fair, the work was expedient, and Julio and his staff displayed the utmost professionalism. The repairs they made were a great improvement upon the original construction. I am confident that no more squirrels will be able to make it through to the new support beam. Also the appearance of the new column surrounding the support beam looks way better than the original construction.
+            - generic [ref=e823]:
+              - generic [ref=e824]:
+                - generic [ref=e825]: BB
+                - generic [ref=e826]:
+                  - heading "Britta Blucher" [level=4] [ref=e827]
+                  - text: 2 weeks ago
+              - generic [ref=e828]: Google review
+          - generic [ref=e829]:
+            - generic [ref=e830]:
+              - generic [ref=e831]: Google
+              - generic [ref=e832]:
+                - generic [ref=e833]: ★
+                - generic [ref=e834]: ★
+                - generic [ref=e835]: ★
+                - generic [ref=e836]: ★
+                - generic [ref=e837]: ★
+            - generic [ref=e838]: “
+            - paragraph [ref=e839]: If I could, I would give J&R NW Construction a 10 out of 5 rating, because their crew is not only exceptional, they are outstanding! Julio was exceptional in communicating with me when his crew would be here and what the plan of the day was. He is highly ethical, as well as being respectful, and I cannot say enough good things about his crew. Viktor is very talented, highly dedicated, and has great pride in producing highest quality results. The work done included installing exterior waterproofing, a French drain trench, framing a new interior wall, replacing insulation and sheathing, repairing drywall, painting the entire room, and installing subfloor and wall-to-wall carpeting. Julio's plan and estimate far surpassed all others. I am so thankful I found J&R NW Construction and will definitely use them again!
+            - generic [ref=e840]:
+              - generic [ref=e841]:
+                - generic [ref=e842]: BT
+                - generic [ref=e843]:
+                  - heading "Barb Troxel" [level=4] [ref=e844]
+                  - text: 4 weeks ago
+              - generic [ref=e845]: Google review
+          - generic [ref=e846]:
+            - generic [ref=e847]:
+              - generic [ref=e848]: Google
+              - generic [ref=e849]:
+                - generic [ref=e850]: ★
+                - generic [ref=e851]: ★
+                - generic [ref=e852]: ★
+                - generic [ref=e853]: ★
+                - generic [ref=e854]: ★
+            - generic [ref=e855]: “
+            - paragraph [ref=e856]: I highly recommend J&R NW Construction! Julio and his team recently repaired our kitchen sink pipe that was leaking. Julio was very responsive — he got us a quote and scheduled our repair quickly. His team did a great job and we will definitely be hiring them again for future projects!
+            - generic [ref=e857]:
+              - generic [ref=e858]:
+                - generic [ref=e859]: RA
+                - generic [ref=e860]:
+                  - heading "Rebecca Abramson" [level=4] [ref=e861]
+                  - text: 7 weeks ago
+              - generic [ref=e862]: Google review
+          - generic [ref=e863]:
+            - generic [ref=e864]:
+              - generic [ref=e865]: Google
+              - generic [ref=e866]:
+                - generic [ref=e867]: ★
+                - generic [ref=e868]: ★
+                - generic [ref=e869]: ★
+                - generic [ref=e870]: ★
+                - generic [ref=e871]: ★
+            - generic [ref=e872]: “
+            - paragraph [ref=e873]: J&R NW Construction did an outstanding house repair job for me. The right side garage door support post was pushed in about 6 inches by an accidental car crash. The garage door was inoperable and there was other structural damage. The estimator and manager, Julio, worked with the insurance company and got the job done quickly and professionally. Julio and the workers were friendly, fast and professional.
+            - generic [ref=e874]:
+              - generic [ref=e875]:
+                - generic [ref=e876]: MM
+                - generic [ref=e877]:
+                  - heading "Mayvis Martin" [level=4] [ref=e878]
+                  - text: 8 weeks ago
+              - generic [ref=e879]: Google review
+      - generic [ref=e892]:
+        - generic [ref=e893]:
+          - heading "Need Immediate Assistance?" [level=3] [ref=e894]
+          - paragraph [ref=e895]: Our emergency response teams are on standby 24/7 to handle critical property damage and restoration needs.
+        - link "Call (503) 998-2340" [ref=e896] [cursor=pointer]:
+          - /url: tel:5039982340
+      - generic [ref=e897]:
+        - generic [ref=e898]:
+          - generic [ref=e899]:
+            - generic [ref=e900]: Field Guide · Inspector's Notes
+            - heading "Warning Signs In Your Home" [level=2] [ref=e901]:
+              - text: Warning Signs
+              - emphasis [ref=e902]: In Your Home
+            - paragraph [ref=e903]: Small problems become expensive problems quickly. If you see any of these in your home, call us before the damage spreads — inspections are free, no obligation.
+          - generic [ref=e905]:
+            - article [ref=e906]:
+              - generic [ref=e907]:
+                - generic [ref=e908]: Critical Severity
+                - generic [ref=e909]: "CODE: WS-MOISTURE-01"
+              - generic [ref=e910]:
+                - generic [ref=e911]: Restoration & Mitigation
+                - heading "Water Stains on Ceiling or Walls" [level=3] [ref=e912]
+                - paragraph [ref=e913]: Yellow or brown stains signal active water intrusion behind the surface. Every day it sits, the damage moves deeper into the wall cavity.
+              - generic [ref=e914]:
+                - generic [ref=e915]: If ignored · progression
+                - generic [ref=e916]:
+                  - generic [ref=e917]:
+                    - generic [ref=e918]: "1"
+                    - generic [ref=e919]:
+                      - generic [ref=e920]: Water
+                      - text: entry
+                  - generic [ref=e921]:
+                    - generic [ref=e922]: "2"
+                    - generic [ref=e923]:
+                      - generic [ref=e924]: Drywall
+                      - text: saturates
+                  - generic [ref=e925]:
+                    - generic [ref=e926]: "3"
+                    - generic [ref=e927]:
+                      - generic [ref=e928]: Mold in
+                      - text: 48 hrs
+                  - generic [ref=e929]:
+                    - generic [ref=e930]: "4"
+                    - generic [ref=e931]:
+                      - generic [ref=e932]: Framing
+                      - text: rots
+              - generic [ref=e933]:
+                - generic [ref=e934]:
+                  - generic [ref=e935]: The Risk
+                  - paragraph [ref=e936]: Drywall loses structural integrity. Mold colonies form within 24–48 hours.
+                - generic [ref=e937]:
+                  - generic [ref=e938]: Our Fix
+                  - paragraph [ref=e939]: Stop the source, remove damaged drywall, treat for mold, rebuild and finish.
+              - button "Book Free Inspection No Obligation" [ref=e940] [cursor=pointer]:
+                - generic [ref=e941]: Book Free Inspection
+                - generic [ref=e942]:
+                  - generic [ref=e943]: No Obligation
+                  - img [ref=e944]
+            - complementary [ref=e946]:
+              - img "Evidence" [ref=e948]
+              - generic [ref=e949]:
+                - generic [ref=e950]: Evidence Log
+                - paragraph [ref=e951]: Inspectors often find moisture levels exceeding 20% behind seemingly intact surfaces.
+                - list [ref=e952]:
+                  - listitem [ref=e953]:
+                    - img [ref=e954]
+                    - text: Non-invasive moisture testing
+                  - listitem [ref=e956]:
+                    - img [ref=e957]
+                    - text: Thermal imaging of wet areas
+          - generic [ref=e959]:
+            - button "Show warning 1" [ref=e960] [cursor=pointer]
+            - button "Show warning 2" [ref=e961] [cursor=pointer]
+            - button "Show warning 3" [ref=e962] [cursor=pointer]
+            - button "Show warning 4" [ref=e963] [cursor=pointer]
+            - button "Show warning 5" [ref=e964] [cursor=pointer]
+            - generic [ref=e965]: 01 / 05
+        - generic [ref=e966]:
+          - img "J&R NW Construction — exterior work" [ref=e967]
+          - generic [ref=e968]:
+            - generic [ref=e969]: Portland's Trusted Contractor
+            - heading "Built With Pride" [level=2] [ref=e970]:
+              - text: Built With
+              - emphasis [ref=e971]: Pride
+            - paragraph [ref=e972]: "Over 20 years serving Portland homes. Licensed · CCB #232708 · 5-star rated."
+            - generic [ref=e973]:
+              - generic [ref=e974]:
+                - generic [ref=e975]: 20+
+                - generic [ref=e976]: Years Experience
+              - generic [ref=e977]:
+                - generic [ref=e978]: 50+
+                - generic [ref=e979]: Families Served
+              - generic [ref=e980]:
+                - generic [ref=e981]: ★ 5.0
+                - generic [ref=e982]: Google Rating
+              - generic [ref=e983]:
+                - generic [ref=e984]: 24/7
+                - generic [ref=e985]: Emergency
+      - generic [ref=e988]:
+        - generic [ref=e989]:
+          - generic [ref=e990]:
+            - generic [ref=e991]: Recent Work
+            - heading "Our Projects" [level=2] [ref=e992]:
+              - text: Our
+              - emphasis [ref=e993]: Projects
+          - link "View All Work" [ref=e994] [cursor=pointer]:
+            - /url: /projects
+            - text: View All Work
+            - img [ref=e995]
+        - generic [ref=e997]:
+          - generic [ref=e998] [cursor=pointer]:
+            - img "Roof & Interior Restoration – Tree Damage" [ref=e999]
+            - generic [ref=e1000]:
+              - generic [ref=e1001]: emergency
+              - generic [ref=e1002]: Roof & Interior Restoration – Tree Damage
+          - generic [ref=e1003] [cursor=pointer]:
+            - img "Residential Renovation & Structural Repair J&R Construction" [ref=e1004]
+            - generic [ref=e1005]:
+              - generic [ref=e1006]: emergency
+              - generic [ref=e1007]: Residential Renovation & Structural Repair J&R Construction
+          - generic [ref=e1008] [cursor=pointer]:
+            - img "Commercial Ceiling Restoration – Drywall Installation, Framing Repair & Interior Finish Work." [ref=e1009]
+            - generic [ref=e1010]:
+              - generic [ref=e1011]: drywall
+              - generic [ref=e1012]: Commercial Ceiling Restoration – Drywall Installation, Framing Repair & Interior Finish Work.
+          - generic [ref=e1013] [cursor=pointer]:
+            - img "Interior Remodel – Insulation Installation, Drywall & Wall Framing Restoration." [ref=e1014]
+            - generic [ref=e1015]:
+              - generic [ref=e1016]: drywall
+              - generic [ref=e1017]: Interior Remodel – Insulation Installation, Drywall & Wall Framing Restoration.
+          - generic [ref=e1018] [cursor=pointer]:
+            - img "Bathroom Vanity Restoration – Countertop Installation & Cabinet Refinishing." [ref=e1019]
+            - generic [ref=e1020]:
+              - generic [ref=e1021]: remodeling
+              - generic [ref=e1022]: Bathroom Vanity Restoration – Countertop Installation & Cabinet Refinishing.
+      - generic [ref=e1027]:
+        - generic [ref=e1028]:
+          - generic [ref=e1029]: Where We Work
+          - heading "Serving Portland Metro" [level=2] [ref=e1030]:
+            - text: Serving
+            - emphasis [ref=e1031]: Portland Metro
+          - paragraph [ref=e1032]: "Licensed contractor serving 9 cities across the Portland metro area. CCB #232708. Available 24/7 for emergencies."
+          - generic [ref=e1033]:
+            - generic [ref=e1034]:
+              - img [ref=e1035]
+              - text: Portland
+            - generic [ref=e1037]:
+              - img [ref=e1038]
+              - text: Tigard
+            - generic [ref=e1040]:
+              - img [ref=e1041]
+              - text: Tualatin
+            - generic [ref=e1043]:
+              - img [ref=e1044]
+              - text: Gresham
+            - generic [ref=e1046]:
+              - img [ref=e1047]
+              - text: Happy Valley
+            - generic [ref=e1049]:
+              - img [ref=e1050]
+              - text: Oregon City
+            - generic [ref=e1052]:
+              - img [ref=e1053]
+              - text: Milwaukie
+            - generic [ref=e1055]:
+              - img [ref=e1056]
+              - text: Hillsboro
+            - generic [ref=e1058]:
+              - img [ref=e1059]
+              - text: Beaverton
+        - iframe [ref=e1062]:
+          
+      - generic [ref=e1067]:
+        - generic [ref=e1068]: Ready to Start?
+        - heading "Get Your Free Estimate Today" [level=2] [ref=e1069]:
+          - text: Get Your Free Estimate
+          - emphasis [ref=e1070]: Today
+        - paragraph [ref=e1071]: No obligation. No pressure. Just a straight answer on what your project costs and how fast we can start.
+        - generic [ref=e1072]:
+          - button "Get Free Estimate" [ref=e1073] [cursor=pointer]:
+            - text: Get Free Estimate
+            - img [ref=e1074]
+          - link "(503) 998-2340" [ref=e1076] [cursor=pointer]:
+            - /url: tel:5039982340
+            - img
+            - text: (503) 998-2340
+        - generic [ref=e1078]:
+          - generic [ref=e1079]: ★★★★★ 5.0 on Google
+          - generic [ref=e1080]: ·
+          - generic [ref=e1081]: "Licensed & Insured · CCB #232708"
+          - generic [ref=e1082]: ·
+          - generic [ref=e1083]: 50+ Families Served
+    - contentinfo [ref=e1084]:
+      - generic [ref=e1085]:
+        - generic [ref=e1086]:
+          - generic [ref=e1087]:
+            - img "J&R NW Construction" [ref=e1089]
+            - generic [ref=e1090]:
+              - text: J&R NW Construction
+              - generic [ref=e1091]: Build Better, Restore Stronger
+          - paragraph [ref=e1092]: Family-owned and operated. Serving Oregon with integrity, craftsmanship, and 20+ years of experience.
+          - generic [ref=e1093]:
+            - link "Facebook" [ref=e1094] [cursor=pointer]:
+              - /url: https://www.facebook.com/JRNWConstruction/
+              - img [ref=e1095]
+            - link "Instagram" [ref=e1097] [cursor=pointer]:
+              - /url: https://www.instagram.com/jandrnwconstruction/
+              - img [ref=e1098]
+            - link "Yelp" [ref=e1100] [cursor=pointer]:
+              - /url: https://m.yelp.com/biz/j-and-r-nw-construction-portland-5
+              - img "Yelp" [ref=e1101]
+            - link "Google" [ref=e1102] [cursor=pointer]:
+              - /url: https://www.google.com/maps/place/J%26R+NW+Construction/
+              - img [ref=e1103]
+        - generic [ref=e1108]:
+          - heading "Services" [level=4] [ref=e1109]
+          - list [ref=e1110]:
+            - listitem [ref=e1111]:
+              - link "Interior Construction & Remodeling" [ref=e1112] [cursor=pointer]:
+                - /url: /services/interior-construction-and-remodeling
+            - listitem [ref=e1113]:
+              - link "Restoration & Reconstruction" [ref=e1114] [cursor=pointer]:
+                - /url: /services/restoration-and-reconstruction
+            - listitem [ref=e1115]:
+              - link "Mitigation & Emergency Services" [ref=e1116] [cursor=pointer]:
+                - /url: /services/mitigation-and-emergency-services
+            - listitem [ref=e1117]:
+              - link "Siding" [ref=e1118] [cursor=pointer]:
+                - /url: /services/siding
+            - listitem [ref=e1119]:
+              - link "Paint" [ref=e1120] [cursor=pointer]:
+                - /url: /services/paint
+            - listitem [ref=e1121]:
+              - link "Drywall" [ref=e1122] [cursor=pointer]:
+                - /url: /services/drywall
+        - generic [ref=e1123]:
+          - heading "Home" [level=4] [ref=e1124]
+          - list [ref=e1125]:
+            - listitem [ref=e1126]:
+              - link "Home" [ref=e1127] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e1128]:
+              - link "Services" [ref=e1129] [cursor=pointer]:
+                - /url: /services
+            - listitem [ref=e1130]:
+              - link "Projects" [ref=e1131] [cursor=pointer]:
+                - /url: /projects
+            - listitem [ref=e1132]:
+              - link "Free Estimate" [ref=e1133] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e1134]: "CCB: 232708"
+      - generic [ref=e1135]:
+        - generic [ref=e1136]: © 2025 J&R NW Construction LLC
+        - generic [ref=e1137]:
+          - generic [ref=e1138]: Licensed
+          - generic [ref=e1140]: Bonded
+          - generic [ref=e1142]: Insured
+          - generic [ref=e1144]: BBB
+    - button "Emergency contact" [ref=e1147] [cursor=pointer]:
+      - img [ref=e1149]
+      - text: EMERGENCY – 24/7
+  - alert [ref=e1151]

@@ -1,0 +1,947 @@
+import Link from 'next/link';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import styles from './InteractiveHouse.module.css';
+
+const EXTERIOR_HOTSPOTS = [
+  {
+    id: 'restoration',
+    label: 'Restoration',
+    description: 'Roof, chimney, and upper envelope compare storm damage on the left against full repair on the right.',
+    x: '66%',
+    y: '19%',
+    href: '/services/restoration-and-reconstruction',
+  },
+  {
+    id: 'siding',
+    label: 'Siding',
+    description: 'Front facade shifts from brittle stained cladding on the left to straight sealed siding on the right.',
+    x: '33%',
+    y: '50%',
+    href: '/services/siding',
+  },
+  {
+    id: 'vinyl',
+    label: 'Vinyl',
+    description: 'Side wall compares warped faded vinyl on the left with clean weather-resistant panels on the right.',
+    x: '77%',
+    y: '45%',
+    href: '/services/siding',
+  },
+  {
+    id: 'painting',
+    label: 'Painting',
+    description: 'Body and trim split from peeling chalked paint on the left to crisp premium finish on the right.',
+    x: '54%',
+    y: '58%',
+    href: '/services/paint',
+  },
+  {
+    id: 'emergency',
+    label: 'Emergency',
+    description: 'Foundation and lower openings show active damage and intrusion on the left, dried secured structure on the right.',
+    x: '19%',
+    y: '69%',
+    href: '/services/mitigation-and-emergency-services',
+  },
+  {
+    id: 'remodeling',
+    label: 'Remodeling',
+    description: 'Garage and entry compare dated curb appeal on the left against upgraded frontage on the right.',
+    x: '63%',
+    y: '67%',
+    href: '/services/interior-construction-and-remodeling',
+  },
+];
+
+const INTERIOR_HOTSPOTS = [
+  {
+    id: 'drywall',
+    label: 'Drywall',
+    description: 'Wall surfaces split from patched cracked drywall on the left to smooth finished planes on the right.',
+    x: '25%',
+    y: '32%',
+    href: '/services/drywall',
+  },
+  {
+    id: 'painting',
+    label: 'Painting',
+    description: 'Interior walls and trim compare uneven stained coverage on the left with clean bright finish on the right.',
+    x: '47%',
+    y: '24%',
+    href: '/services/paint',
+  },
+  {
+    id: 'mitigation',
+    label: 'Mitigation',
+    description: 'Lower wall and floor show active moisture on the left and dried stabilized flooring on the right.',
+    x: '30%',
+    y: '76%',
+    href: '/services/mitigation-and-emergency-services',
+  },
+  {
+    id: 'restoration',
+    label: 'Restoration',
+    description: 'Rear wall and shower zone shift from exposed water-damaged assembly to rebuilt condition.',
+    x: '77%',
+    y: '38%',
+    href: '/services/restoration-and-reconstruction',
+  },
+  {
+    id: 'remodeling',
+    label: 'Remodeling',
+    description: 'Vanity and built-ins compare dated layout on the left with upgraded millwork and stone on the right.',
+    x: '68%',
+    y: '67%',
+    href: '/services/interior-construction-and-remodeling',
+  },
+];
+
+const EXTERIOR_VARIANTS = {
+  restoration: {
+    before: 'Damaged',
+    after: 'Restored',
+    roofLeft: '#667283',
+    roofRight: '#264f7c',
+    wallLeft: '#d7ccbf',
+    wallRight: '#f4efe5',
+    sideLeft: '#c9cfd7',
+    sideRight: '#f0f5fb',
+    trimLeft: '#e0d8c8',
+    trimRight: '#ffffff',
+    garageLeft: '#7e6a5a',
+    garageRight: '#3a5978',
+    foundationLeft: '#705543',
+    foundationRight: '#31485f',
+    windowLeft: '#93a8c0',
+    windowRight: '#d4e6ff',
+    lawnLeft: '#57614e',
+    lawnRight: '#6ea05d',
+  },
+  siding: {
+    before: 'Worn',
+    after: 'New',
+    roofLeft: '#2d4d71',
+    roofRight: '#2d4d71',
+    wallLeft: '#ad9277',
+    wallRight: '#f5efe4',
+    sideLeft: '#9ca5af',
+    sideRight: '#edf3fa',
+    trimLeft: '#d0c4ae',
+    trimRight: '#ffffff',
+    garageLeft: '#7a6557',
+    garageRight: '#7a6557',
+    foundationLeft: '#3d4b58',
+    foundationRight: '#3d4b58',
+    windowLeft: '#a4b7ca',
+    windowRight: '#d4e6ff',
+    lawnLeft: '#617254',
+    lawnRight: '#6ea05d',
+  },
+  vinyl: {
+    before: 'Warped',
+    after: 'Sealed',
+    roofLeft: '#2d4d71',
+    roofRight: '#2d4d71',
+    wallLeft: '#d7ccbf',
+    wallRight: '#f4efe5',
+    sideLeft: '#8a929d',
+    sideRight: '#f1f6fb',
+    trimLeft: '#d9cfbf',
+    trimRight: '#ffffff',
+    garageLeft: '#7a6557',
+    garageRight: '#7a6557',
+    foundationLeft: '#3d4b58',
+    foundationRight: '#3d4b58',
+    windowLeft: '#9ab1c7',
+    windowRight: '#d4e6ff',
+    lawnLeft: '#5e6f52',
+    lawnRight: '#6ea05d',
+  },
+  painting: {
+    before: 'Peeling',
+    after: 'Fresh',
+    roofLeft: '#2d4d71',
+    roofRight: '#2d4d71',
+    wallLeft: '#c6b09b',
+    wallRight: '#f8f6ef',
+    sideLeft: '#b8c4d0',
+    sideRight: '#f1f6fb',
+    trimLeft: '#bda485',
+    trimRight: '#ffffff',
+    garageLeft: '#7a6557',
+    garageRight: '#8e8076',
+    foundationLeft: '#3d4b58',
+    foundationRight: '#3d4b58',
+    windowLeft: '#a6bad0',
+    windowRight: '#d4e6ff',
+    lawnLeft: '#607052',
+    lawnRight: '#6ea05d',
+  },
+  emergency: {
+    before: 'Active loss',
+    after: 'Secured',
+    roofLeft: '#4d5f71',
+    roofRight: '#2d4d71',
+    wallLeft: '#d2c4b6',
+    wallRight: '#f5efe4',
+    sideLeft: '#c7ced6',
+    sideRight: '#eef3fa',
+    trimLeft: '#d5cab9',
+    trimRight: '#ffffff',
+    garageLeft: '#7d6557',
+    garageRight: '#3a5978',
+    foundationLeft: '#7d563d',
+    foundationRight: '#304e67',
+    windowLeft: '#7f96ab',
+    windowRight: '#c9e2ff',
+    lawnLeft: '#615547',
+    lawnRight: '#6ea05d',
+  },
+  remodeling: {
+    before: 'Dated',
+    after: 'Upgraded',
+    roofLeft: '#2d4d71',
+    roofRight: '#2d4d71',
+    wallLeft: '#d6cbbf',
+    wallRight: '#f5efe5',
+    sideLeft: '#c9cfd7',
+    sideRight: '#eef4fb',
+    trimLeft: '#d8cfbe',
+    trimRight: '#ffffff',
+    garageLeft: '#7b6657',
+    garageRight: '#2c4f77',
+    foundationLeft: '#3d4b58',
+    foundationRight: '#304a63',
+    windowLeft: '#9fb3c7',
+    windowRight: '#d4e6ff',
+    lawnLeft: '#607052',
+    lawnRight: '#6ea05d',
+  },
+};
+
+const INTERIOR_VARIANTS = {
+  drywall: {
+    before: 'Cracked',
+    after: 'Finished',
+    wallLeft: '#b59a7f',
+    wallRight: '#f6f2ea',
+    sideLeft: '#ab967f',
+    sideRight: '#efe7dc',
+    floorLeft: '#7f6b57',
+    floorRight: '#9f866c',
+    trimLeft: '#6e5b4e',
+    trimRight: '#ffffff',
+    cabinetLeft: '#9d8772',
+    cabinetRight: '#f4efe6',
+    topLeft: '#b49f8e',
+    topRight: '#f4f5f8',
+    glassLeft: '#bfc7cf',
+    glassRight: '#edf5ff',
+    moistureLeft: '#86664f',
+    moistureRight: '#7aa7d8',
+  },
+  painting: {
+    before: 'Stained',
+    after: 'Fresh',
+    wallLeft: '#cdb29b',
+    wallRight: '#fcfaf3',
+    sideLeft: '#c4ae99',
+    sideRight: '#f5efe6',
+    floorLeft: '#8d765f',
+    floorRight: '#9f866c',
+    trimLeft: '#a88d73',
+    trimRight: '#ffffff',
+    cabinetLeft: '#9d8772',
+    cabinetRight: '#f4efe6',
+    topLeft: '#b49f8e',
+    topRight: '#f4f5f8',
+    glassLeft: '#bfc7cf',
+    glassRight: '#edf5ff',
+    moistureLeft: '#86664f',
+    moistureRight: '#7aa7d8',
+  },
+  mitigation: {
+    before: 'Wet',
+    after: 'Dry',
+    wallLeft: '#c9b7a6',
+    wallRight: '#f6f2ea',
+    sideLeft: '#c0af9d',
+    sideRight: '#efe7dc',
+    floorLeft: '#6e5c50',
+    floorRight: '#7fa3c8',
+    trimLeft: '#6f594a',
+    trimRight: '#dbe8f8',
+    cabinetLeft: '#9d8772',
+    cabinetRight: '#f4efe6',
+    topLeft: '#b49f8e',
+    topRight: '#f4f5f8',
+    glassLeft: '#bfc7cf',
+    glassRight: '#edf5ff',
+    moistureLeft: '#8a684e',
+    moistureRight: '#6fa7dd',
+  },
+  restoration: {
+    before: 'Exposed',
+    after: 'Rebuilt',
+    wallLeft: '#baa389',
+    wallRight: '#f6f2ea',
+    sideLeft: '#b39d87',
+    sideRight: '#efe7dc',
+    floorLeft: '#8d765f',
+    floorRight: '#9f866c',
+    trimLeft: '#715f50',
+    trimRight: '#ffffff',
+    cabinetLeft: '#98816d',
+    cabinetRight: '#f4efe6',
+    topLeft: '#a58d7c',
+    topRight: '#f4f5f8',
+    glassLeft: '#b6bdc4',
+    glassRight: '#edf5ff',
+    moistureLeft: '#7f5f49',
+    moistureRight: '#7aa7d8',
+  },
+  remodeling: {
+    before: 'Outdated',
+    after: 'Upgraded',
+    wallLeft: '#c9b7a6',
+    wallRight: '#f6f2ea',
+    sideLeft: '#c0af9d',
+    sideRight: '#efe7dc',
+    floorLeft: '#7f6b57',
+    floorRight: '#a78d72',
+    trimLeft: '#6e5b4e',
+    trimRight: '#ffffff',
+    cabinetLeft: '#8e7764',
+    cabinetRight: '#274a70',
+    topLeft: '#a48f7f',
+    topRight: '#f4f5f8',
+    glassLeft: '#bfc7cf',
+    glassRight: '#edf5ff',
+    moistureLeft: '#86664f',
+    moistureRight: '#7aa7d8',
+  },
+};
+
+function SplitPolygon({ splitId, points, leftFill, rightFill, className }) {
+  return (
+    <>
+      <g clipPath={`url(#${splitId}-left)`}>
+        <polygon points={points} fill={leftFill} className={className} />
+      </g>
+      <g clipPath={`url(#${splitId}-right)`}>
+        <polygon points={points} fill={rightFill} className={className} />
+      </g>
+    </>
+  );
+}
+
+function SplitRect({ splitId, x, y, width, height, rx = 0, leftFill, rightFill, className }) {
+  return (
+    <>
+      <g clipPath={`url(#${splitId}-left)`}>
+        <rect x={x} y={y} width={width} height={height} rx={rx} fill={leftFill} className={className} />
+      </g>
+      <g clipPath={`url(#${splitId}-right)`}>
+        <rect x={x} y={y} width={width} height={height} rx={rx} fill={rightFill} className={className} />
+      </g>
+    </>
+  );
+}
+
+function HotspotButton({ item, active, onActivate }) {
+  return (
+    <button
+      type="button"
+      className={`${styles.hotspotBtn} ${active ? styles.hotspotBtnActive : ''}`}
+      style={{ left: item.x, top: item.y }}
+      onMouseEnter={() => onActivate(item.id)}
+      onFocus={() => onActivate(item.id)}
+      onClick={() => onActivate(item.id)}
+      aria-label={item.label}
+      aria-pressed={active}
+    >
+      <span className={styles.hotspotPulse} aria-hidden="true" />
+      <span className={styles.hotspotDot} />
+      <span className={styles.hotspotLabel}>{item.label}</span>
+    </button>
+  );
+}
+
+function ExteriorScene({ activeId }) {
+  const variant = EXTERIOR_VARIANTS[activeId] || EXTERIOR_VARIANTS.restoration;
+  const roofLines = Array.from({ length: 9 }, (_, index) => 135 + index * 18);
+  const frontSiding = Array.from({ length: 10 }, (_, index) => 255 + index * 16);
+  const sideSiding = Array.from({ length: 8 }, (_, index) => 268 + index * 18);
+
+  return (
+    <svg
+      viewBox="0 0 900 620"
+      className={styles.sceneSvg}
+      data-service={activeId}
+      role="img"
+      aria-label="Interactive exterior house service comparison"
+    >
+      <defs>
+        <linearGradient id="ext-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#18243a" />
+          <stop offset="100%" stopColor="#0b1426" />
+        </linearGradient>
+        <radialGradient id="ext-glow" cx="50%" cy="18%" r="60%">
+          <stop offset="0%" stopColor="rgba(105, 144, 212, 0.7)" />
+          <stop offset="100%" stopColor="rgba(105, 144, 212, 0)" />
+        </radialGradient>
+        <clipPath id="ext-left">
+          <rect x="0" y="0" width="450" height="620" />
+        </clipPath>
+        <clipPath id="ext-right">
+          <rect x="450" y="0" width="450" height="620" />
+        </clipPath>
+        <clipPath id="ext-front-wall">
+          <polygon points="258,250 516,250 516,448 258,448" />
+        </clipPath>
+        <clipPath id="ext-side-wall">
+          <polygon points="516,250 694,207 694,440 516,448" />
+        </clipPath>
+        <clipPath id="ext-roof-main">
+          <polygon points="230,234 446,120 607,199 405,300" />
+        </clipPath>
+        <clipPath id="ext-roof-side">
+          <polygon points="446,120 618,163 770,247 607,199" />
+        </clipPath>
+      </defs>
+
+      <g data-piece>
+        <rect x="0" y="0" width="900" height="620" rx="34" fill="url(#ext-bg)" />
+        <ellipse cx="454" cy="122" rx="250" ry="110" fill="url(#ext-glow)" opacity="0.7" />
+      </g>
+
+      <g data-piece className={styles.landscapeGroup}>
+        <ellipse cx="470" cy="520" rx="320" ry="46" className={styles.groundGlow} />
+        <path
+          d="M165 506C255 474 365 480 453 492C552 505 626 492 735 475L770 520H130L165 506Z"
+          fill={variant.lawnLeft}
+          opacity="0.58"
+        />
+        <g clipPath="url(#ext-right)">
+          <path
+            d="M165 506C255 474 365 480 453 492C552 505 626 492 735 475L770 520H130L165 506Z"
+            fill={variant.lawnRight}
+            opacity="0.82"
+          />
+        </g>
+      </g>
+
+      <g data-piece className={styles.houseShadowGroup}>
+        <ellipse cx="472" cy="466" rx="248" ry="42" className={styles.houseShadow} />
+      </g>
+
+      <g data-piece className={styles.houseVector}>
+        <SplitPolygon
+          splitId="ext"
+          points="235,450 520,450 700,438 650,494 240,494"
+          leftFill={variant.foundationLeft}
+          rightFill={variant.foundationRight}
+          className={styles.foundationFace}
+        />
+
+        <SplitPolygon
+          splitId="ext"
+          points="230,234 446,120 607,199 405,300"
+          leftFill={variant.roofLeft}
+          rightFill={variant.roofRight}
+          className={styles.roofPlane}
+        />
+        <SplitPolygon
+          splitId="ext"
+          points="446,120 618,163 770,247 607,199"
+          leftFill={variant.roofLeft}
+          rightFill={variant.roofRight}
+          className={styles.roofPlaneSide}
+        />
+        <g clipPath="url(#ext-roof-main)">
+          {roofLines.map((y) => (
+            <line key={`roof-main-${y}`} x1="254" y1={y} x2="572" y2={y + 86} className={styles.roofLine} />
+          ))}
+        </g>
+        <g clipPath="url(#ext-roof-side)">
+          {roofLines.map((y) => (
+            <line key={`roof-side-${y}`} x1="452" y1={y - 8} x2="760" y2={y + 110} className={styles.roofLine} />
+          ))}
+        </g>
+
+        <SplitRect
+          splitId="ext"
+          x="480"
+          y="112"
+          width="46"
+          height="96"
+          rx="6"
+          leftFill="#dde4ef"
+          rightFill="#f7fbff"
+          className={styles.chimneyBody}
+        />
+        <SplitPolygon
+          splitId="ext"
+          points="470,108 531,108 544,124 456,124"
+          leftFill="#25466d"
+          rightFill="#3f6288"
+          className={styles.chimneyCap}
+        />
+
+        <SplitPolygon
+          splitId="ext"
+          points="258,250 516,250 516,448 258,448"
+          leftFill={variant.wallLeft}
+          rightFill={variant.wallRight}
+          className={styles.frontWall}
+        />
+        <SplitPolygon
+          splitId="ext"
+          points="516,250 694,207 694,440 516,448"
+          leftFill={variant.sideLeft}
+          rightFill={variant.sideRight}
+          className={styles.sideWall}
+        />
+        <SplitPolygon
+          splitId="ext"
+          points="308,177 406,131 471,166 356,228"
+          leftFill={variant.wallLeft}
+          rightFill={variant.wallRight}
+          className={styles.gableFace}
+        />
+
+        <g clipPath="url(#ext-front-wall)">
+          {frontSiding.map((y) => (
+            <line key={`front-siding-${y}`} x1="250" y1={y} x2="524" y2={y} className={styles.sidingLine} />
+          ))}
+        </g>
+        <g clipPath="url(#ext-side-wall)">
+          {sideSiding.map((y) => (
+            <line key={`side-siding-${y}`} x1="510" y1={y} x2="716" y2={y - 38} className={styles.sidingLine} />
+          ))}
+        </g>
+
+        <SplitPolygon
+          splitId="ext"
+          points="198,304 318,277 318,444 198,452"
+          leftFill={variant.wallLeft}
+          rightFill={variant.wallRight}
+          className={styles.garageFace}
+        />
+        <SplitPolygon
+          splitId="ext"
+          points="164,297 292,220 366,251 318,277"
+          leftFill={variant.roofLeft}
+          rightFill={variant.roofRight}
+          className={styles.garageRoof}
+        />
+
+        <SplitRect
+          splitId="ext"
+          x="220"
+          y="326"
+          width="80"
+          height="114"
+          rx="6"
+          leftFill={variant.garageLeft}
+          rightFill={variant.garageRight}
+          className={styles.garageDoor}
+        />
+        <SplitRect
+          splitId="ext"
+          x="329"
+          y="316"
+          width="118"
+          height="124"
+          rx="6"
+          leftFill={variant.garageLeft}
+          rightFill={variant.garageRight}
+          className={styles.garageDoor}
+        />
+        <SplitRect
+          splitId="ext"
+          x="462"
+          y="323"
+          width="48"
+          height="125"
+          rx="6"
+          leftFill={variant.garageLeft}
+          rightFill={variant.garageRight}
+          className={styles.frontDoor}
+        />
+        <SplitPolygon
+          splitId="ext"
+          points="516,306 598,287 598,450 516,448"
+          leftFill={variant.garageLeft}
+          rightFill={variant.garageRight}
+          className={styles.entryVolume}
+        />
+
+        <SplitRect
+          splitId="ext"
+          x="286"
+          y="283"
+          width="56"
+          height="62"
+          rx="6"
+          leftFill={variant.windowLeft}
+          rightFill={variant.windowRight}
+          className={styles.windowFrame}
+        />
+        <SplitRect
+          splitId="ext"
+          x="546"
+          y="316"
+          width="66"
+          height="74"
+          rx="6"
+          leftFill={variant.windowLeft}
+          rightFill={variant.windowRight}
+          className={styles.windowFrame}
+        />
+        <SplitRect
+          splitId="ext"
+          x="394"
+          y="223"
+          width="58"
+          height="62"
+          rx="6"
+          leftFill={variant.windowLeft}
+          rightFill={variant.windowRight}
+          className={styles.windowFrame}
+        />
+        <SplitPolygon
+          splitId="ext"
+          points="626,290 675,278 675,350 626,357"
+          leftFill={variant.windowLeft}
+          rightFill={variant.windowRight}
+          className={styles.windowFrame}
+        />
+
+        <line x1="450" y1="124" x2="450" y2="492" className={styles.splitGuide} />
+      </g>
+    </svg>
+  );
+}
+
+function InteriorScene({ activeId }) {
+  const variant = INTERIOR_VARIANTS[activeId] || INTERIOR_VARIANTS.drywall;
+  const backWallLines = Array.from({ length: 8 }, (_, index) => 165 + index * 26);
+
+  return (
+    <svg
+      viewBox="0 0 900 620"
+      className={styles.sceneSvg}
+      data-service={activeId}
+      role="img"
+      aria-label="Interactive interior service comparison"
+    >
+      <defs>
+        <linearGradient id="int-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#192337" />
+          <stop offset="100%" stopColor="#0b1322" />
+        </linearGradient>
+        <radialGradient id="int-glow" cx="50%" cy="20%" r="62%">
+          <stop offset="0%" stopColor="rgba(125, 157, 215, 0.55)" />
+          <stop offset="100%" stopColor="rgba(125, 157, 215, 0)" />
+        </radialGradient>
+        <clipPath id="int-left">
+          <rect x="0" y="0" width="450" height="620" />
+        </clipPath>
+        <clipPath id="int-right">
+          <rect x="450" y="0" width="450" height="620" />
+        </clipPath>
+        <clipPath id="int-back-wall">
+          <polygon points="185,155 585,155 585,355 185,355" />
+        </clipPath>
+        <clipPath id="int-floor">
+          <polygon points="175,360 590,360 703,435 276,455" />
+        </clipPath>
+      </defs>
+
+      <g data-piece>
+        <rect x="0" y="0" width="900" height="620" rx="34" fill="url(#int-bg)" />
+        <ellipse cx="450" cy="140" rx="240" ry="100" fill="url(#int-glow)" opacity="0.72" />
+      </g>
+
+      <g data-piece className={styles.houseShadowGroup}>
+        <ellipse cx="452" cy="480" rx="238" ry="40" className={styles.houseShadow} />
+      </g>
+
+      <g data-piece className={styles.roomVector}>
+        <SplitPolygon
+          splitId="int"
+          points="185,155 585,155 585,355 185,355"
+          leftFill={variant.wallLeft}
+          rightFill={variant.wallRight}
+          className={styles.backWall}
+        />
+        <SplitPolygon
+          splitId="int"
+          points="585,155 715,205 715,395 585,355"
+          leftFill={variant.sideLeft}
+          rightFill={variant.sideRight}
+          className={styles.sideRoomWall}
+        />
+        <SplitPolygon
+          splitId="int"
+          points="175,360 590,360 703,435 276,455"
+          leftFill={variant.floorLeft}
+          rightFill={variant.floorRight}
+          className={styles.floorPlane}
+        />
+        <SplitPolygon
+          splitId="int"
+          points="186,345 587,345 587,360 186,360"
+          leftFill={variant.trimLeft}
+          rightFill={variant.trimRight}
+          className={styles.baseTrim}
+        />
+
+        <g clipPath="url(#int-back-wall)">
+          {backWallLines.map((y) => (
+            <line key={`back-wall-${y}`} x1="178" y1={y} x2="590" y2={y} className={styles.wallLine} />
+          ))}
+        </g>
+        <g clipPath="url(#int-floor)">
+          {Array.from({ length: 11 }, (_, index) => (
+            <line
+              key={`floor-${index}`}
+              x1={210 + index * 38}
+              y1="362"
+              x2={305 + index * 36}
+              y2="453"
+              className={styles.floorLine}
+            />
+          ))}
+        </g>
+
+        <SplitRect
+          splitId="int"
+          x="250"
+          y="180"
+          width="86"
+          height="120"
+          rx="10"
+          leftFill={variant.glassLeft}
+          rightFill={variant.glassRight}
+          className={styles.showerGlass}
+        />
+        <SplitRect
+          splitId="int"
+          x="370"
+          y="205"
+          width="78"
+          height="76"
+          rx="8"
+          leftFill={variant.moistureLeft}
+          rightFill={variant.wallRight}
+          className={styles.patchZone}
+        />
+
+        <SplitRect
+          splitId="int"
+          x="536"
+          y="205"
+          width="82"
+          height="88"
+          rx="8"
+          leftFill={variant.glassLeft}
+          rightFill={variant.glassRight}
+          className={styles.windowFrame}
+        />
+
+        <SplitPolygon
+          splitId="int"
+          points="490,305 650,305 650,410 490,420"
+          leftFill={variant.cabinetLeft}
+          rightFill={variant.cabinetRight}
+          className={styles.vanityBody}
+        />
+        <SplitPolygon
+          splitId="int"
+          points="474,286 660,286 677,305 490,305"
+          leftFill={variant.topLeft}
+          rightFill={variant.topRight}
+          className={styles.counterTop}
+        />
+        <SplitRect
+          splitId="int"
+          x="548"
+          y="278"
+          width="56"
+          height="16"
+          rx="8"
+          leftFill="#e6ecf2"
+          rightFill="#ffffff"
+          className={styles.sinkBasin}
+        />
+
+        <SplitPolygon
+          splitId="int"
+          points="640,244 708,268 708,365 640,353"
+          leftFill={variant.cabinetLeft}
+          rightFill={variant.cabinetRight}
+          className={styles.sideCabinet}
+        />
+
+        <SplitPolygon
+          splitId="int"
+          points="216,346 304,346 314,458 188,458 196,396"
+          leftFill={variant.moistureLeft}
+          rightFill={variant.moistureRight}
+          className={styles.moistureTrack}
+        />
+
+        <line x1="450" y1="150" x2="450" y2="470" className={styles.splitGuide} />
+      </g>
+    </svg>
+  );
+}
+
+export default function InteractiveHouse() {
+  const [mode, setMode] = useState('exterior');
+  const [activeId, setActiveId] = useState(EXTERIOR_HOTSPOTS[0].id);
+  const wrapRef = useRef(null);
+  const detailRef = useRef(null);
+
+  const hotspots = mode === 'exterior' ? EXTERIOR_HOTSPOTS : INTERIOR_HOTSPOTS;
+
+  const activeHotspot = useMemo(
+    () => hotspots.find((item) => item.id === activeId) || hotspots[0],
+    [activeId, hotspots]
+  );
+
+  const compareState = mode === 'exterior' ? EXTERIOR_VARIANTS[activeId] : INTERIOR_VARIANTS[activeId];
+
+  useEffect(() => {
+    setActiveId((mode === 'exterior' ? EXTERIOR_HOTSPOTS : INTERIOR_HOTSPOTS)[0].id);
+  }, [mode]);
+
+  useGSAP(
+    () => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const pieces = gsap.utils.toArray('[data-piece]');
+      const hotspotsEls = gsap.utils.toArray(`.${styles.hotspotBtn}`);
+
+      gsap.fromTo(
+        pieces,
+        {
+          autoAlpha: 0,
+          y: (index) => (index % 2 === 0 ? 42 : -32),
+          x: (index) => (index % 3 === 0 ? -36 : 28),
+          rotate: (index) => (index % 2 === 0 ? -3 : 3),
+          scale: 0.92,
+          transformOrigin: '50% 50%',
+        },
+        {
+          autoAlpha: 1,
+          x: 0,
+          y: 0,
+          rotate: 0,
+          scale: 1,
+          duration: 0.78,
+          stagger: 0.07,
+          ease: 'power3.out',
+        }
+      );
+
+      gsap.fromTo(
+        hotspotsEls,
+        { autoAlpha: 0, scale: 0.7, y: 12 },
+        {
+          autoAlpha: 1,
+          scale: 1,
+          y: 0,
+          duration: 0.42,
+          stagger: 0.05,
+          ease: 'back.out(1.7)',
+          delay: 0.5,
+        }
+      );
+
+      if (detailRef.current) {
+        gsap.fromTo(
+          detailRef.current,
+          { autoAlpha: 0, y: 16 },
+          { autoAlpha: 1, y: 0, duration: 0.42, ease: 'power2.out', delay: 0.4 }
+        );
+      }
+    },
+    { scope: wrapRef, dependencies: [mode] }
+  );
+
+  useGSAP(
+    () => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (!detailRef.current) return;
+
+      gsap.fromTo(
+        detailRef.current,
+        { autoAlpha: 0.76, y: 10 },
+        { autoAlpha: 1, y: 0, duration: 0.28, ease: 'power2.out' }
+      );
+    },
+    { scope: wrapRef, dependencies: [activeId] }
+  );
+
+  return (
+    <div ref={wrapRef} className={styles.wrap}>
+      <div className={styles.modeBtns} role="group" aria-label="House view mode">
+        <button
+          type="button"
+          className={`${styles.modeBtn} ${mode === 'exterior' ? styles.active : ''}`}
+          onClick={() => setMode('exterior')}
+        >
+          Exterior
+        </button>
+        <button
+          type="button"
+          className={`${styles.modeBtn} ${mode === 'interior' ? styles.active : ''}`}
+          onClick={() => setMode('interior')}
+        >
+          Interior
+        </button>
+      </div>
+
+      <div className={styles.sceneWrap}>
+        {mode === 'exterior' ? <ExteriorScene activeId={activeId} /> : <InteriorScene activeId={activeId} />}
+
+        <div className={styles.sceneStateLeft}>{compareState?.before}</div>
+        <div className={styles.sceneStateRight}>{compareState?.after}</div>
+
+        <div className={styles.hotspotLayer}>
+          {hotspots.map((item) => (
+            <HotspotButton
+              key={`${mode}-${item.id}`}
+              item={item}
+              active={activeId === item.id}
+              onActivate={setActiveId}
+            />
+          ))}
+        </div>
+
+        <div className={styles.modeLabel}>
+          {mode === 'exterior' ? 'Exterior compare view' : 'Interior compare view'}
+        </div>
+      </div>
+
+      <div ref={detailRef} className={styles.detailPanel}>
+        <div className={styles.detailEyebrow}>{mode === 'exterior' ? 'Exterior service map' : 'Interior service map'}</div>
+        <div className={styles.detailRow}>
+          <div>
+            <h3 className={styles.detailTitle}>{activeHotspot.label}</h3>
+            <p className={styles.detailText}>{activeHotspot.description}</p>
+          </div>
+          <Link href={activeHotspot.href} className={styles.detailLink}>
+            View Service
+          </Link>
+        </div>
+        <div className={styles.compareHint}>Left side shows the problem. Right side shows the finished work.</div>
+      </div>
+    </div>
+  );
+}

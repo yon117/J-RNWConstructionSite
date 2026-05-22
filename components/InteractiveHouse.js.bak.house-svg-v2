@@ -1,0 +1,315 @@
+import Link from 'next/link';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import styles from './InteractiveHouse.module.css';
+
+const EXTERIOR_HOTSPOTS = [
+  {
+    id: 'restoration',
+    label: 'Restoration',
+    description: 'Roof, chimney, and storm-hit structure shift from compromised to fully repaired.',
+    x: '62%',
+    y: '18%',
+    href: '/services/restoration-and-reconstruction',
+  },
+  {
+    id: 'siding',
+    label: 'Siding',
+    description: 'Front facade compares brittle, faded siding against straight, sealed new boards.',
+    x: '30%',
+    y: '48%',
+    href: '/services/siding',
+  },
+  {
+    id: 'vinyl',
+    label: 'Vinyl',
+    description: 'Side elevation shows warped old vinyl on left, clean weather-sealed panels on right.',
+    x: '77%',
+    y: '43%',
+    href: '/services/siding',
+  },
+  {
+    id: 'painting',
+    label: 'Painting',
+    description: 'Trim and body color split from peeling chalky paint to crisp fresh finish.',
+    x: '52%',
+    y: '56%',
+    href: '/services/paint',
+  },
+  {
+    id: 'emergency',
+    label: 'Emergency',
+    description: 'Impact zone shifts from active damage to stabilized, secured, dried structure.',
+    x: '18%',
+    y: '67%',
+    href: '/services/mitigation-and-emergency-services',
+  },
+  {
+    id: 'remodeling',
+    label: 'Remodeling',
+    description: 'Entry and garage compare dated frontage on left with upgraded curb appeal on right.',
+    x: '65%',
+    y: '63%',
+    href: '/services/interior-construction-and-remodeling',
+  },
+];
+
+const INTERIOR_HOTSPOTS = [
+  {
+    id: 'drywall',
+    label: 'Drywall',
+    description: 'Damaged wall plane on left, smooth patched and texture-matched finish on right.',
+    x: '22%',
+    y: '32%',
+    href: '/services/drywall',
+  },
+  {
+    id: 'painting',
+    label: 'Painting',
+    description: 'Interior wall and trim shift from stained uneven coverage to clean bright finish.',
+    x: '43%',
+    y: '24%',
+    href: '/services/paint',
+  },
+  {
+    id: 'mitigation',
+    label: 'Mitigation',
+    description: 'Wet floor and base area compare active moisture damage against dried protected flooring.',
+    x: '31%',
+    y: '74%',
+    href: '/services/mitigation-and-emergency-services',
+  },
+  {
+    id: 'restoration',
+    label: 'Restoration',
+    description: 'Water-hit rear wall and framing return from exposed damage to restored condition.',
+    x: '73%',
+    y: '37%',
+    href: '/services/restoration-and-reconstruction',
+  },
+  {
+    id: 'remodeling',
+    label: 'Remodeling',
+    description: 'Vanity and cabinetry compare dated layout on left with upgraded built-ins on right.',
+    x: '67%',
+    y: '66%',
+    href: '/services/interior-construction-and-remodeling',
+  },
+];
+
+function HotspotButton({ item, active, onActivate }) {
+  return (
+    <button
+      type="button"
+      className={`${styles.hotspotBtn} ${active ? styles.hotspotBtnActive : ''}`}
+      style={{ left: item.x, top: item.y }}
+      onMouseEnter={() => onActivate(item.id)}
+      onFocus={() => onActivate(item.id)}
+      onClick={() => onActivate(item.id)}
+      aria-label={item.label}
+      aria-pressed={active}
+    >
+      <span className={styles.hotspotPulse} aria-hidden="true" />
+      <span className={styles.hotspotDot} />
+      <span className={styles.hotspotLabel}>{item.label}</span>
+    </button>
+  );
+}
+
+function ExteriorScene({ activeId }) {
+  return (
+    <div className={styles.sceneFrame} data-service={activeId}>
+      <div className={styles.skyGlow} data-piece />
+      <div className={styles.groundPlane} data-piece />
+      <div className={styles.houseShadow} data-piece />
+      <div className={styles.houseShell} data-piece>
+        <div className={`${styles.roofMain} ${styles.showcaseRoof}`} />
+        <div className={`${styles.roofWing} ${styles.showcaseRoof}`} />
+        <div className={`${styles.chimney} ${styles.showcaseRoof}`} />
+        <div className={`${styles.wallFront} ${styles.showcaseSiding} ${styles.showcasePaint}`} />
+        <div className={`${styles.wallSide} ${styles.showcaseVinyl} ${styles.showcasePaint}`} />
+        <div className={`${styles.gableFace} ${styles.showcaseSiding} ${styles.showcasePaint}`} />
+        <div className={`${styles.foundation} ${styles.showcaseEmergency}`} />
+        <div className={`${styles.garageBlock} ${styles.showcaseRemodeling}`} />
+        <div className={`${styles.garageDoorLeft} ${styles.showcaseRemodeling}`} />
+        <div className={`${styles.garageDoorRight} ${styles.showcaseRemodeling}`} />
+        <div className={`${styles.entryBlock} ${styles.showcaseRemodeling} ${styles.showcaseEmergency}`} />
+        <div className={`${styles.frontDoor} ${styles.showcaseRemodeling}`} />
+        <div className={`${styles.windowFrontLeft} ${styles.showcaseEmergency} ${styles.showcasePaint}`} />
+        <div className={`${styles.windowFrontRight} ${styles.showcaseEmergency} ${styles.showcasePaint}`} />
+        <div className={`${styles.windowUpper} ${styles.showcaseRestoration} ${styles.showcasePaint}`} />
+        <div className={`${styles.windowSide} ${styles.showcaseVinyl} ${styles.showcasePaint}`} />
+        <div className={`${styles.trimBand} ${styles.showcasePaint}`} />
+      </div>
+    </div>
+  );
+}
+
+function InteriorScene({ activeId }) {
+  return (
+    <div className={`${styles.sceneFrame} ${styles.sceneInterior}`} data-service={activeId}>
+      <div className={styles.interiorGlow} data-piece />
+      <div className={styles.roomShadow} data-piece />
+      <div className={styles.roomBox} data-piece>
+        <div className={`${styles.backWall} ${styles.showcaseDrywall} ${styles.showcaseInteriorPaint} ${styles.showcaseInteriorRestoration}`} />
+        <div className={`${styles.sideWall} ${styles.showcaseDrywall} ${styles.showcaseInteriorPaint}`} />
+        <div className={`${styles.floorPlane} ${styles.showcaseMitigation}`} />
+        <div className={`${styles.baseTrim} ${styles.showcaseInteriorPaint} ${styles.showcaseMitigation}`} />
+        <div className={`${styles.windowCutout} ${styles.showcaseInteriorRestoration}`} />
+        <div className={`${styles.cabinetStack} ${styles.showcaseInteriorRemodeling}`} />
+        <div className={`${styles.counterTop} ${styles.showcaseInteriorRemodeling}`} />
+        <div className={`${styles.vanityFront} ${styles.showcaseInteriorRemodeling}`} />
+        <div className={`${styles.sinkTop} ${styles.showcaseInteriorRemodeling}`} />
+        <div className={`${styles.showerFrame} ${styles.showcaseInteriorRestoration} ${styles.showcaseDrywall}`} />
+        <div className={`${styles.wallPatch} ${styles.showcaseDrywall}`} />
+        <div className={`${styles.waterTrack} ${styles.showcaseMitigation} ${styles.showcaseInteriorRestoration}`} />
+      </div>
+    </div>
+  );
+}
+
+export default function InteractiveHouse() {
+  const [mode, setMode] = useState('exterior');
+  const [activeId, setActiveId] = useState(EXTERIOR_HOTSPOTS[0].id);
+  const wrapRef = useRef(null);
+  const detailRef = useRef(null);
+
+  const hotspots = mode === 'exterior' ? EXTERIOR_HOTSPOTS : INTERIOR_HOTSPOTS;
+
+  const activeHotspot = useMemo(
+    () => hotspots.find((item) => item.id === activeId) || hotspots[0],
+    [activeId, hotspots]
+  );
+
+  useEffect(() => {
+    setActiveId((mode === 'exterior' ? EXTERIOR_HOTSPOTS : INTERIOR_HOTSPOTS)[0].id);
+  }, [mode]);
+
+  useGSAP(
+    () => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const pieces = gsap.utils.toArray('[data-piece]');
+      const hotspotsEls = gsap.utils.toArray(`.${styles.hotspotBtn}`);
+
+      gsap.fromTo(
+        pieces,
+        {
+          autoAlpha: 0,
+          x: (index) => (index % 3 === 0 ? -42 : 42),
+          y: (index) => (index % 2 === 0 ? 26 : -26),
+          rotate: (index) => (index % 2 === 0 ? -4 : 4),
+          scale: 0.9,
+        },
+        {
+          autoAlpha: 1,
+          x: 0,
+          y: 0,
+          rotate: 0,
+          scale: 1,
+          duration: 0.7,
+          stagger: 0.06,
+          ease: 'power3.out',
+        }
+      );
+
+      gsap.fromTo(
+        hotspotsEls,
+        { autoAlpha: 0, scale: 0.72, y: 12 },
+        {
+          autoAlpha: 1,
+          scale: 1,
+          y: 0,
+          duration: 0.45,
+          stagger: 0.05,
+          ease: 'back.out(1.7)',
+          delay: 0.45,
+        }
+      );
+
+      if (detailRef.current) {
+        gsap.fromTo(
+          detailRef.current,
+          { autoAlpha: 0, y: 14 },
+          { autoAlpha: 1, y: 0, duration: 0.45, ease: 'power2.out', delay: 0.35 }
+        );
+      }
+    },
+    { scope: wrapRef, dependencies: [mode] }
+  );
+
+  useGSAP(
+    () => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (!detailRef.current) return;
+
+      gsap.fromTo(
+        detailRef.current,
+        { autoAlpha: 0.72, y: 10 },
+        { autoAlpha: 1, y: 0, duration: 0.35, ease: 'power2.out' }
+      );
+    },
+    { scope: wrapRef, dependencies: [activeId] }
+  );
+
+  return (
+    <div ref={wrapRef} className={styles.wrap}>
+      <div className={styles.modeBtns} role="group" aria-label="House view mode">
+        <button
+          type="button"
+          className={`${styles.modeBtn} ${mode === 'exterior' ? styles.active : ''}`}
+          onClick={() => setMode('exterior')}
+        >
+          Exterior
+        </button>
+        <button
+          type="button"
+          className={`${styles.modeBtn} ${mode === 'interior' ? styles.active : ''}`}
+          onClick={() => setMode('interior')}
+        >
+          Interior
+        </button>
+      </div>
+
+      <div className={styles.sceneWrap}>
+        {mode === 'exterior' ? (
+          <ExteriorScene activeId={activeId} />
+        ) : (
+          <InteriorScene activeId={activeId} />
+        )}
+
+        <div className={styles.hotspotLayer}>
+          {hotspots.map((item) => (
+            <HotspotButton
+              key={`${mode}-${item.id}`}
+              item={item}
+              active={activeId === item.id}
+              onActivate={setActiveId}
+            />
+          ))}
+        </div>
+
+        <div className={styles.modeLabel}>
+          {mode === 'exterior' ? 'Exterior Compare View' : 'Interior Compare View'}
+        </div>
+      </div>
+
+      <div ref={detailRef} className={styles.detailPanel}>
+        <div className={styles.detailEyebrow}>
+          {mode === 'exterior' ? 'Exterior service map' : 'Interior service map'}
+        </div>
+        <div className={styles.detailRow}>
+          <div>
+            <h3 className={styles.detailTitle}>{activeHotspot.label}</h3>
+            <p className={styles.detailText}>{activeHotspot.description}</p>
+          </div>
+          <Link href={activeHotspot.href} className={styles.detailLink}>
+            View Service
+          </Link>
+        </div>
+        <div className={styles.compareHint}>Left side shows problem. Right side shows finished repair.</div>
+      </div>
+    </div>
+  );
+}

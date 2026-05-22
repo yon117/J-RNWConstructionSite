@@ -1,0 +1,49 @@
+.curtainWrap {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+}
+
+.curtainPanel {
+  background-color: #0F1923;
+  flex: 1;
+  will-change: transform;
+}
+
+.curtainTop {
+  transform-origin: top center;
+  transform: scaleY(0);
+}
+
+.curtainBot {
+  transform-origin: bottom center;
+  transform: scaleY(0);
+}
+
+.toggleBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 1.5px solid var(--gold);
+  border-radius: 3px;
+  color: var(--gold);
+  cursor: pointer;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.toggleBtn:hover {
+  background: rgba(200, 150, 30, 0.12);
+}
+
+.icon {
+  font-size: 1rem;
+  line-height: 1;
+  display: block;
+}

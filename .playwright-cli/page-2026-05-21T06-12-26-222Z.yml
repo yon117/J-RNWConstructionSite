@@ -1,0 +1,550 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e4]:
+    - banner [ref=e5]:
+      - generic [ref=e7]:
+        - generic [ref=e8]:
+          - img [ref=e9]
+          - link "(503) 998-2340" [ref=e11] [cursor=pointer]:
+            - /url: tel:+15039982340
+        - generic [ref=e12]:
+          - img [ref=e13]
+          - link "jandrnwconstruction@gmail.com" [ref=e15] [cursor=pointer]:
+            - /url: mailto:jandrnwconstruction@gmail.com
+        - generic [ref=e16]: Available 24/7 · Licensed · Bonded · Insured · CCB 232708
+      - generic [ref=e17]:
+        - generic [ref=e18]:
+          - text: 🌧Spring flooding & landslide season — Free water damage assessment. Don't let mold set in.
+          - link "Call (503) 998-2340" [ref=e19] [cursor=pointer]:
+            - /url: tel:+15039982340
+        - button "Dismiss" [ref=e20] [cursor=pointer]: ✕
+      - navigation [ref=e21]:
+        - link "J&R NW Construction J&R NW Construction Build Better, Restore Stronger" [ref=e22] [cursor=pointer]:
+          - /url: /
+          - img "J&R NW Construction" [ref=e24]
+          - generic [ref=e25]:
+            - text: J&R NW Construction
+            - generic [ref=e26]: Build Better, Restore Stronger
+        - button "Switch to dark mode" [ref=e28] [cursor=pointer]:
+          - generic [ref=e29]: ☾
+        - button "Open menu" [ref=e30] [cursor=pointer]:
+          - generic [ref=e31]: MENU
+    - main [ref=e36]:
+      - generic [ref=e37]:
+        - generic [ref=e39]:
+          - generic [ref=e40]:
+            - heading "Portland's number one general contractor" [level=1] [ref=e41]:
+              - 'generic "Portland''s #1" [ref=e42]':
+                - generic [ref=e44]: Portland's
+                - generic [ref=e47]: "#1"
+              - generic "General Contractor" [ref=e48]:
+                - generic [ref=e50]: General
+                - generic [ref=e53]: Contractor
+              - generic "Serving Homes & Businesses for Over 20 Years." [ref=e54]:
+                - generic [ref=e56]: Serving Homes & Businesses for Over 20 Years.
+              - generic "Remodeling · Additions · Siding · Painting." [ref=e57]:
+                - generic [ref=e59]: Remodeling · Additions · Siding · Painting.
+              - generic "Drywall · Restoration · Mitigation · Emergency Services." [ref=e60]:
+                - generic [ref=e62]: Drywall · Restoration · Mitigation · Emergency Services.
+              - generic "Portland · Tigard · Tualatin · Gresham · Happy Valley · Oregon City" [ref=e63]:
+                - generic [ref=e65]: Portland
+                - generic [ref=e68]: ·
+                - generic [ref=e71]: Tigard
+                - generic [ref=e74]: ·
+                - generic [ref=e77]: Tualatin
+                - generic [ref=e80]: ·
+                - generic [ref=e83]: Gresham
+                - generic [ref=e86]: ·
+                - generic [ref=e89]: Happy
+                - generic [ref=e92]: Valley
+                - generic [ref=e95]: ·
+                - generic [ref=e98]: Oregon
+                - generic [ref=e101]: City
+            - generic [ref=e103]:
+              - generic "Time to" [ref=e104]:
+                - generic [ref=e106]: Time
+                - generic [ref=e109]: to
+              - generic [ref=e110]: Restore
+          - option "Select Service Type" [disabled] [selected]
+          - option "Interior Construction & Remodeling"
+          - option "Bathroom Remodel"
+          - option "Restoration & Reconstruction"
+          - option "Mitigation & Emergency Services"
+          - option "General Repairs & Carpentry"
+          - option "Paint"
+          - option "Siding"
+          - option "Drywall"
+          - option "Other (describe in message below)"
+        - generic [ref=e111]:
+          - generic [ref=e112]:
+            - generic [ref=e113]: 20+
+            - generic [ref=e114]: Years Exp.
+          - generic [ref=e115]:
+            - generic [ref=e116]: 50+
+            - generic [ref=e117]: Families Served
+          - generic [ref=e118]:
+            - generic [ref=e119]: ★ 5.0
+            - generic [ref=e120]: Rating
+        - generic [ref=e121]:
+          - generic [ref=e122]:
+            - img [ref=e123]
+            - text: Licensed, Insured & Bonded
+          - generic [ref=e125]: "CCB #232708"
+          - generic [ref=e126]: BBB Accredited
+          - generic [ref=e127]: 100% Satisfaction Guarantee
+      - generic [ref=e130]:
+        - heading "What Our Clients Say" [level=2] [ref=e131]
+        - paragraph [ref=e132]: Loading reviews...
+      - generic [ref=e133]:
+        - generic [ref=e135]:
+          - generic [ref=e136]:
+            - generic [ref=e137]: How We Work
+            - heading "From First Call to Final Nail" [level=2] [ref=e138]:
+              - text: From First Call to
+              - emphasis [ref=e139]: Final Nail
+            - generic [ref=e140]:
+              - generic [ref=e141]:
+                - generic [ref=e142]: "01"
+                - generic [ref=e143]:
+                  - img [ref=e145]
+                  - heading "Free Consultation" [level=3] [ref=e147]
+                  - paragraph [ref=e148]: Tell us about your project. We listen before we plan.
+              - generic [ref=e149]:
+                - generic [ref=e150]: "02"
+                - generic [ref=e151]:
+                  - img [ref=e153]
+                  - heading "Custom Plan & Quote" [level=3] [ref=e155]
+                  - paragraph [ref=e156]: Transparent pricing with no hidden surprises.
+              - generic [ref=e157]:
+                - generic [ref=e158]: "03"
+                - generic [ref=e159]:
+                  - img [ref=e161]
+                  - heading "Quality Construction" [level=3] [ref=e163]
+                  - paragraph [ref=e164]: We build with care, on schedule and on budget.
+              - generic [ref=e165]:
+                - generic [ref=e166]: "04"
+                - generic [ref=e167]:
+                  - img [ref=e169]
+                  - heading "Final Walkthrough" [level=3] [ref=e171]
+                  - paragraph [ref=e172]: Your satisfaction is the only sign-off that counts.
+          - generic [ref=e173]:
+            - generic [ref=e174]:
+              - generic [ref=e175]: One Call. Zero Stress.
+              - heading "We Handle Everything" [level=2] [ref=e176]:
+                - text: We Handle
+                - emphasis [ref=e177]: Everything
+              - paragraph [ref=e178]: Materials, disposal, cleanup — we own the whole job. You come home to a space that looks like new.
+            - generic [ref=e179]:
+              - generic [ref=e180]:
+                - generic [ref=e181]:
+                  - img [ref=e183]
+                  - generic [ref=e185]: "01"
+                - heading "Materials Sourced & Delivered" [level=3] [ref=e186]
+                - paragraph [ref=e187]: We source all materials at contractor pricing and deliver to site. No hardware store runs for you.
+              - generic [ref=e188]:
+                - generic [ref=e189]:
+                  - img [ref=e191]
+                  - generic [ref=e193]: "02"
+                - heading "Debris Removal & Hauling" [level=3] [ref=e194]
+                - paragraph [ref=e195]: All demo waste and packaging gets hauled away. You never rent a dumpster or lift a bag.
+              - generic [ref=e196]:
+                - generic [ref=e197]:
+                  - img [ref=e199]
+                  - generic [ref=e201]: "03"
+                - heading "Full Site Cleanup" [level=3] [ref=e202]
+                - paragraph [ref=e203]: Every room swept, surfaces wiped, tools removed. We leave your space cleaner than we found it.
+              - generic [ref=e204]:
+                - generic [ref=e205]:
+                  - img [ref=e207]
+                  - generic [ref=e209]: "04"
+                - heading "Left Like New — Guaranteed" [level=3] [ref=e210]
+                - paragraph [ref=e211]: When we're done, your home looks finished — not like a job site. 100% satisfaction or we come back.
+        - generic [ref=e213]:
+          - generic [ref=e214]:
+            - generic [ref=e215]: Our Services
+            - heading "Our Services" [level=2] [ref=e216]:
+              - text: Our
+              - emphasis [ref=e217]: Services
+            - paragraph [ref=e218]: From emergency response to full remodels — we handle every project under one roof.
+            - link "Our Services" [ref=e219] [cursor=pointer]:
+              - /url: /services
+              - text: Our Services
+              - img [ref=e220]
+          - generic [ref=e222]:
+            - generic [ref=e223]:
+              - link "01 01 / 06 EMERGENCY Mitigation & Emergency Services Burst pipes, fire, windstorm damage. We dispatch within the hour and stabilize the same day. Learn More → →" [ref=e224] [cursor=pointer]:
+                - /url: /services/mitigation-and-emergency-services
+                - generic: "01"
+                - generic [ref=e225]:
+                  - generic [ref=e226]: "01"
+                  - generic [ref=e227]: / 06
+                  - generic [ref=e228]: EMERGENCY
+                - generic [ref=e229]: Mitigation & Emergency Services
+                - paragraph [ref=e230]: Burst pipes, fire, windstorm damage. We dispatch within the hour and stabilize the same day.
+                - generic [ref=e231]: Learn More → →
+              - link "02 02 / 06 RESTORATION Restoration & Reconstruction We work with your insurance adjuster. Source repair, structural drying, antimicrobial treatment, finish-grade rebuild. Learn More → →" [ref=e232] [cursor=pointer]:
+                - /url: /services/restoration-and-reconstruction
+                - generic: "02"
+                - generic [ref=e233]:
+                  - generic [ref=e234]: "02"
+                  - generic [ref=e235]: / 06
+                  - generic [ref=e236]: RESTORATION
+                - generic [ref=e237]: Restoration & Reconstruction
+                - paragraph [ref=e238]: We work with your insurance adjuster. Source repair, structural drying, antimicrobial treatment, finish-grade rebuild.
+                - generic [ref=e239]: Learn More → →
+              - link "03 03 / 06 REMODEL Interior Construction & Remodeling Kitchens, bathrooms, additions. Permits pulled, subs coordinated, finish carpentry in-house. Learn More → →" [ref=e240] [cursor=pointer]:
+                - /url: /services/interior-construction-and-remodeling
+                - generic: "03"
+                - generic [ref=e241]:
+                  - generic [ref=e242]: "03"
+                  - generic [ref=e243]: / 06
+                  - generic [ref=e244]: REMODEL
+                - generic [ref=e245]: Interior Construction & Remodeling
+                - paragraph [ref=e246]: Kitchens, bathrooms, additions. Permits pulled, subs coordinated, finish carpentry in-house.
+                - generic [ref=e247]: Learn More → →
+              - link "04 04 / 06 SIDING Siding Full replacement, repairs, and paint. Hardie board, LP SmartSide, vinyl — all weather-sealed. Learn More → →" [ref=e248] [cursor=pointer]:
+                - /url: /services/siding
+                - generic: "04"
+                - generic [ref=e249]:
+                  - generic [ref=e250]: "04"
+                  - generic [ref=e251]: / 06
+                  - generic [ref=e252]: SIDING
+                - generic [ref=e253]: Siding
+                - paragraph [ref=e254]: Full replacement, repairs, and paint. Hardie board, LP SmartSide, vinyl — all weather-sealed.
+                - generic [ref=e255]: Learn More → →
+              - link "05 05 / 06 PAINTING Paint Interior and exterior. Surface prep, primer coat, finish — clean lines and lasting color. Learn More → →" [ref=e256] [cursor=pointer]:
+                - /url: /services/paint
+                - generic: "05"
+                - generic [ref=e257]:
+                  - generic [ref=e258]: "05"
+                  - generic [ref=e259]: / 06
+                  - generic [ref=e260]: PAINTING
+                - generic [ref=e261]: Paint
+                - paragraph [ref=e262]: Interior and exterior. Surface prep, primer coat, finish — clean lines and lasting color.
+                - generic [ref=e263]: Learn More → →
+              - link "06 06 / 06 DRYWALL Drywall Hanging, taping, mudding, and finishing. Seamless texture matching and full room repairs. Learn More → →" [ref=e264] [cursor=pointer]:
+                - /url: /services/drywall
+                - generic: "06"
+                - generic [ref=e265]:
+                  - generic [ref=e266]: "06"
+                  - generic [ref=e267]: / 06
+                  - generic [ref=e268]: DRYWALL
+                - generic [ref=e269]: Drywall
+                - paragraph [ref=e270]: Hanging, taping, mudding, and finishing. Seamless texture matching and full room repairs.
+                - generic [ref=e271]: Learn More → →
+            - generic [ref=e273]:
+              - generic [ref=e274]:
+                - heading "Need Immediate Assistance?" [level=3] [ref=e275]
+                - paragraph [ref=e276]: Our emergency response teams are on standby 24/7 to handle critical property damage and restoration needs.
+              - link "Call (503) 998-2340" [ref=e277] [cursor=pointer]:
+                - /url: tel:5039982340
+      - generic [ref=e278]:
+        - generic [ref=e279]:
+          - generic [ref=e280]:
+            - generic [ref=e281]: Field Guide · Inspector's Notes
+            - heading "Warning Signs In Your Home" [level=2] [ref=e282]:
+              - text: Warning Signs
+              - emphasis [ref=e283]: In Your Home
+            - paragraph [ref=e284]: Small problems become expensive problems quickly. If you see any of these in your home, call us before the damage spreads — inspections are free, no obligation.
+          - generic [ref=e286]:
+            - article [ref=e287]:
+              - generic [ref=e288]:
+                - generic [ref=e289]: Critical Severity
+                - generic [ref=e290]: "CODE: WS-MOISTURE-01"
+              - generic [ref=e291]:
+                - generic [ref=e292]: Restoration & Mitigation
+                - heading "Water Stains on Ceiling or Walls" [level=3] [ref=e293]
+                - paragraph [ref=e294]: Yellow or brown stains signal active water intrusion behind the surface. Every day it sits, the damage moves deeper into the wall cavity.
+              - generic [ref=e295]:
+                - generic [ref=e296]: If ignored · progression
+                - generic [ref=e297]:
+                  - generic [ref=e298]:
+                    - generic [ref=e299]: "1"
+                    - generic [ref=e300]:
+                      - generic [ref=e301]: Water
+                      - text: entry
+                  - generic [ref=e302]:
+                    - generic [ref=e303]: "2"
+                    - generic [ref=e304]:
+                      - generic [ref=e305]: Drywall
+                      - text: saturates
+                  - generic [ref=e306]:
+                    - generic [ref=e307]: "3"
+                    - generic [ref=e308]:
+                      - generic [ref=e309]: Mold in
+                      - text: 48 hrs
+                  - generic [ref=e310]:
+                    - generic [ref=e311]: "4"
+                    - generic [ref=e312]:
+                      - generic [ref=e313]: Framing
+                      - text: rots
+              - generic [ref=e314]:
+                - generic [ref=e315]:
+                  - generic [ref=e316]: The Risk
+                  - paragraph [ref=e317]: Drywall loses structural integrity. Mold colonies form within 24–48 hours.
+                - generic [ref=e318]:
+                  - generic [ref=e319]: Our Fix
+                  - paragraph [ref=e320]: Stop the source, remove damaged drywall, treat for mold, rebuild and finish.
+              - button "Book Free Inspection No Obligation" [ref=e321] [cursor=pointer]:
+                - generic [ref=e322]: Book Free Inspection
+                - generic [ref=e323]:
+                  - generic [ref=e324]: No Obligation
+                  - img [ref=e325]
+            - complementary [ref=e327]:
+              - img "Evidence" [ref=e329]
+              - generic [ref=e330]:
+                - generic [ref=e331]: Evidence Log
+                - paragraph [ref=e332]: Inspectors often find moisture levels exceeding 20% behind seemingly intact surfaces.
+                - list [ref=e333]:
+                  - listitem [ref=e334]:
+                    - img [ref=e335]
+                    - text: Non-invasive moisture testing
+                  - listitem [ref=e337]:
+                    - img [ref=e338]
+                    - text: Thermal imaging of wet areas
+          - generic [ref=e340]:
+            - button "Show warning 1" [ref=e341] [cursor=pointer]
+            - button "Show warning 2" [ref=e342] [cursor=pointer]
+            - button "Show warning 3" [ref=e343] [cursor=pointer]
+            - button "Show warning 4" [ref=e344] [cursor=pointer]
+            - button "Show warning 5" [ref=e345] [cursor=pointer]
+            - generic [ref=e346]: 01 / 05
+        - generic [ref=e347]:
+          - img "J&R NW Construction — exterior work" [ref=e348]
+          - generic [ref=e349]:
+            - generic [ref=e350]: Portland's Trusted Contractor
+            - heading "Built With Pride" [level=2] [ref=e351]:
+              - text: Built With
+              - emphasis [ref=e352]: Pride
+            - paragraph [ref=e353]: "Over 20 years serving Portland homes. Licensed · CCB #232708 · 5-star rated."
+            - generic [ref=e354]:
+              - generic [ref=e355]:
+                - generic [ref=e356]: 20+
+                - generic [ref=e357]: Years Experience
+              - generic [ref=e358]:
+                - generic [ref=e359]: 50+
+                - generic [ref=e360]: Families Served
+              - generic [ref=e361]:
+                - generic [ref=e362]: ★ 5.0
+                - generic [ref=e363]: Google Rating
+              - generic [ref=e364]:
+                - generic [ref=e365]: 24/7
+                - generic [ref=e366]: Emergency
+      - generic [ref=e367]:
+        - generic [ref=e369]:
+          - generic [ref=e370]:
+            - generic [ref=e371]:
+              - generic [ref=e372]: Recent Work
+              - heading "Our Projects" [level=2] [ref=e373]:
+                - text: Our
+                - emphasis [ref=e374]: Projects
+            - link "View All Work" [ref=e375] [cursor=pointer]:
+              - /url: /projects
+              - text: View All Work
+              - img [ref=e376]
+          - generic [ref=e378]:
+            - generic [ref=e379] [cursor=pointer]:
+              - img "Roof & Interior Restoration – Tree Damage" [ref=e380]
+              - generic [ref=e381]:
+                - generic [ref=e382]: emergency
+                - generic [ref=e383]: Roof & Interior Restoration – Tree Damage
+            - generic [ref=e384] [cursor=pointer]:
+              - img "Residential Renovation & Structural Repair J&R Construction" [ref=e385]
+              - generic [ref=e386]:
+                - generic [ref=e387]: emergency
+                - generic [ref=e388]: Residential Renovation & Structural Repair J&R Construction
+            - generic [ref=e389] [cursor=pointer]:
+              - img "Commercial Ceiling Restoration – Drywall Installation, Framing Repair & Interior Finish Work." [ref=e390]
+              - generic [ref=e391]:
+                - generic [ref=e392]: drywall
+                - generic [ref=e393]: Commercial Ceiling Restoration – Drywall Installation, Framing Repair & Interior Finish Work.
+            - generic [ref=e394] [cursor=pointer]:
+              - img "Interior Remodel – Insulation Installation, Drywall & Wall Framing Restoration." [ref=e395]
+              - generic [ref=e396]:
+                - generic [ref=e397]: drywall
+                - generic [ref=e398]: Interior Remodel – Insulation Installation, Drywall & Wall Framing Restoration.
+            - generic [ref=e399] [cursor=pointer]:
+              - img "Bathroom Vanity Restoration – Countertop Installation & Cabinet Refinishing." [ref=e400]
+              - generic [ref=e401]:
+                - generic [ref=e402]: remodeling
+                - generic [ref=e403]: Bathroom Vanity Restoration – Countertop Installation & Cabinet Refinishing.
+        - generic [ref=e406]:
+          - generic [ref=e407]: We Work For You
+          - heading "J&R NW Construction" [level=2] [ref=e408]:
+            - text: J&R NW
+            - emphasis [ref=e409]: Construction
+          - paragraph [ref=e410]: "At J&R NW Construction, our mission is to deliver reliable, high-quality residential and light commercial remodels, siding projects, and interior/exterior reconstruction. With over 20 years of experience, our family-owned team is dedicated to restoring not just buildings—but confidence, comfort, and long-term value. From water mitigation and full restoration to interior upgrades, exterior improvements, and complete siding remodels, we provide end-to-end solutions built on craftsmanship, safety, and integrity. Every project is approached with the same commitment: to protect your property, enhance your space, and exceed your expectations. We don't just repair and remodel—we help rebuild trust in the places you live and work."
+      - generic [ref=e411]:
+        - generic [ref=e413]:
+          - generic [ref=e414]:
+            - generic [ref=e415]: Where We Work
+            - heading "Serving Portland Metro" [level=2] [ref=e416]:
+              - text: Serving
+              - emphasis [ref=e417]: Portland Metro
+            - paragraph [ref=e418]: "Licensed contractor serving 9 cities across the Portland metro area. CCB #232708. Available 24/7 for emergencies."
+            - generic [ref=e419]:
+              - generic [ref=e420]:
+                - img [ref=e421]
+                - text: Portland
+              - generic [ref=e423]:
+                - img [ref=e424]
+                - text: Tigard
+              - generic [ref=e426]:
+                - img [ref=e427]
+                - text: Tualatin
+              - generic [ref=e429]:
+                - img [ref=e430]
+                - text: Gresham
+              - generic [ref=e432]:
+                - img [ref=e433]
+                - text: Happy Valley
+              - generic [ref=e435]:
+                - img [ref=e436]
+                - text: Oregon City
+              - generic [ref=e438]:
+                - img [ref=e439]
+                - text: Milwaukie
+              - generic [ref=e441]:
+                - img [ref=e442]
+                - text: Hillsboro
+              - generic [ref=e444]:
+                - img [ref=e445]
+                - text: Beaverton
+          - iframe [ref=e448]:
+            
+        - generic [ref=e450]:
+          - generic [ref=e451]:
+            - generic [ref=e452]: Got Questions?
+            - heading "Common Questions" [level=2] [ref=e453]:
+              - text: Common
+              - emphasis [ref=e454]: Questions
+          - generic [ref=e455]:
+            - generic [ref=e456]:
+              - button "Timeline How fast can you start?" [ref=e457] [cursor=pointer]:
+                - generic [ref=e458]:
+                  - generic [ref=e459]: Timeline
+                  - heading "How fast can you start?" [level=4] [ref=e460]
+                - img [ref=e462]
+              - paragraph [ref=e464]: We typically respond within 2 hours and can schedule a free estimate the same or next day. Many emergency jobs start same day.
+            - generic [ref=e465]:
+              - button "Pricing How much does it cost?" [ref=e466] [cursor=pointer]:
+                - generic [ref=e467]:
+                  - generic [ref=e468]: Pricing
+                  - heading "How much does it cost?" [level=4] [ref=e469]
+                - img [ref=e471]
+              - paragraph [ref=e473]: Every project is different. We offer free, no-obligation estimates with detailed written quotes. No hidden fees, no surprises.
+            - generic [ref=e474]:
+              - button "Compliance Are you licensed and insured?" [ref=e475] [cursor=pointer]:
+                - generic [ref=e476]:
+                  - generic [ref=e477]: Compliance
+                  - heading "Are you licensed and insured?" [level=4] [ref=e478]
+                - img [ref=e480]
+              - paragraph [ref=e482]: "Yes. Oregon CCB #232708. Fully licensed, bonded, and insured. We carry full liability and workers' compensation coverage on every job."
+            - generic [ref=e483]:
+              - button "Claims Do you work with insurance claims?" [ref=e484] [cursor=pointer]:
+                - generic [ref=e485]:
+                  - generic [ref=e486]: Claims
+                  - heading "Do you work with insurance claims?" [level=4] [ref=e487]
+                - img [ref=e489]
+              - paragraph [ref=e491]: Yes. We regularly work alongside insurance adjusters for water damage, fire, and structural repairs. We document everything for your claim.
+            - generic [ref=e492]:
+              - button "Logistics What areas do you serve?" [ref=e493] [cursor=pointer]:
+                - generic [ref=e494]:
+                  - generic [ref=e495]: Logistics
+                  - heading "What areas do you serve?" [level=4] [ref=e496]
+                - img [ref=e498]
+              - paragraph [ref=e500]: Serving Portland, Tigard, Tualatin, Gresham, Happy Valley, Oregon City, Milwaukie, Hillsboro & Beaverton.
+            - generic [ref=e501]:
+              - button "Quality Do you guarantee your work?" [ref=e502] [cursor=pointer]:
+                - generic [ref=e503]:
+                  - generic [ref=e504]: Quality
+                  - heading "Do you guarantee your work?" [level=4] [ref=e505]
+                - img [ref=e507]
+              - paragraph [ref=e509]: We do it right the first time — every time. Our crew takes full ownership of every project. 5-star ratings on Yelp and Google reflect the standard we hold ourselves to on every single job.
+      - generic [ref=e511]:
+        - generic [ref=e512]: Ready to Start?
+        - heading "Get Your Free Estimate Today" [level=2] [ref=e513]:
+          - text: Get Your Free Estimate
+          - emphasis [ref=e514]: Today
+        - paragraph [ref=e515]: No obligation. No pressure. Just a straight answer on what your project costs and how fast we can start.
+        - generic [ref=e516]:
+          - button "Get Free Estimate" [ref=e517] [cursor=pointer]:
+            - text: Get Free Estimate
+            - img [ref=e518]
+          - link "(503) 998-2340" [ref=e520] [cursor=pointer]:
+            - /url: tel:5039982340
+            - img [ref=e521]
+            - text: (503) 998-2340
+        - generic [ref=e523]:
+          - generic [ref=e524]: ★★★★★ 5.0 on Google
+          - generic [ref=e525]: "Licensed & Insured · CCB #232708"
+          - generic [ref=e526]: 50+ Families Served
+    - contentinfo [ref=e527]:
+      - generic [ref=e528]:
+        - generic [ref=e529]:
+          - generic [ref=e530]:
+            - img "J&R NW Construction" [ref=e532]
+            - generic [ref=e533]:
+              - text: J&R NW Construction
+              - generic [ref=e534]: Build Better, Restore Stronger
+          - paragraph [ref=e535]: Family-owned and operated. Serving Oregon with integrity, craftsmanship, and 20+ years of experience.
+          - generic [ref=e536]:
+            - link "Facebook" [ref=e537] [cursor=pointer]:
+              - /url: https://www.facebook.com/JRNWConstruction/
+              - img [ref=e538]
+            - link "Instagram" [ref=e540] [cursor=pointer]:
+              - /url: https://www.instagram.com/jandrnwconstruction/
+              - img [ref=e541]
+            - link "Yelp" [ref=e543] [cursor=pointer]:
+              - /url: https://m.yelp.com/biz/j-and-r-nw-construction-portland-5
+              - img "Yelp" [ref=e544]
+            - link "Google" [ref=e545] [cursor=pointer]:
+              - /url: https://www.google.com/maps/place/J%26R+NW+Construction/
+              - img [ref=e546]
+        - generic [ref=e551]:
+          - heading "Services" [level=4] [ref=e552]
+          - list [ref=e553]:
+            - listitem [ref=e554]:
+              - link "Interior Construction & Remodeling" [ref=e555] [cursor=pointer]:
+                - /url: /services/interior-construction-and-remodeling
+            - listitem [ref=e556]:
+              - link "Restoration & Reconstruction" [ref=e557] [cursor=pointer]:
+                - /url: /services/restoration-and-reconstruction
+            - listitem [ref=e558]:
+              - link "Mitigation & Emergency Services" [ref=e559] [cursor=pointer]:
+                - /url: /services/mitigation-and-emergency-services
+            - listitem [ref=e560]:
+              - link "Siding" [ref=e561] [cursor=pointer]:
+                - /url: /services/siding
+            - listitem [ref=e562]:
+              - link "Paint" [ref=e563] [cursor=pointer]:
+                - /url: /services/paint
+            - listitem [ref=e564]:
+              - link "Drywall" [ref=e565] [cursor=pointer]:
+                - /url: /services/drywall
+        - generic [ref=e566]:
+          - heading "Home" [level=4] [ref=e567]
+          - list [ref=e568]:
+            - listitem [ref=e569]:
+              - link "Home" [ref=e570] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e571]:
+              - link "Services" [ref=e572] [cursor=pointer]:
+                - /url: /services
+            - listitem [ref=e573]:
+              - link "Projects" [ref=e574] [cursor=pointer]:
+                - /url: /projects
+            - listitem [ref=e575]:
+              - link "Free Estimate" [ref=e576] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e577]: "CCB: 232708"
+      - generic [ref=e578]:
+        - generic [ref=e579]: © 2025 J&R NW Construction LLC
+        - generic [ref=e580]:
+          - generic [ref=e581]: Licensed
+          - generic [ref=e583]: Bonded
+          - generic [ref=e585]: Insured
+          - generic [ref=e587]: BBB
+    - button "Emergency contact" [ref=e590] [cursor=pointer]:
+      - img [ref=e592]
+      - text: EMERGENCY – 24/7
+  - alert [ref=e594]

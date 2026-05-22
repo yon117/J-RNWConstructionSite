@@ -1,0 +1,75 @@
+import { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import styles from './LeftNav.module.css';
+
+const SECTIONS = [
+  { id: 'section-services', label: 'Services',    num: '01' },
+  { id: 'section-process',  label: 'How We Work', num: '02' },
+  { id: 'section-portfolio', label: 'Portfolio',  num: '03' },
+  { id: 'section-contact',  label: 'Contact',     num: '04' },
+];
+
+export default function LeftNav() {
+  const [active, setActive] = useState(null);
+  const navRef = useRef(null);
+
+  useEffect(() => {
+    if (!navRef.current) return;
+
+    // Entrance — slide in from left after hero anim
+    gsap.from(navRef.current.querySelectorAll('[data-item]'), {
+      x: -36,
+      autoAlpha: 0,
+      duration: 0.65,
+      stagger: 0.11,
+      ease: 'power3.out',
+      delay: 1.4,
+    });
+
+    // Scroll tracking — highlight active section
+    const triggers = SECTIONS.map(({ id }) => {
+      const el = document.getElementById(id);
+      if (!el) return null;
+      return ScrollTrigger.create({
+        trigger: el,
+        start: 'top 55%',
+        end: 'bottom 45%',
+        onEnter:     () => setActive(id),
+        onEnterBack: () => setActive(id),
+        onLeave:     () => setActive(null),
+        onLeaveBack: () => setActive(null),
+      });
+    });
+
+    return () => triggers.forEach(t => t?.kill());
+  }, []);
+
+  const scrollTo = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  return (
+    <nav ref={navRef} className={styles.nav} aria-label="Page sections">
+      <div className={styles.track} aria-hidden />
+      {SECTIONS.map(({ id, label, num }) => {
+        const isActive = active === id;
+        return (
+          <button
+            key={id}
+            data-item
+            className={`${styles.item} ${isActive ? styles.itemActive : ''}`}
+            onClick={() => scrollTo(id)}
+            aria-label={`Go to ${label}`}
+          >
+            <span className={styles.dot} aria-hidden />
+            <span className={styles.meta}>
+              <span className={styles.num}>{num}</span>
+              <span className={styles.label}>{label}</span>
+            </span>
+          </button>
+        );
+      })}
+    </nav>
+  );
+}

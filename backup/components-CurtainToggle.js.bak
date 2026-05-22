@@ -1,0 +1,54 @@
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { useTheme } from '../context/ThemeContext';
+import styles from './CurtainToggle.module.css';
+
+export default function CurtainToggle() {
+  const { theme, toggle } = useTheme();
+  const topRef = useRef(null);
+  const botRef = useRef(null);
+  const animating = useRef(false);
+
+  const handleToggle = () => {
+    if (animating.current) return;
+    animating.current = true;
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+        toggle();
+        // Reopen curtain after theme switch
+        gsap.timeline()
+          .to(topRef.current, { scaleY: 0, duration: 0.35, ease: 'power2.out' })
+          .to(botRef.current, { scaleY: 0, duration: 0.35, ease: 'power2.out' }, '<')
+          .then(() => { animating.current = false; });
+      },
+    });
+
+    // Close curtain (panels meet at center)
+    tl.set([topRef.current, botRef.current], { scaleY: 0 })
+      .to(topRef.current, { scaleY: 1, duration: 0.28, ease: 'power2.in' }, 0)
+      .to(botRef.current, { scaleY: 1, duration: 0.28, ease: 'power2.in' }, 0);
+  };
+
+  return (
+    <>
+      {/* Full-viewport curtain overlay */}
+      <div className={styles.curtainWrap} aria-hidden="true">
+        <div ref={topRef} className={`${styles.curtainPanel} ${styles.curtainTop}`} />
+        <div ref={botRef} className={`${styles.curtainPanel} ${styles.curtainBot}`} />
+      </div>
+
+      <button
+        onClick={handleToggle}
+        className={styles.toggleBtn}
+        aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+        title={theme === 'dark' ? 'Day mode' : 'Night mode'}
+      >
+        <span className={styles.icon}>
+          {theme === 'dark' ? '☀' : '☾'}
+        </span>
+      </button>
+    </>
+  );
+}

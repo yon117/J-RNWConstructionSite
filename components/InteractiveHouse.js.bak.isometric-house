@@ -1,0 +1,240 @@
+import { useRef, useState, useEffect } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import styles from './InteractiveHouse.module.css';
+
+/* House assets: public/house-exterior.jpg, public/house-interior.jpg */
+
+const EXTERIOR_HOTSPOTS = [
+  { id: 'restoration-ex', label: 'Restoration', x: '20%', y: '30%', href: '/services' },
+  { id: 'remodeling', label: 'Remodeling', x: '50%', y: '22%', href: '/services' },
+  { id: 'siding', label: 'Siding', x: '78%', y: '40%', href: '/services' },
+  { id: 'vinyl', label: 'Vinyl', x: '62%', y: '56%', href: '/services' },
+  { id: 'painting', label: 'Painting', x: '34%', y: '62%', href: '/services' },
+  { id: 'emergency', label: 'Emergency Services', x: '14%', y: '70%', href: '/services' },
+];
+
+const INTERIOR_HOTSPOTS = [
+  { id: 'drywall', label: 'Drywall', description: 'Clean wall repair, patching, texture match, and finish prep.', x: '24%', y: '38%', href: '/services' },
+  { id: 'remodeling-in', label: 'Remodeling', description: 'Thoughtful layout upgrades with quality trim, finishes, and flow.', x: '55%', y: '26%', href: '/services' },
+  { id: 'restoration-in', label: 'Restoration', description: 'Professional repair after water, fire, or structural interior damage.', x: '73%', y: '52%', href: '/services' },
+  { id: 'mitigation', label: 'Mitigation', description: 'Fast containment, drying, and protection to stop further damage.', x: '40%', y: '66%', href: '/services' },
+  { id: 'restoration', label: 'Restoration', description: 'Detailed finish restoration that brings damaged spaces back to code.', x: '18%', y: '58%', href: '/services' },
+];
+
+function Hotspot({ label, description, x, y }) {
+  const [active, setActive] = useState(false);
+  const pulseRef = useRef(null);
+
+  useGSAP(() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced || !pulseRef.current) return;
+
+    gsap.to(pulseRef.current, {
+      scale: 1.85,
+      opacity: 0,
+      duration: 2,
+      repeat: -1,
+      ease: 'power1.out',
+    });
+  }, []);
+
+  return (
+    <div
+      className={`${styles.hotspot} ${active ? styles.hotspotActive : ''}`}
+      style={{ left: x, top: y }}
+      onMouseEnter={() => setActive(true)}
+      onMouseLeave={() => setActive(false)}
+      onFocus={() => setActive(true)}
+      onBlur={() => setActive(false)}
+      onClick={() => setActive((v) => !v)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          setActive((v) => !v);
+        }
+      }}
+      tabIndex={0}
+      role="button"
+      aria-label={label}
+      aria-expanded={active}
+    >
+      <span className={styles.dot} />
+      <span ref={pulseRef} className={styles.pulse} aria-hidden="true" />
+      <span
+        className={`${styles.tooltip} ${description ? styles.tooltipRich : ''}`}
+        role="tooltip"
+      >
+        <span className={styles.tooltipTitle}>{label}</span>
+        {description ? <span className={styles.tooltipDesc}>{description}</span> : null}
+      </span>
+    </div>
+  );
+}
+
+export default function InteractiveHouse() {
+  const [mode, setMode] = useState('exterior');
+  const wrapRef = useRef(null);
+  const imageWrapRef = useRef(null);
+  const extRef = useRef(null);
+  const intRef = useRef(null);
+  const isAnimating = useRef(false);
+
+  const prefersReduced = () =>
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const enterInterior = () => {
+    if (isAnimating.current || mode === 'interior') return;
+    if (prefersReduced()) {
+      setMode('interior');
+      return;
+    }
+
+    isAnimating.current = true;
+    const tl = gsap.timeline({
+      onComplete: () => {
+        isAnimating.current = false;
+      },
+    });
+
+    tl.to(extRef.current, {
+      scale: 2.35,
+      opacity: 0,
+      filter: 'blur(6px)',
+      duration: 0.72,
+      ease: 'power3.in',
+    })
+      .to(
+        imageWrapRef.current,
+        { scale: 1.12, duration: 0.72, ease: 'power3.in' },
+        0
+      )
+      .call(() => setMode('interior'))
+      .set(extRef.current, { scale: 1, filter: 'none' })
+      .set(intRef.current, { opacity: 0, scale: 1.18 })
+      .to(imageWrapRef.current, { scale: 1, duration: 0.55, ease: 'power2.out' })
+      .to(
+        intRef.current,
+        { opacity: 1, scale: 1, duration: 0.55, ease: 'power2.out' },
+        '-=0.45'
+      );
+  };
+
+  const exitInterior = () => {
+    if (isAnimating.current || mode === 'exterior') return;
+    if (prefersReduced()) {
+      setMode('exterior');
+      return;
+    }
+
+    isAnimating.current = true;
+    const tl = gsap.timeline({
+      onComplete: () => {
+        isAnimating.current = false;
+      },
+    });
+
+    tl.to(intRef.current, {
+      scale: 0.52,
+      opacity: 0,
+      filter: 'blur(4px)',
+      duration: 0.58,
+      ease: 'power3.in',
+    })
+      .to(
+        imageWrapRef.current,
+        { scale: 0.94, duration: 0.58, ease: 'power3.in' },
+        0
+      )
+      .call(() => setMode('exterior'))
+      .set(intRef.current, { filter: 'none' })
+      .fromTo(
+        extRef.current,
+        { opacity: 0, scale: 0.88 },
+        { opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out' }
+      )
+      .to(
+        imageWrapRef.current,
+        { scale: 1, duration: 0.5, ease: 'power2.out' },
+        '-=0.35'
+      );
+  };
+
+  const hotspots = mode === 'exterior' ? EXTERIOR_HOTSPOTS : INTERIOR_HOTSPOTS;
+
+  useEffect(() => {
+    if (!wrapRef.current || prefersReduced()) return;
+
+    gsap.from(wrapRef.current, {
+      opacity: 0,
+      y: 24,
+      duration: 0.7,
+      delay: 0.35,
+      ease: 'power2.out',
+    });
+  }, []);
+
+  return (
+    <div ref={wrapRef} className={styles.wrap}>
+      <div className={styles.modeBtns} role="group" aria-label="House view mode">
+        <button
+          type="button"
+          className={`${styles.modeBtn} ${mode === 'exterior' ? styles.active : ''}`}
+          onClick={exitInterior}
+        >
+          Exterior
+        </button>
+        <button
+          type="button"
+          className={`${styles.modeBtn} ${mode === 'interior' ? styles.active : ''}`}
+          onClick={enterInterior}
+        >
+          Interior
+        </button>
+      </div>
+
+      <div ref={imageWrapRef} className={styles.imageWrap}>
+        <div
+          ref={extRef}
+          className={styles.imageLayer}
+          style={{
+            opacity: mode === 'exterior' ? 1 : 0,
+            pointerEvents: mode === 'exterior' ? 'auto' : 'none',
+          }}
+        >
+          <img
+            src="/house-exterior.jpg"
+            alt="House exterior — explore our services"
+            className={styles.houseImg}
+            draggable={false}
+          />
+        </div>
+
+        <div
+          ref={intRef}
+          className={styles.imageLayer}
+          style={{
+            opacity: mode === 'interior' ? 1 : 0,
+            pointerEvents: mode === 'interior' ? 'auto' : 'none',
+          }}
+        >
+          <img
+            src="/house-interior.jpg"
+            alt="House interior — explore our services"
+            className={styles.houseImg}
+            draggable={false}
+          />
+        </div>
+
+        {hotspots.map((h) => (
+          <Hotspot key={`${mode}-${h.id}`} label={h.label} x={h.x} y={h.y} href={h.href} />
+        ))}
+
+        <div className={styles.modeLabel}>
+          {mode === 'exterior' ? 'EXTERIOR VIEW' : 'INTERIOR VIEW'}
+        </div>
+      </div>
+    </div>
+  );
+}
