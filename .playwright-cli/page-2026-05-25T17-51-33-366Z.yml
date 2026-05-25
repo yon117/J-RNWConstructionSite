@@ -1,0 +1,272 @@
+- generic [active] [ref=e1]:
+  - button "Open chatbot" [ref=e3]:
+    - img "Bubble button icon" [ref=e4]
+    - img "Bubble Button"
+  - generic [ref=e7]:
+    - banner [ref=e8]:
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - img [ref=e12]
+          - link "(503) 998-2340" [ref=e14] [cursor=pointer]:
+            - /url: tel:+15039982340
+        - generic [ref=e16]:
+          - img [ref=e17]
+          - link "jandrnwconstruction@gmail.com" [ref=e19] [cursor=pointer]:
+            - /url: mailto:jandrnwconstruction@gmail.com
+        - generic [ref=e21]: Available 24/7 · Licensed · Bonded · Insured · CCB 232708
+      - generic [ref=e22]:
+        - generic [ref=e23]:
+          - text: 🌧Spring flooding & landslide season — Free water damage assessment. Don't let mold set in.
+          - link "Call (503) 998-2340" [ref=e24] [cursor=pointer]:
+            - /url: tel:+15039982340
+        - button "Dismiss" [ref=e25] [cursor=pointer]: ✕
+      - navigation [ref=e26]:
+        - link "J&R NW Construction J&R NW Construction Build Better, Restore Stronger" [ref=e27] [cursor=pointer]:
+          - /url: /
+          - img "J&R NW Construction" [ref=e29]
+          - generic [ref=e30]:
+            - text: J&R NW Construction
+            - generic [ref=e31]: Build Better, Restore Stronger
+        - generic [ref=e32]:
+          - list [ref=e33]:
+            - listitem [ref=e34]:
+              - link "Home" [ref=e35] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e36]:
+              - link "Services" [ref=e37] [cursor=pointer]:
+                - /url: /services
+            - listitem [ref=e38]:
+              - link "Projects" [ref=e39] [cursor=pointer]:
+                - /url: /projects
+          - generic [ref=e40]:
+            - link "Facebook" [ref=e41] [cursor=pointer]:
+              - /url: https://www.facebook.com/JRNWConstruction/
+              - img [ref=e42]
+            - link "Instagram" [ref=e44] [cursor=pointer]:
+              - /url: https://www.instagram.com/jandrnwconstruction/
+              - img [ref=e45]
+            - link "Yelp" [ref=e47] [cursor=pointer]:
+              - /url: https://m.yelp.com/biz/j-and-r-nw-construction-portland-5
+              - img "Yelp" [ref=e48]
+            - link "Google" [ref=e49] [cursor=pointer]:
+              - /url: https://www.google.com/maps/place/J%26R+NW+Construction/
+              - img [ref=e50]
+          - generic [ref=e55]:
+            - button "EN" [ref=e56] [cursor=pointer]
+            - button "ES" [ref=e57] [cursor=pointer]
+          - button "Free Estimate" [ref=e58] [cursor=pointer]
+          - button "Switch to light mode" [ref=e59] [cursor=pointer]:
+            - generic [ref=e60]: ☀
+    - main [ref=e61]:
+      - generic [ref=e62]:
+        - generic [ref=e64]:
+          - generic [ref=e65]:
+            - generic [ref=e66]: Build Better, Restore Stronger
+            - heading "Portland's number one general contractor" [level=1] [ref=e68]:
+              - 'generic "Portland''s #1" [ref=e69]':
+                - generic [ref=e71]: Portland's
+                - generic [ref=e74]: "#1"
+              - generic "General Contractor" [ref=e75]:
+                - generic [ref=e77]: General
+                - generic [ref=e80]: Contractor
+              - generic "Serving Homes & Businesses for Over 20 Years." [ref=e81]:
+                - generic [ref=e83]: Serving Homes & Businesses for Over 20 Years.
+              - generic "Remodeling · Additions · Siding · Painting." [ref=e84]:
+                - generic [ref=e86]: Remodeling · Additions · Siding · Painting.
+              - generic "Drywall · Restoration · Mitigation · Emergency Services." [ref=e87]:
+                - generic [ref=e89]: Drywall · Restoration · Mitigation · Emergency Services.
+              - generic "Portland · Tigard · Tualatin · Gresham · Happy Valley · Oregon City" [ref=e90]:
+                - generic [ref=e92]: Portland
+                - generic [ref=e95]: ·
+                - generic [ref=e98]: Tigard
+                - generic [ref=e101]: ·
+                - generic [ref=e104]: Tualatin
+                - generic [ref=e107]: ·
+                - generic [ref=e110]: Gresham
+                - generic [ref=e113]: ·
+                - generic [ref=e116]: Happy
+                - generic [ref=e119]: Valley
+                - generic [ref=e122]: ·
+                - generic [ref=e125]: Oregon
+                - generic [ref=e128]: City
+            - generic [ref=e129]:
+              - generic [ref=e130]: We Work With You — Your Way
+              - generic [ref=e132]:
+                - generic [ref=e133]:
+                  - generic [ref=e134]:
+                    - img [ref=e135]
+                    - text: Insurance Claims
+                  - paragraph [ref=e137]: We coordinate directly with your adjuster from start to finish. No paperwork headaches, just results.
+                - generic [ref=e138]:
+                  - generic [ref=e139]:
+                    - img [ref=e140]
+                    - text: Direct Client
+                  - paragraph [ref=e142]: No claim needed. Transparent quote, no surprises, pay only what's agreed.
+            - generic [ref=e144]:
+              - generic "Time to" [ref=e145]:
+                - generic [ref=e147]: Time
+                - generic [ref=e150]: to
+              - generic [ref=e151]: Restore
+            - generic [ref=e152]:
+              - button "Get Your Free Estimate" [ref=e153] [cursor=pointer]:
+                - text: Get Your Free Estimate
+                - img [ref=e154]
+              - link "View Our Work" [ref=e156] [cursor=pointer]:
+                - /url: /projects
+            - generic [ref=e157]:
+              - generic [ref=e158]:
+                - generic [ref=e159]: Look us up on
+                - generic [ref=e160]:
+                  - img "Yelp" [ref=e162]
+                  - img "Google" [ref=e164]
+                  - generic [ref=e165]: ★★★★★
+                  - generic [ref=e166]: 50+ reviews
+              - generic [ref=e167]: 100% Satisfaction Guarantee
+              - generic [ref=e168]: "CCB: 232708"
+            - generic [ref=e169]:
+              - generic [ref=e170]:
+                - img [ref=e171]
+                - text: Licensed, Insured & Bonded
+              - generic [ref=e173]: ·
+              - generic [ref=e174]:
+                - img [ref=e175]
+                - text: BBB Accredited
+              - generic [ref=e177]: ·
+              - generic [ref=e178]:
+                - img [ref=e179]
+                - text: 100% Satisfaction Guarantee
+          - generic [ref=e182]:
+            - group "House view mode" [ref=e183]:
+              - button "Exterior" [ref=e184] [cursor=pointer]
+              - button "Interior" [ref=e185] [cursor=pointer]
+            - generic [ref=e186]:
+              - img "Interactive construction service preview" [ref=e188]
+              - generic [ref=e189]:
+                - button "Siding · Vinyl · Painting" [ref=e190] [cursor=pointer]:
+                  - generic [ref=e192]: +
+                - generic:
+                  - heading "Siding · Vinyl · Painting" [level=3]
+                  - paragraph: Exterior siding, vinyl and painting before/after preview.
+              - generic [ref=e193]:
+                - button "Emergency Services" [ref=e194] [cursor=pointer]:
+                  - generic [ref=e196]: +
+                - generic:
+                  - heading "Emergency Services" [level=3]
+                  - paragraph: Storm, fire, flooding, roof damage and emergency response preview.
+              - generic [ref=e197]:
+                - button "Remodeling" [ref=e198] [cursor=pointer]:
+                  - generic [ref=e200]: +
+                - generic:
+                  - heading "Remodeling" [level=3]
+                  - paragraph: Exterior remodeling before/after transformation preview.
+          - option "Select Service Type" [disabled] [selected]
+          - option "Interior Construction & Remodeling"
+          - option "Bathroom Remodel"
+          - option "Restoration & Reconstruction"
+          - option "Mitigation & Emergency Services"
+          - option "General Repairs & Carpentry"
+          - option "Paint"
+          - option "Siding"
+          - option "Drywall"
+          - option "Other (describe in message below)"
+        - generic [ref=e202]:
+          - generic [ref=e203]:
+            - img [ref=e204]
+            - text: Licensed, Insured & Bonded
+          - generic [ref=e206]: "CCB #232708"
+          - generic [ref=e207]: BBB Accredited
+          - generic [ref=e208]: 100% Satisfaction Guarantee
+      - region "J&R NW Construction trust signals" [ref=e209]
+      - generic [ref=e219]:
+        - img "J&R NW Construction — exterior work" [ref=e220]
+        - generic [ref=e221]:
+          - generic [ref=e222]: Portland's Trusted Contractor
+          - heading "Built With Pride" [level=2] [ref=e223]:
+            - text: Built With
+            - emphasis [ref=e224]: Pride
+          - paragraph [ref=e225]: "Over 20 years serving Portland homes. Licensed · CCB #232708 · 5-star rated."
+          - generic [ref=e226]:
+            - generic [ref=e227]:
+              - generic [ref=e228]: 0+
+              - generic [ref=e229]: Years Experience
+            - generic [ref=e230]:
+              - generic [ref=e231]: 0+
+              - generic [ref=e232]: Families Served
+            - generic [ref=e233]:
+              - generic [ref=e234]: ★ 5.0
+              - generic [ref=e235]: Google Rating
+            - generic [ref=e236]:
+              - generic [ref=e237]: 0/7
+              - generic [ref=e238]: Emergency
+    - contentinfo [ref=e247]:
+      - generic [ref=e248]:
+        - generic [ref=e249]:
+          - generic [ref=e250]:
+            - img "J&R NW Construction" [ref=e252]
+            - generic [ref=e253]:
+              - text: J&R NW Construction
+              - generic [ref=e254]: Build Better, Restore Stronger
+          - paragraph [ref=e255]: Family-owned and operated. Serving Oregon with integrity, craftsmanship, and 20+ years of experience.
+          - generic [ref=e256]:
+            - link "Facebook" [ref=e257] [cursor=pointer]:
+              - /url: https://www.facebook.com/JRNWConstruction/
+              - img [ref=e258]
+            - link "Instagram" [ref=e260] [cursor=pointer]:
+              - /url: https://www.instagram.com/jandrnwconstruction/
+              - img [ref=e261]
+            - link "Yelp" [ref=e263] [cursor=pointer]:
+              - /url: https://m.yelp.com/biz/j-and-r-nw-construction-portland-5
+              - img "Yelp" [ref=e264]
+            - link "Google" [ref=e265] [cursor=pointer]:
+              - /url: https://www.google.com/maps/place/J%26R+NW+Construction/
+              - img [ref=e266]
+        - generic [ref=e271]:
+          - heading "Services" [level=4] [ref=e272]
+          - list [ref=e273]:
+            - listitem [ref=e274]:
+              - link "Interior Construction & Remodeling" [ref=e275] [cursor=pointer]:
+                - /url: /services/interior-construction-and-remodeling
+            - listitem [ref=e276]:
+              - link "Restoration & Reconstruction" [ref=e277] [cursor=pointer]:
+                - /url: /services/restoration-and-reconstruction
+            - listitem [ref=e278]:
+              - link "Mitigation & Emergency Services" [ref=e279] [cursor=pointer]:
+                - /url: /services/mitigation-and-emergency-services
+            - listitem [ref=e280]:
+              - link "Siding" [ref=e281] [cursor=pointer]:
+                - /url: /services/siding
+            - listitem [ref=e282]:
+              - link "Paint" [ref=e283] [cursor=pointer]:
+                - /url: /services/paint
+            - listitem [ref=e284]:
+              - link "Drywall" [ref=e285] [cursor=pointer]:
+                - /url: /services/drywall
+        - generic [ref=e286]:
+          - heading "Home" [level=4] [ref=e287]
+          - list [ref=e288]:
+            - listitem [ref=e289]:
+              - link "Home" [ref=e290] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e291]:
+              - link "Services" [ref=e292] [cursor=pointer]:
+                - /url: /services
+            - listitem [ref=e293]:
+              - link "Projects" [ref=e294] [cursor=pointer]:
+                - /url: /projects
+            - listitem [ref=e295]:
+              - link "Free Estimate" [ref=e296] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e297]: "CCB: 232708"
+      - generic [ref=e298]:
+        - generic [ref=e299]: © 2025 J&R NW Construction LLC
+        - generic [ref=e300]:
+          - generic [ref=e301]: Licensed
+          - generic [ref=e303]: Bonded
+          - generic [ref=e305]: Insured
+          - generic [ref=e307]: BBB
+    - button "Emergency contact" [ref=e310] [cursor=pointer]:
+      - img [ref=e312]
+      - text: EMERGENCY – 24/7
+  - button "Open Next.js Dev Tools" [ref=e319] [cursor=pointer]:
+    - img [ref=e320]
+  - alert [ref=e323]

@@ -1,0 +1,402 @@
+import Head from 'next/head';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import Layout from '../../components/Layout';
+import { getDb } from '../../lib/db';
+import { useLang } from '../../context/LanguageContext';
+import { imageUrl } from '../../utils/imageUrl';
+import { sanitizeServiceObject, sanitizeServiceText } from '../../utils/sanitizeServiceText';
+import styles from '../../styles/ServicePreview.module.css';
+
+const PROCESS_STEPS = [
+    {
+        title: 'Free consultation',
+        desc: 'We assess the space and listen to your goals with clear answers and no vague pitch.',
+    },
+    {
+        title: 'Detailed estimate',
+        desc: 'Line-item pricing, scope clarity, and a real understanding of what the project includes.',
+    },
+    {
+        title: 'Build phase',
+        desc: 'Daily progress, clean site standards, and direct communication while work is underway.',
+    },
+    {
+        title: 'Final walkthrough',
+        desc: 'We close the job with you only after the finish, details, and cleanup are right.',
+    },
+];
+
+const TRUST_STATS = [
+    {
+        value: '20+',
+        label: 'Years experience',
+        body: 'Trusted Portland contractor since 2009',
+    },
+    {
+        value: '500+',
+        label: 'Projects completed',
+        body: 'Residential and commercial builds that change life for the families served',
+    },
+    {
+        value: 'CCB',
+        label: '#232708 licensed',
+        body: 'Licensed, bonded, and insured in Oregon',
+    },
+    {
+        value: 'FREE',
+        label: 'Estimates',
+        body: 'Transparent line-item pricing, no hidden costs',
+    },
+];
+
+function getServiceSlug(service) {
+    return (
+        service.slug
+        || (service.title
+            ? service.title
+                .toLowerCase()
+                .trim()
+                .replace(/&/g, 'and')
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '')
+            : 'service')
+    );
+}
+
+function splitParagraphs(text) {
+    return (text || '')
+        .split('\n')
+        .map((item) => item.trim())
+        .filter(Boolean);
+}
+
+export default function ServicePreviewDetail({ service, randomProjects }) {
+    const { t, lang } = useLang();
+    const [svc, setSvc] = useState(sanitizeServiceObject(service));
+
+    useEffect(() => {
+        if (!lang || lang === 'en') {
+            setSvc(sanitizeServiceObject(service));
+            return;
+        }
+
+        let cancelled = false;
+
+        async function translateService() {
+            const { translateText } = await import('../../utils/translate');
+            const fields = [
+                'title', 'subtitle', 'header_desc', 'description', 'details', 'process_desc',
+                'ksp_title_1', 'ksp_desc_1', 'ksp_title_2', 'ksp_desc_2',
+                'ksp_title_3', 'ksp_desc_3', 'ksp_title_4', 'ksp_desc_4',
+                'faq_q_1', 'faq_a_1', 'faq_q_2', 'faq_a_2', 'faq_q_3', 'faq_a_3', 'faq_q_4', 'faq_a_4', 'faq_q_5', 'faq_a_5',
+            ];
+
+            const updated = sanitizeServiceObject({ ...service });
+            for (const field of fields) {
+                if (service[field]) {
+                    updated[field] = await translateText(service[field], lang);
+                }
+            }
+
+            if (!cancelled) {
+                setSvc(sanitizeServiceObject(updated));
+            }
+        }
+
+        translateService();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [lang, service]);
+
+    const kspList = [1, 2, 3, 4]
+        .map((n) => ({
+            title: svc[`ksp_title_${n}`],
+            desc: svc[`ksp_desc_${n}`],
+        }))
+        .filter((item) => item.title);
+
+    const faqList = [1, 2, 3, 4, 5]
+        .map((n) => ({
+            q: svc[`faq_q_${n}`],
+            a: svc[`faq_a_${n}`],
+        }))
+        .filter((item) => item.q);
+
+    const descriptionParagraphs = splitParagraphs(svc.description);
+    const detailsParagraphs = splitParagraphs(svc.details);
+    const processParagraphs = splitParagraphs(svc.process_desc);
+    const title = sanitizeServiceText(svc.title) || svc.title;
+    const subtitle = sanitizeServiceText(svc.subtitle) || sanitizeServiceText(svc.title) || svc.title;
+    const headerDesc = sanitizeServiceText(svc.header_desc) || '';
+
+    return (
+        <Layout
+            title={`Service Prototype | ${title}`}
+            description={headerDesc || `Prototype preview for ${title}`}
+            canonical={`/service-preview/${service.id}`}
+        >
+            <Head>
+                <meta name="robots" content="noindex,nofollow" />
+            </Head>
+
+            <div className={styles.previewPage}>
+                <section
+                    className={styles.previewHero}
+                    style={{ backgroundImage: `linear-gradient(90deg, rgba(9,16,28,0.94) 0%, rgba(9,16,28,0.82) 42%, rgba(9,16,28,0.72) 100%), url(${imageUrl(service.image_url)})` }}
+                >
+                    <div className={styles.previewHeroShell}>
+                        <div className={styles.previewHeroGrid}>
+                            <div className={styles.previewHeroMain}>
+                                <Link href="/service-preview" className={styles.previewBackLink}>
+                                    Back to preview list
+                                </Link>
+                                <p className={styles.previewEyebrow}>{title}</p>
+                                <h1 className={styles.previewHeroTitle}>{subtitle}</h1>
+                                {headerDesc && (
+                                    <p className={styles.previewHeroLead}>{headerDesc}</p>
+                                )}
+                                {descriptionParagraphs[0] && (
+                                    <p className={styles.previewHeroCopy}>{descriptionParagraphs[0]}</p>
+                                )}
+                                <div className={styles.previewHeroActions}>
+                                    <button type="button" className={styles.previewPrimaryButton}>
+                                        Request quote
+                                    </button>
+                                    <Link href="/projects" className={styles.previewSecondaryButton}>
+                                        See our work
+                                    </Link>
+                                </div>
+                                <div className={styles.previewTrustRow}>
+                                    <span>Licensed and insured</span>
+                                    <span>Clear estimates</span>
+                                    <span>Built for long-term durability</span>
+                                </div>
+                            </div>
+
+                            <aside className={styles.previewHeroPanel}>
+                                <span className={styles.previewPanelTag}>Preview route</span>
+                                <p className={styles.previewPanelEyebrow}>Redesigned service detail concept</p>
+                                <h2>Quote-first layout with tighter structure</h2>
+                                <p>
+                                    Same database content. Cleaner hierarchy. Better use of width.
+                                </p>
+                                <button type="button" className={styles.previewPanelButton}>
+                                    Start your quote
+                                </button>
+                                <div className={styles.previewStatsGrid}>
+                                    {TRUST_STATS.map((stat) => (
+                                        <div key={stat.label} className={styles.previewStatCard}>
+                                            <strong>{stat.value}</strong>
+                                            <span>{stat.label}</span>
+                                            <p>{stat.body}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </aside>
+                        </div>
+                    </div>
+                </section>
+
+                <div className={styles.previewBodyShell}>
+                    {kspList.length > 0 && (
+                        <section className={styles.previewSectionWide}>
+                            <div className={styles.previewSectionHeader}>
+                                <p className={styles.previewSectionEyebrow}>Why this hits harder</p>
+                                <h2>Proof first. Cleaner page rhythm.</h2>
+                            </div>
+                            <div className={styles.previewProofGrid}>
+                                {kspList.map((item, index) => (
+                                    <article key={`${item.title}-${index}`} className={styles.previewProofCard}>
+                                        <span className={styles.previewProofNumber}>
+                                            {String(index + 1).padStart(2, '0')}
+                                        </span>
+                                        <h3>{item.title}</h3>
+                                        <p>{item.desc}</p>
+                                    </article>
+                                ))}
+                            </div>
+                        </section>
+                    )}
+
+                    <section className={styles.previewGridTwo}>
+                        <article className={styles.previewPanel}>
+                            <p className={styles.previewSectionEyebrow}>Service scope</p>
+                            <h2>{subtitle}</h2>
+                            {descriptionParagraphs.slice(1).map((paragraph, index) => (
+                                <p key={`desc-${index}`} className={styles.previewBodyText}>{paragraph}</p>
+                            ))}
+
+                            {detailsParagraphs.length > 0 && (
+                                <div className={styles.previewInnerStack}>
+                                    <div className={styles.previewInset}>
+                                        <span className={styles.previewInsetLabel}>What makes J&amp;R different</span>
+                                        {detailsParagraphs.map((paragraph, index) => (
+                                            <p key={`details-${index}`}>{paragraph}</p>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </article>
+
+                        <article className={styles.previewPanel}>
+                            <p className={styles.previewSectionEyebrow}>How the job runs</p>
+                            <h2>Our process</h2>
+                            {processParagraphs[0] && (
+                                <p className={styles.previewBodyText}>{processParagraphs[0]}</p>
+                            )}
+                            <div className={styles.previewProcessList}>
+                                {PROCESS_STEPS.map((step, index) => (
+                                    <div key={step.title} className={styles.previewProcessItem}>
+                                        <span className={styles.previewProcessNumber}>
+                                            {String(index + 1).padStart(2, '0')}
+                                        </span>
+                                        <div>
+                                            <h3>{step.title}</h3>
+                                            <p>{step.desc}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </article>
+                    </section>
+
+                    <section className={styles.previewGridTwo}>
+                        <article className={styles.previewPanel}>
+                            <p className={styles.previewSectionEyebrow}>Common questions</p>
+                            <h2>FAQ</h2>
+                            <div className={styles.previewFaqList}>
+                                {faqList.map((item, index) => (
+                                    <div key={`${item.q}-${index}`} className={styles.previewFaqItem}>
+                                        <h3>{item.q}</h3>
+                                        {item.a && <p>{item.a}</p>}
+                                    </div>
+                                ))}
+                            </div>
+                        </article>
+
+                        <article className={styles.previewPanel}>
+                            <p className={styles.previewSectionEyebrow}>Related work</p>
+                            <h2>Project proof</h2>
+                            <div className={styles.previewProjectsGrid}>
+                                {randomProjects.map((project) => (
+                                    <div key={project.id} className={styles.previewProjectCard}>
+                                        <h3>{project.title}</h3>
+                                        <p>
+                                            {project.description && project.description.length > 120
+                                                ? `${project.description.slice(0, 120)}...`
+                                                : project.description || 'Completed project from the same construction database.'}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+                            <Link href="/projects" className={styles.previewTextLink}>
+                                View all projects
+                            </Link>
+                        </article>
+                    </section>
+
+                    <section className={styles.previewCloseBand}>
+                        <div>
+                            <p className={styles.previewSectionEyebrow}>Ready when you are</p>
+                            <h2>Bring this service page live after approval</h2>
+                            <p className={styles.previewCloseText}>
+                                This route is isolated. Review the design here first, then move it into the live service page only if you want it.
+                            </p>
+                        </div>
+                        <button type="button" className={styles.previewPrimaryButton}>
+                            Request quote
+                        </button>
+                    </section>
+                </div>
+            </div>
+        </Layout>
+    );
+}
+
+export async function getServerSideProps({ params }) {
+    try {
+        const db = await getDb();
+        const slug = params.id;
+
+        const servicesResult = await db.execute(`
+            SELECT
+                id, title, description, header_desc, image, details, slug, page_title, subtitle,
+                ksp_title_1, ksp_desc_1,
+                ksp_title_2, ksp_desc_2,
+                ksp_title_3, ksp_desc_3,
+                ksp_title_4, ksp_desc_4,
+                process_desc,
+                faq_q_1, faq_a_1,
+                faq_q_2, faq_a_2,
+                faq_q_3, faq_a_3,
+                faq_q_4, faq_a_4,
+                faq_q_5, faq_a_5
+            FROM services
+        `);
+
+        const services = (servicesResult.rows || []).map((item) => ({
+            id: item.id,
+            title: item.title || '',
+            description: item.description || '',
+            header_desc: item.header_desc || '',
+            image_url: item.image || '',
+            details: item.details || '',
+            slug: item.slug || '',
+            page_title: item.page_title || '',
+            subtitle: item.subtitle || '',
+            ksp_title_1: item.ksp_title_1 || '',
+            ksp_desc_1: item.ksp_desc_1 || '',
+            ksp_title_2: item.ksp_title_2 || '',
+            ksp_desc_2: item.ksp_desc_2 || '',
+            ksp_title_3: item.ksp_title_3 || '',
+            ksp_desc_3: item.ksp_desc_3 || '',
+            ksp_title_4: item.ksp_title_4 || '',
+            ksp_desc_4: item.ksp_desc_4 || '',
+            process_desc: item.process_desc || '',
+            faq_q_1: item.faq_q_1 || '',
+            faq_a_1: item.faq_a_1 || '',
+            faq_q_2: item.faq_q_2 || '',
+            faq_a_2: item.faq_a_2 || '',
+            faq_q_3: item.faq_q_3 || '',
+            faq_a_3: item.faq_a_3 || '',
+            faq_q_4: item.faq_q_4 || '',
+            faq_a_4: item.faq_a_4 || '',
+            faq_q_5: item.faq_q_5 || '',
+            faq_a_5: item.faq_a_5 || '',
+        }));
+
+        const service = services.find((item) => (
+            (item.slug && item.slug === slug)
+            || getServiceSlug(item) === slug
+            || item.id.toString() === slug
+        ));
+
+        if (!service) {
+            return { notFound: true };
+        }
+
+        const projectsResult = await db.execute(
+            'SELECT id, title, description, image FROM projects ORDER BY RANDOM() LIMIT 4'
+        );
+
+        const randomProjects = (projectsResult.rows || []).map((project) => ({
+            id: project.id,
+            title: project.title || '',
+            description: project.description || '',
+            image: project.image || '',
+        }));
+
+        return {
+            props: {
+                service,
+                randomProjects,
+            },
+        };
+    } catch (error) {
+        console.error('Service preview error:', error);
+        return { notFound: true };
+    }
+}

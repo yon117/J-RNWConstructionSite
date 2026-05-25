@@ -1,0 +1,104 @@
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+personality = "pragmatic"
+
+[mcp_servers.code-review-graph]
+args = [
+    "-m",
+    "code_review_graph",
+    "serve",
+]
+command = 'C:\Users\Diego Ramirez\AppData\Local\Python\pythoncore-3.14-64\python.exe'
+type = "stdio"
+
+[mcp_servers.pencil]
+args = [
+    "--app",
+    "desktop",
+]
+command = 'C:\Users\Diego Ramirez\AppData\Local\Programs\Pencil\resources\app.asar.unpacked\out\mcp-server-windows-x64.exe'
+
+[plugins."build-macos-apps@openai-curated"]
+enabled = true
+
+[plugins."canva@openai-curated"]
+enabled = true
+
+[plugins."netlify@openai-curated"]
+enabled = true
+
+[plugins."test-android-apps@openai-curated"]
+enabled = true
+
+[plugins."vercel@openai-curated"]
+enabled = true
+
+[plugins."caveman@caveman-repo"]
+enabled = true
+
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[plugins."superpowers@claude-plugins-official"]
+enabled = true
+
+[projects.'C:\Users\Diego Ramirez\Documents\Codex\2026-04-20-j-r-nw-construction-receipt-tracker']
+trust_level = "trusted"
+
+[projects.'C:\Users\Diego Ramirez\J-RNWConstructionSite']
+trust_level = "trusted"
+
+[shell_environment_policy]
+inherit = "core"
+
+[shell_environment_policy.set]
+CLAUDE_CODE_DISABLE_AUTO_MEMORY = "1"
+
+[windows]
+sandbox = "unelevated"
+
+[marketplaces.caveman-repo]
+last_updated = "2026-05-20T18:44:49Z"
+last_revision = "655b7d9c5431f822264b7732e9901c5578ac84cf"
+source_type = "git"
+source = "https://github.com/JuliusBrussee/caveman.git"
+
+[marketplaces.context-mode]
+last_updated = "2026-05-25T16:29:55Z"
+last_revision = "167fbe6cc794fa84167691f096c7fbd31d1f7ea6"
+source_type = "git"
+source = "https://github.com/mksglu/context-mode.git"
+
+[marketplaces.openai-primary-runtime]
+last_updated = "2026-05-21T23:25:43Z"
+source_type = "local"
+source = '\\?\C:\Users\Diego Ramirez\.cache\codex-runtimes\codex-primary-runtime\plugins\openai-primary-runtime'
+
+[marketplaces.claude-plugins-official]
+last_updated = "2026-05-25T16:29:46Z"
+last_revision = "1b527e2ee74e6dbd198e22cd41701c3b6f47dfec"
+source_type = "git"
+source = "https://github.com/anthropics/claude-plugins-official.git"
+
+[hooks.state]
+
+[hooks.state.'C:\Users\Diego Ramirez\.codex\hooks.json:pre_tool_use:0:0']
+trusted_hash = "sha256:96595c9c2ef097ce49f6c19275535f04856f0d572db1ed83e8cddb33b9f1d327"
+
+[hooks.state.'C:\Users\Diego Ramirez\J-RNWConstructionSite\.codex\hooks.json:pre_tool_use:0:0']
+trusted_hash = "sha256:96595c9c2ef097ce49f6c19275535f04856f0d572db1ed83e8cddb33b9f1d327"
+
+[hooks.state."superpowers@claude-plugins-official:hooks/hooks.json:session_start:0:0"]
+trusted_hash = "sha256:62acbaff2b2f55f41971e21a164990aaa53c96919baa0a5eae2eb5db73b9e6e6"
+
+[desktop.open-in-target-preferences]
+global = "vscode"
+
+[desktop.open-in-target-preferences.perPath]
+'C:\Users\Diego Ramirez\J-RNWConstructionSite' = "vscode"

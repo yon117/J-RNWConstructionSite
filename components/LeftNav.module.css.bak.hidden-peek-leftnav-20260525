@@ -1,0 +1,106 @@
+.nav {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  z-index: 50;
+  width: 210px;
+  background: rgba(8, 13, 20, 0.96);
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(-32px, -50%, 0);
+  transition: opacity 0.28s ease, transform 0.28s ease, visibility 0.28s ease;
+}
+
+.navVisible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0, -50%, 0);
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 16px 24px 14px;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.3);
+  transition: color 0.22s ease, background 0.22s ease;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.item:hover {
+  color: rgba(255, 255, 255, 0.68);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.active {
+  color: rgba(255, 255, 255, 1);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.complete {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.row {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.num {
+  font-family: 'Barlow Condensed', 'Barlow', monospace;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  opacity: 0.45;
+  flex-shrink: 0;
+}
+
+.active .num,
+.complete .num {
+  opacity: 0.72;
+}
+
+.label {
+  font-family: 'Barlow Condensed', 'Barlow', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 1;
+}
+
+.bar {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #c8961e;
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+@media (max-width: 1100px) {
+  .nav {
+    display: none;
+  }
+}

@@ -1,0 +1,277 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e4]:
+    - banner [ref=e5]:
+      - generic [ref=e7]:
+        - generic [ref=e8]:
+          - img [ref=e9]
+          - link "(503) 998-2340" [ref=e11] [cursor=pointer]:
+            - /url: tel:+15039982340
+        - generic [ref=e13]:
+          - img [ref=e14]
+          - link "jandrnwconstruction@gmail.com" [ref=e16] [cursor=pointer]:
+            - /url: mailto:jandrnwconstruction@gmail.com
+        - generic [ref=e18]: Available 24/7 · Licensed · Bonded · Insured · CCB 232708
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - text: 🌧Spring flooding & landslide season — Free water damage assessment. Don't let mold set in.
+          - link "Call (503) 998-2340" [ref=e21] [cursor=pointer]:
+            - /url: tel:+15039982340
+        - button "Dismiss" [ref=e22] [cursor=pointer]: ✕
+      - navigation [ref=e23]:
+        - link "J&R NW Construction J&R NW Construction Build Better, Restore Stronger" [ref=e24] [cursor=pointer]:
+          - /url: /
+          - img "J&R NW Construction" [ref=e26]
+          - generic [ref=e27]:
+            - text: J&R NW Construction
+            - generic [ref=e28]: Build Better, Restore Stronger
+        - generic [ref=e29]:
+          - list [ref=e30]:
+            - listitem [ref=e31]:
+              - link "Home" [ref=e32] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e33]:
+              - link "Services" [ref=e34] [cursor=pointer]:
+                - /url: /services
+            - listitem [ref=e35]:
+              - link "Projects" [ref=e36] [cursor=pointer]:
+                - /url: /projects
+          - generic [ref=e37]:
+            - link "Facebook" [ref=e38] [cursor=pointer]:
+              - /url: https://www.facebook.com/JRNWConstruction/
+              - img [ref=e39]
+            - link "Instagram" [ref=e41] [cursor=pointer]:
+              - /url: https://www.instagram.com/jandrnwconstruction/
+              - img [ref=e42]
+            - link "Yelp" [ref=e44] [cursor=pointer]:
+              - /url: https://m.yelp.com/biz/j-and-r-nw-construction-portland-5
+              - img "Yelp" [ref=e45]
+            - link "Google" [ref=e46] [cursor=pointer]:
+              - /url: https://www.google.com/maps/place/J%26R+NW+Construction/
+              - img [ref=e47]
+          - generic [ref=e52]:
+            - button "EN" [ref=e53] [cursor=pointer]
+            - button "ES" [ref=e54] [cursor=pointer]
+          - button "Free Estimate" [ref=e55] [cursor=pointer]
+          - button "Switch to light mode" [ref=e56] [cursor=pointer]:
+            - generic [ref=e57]: ☀
+    - main [ref=e58]:
+      - generic [ref=e59]:
+        - generic [ref=e61]:
+          - button "← Back to Services" [ref=e62] [cursor=pointer]
+          - generic [ref=e63]:
+            - generic [ref=e64]:
+              - generic [ref=e65]: Our Services
+              - heading "Drywall Services" [level=1] [ref=e66]:
+                - text: Drywall
+                - emphasis [ref=e67]: Services
+              - paragraph [ref=e68]: Smooth Walls. Perfect Finish.
+              - generic [ref=e69]:
+                - button "Get Your Free Estimate" [ref=e70] [cursor=pointer]:
+                  - text: Get Your Free Estimate
+                  - img [ref=e71]
+                - link "← Back to Services" [ref=e73] [cursor=pointer]:
+                  - /url: /services
+            - generic [ref=e74]:
+              - img "Drywall Services" [ref=e76]
+              - generic [ref=e77]:
+                - generic [ref=e78]:
+                  - generic [ref=e79]: "04"
+                  - text: Key benefits
+                - generic [ref=e80]:
+                  - generic [ref=e81]: "01"
+                  - text: Project photos
+                - generic [ref=e82]:
+                  - generic [ref=e83]: "03"
+                  - text: Client FAQs
+        - generic [ref=e84]:
+          - generic [ref=e85]:
+            - generic [ref=e86]:
+              - generic [ref=e87]: Service Focus
+              - heading "Drywall Services" [level=2] [ref=e88]
+              - paragraph [ref=e89]: "Our team handles drywall at every scale from single-hole patches and water damage repairs to full room installations for remodels and additions. We approach every job with the same standard: tape, mud, sand, and finish until the wall is genuinely flat, genuinely smooth, and genuinely ready for paint. No skimping on coats of compound. No rushing the dry time between passes. No calling a job done when it's merely acceptable. Texture matching is one of the most underestimated drywall skills. If your home has orange peel, knockdown, skip trowel, or any other texture, a patch that doesn't match stands out immediately especially once painted. We take the time to match your existing texture as closely as possible, whether replicating an older spray texture or hand-applying a custom finish. When a repair blends in completely, that's what success looks like. Whether it's a nail pop, water-damaged section, full room renovation, or popcorn ceiling removal every drywall job we do is built to the standard that makes everything above it look its best."
+              - generic [ref=e90]:
+                - generic [ref=e91]: Our team handles drywall at every scale from single-hole patches and water damage repairs to full room installations for remodels and additions
+                - generic [ref=e92]: New installation
+                - generic [ref=e93]: Repairs & patching
+            - generic [ref=e94]:
+              - generic [ref=e95]: Quick Snapshot
+              - generic [ref=e96]:
+                - generic [ref=e97]: Drywall Services
+                - text: Service
+              - generic [ref=e98]:
+                - generic [ref=e99]: Licensed + Insured
+                - text: Company standard
+              - generic [ref=e100]:
+                - generic [ref=e101]: Portland Metro
+                - text: Primary coverage area
+          - generic [ref=e102]:
+            - generic [ref=e103]:
+              - generic [ref=e104]: Core Benefits
+              - heading "Why this service works" [level=2] [ref=e105]
+            - generic [ref=e106]:
+              - generic [ref=e107]:
+                - generic [ref=e108]: "01"
+                - generic [ref=e109]: New installation
+                - paragraph [ref=e110]: Full drywall framing and hanging for new builds or additions.
+              - generic [ref=e111]:
+                - generic [ref=e112]: "02"
+                - generic [ref=e113]: Repairs & patching
+                - paragraph [ref=e114]: Holes, cracks, and water damage we make it disappear.
+              - generic [ref=e115]:
+                - generic [ref=e116]: "03"
+                - generic [ref=e117]: Texture matching
+                - paragraph [ref=e118]: We match your existing wall texture so repairs are invisible.
+              - generic [ref=e119]:
+                - generic [ref=e120]: "04"
+                - generic [ref=e121]: Paint-ready finish
+                - paragraph [ref=e122]: Smooth, sanded, and primed ready for the final coat.
+          - generic [ref=e123]:
+            - generic [ref=e124]:
+              - generic [ref=e125]: Project Detail
+              - heading "What to expect" [level=2] [ref=e126]
+            - generic [ref=e127]:
+              - generic [ref=e128]:
+                - generic [ref=e129]: Overview
+                - paragraph [ref=e131]: Bad drywall work shows in every shadow, every crack, every uneven patch. Our team delivers installations and repairs that are smooth, straight, and built to hold. Whether it's a small hole or an entire room, the result is always paint-ready and professional.
+              - generic [ref=e132]:
+                - generic [ref=e133]: Project approach
+                - paragraph [ref=e135]: Drywall is the canvas for everything that comes after paint, trim, fixtures. A flawless finish starts with solid drywall work. We tape, mud, and sand with the attention that makes the difference between a wall that looks good and one that looks professionally built.
+              - generic [ref=e136]:
+                - generic [ref=e137]: Why choose us
+                - paragraph [ref=e139]: New drywall installation complete hanging, taping, mudding, and finishing for remodels and additions. Drywall repair from nail pops and hairline cracks to large-section replacements after water or impact damage. Texture work orange peel, knockdown, smooth, popcorn removal we match what's already there.
+          - generic [ref=e140]:
+            - generic [ref=e141]:
+              - generic [ref=e142]: Our Process
+              - heading "How the job moves" [level=2] [ref=e143]
+            - generic [ref=e144]:
+              - generic [ref=e145]:
+                - generic [ref=e146]: "01"
+                - generic [ref=e147]: Free consultation
+                - paragraph [ref=e148]: We assess the space and your goals, then define the cleanest path forward before work starts.
+              - generic [ref=e149]:
+                - generic [ref=e150]: "02"
+                - generic [ref=e151]: Detailed estimate
+                - paragraph [ref=e152]: You get clear pricing, scope, and expectations up front so there are no vague surprises later.
+              - generic [ref=e153]:
+                - generic [ref=e154]: "03"
+                - generic [ref=e155]: Build phase
+                - paragraph [ref=e156]: Our crew works with consistent communication, clean jobsite habits, and disciplined execution.
+              - generic [ref=e157]:
+                - generic [ref=e158]: "04"
+                - generic [ref=e159]: Final walkthrough
+                - paragraph [ref=e160]: We review the finished work together and close out only when the result is right.
+          - generic [ref=e161]:
+            - generic [ref=e162]:
+              - generic [ref=e163]: Project Photos
+              - heading "Recent visual references" [level=2] [ref=e164]
+            - button "Drywall Services 1 View image 01" [ref=e166] [cursor=pointer]:
+              - img "Drywall Services 1" [ref=e167]
+              - generic [ref=e168]: View image 01
+          - generic [ref=e169]:
+            - generic [ref=e170]:
+              - generic [ref=e171]: Questions
+              - heading "Common client questions" [level=2] [ref=e172]
+            - generic [ref=e173]:
+              - generic [ref=e174]:
+                - paragraph [ref=e175]: "Q: Can you match my existing wall texture?"
+                - paragraph [ref=e176]: Yes. Texture matching is a core part of our repair work. We assess the existing surface and replicate it closely.
+              - generic [ref=e177]:
+                - paragraph [ref=e178]: "Q: How long before the drywall is ready to paint?"
+                - paragraph [ref=e179]: Typically 24–48 hours after final coat and sanding, depending on conditions.
+              - generic [ref=e180]:
+                - paragraph [ref=e181]: "Q: Do you handle water-damaged drywall?"
+                - paragraph [ref=e182]: Yes. We assess for mold, remove damaged sections, and replace with fresh material coordinating with our mitigation team if needed.
+          - generic [ref=e183]:
+            - generic [ref=e184]:
+              - generic [ref=e185]: Our Work
+              - heading "Related project inspiration" [level=2] [ref=e186]
+            - generic [ref=e187]:
+              - button "Previous project" [ref=e188] [cursor=pointer]: Prev
+              - link "Dry rot repairs. Featured Project Dry rot repairs. Dry rot repair fully completed from demo to finish. View All Projects" [ref=e189] [cursor=pointer]:
+                - /url: /projects
+                - img "Dry rot repairs." [ref=e191]
+                - generic [ref=e192]:
+                  - generic [ref=e193]: Featured Project
+                  - heading "Dry rot repairs." [level=3] [ref=e194]
+                  - paragraph [ref=e195]: Dry rot repair fully completed from demo to finish.
+                  - generic [ref=e196]:
+                    - text: View All Projects
+                    - img [ref=e197]
+              - button "Next project" [ref=e199] [cursor=pointer]: Next
+            - generic [ref=e200]:
+              - button "Go to project 1" [ref=e201] [cursor=pointer]
+              - button "Go to project 2" [ref=e202] [cursor=pointer]
+              - button "Go to project 3" [ref=e203] [cursor=pointer]
+              - button "Go to project 4" [ref=e204] [cursor=pointer]
+    - contentinfo [ref=e205]:
+      - generic [ref=e206]:
+        - generic [ref=e207]:
+          - generic [ref=e208]:
+            - img "J&R NW Construction" [ref=e210]
+            - generic [ref=e211]:
+              - text: J&R NW Construction
+              - generic [ref=e212]: Build Better, Restore Stronger
+          - paragraph [ref=e213]: Family-owned and operated. Serving Oregon with integrity, craftsmanship, and 20+ years of experience.
+          - generic [ref=e214]:
+            - link "Facebook" [ref=e215] [cursor=pointer]:
+              - /url: https://www.facebook.com/JRNWConstruction/
+              - img [ref=e216]
+            - link "Instagram" [ref=e218] [cursor=pointer]:
+              - /url: https://www.instagram.com/jandrnwconstruction/
+              - img [ref=e219]
+            - link "Yelp" [ref=e221] [cursor=pointer]:
+              - /url: https://m.yelp.com/biz/j-and-r-nw-construction-portland-5
+              - img "Yelp" [ref=e222]
+            - link "Google" [ref=e223] [cursor=pointer]:
+              - /url: https://www.google.com/maps/place/J%26R+NW+Construction/
+              - img [ref=e224]
+        - generic [ref=e229]:
+          - heading "Services" [level=4] [ref=e230]
+          - list [ref=e231]:
+            - listitem [ref=e232]:
+              - link "Interior Construction & Remodeling" [ref=e233] [cursor=pointer]:
+                - /url: /services/interior-construction-and-remodeling
+            - listitem [ref=e234]:
+              - link "Restoration & Reconstruction" [ref=e235] [cursor=pointer]:
+                - /url: /services/restoration-and-reconstruction
+            - listitem [ref=e236]:
+              - link "Mitigation & Emergency Services" [ref=e237] [cursor=pointer]:
+                - /url: /services/mitigation-and-emergency-services
+            - listitem [ref=e238]:
+              - link "Siding" [ref=e239] [cursor=pointer]:
+                - /url: /services/siding
+            - listitem [ref=e240]:
+              - link "Paint" [ref=e241] [cursor=pointer]:
+                - /url: /services/paint
+            - listitem [ref=e242]:
+              - link "Drywall" [ref=e243] [cursor=pointer]:
+                - /url: /services/drywall
+        - generic [ref=e244]:
+          - heading "Home" [level=4] [ref=e245]
+          - list [ref=e246]:
+            - listitem [ref=e247]:
+              - link "Home" [ref=e248] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e249]:
+              - link "Services" [ref=e250] [cursor=pointer]:
+                - /url: /services
+            - listitem [ref=e251]:
+              - link "Projects" [ref=e252] [cursor=pointer]:
+                - /url: /projects
+            - listitem [ref=e253]:
+              - link "Free Estimate" [ref=e254] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e255]: "CCB: 232708"
+      - generic [ref=e256]:
+        - generic [ref=e257]: © 2025 J&R NW Construction LLC
+        - generic [ref=e258]:
+          - generic [ref=e259]: Licensed
+          - generic [ref=e261]: Bonded
+          - generic [ref=e263]: Insured
+          - generic [ref=e265]: BBB
+    - button "Emergency contact" [ref=e268] [cursor=pointer]:
+      - img [ref=e270]
+      - text: EMERGENCY – 24/7
+  - button "Open Next.js Dev Tools" [ref=e277] [cursor=pointer]:
+    - img [ref=e278]
+  - alert [ref=e281]

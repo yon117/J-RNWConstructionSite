@@ -1,0 +1,687 @@
+.previewPage {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top, rgba(201, 160, 47, 0.18), transparent 26%),
+        linear-gradient(180deg, #09101c 0%, #101a28 55%, #0c1420 100%);
+    color: #f3eee7;
+}
+
+.previewHero {
+    background-size: cover;
+    background-position: center;
+    border-bottom: 1px solid rgba(201, 160, 47, 0.16);
+}
+
+.previewHeroShell,
+.previewBodyShell,
+.previewIndexShell {
+    width: min(1480px, calc(100vw - 48px));
+    margin: 0 auto;
+}
+
+.previewHeroShell {
+    padding: 48px 0 34px;
+}
+
+.previewBodyShell {
+    padding: 28px 0 80px;
+}
+
+.previewSurface {
+    border: 1px solid rgba(201, 160, 47, 0.18);
+    background: linear-gradient(180deg, rgba(16, 26, 40, 0.92) 0%, rgba(11, 19, 30, 0.96) 100%);
+    box-shadow: 0 18px 54px rgba(0, 0, 0, 0.26);
+    backdrop-filter: blur(10px);
+}
+
+.previewHeroGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.18fr) minmax(340px, 0.82fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.previewHeroMain {
+    padding: 34px 34px 30px;
+    animation: previewFadeUp 0.7s ease both;
+}
+
+.previewHeroSidebar {
+    display: grid;
+    gap: 16px;
+}
+
+.previewBackLink,
+.previewTextLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #f3eee7;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.22s ease, border-color 0.22s ease;
+}
+
+.previewBackLink {
+    margin-bottom: 22px;
+    font-size: 0.92rem;
+}
+
+.previewBackLink:hover,
+.previewTextLink:hover {
+    color: #c9a02f;
+    border-color: rgba(201, 160, 47, 0.45);
+}
+
+.previewEyebrow,
+.previewSectionEyebrow,
+.previewNarrativeLabel {
+    margin: 0 0 14px;
+    color: #c9a02f;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.previewHeroTitle,
+.previewIndexTitle,
+.previewProofFeature h2,
+.previewQuoteCard h2,
+.previewSectionHeader h2,
+.previewCloseBand h2 {
+    margin: 0;
+    color: #f3eee7;
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 0.94;
+    text-transform: uppercase;
+}
+
+.previewHeroTitle {
+    max-width: 10ch;
+    font-size: clamp(3.5rem, 7vw, 6.4rem);
+}
+
+.previewHeroLead,
+.previewHeroCopy,
+.previewQuoteCard p,
+.previewNarrativeCard p,
+.previewProofFeature p,
+.previewProofSupport p,
+.previewProcessItem p,
+.previewFaqItem p,
+.previewProjectOverlay p,
+.previewCloseText,
+.previewIndexText,
+.previewServiceContent p {
+    margin: 0;
+    color: rgba(243, 238, 231, 0.82);
+    line-height: 1.72;
+}
+
+.previewHeroLead {
+    max-width: 58ch;
+    margin-top: 20px;
+    font-size: 1.08rem;
+}
+
+.previewHeroCopy {
+    max-width: 62ch;
+    margin-top: 18px;
+    font-size: 0.98rem;
+}
+
+.previewHeroActions,
+.previewCloseActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 26px;
+}
+
+.previewPrimaryButton,
+.previewSecondaryButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 0 22px;
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 0.98rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease;
+}
+
+.previewPrimaryButton {
+    border: 1px solid #c9a02f;
+    background: #c9a02f;
+    color: #09101c;
+}
+
+.previewSecondaryButton {
+    border: 1px solid rgba(243, 238, 231, 0.16);
+    background: rgba(255, 255, 255, 0.03);
+    color: #f3eee7;
+}
+
+.previewPrimaryButton:hover,
+.previewSecondaryButton:hover,
+.previewProjectCard:hover {
+    transform: translateY(-2px);
+}
+
+.previewTrustRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.previewTrustRow span,
+.previewPanelTag,
+.previewFeatureMeta span,
+.previewProjectIndex {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0 12px;
+    border: 1px solid rgba(243, 238, 231, 0.12);
+    background: rgba(255, 255, 255, 0.025);
+    color: rgba(243, 238, 231, 0.74);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.previewQuoteCard {
+    padding: 24px 22px;
+    animation: previewFadeUp 0.7s ease 0.08s both;
+}
+
+.previewPanelTag {
+    margin-bottom: 18px;
+    color: #c9a02f;
+    border-color: rgba(201, 160, 47, 0.24);
+}
+
+.previewQuoteCard h2 {
+    font-size: clamp(2rem, 3vw, 2.8rem);
+}
+
+.previewQuoteCard p {
+    margin-top: 14px;
+}
+
+.previewChecklist {
+    display: grid;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.previewChecklistItem {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(243, 238, 231, 0.08);
+}
+
+.previewChecklistItem:first-child {
+    padding-top: 0;
+    border-top: 0;
+}
+
+.previewChecklistItem span,
+.previewProofNumber,
+.previewProcessNumber {
+    color: #c9a02f;
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 2.6rem;
+    line-height: 0.86;
+}
+
+.previewChecklistItem p {
+    color: #f3eee7;
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 1.28rem;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.previewStatsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.previewStatCard {
+    min-height: 158px;
+    padding: 18px 16px;
+    animation: previewFadeUp 0.7s ease 0.14s both;
+}
+
+.previewStatCard strong {
+    display: block;
+    margin-bottom: 10px;
+    color: #c9a02f;
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: clamp(2.8rem, 4vw, 3.8rem);
+    line-height: 0.88;
+}
+
+.previewStatCard span {
+    display: block;
+    color: rgba(243, 238, 231, 0.82);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    line-height: 1.45;
+    text-transform: uppercase;
+}
+
+.previewProofColumns,
+.previewEditorialColumns,
+.previewConversionColumns {
+    display: grid;
+    gap: 24px;
+}
+
+.previewProofColumns {
+    grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+}
+
+.previewProofFeature,
+.previewProcessColumn,
+.previewFaqPanel,
+.previewProjectsPanel,
+.previewNarrativeCard,
+.previewProofSupport,
+.previewCloseBand {
+    padding: 24px 22px;
+}
+
+.previewProofFeature {
+    display: grid;
+    align-content: space-between;
+    min-height: 340px;
+    background:
+        linear-gradient(140deg, rgba(201, 160, 47, 0.16) 0%, rgba(201, 160, 47, 0) 34%),
+        linear-gradient(180deg, rgba(18, 30, 44, 0.96) 0%, rgba(10, 18, 28, 0.98) 100%);
+}
+
+.previewProofFeature h2,
+.previewSectionHeader h2,
+.previewCloseBand h2,
+.previewIndexTitle {
+    font-size: clamp(2.5rem, 4vw, 3.8rem);
+}
+
+.previewProofFeature p {
+    max-width: 54ch;
+    margin-top: 14px;
+}
+
+.previewFeatureMeta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.previewProofStack {
+    display: grid;
+    gap: 16px;
+}
+
+.previewProofSupport h3,
+.previewProcessItem h3,
+.previewFaqItem h3,
+.previewProjectOverlay h3 {
+    margin: 12px 0 10px;
+    color: #f3eee7;
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 1.5rem;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.previewProofSupport {
+    min-height: 162px;
+}
+
+.previewEditorialColumns {
+    grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+    margin-top: 24px;
+}
+
+.previewStoryColumn {
+    display: grid;
+    gap: 16px;
+}
+
+.previewSectionHeader {
+    margin-bottom: 4px;
+}
+
+.previewNarrativeCard {
+    display: grid;
+    gap: 12px;
+}
+
+.previewNarrativeLabel {
+    margin-bottom: 2px;
+}
+
+.previewProcessColumn {
+    align-self: start;
+}
+
+.previewProcessRail {
+    display: grid;
+    gap: 0;
+    margin-top: 8px;
+}
+
+.previewProcessItem {
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr);
+    gap: 18px;
+    padding: 18px 0;
+    border-top: 1px solid rgba(243, 238, 231, 0.08);
+}
+
+.previewProcessItem:first-child {
+    padding-top: 0;
+    border-top: 0;
+}
+
+.previewConversionColumns {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    margin-top: 24px;
+}
+
+.previewFaqList {
+    display: grid;
+    gap: 0;
+    margin-top: 8px;
+}
+
+.previewFaqItem {
+    padding: 18px 0;
+    border-top: 1px solid rgba(243, 238, 231, 0.08);
+}
+
+.previewFaqItem:first-child {
+    padding-top: 0;
+    border-top: 0;
+}
+
+.previewFaqItem h3 {
+    margin-top: 0;
+}
+
+.previewProjectsColumnGrid {
+    display: grid;
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.previewProjectCard {
+    position: relative;
+    min-height: 190px;
+    overflow: hidden;
+    border: 1px solid rgba(201, 160, 47, 0.16);
+    transition: transform 0.24s ease, box-shadow 0.24s ease;
+}
+
+.previewProjectCard:hover {
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.24);
+}
+
+.previewProjectMedia,
+.previewProjectOverlay {
+    position: absolute;
+    inset: 0;
+}
+
+.previewProjectMedia {
+    background-size: cover;
+    background-position: center;
+    transform: scale(1.02);
+}
+
+.previewProjectOverlay {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 18px 16px 16px;
+    background: linear-gradient(180deg, rgba(9, 16, 28, 0.08) 0%, rgba(9, 16, 28, 0.86) 100%);
+}
+
+.previewProjectIndex {
+    width: fit-content;
+    margin-bottom: 10px;
+    color: #c9a02f;
+}
+
+.previewProjectOverlay h3 {
+    margin-bottom: 8px;
+}
+
+.previewTextLink {
+    margin-top: 18px;
+}
+
+.previewCloseBand {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 24px;
+    align-items: center;
+    margin-top: 24px;
+}
+
+.previewCloseText {
+    max-width: 60ch;
+    margin-top: 14px;
+}
+
+.previewIndexPage {
+    min-height: 100vh;
+    padding: 48px 0 72px;
+    background:
+        radial-gradient(circle at top, rgba(201, 160, 47, 0.14), transparent 30%),
+        linear-gradient(180deg, #09101c 0%, #0e1726 100%);
+}
+
+.previewIndexIntro {
+    margin-bottom: 28px;
+}
+
+.previewIndexText {
+    max-width: 60ch;
+    margin-top: 14px;
+}
+
+.previewIndexGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.previewServiceCard {
+    position: relative;
+    display: flex;
+    min-height: 320px;
+    overflow: hidden;
+    text-decoration: none;
+    border: 1px solid rgba(201, 160, 47, 0.18);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+    transition: transform 0.24s ease, box-shadow 0.24s ease;
+}
+
+.previewServiceCard:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 26px 58px rgba(0, 0, 0, 0.28);
+}
+
+.previewServiceImage,
+.previewServiceOverlay {
+    position: absolute;
+    inset: 0;
+}
+
+.previewServiceImage {
+    background-size: cover;
+    background-position: center;
+    transform: scale(1.02);
+}
+
+.previewServiceOverlay {
+    background: linear-gradient(180deg, rgba(9, 16, 28, 0.22) 0%, rgba(9, 16, 28, 0.92) 100%);
+}
+
+.previewServiceContent {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 100%;
+    padding: 24px;
+}
+
+.previewServiceNumber {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    margin-bottom: 18px;
+    border: 1px solid rgba(201, 160, 47, 0.4);
+    background: rgba(201, 160, 47, 0.1);
+    color: #c9a02f;
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.previewServiceContent h2 {
+    margin: 0 0 10px;
+    color: #f3eee7;
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: clamp(2rem, 3.4vw, 2.8rem);
+    line-height: 0.95;
+    text-transform: uppercase;
+}
+
+.previewServiceContent p {
+    max-width: 46ch;
+}
+
+.previewServiceLink {
+    margin-top: 18px;
+    color: #c9a02f;
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 0.98rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+@keyframes previewFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 1180px) {
+    .previewHeroGrid,
+    .previewProofColumns,
+    .previewEditorialColumns,
+    .previewConversionColumns,
+    .previewCloseBand,
+    .previewIndexGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .previewStatsGrid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 820px) {
+    .previewHeroShell,
+    .previewBodyShell,
+    .previewIndexShell {
+        width: min(100vw - 24px, 1480px);
+    }
+
+    .previewHeroShell {
+        padding-top: 28px;
+    }
+
+    .previewHeroMain,
+    .previewQuoteCard,
+    .previewProofFeature,
+    .previewProofSupport,
+    .previewProcessColumn,
+    .previewFaqPanel,
+    .previewProjectsPanel,
+    .previewNarrativeCard,
+    .previewCloseBand {
+        padding: 20px 16px;
+    }
+
+    .previewHeroTitle {
+        max-width: none;
+        font-size: clamp(2.8rem, 16vw, 4.2rem);
+    }
+
+    .previewStatsGrid,
+    .previewIndexGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .previewChecklistItem,
+    .previewProcessItem {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .previewCloseActions {
+        width: 100%;
+    }
+
+    .previewCloseActions .previewPrimaryButton,
+    .previewCloseActions .previewSecondaryButton,
+    .previewHeroActions .previewPrimaryButton,
+    .previewHeroActions .previewSecondaryButton {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .previewHeroMain,
+    .previewQuoteCard,
+    .previewStatCard,
+    .previewServiceCard,
+    .previewProjectCard,
+    .previewPrimaryButton,
+    .previewSecondaryButton {
+        animation: none;
+        transition: none;
+    }
+}

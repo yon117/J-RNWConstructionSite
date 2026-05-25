@@ -1,0 +1,121 @@
+import { useEffect, useState } from 'react';
+import styles from './LeftNav.module.css';
+
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
+
+export default function LeftNav({ sections = [] }) {
+  const [active, setActive] = useState(null);
+  const [progress, setProgress] = useState({});
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || sections.length === 0) return undefined;
+
+    let frameId = 0;
+
+    const updateNav = () => {
+      const orderedSections = sections
+        .map((section) => {
+          const el = document.getElementById(section.id);
+          return el ? { ...section, el } : null;
+        })
+        .filter(Boolean);
+
+      if (!orderedSections.length) {
+        setVisible(false);
+        setActive(null);
+        setProgress({});
+        return;
+      }
+
+      const focusLine = window.innerHeight * 0.42;
+      const scrollY = window.scrollY || window.pageYOffset || 0;
+      const firstRect = orderedSections[0].el.getBoundingClientRect();
+      const lastRect = orderedSections[orderedSections.length - 1].el.getBoundingClientRect();
+      const firstTop = scrollY + firstRect.top;
+      const lastBottom = scrollY + lastRect.bottom;
+      const navStart = firstTop - focusLine;
+      const navEnd = lastBottom - (window.innerHeight * 0.22);
+      const shouldShow = window.innerWidth > 1100
+        && scrollY >= navStart
+        && scrollY <= navEnd;
+
+      const nextProgress = {};
+      let nextActive = orderedSections[0].id;
+
+      orderedSections.forEach((section) => {
+        const rect = section.el.getBoundingClientRect();
+        const rawProgress = (focusLine - rect.top) / Math.max(rect.height, 1);
+        const sectionProgress = clamp(rawProgress, 0, 1);
+        nextProgress[section.id] = sectionProgress;
+
+        if (rawProgress >= 0) {
+          nextActive = section.id;
+        }
+      });
+
+      setProgress(nextProgress);
+      setActive(shouldShow ? nextActive : null);
+      setVisible(shouldShow);
+    };
+
+    const requestUpdate = () => {
+      cancelAnimationFrame(frameId);
+      frameId = requestAnimationFrame(updateNav);
+    };
+
+    requestUpdate();
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', requestUpdate);
+    window.addEventListener('load', requestUpdate);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      window.removeEventListener('scroll', requestUpdate);
+      window.removeEventListener('resize', requestUpdate);
+      window.removeEventListener('load', requestUpdate);
+    };
+  }, [sections]);
+
+  const scrollTo = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  if (sections.length === 0) return null;
+
+  return (
+    <nav
+      className={`${styles.nav} ${visible ? styles.navVisible : ''}`}
+      aria-label="Page sections"
+    >
+      {sections.map(({ id, label, num }) => {
+        const isActive = active === id;
+        const prog = progress[id] ?? 0;
+        const isComplete = prog >= 1;
+
+        return (
+          <button
+            key={id}
+            className={`${styles.item} ${isActive ? styles.active : ''} ${isComplete ? styles.complete : ''}`}
+            onClick={() => scrollTo(id)}
+            aria-label={`Go to ${label}`}
+            aria-current={isActive ? 'true' : undefined}
+          >
+            <div className={styles.row}>
+              <span className={styles.num}>{num}</span>
+              <span className={styles.label}>{label.toUpperCase()}</span>
+            </div>
+            <div className={styles.bar}>
+              <span
+                className={styles.fill}
+                style={{ transform: `scaleX(${prog})` }}
+              />
+            </div>
+          </button>
+        );
+      })}
+    </nav>
+  );
+}

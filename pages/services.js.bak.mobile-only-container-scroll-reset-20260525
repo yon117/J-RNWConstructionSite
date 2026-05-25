@@ -1,0 +1,352 @@
+import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import Layout from '../components/Layout';
+import Modal from '../components/Modal';
+import ContactFormSection from '../components/ContactFormSection';
+import { useLang } from '../context/LanguageContext';
+import { getDb } from '../lib/db';
+import pageStyles from '../styles/Services.module.css';
+import { imageUrl } from '../utils/imageUrl';
+import { sanitizeServiceText } from '../utils/sanitizeServiceText';
+
+const ArrowIcon = () => (
+    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+    </svg>
+);
+
+const SERVICE_TAGS = [
+    'Interior - Residential',
+    'Exterior - Protection',
+    'Restoration - Reconstruction',
+    'Emergency - 24/7',
+    'Exterior - Painting',
+    'Interior - Drywall',
+    'General - Repairs',
+    'Commercial - Residential',
+];
+
+function MobileServiceScrollCard({ children, className, index }) {
+    const containerRef = useRef(null);
+    const prefersReducedMotion = useReducedMotion();
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return undefined;
+
+        const mediaQuery = window.matchMedia('(max-width: 768px)');
+        const syncViewport = (event) => {
+            setIsMobile(event?.matches ?? mediaQuery.matches);
+        };
+
+        syncViewport();
+
+        if (typeof mediaQuery.addEventListener === 'function') {
+            mediaQuery.addEventListener('change', syncViewport);
+            return () => mediaQuery.removeEventListener('change', syncViewport);
+        }
+
+        mediaQuery.addListener(syncViewport);
+        return () => mediaQuery.removeListener(syncViewport);
+    }, []);
+
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ['start end', 'end start'],
+    });
+
+    const rotateX = useTransform(scrollYProgress, [0, 0.55, 1], isMobile ? [6, 0, 0] : [0, 0, 0]);
+    const scale = useTransform(scrollYProgress, [0, 0.55, 1], isMobile ? [0.985, 1, 1] : [1, 1, 1]);
+    const translateY = useTransform(scrollYProgress, [0, 0.55, 1], isMobile ? [36, 0, -8] : [0, 0, 0]);
+    const opacity = useTransform(scrollYProgress, [0, 0.24, 0.55], isMobile ? [0.72, 0.92, 1] : [1, 1, 1]);
+
+    const desktopDirection = index % 2 === 0 ? -1 : 1;
+    const desktopInitial = { opacity: 0, x: desktopDirection * 40, y: 56, scale: 0.982 };
+    const desktopVisible = { opacity: 1, x: 0, y: 0, scale: 1 };
+
+    return (
+        <div ref={containerRef} className={pageStyles.serviceCardShell}>
+            <motion.div
+                className={className}
+                style={
+                    prefersReducedMotion
+                        ? undefined
+                        : isMobile
+                            ? {
+                                rotateX,
+                                scale,
+                                y: translateY,
+                                opacity,
+                                width: '100%',
+                                transformStyle: 'preserve-3d',
+                                transformOrigin: 'center top',
+                                willChange: 'transform, opacity',
+                                boxShadow:
+                                    '0 0 #0000004d, 0 9px 20px #0000004a, 0 37px 37px #00000042, 0 84px 50px #00000026, 0 149px 60px #0000000a, 0 233px 65px #00000003',
+                            }
+                            : {
+                                width: '100%',
+                                willChange: 'transform, opacity',
+                            }
+                }
+                initial={prefersReducedMotion || isMobile ? false : desktopInitial}
+                whileInView={prefersReducedMotion || isMobile ? undefined : desktopVisible}
+                viewport={prefersReducedMotion || isMobile ? undefined : { once: true, amount: 0.16 }}
+                transition={
+                    prefersReducedMotion
+                        ? { duration: 0 }
+                        : {
+                            duration: 0.62,
+                            delay: Math.min(index * 0.08, 0.32),
+                            ease: [0.165, 0.84, 0.44, 1],
+                        }
+                }
+            >
+                {children}
+            </motion.div>
+        </div>
+    );
+}
+
+const formatMetric = (value) => String(value).padStart(2, '0');
+
+export default function Services({ services }) {
+    const [showContactModal, setShowContactModal] = useState(false);
+    const { t, lang } = useLang();
+    const [displayServices, setDisplayServices] = useState(services);
+
+    useEffect(() => {
+        if (!lang || lang === 'en') {
+            setDisplayServices(services);
+            return;
+        }
+
+        let cancelled = false;
+
+        async function translate() {
+            const { translateArray } = await import('../utils/translate');
+            const titles = await translateArray(services.map((service) => service.title), lang);
+            const descriptions = await translateArray(services.map((service) => service.description), lang);
+
+            if (!cancelled) {
+                setDisplayServices(
+                    services.map((service, index) => ({
+                        ...service,
+                        title: titles[index],
+                        description: descriptions[index],
+                    }))
+                );
+            }
+        }
+
+        translate();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [lang, services]);
+
+    const SERVICE_TAG_KEYS = [
+        'serviceTag1',
+        'serviceTag2',
+        'serviceTag3',
+        'serviceTag4',
+        'serviceTag5',
+        'serviceTag6',
+        'serviceTag7',
+        'serviceTag8',
+    ];
+
+    const serviceSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: 'J&R NW Construction Services',
+        description: 'Full-service contractor in Portland OR - remodeling, siding, restoration, painting, drywall and emergency services.',
+        url: 'https://jandrnw.com/services',
+        itemListElement: displayServices.map((service, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            item: {
+                '@type': 'Service',
+                name: service.title,
+                description: service.description || '',
+                provider: {
+                    '@type': 'LocalBusiness',
+                    name: 'J&R NW Construction LLC',
+                    telephone: '+15039982340',
+                    url: 'https://jandrnw.com',
+                },
+                areaServed: 'Portland Metro, OR',
+                url: `https://jandrnw.com/services/${service.id}`,
+            },
+        })),
+    };
+
+    const getServiceSlug = (service) => (
+        service.slug
+        || (service.title
+            ? service.title
+                .toLowerCase()
+                .trim()
+                .replace(/&/g, 'and')
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '')
+            : 'service')
+    );
+
+    const getServiceTag = (index) => (
+        t[SERVICE_TAG_KEYS[index]]
+        || SERVICE_TAGS[index]
+        || t.constructionOregon
+        || 'Construction - Oregon'
+    );
+
+    const heroMetrics = [
+        { value: formatMetric(displayServices.length), label: 'Core services' },
+        { value: '24/7', label: 'Emergency response' },
+        { value: 'CCB 232708', label: 'Licensed + insured' },
+    ];
+
+    return (
+        <Layout
+            title="Construction Services Portland OR | Remodeling, Siding & Restoration | J&R NW Construction"
+            description="Portland OR construction services - remodeling, siding, water damage restoration, painting and drywall. Free estimates. Licensed contractor CCB #232708. Call (503) 998-2340."
+            canonical="/services"
+            onContactClick={() => setShowContactModal(true)}
+        >
+            <Head>
+                <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+            </Head>
+
+            <div className={pageStyles.servicesPage}>
+                <div className={pageStyles.servicesContent}>
+                    <div className={pageStyles.pageHero}>
+                        <div className={pageStyles.pageHeroInner}>
+                            <div className={pageStyles.pageHeroGrid}>
+                                <div className={pageStyles.pageHeroCopy}>
+                                    <div className={pageStyles.sectionLabel}>{t.ourServicesLabel || 'What We Offer'}</div>
+                                    <h1 className={pageStyles.pageTitle}>
+                                        {t.ourServices.split(' ')[0]}{' '}
+                                        <em>{t.ourServices.split(' ').slice(1).join(' ')}</em>
+                                    </h1>
+                                    <p className={pageStyles.pageSubtitle}>{t.servicesIntro}</p>
+
+                                    <div className={pageStyles.heroHighlights}>
+                                        {displayServices.slice(0, 3).map((service) => (
+                                            <span key={service.id} className={pageStyles.heroHighlightChip}>
+                                                {sanitizeServiceText(service.title) || service.title}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <aside className={pageStyles.heroPanel} aria-label="Service overview">
+                                    <div className={pageStyles.heroPanelEyebrow}>Built for active job sites</div>
+                                    <div className={pageStyles.heroMetricGrid}>
+                                        {heroMetrics.map((metric) => (
+                                            <div key={metric.label} className={pageStyles.heroMetricCard}>
+                                                <span className={pageStyles.heroMetricValue}>{metric.value}</span>
+                                                <span className={pageStyles.heroMetricLabel}>{metric.label}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <p className={pageStyles.heroPanelNote}>
+                                        Clear estimates. Protected work areas. A crew that keeps the scope moving without losing finish quality.
+                                    </p>
+                                </aside>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className={pageStyles.serviceList}>
+                        {displayServices.map((service, index) => {
+                            const serviceUrl = `/services/${getServiceSlug(service)}`;
+                            const tag = getServiceTag(index);
+                            const serviceTitle = sanitizeServiceText(service.title) || service.title;
+                            const serviceDescription = sanitizeServiceText(service.description) || '';
+                            const serviceCardClassName = index % 2 === 1
+                                ? `${pageStyles.serviceItem} ${pageStyles.serviceItemEven}`
+                                : pageStyles.serviceItem;
+
+                            return (
+                                <MobileServiceScrollCard
+                                    className={serviceCardClassName}
+                                    key={service.id}
+                                    data-anim="service-item"
+                                    index={index}
+                                >
+                                    <div className={pageStyles.serviceImgWrap}>
+                                        <Image
+                                            src={imageUrl(service.image_url)}
+                                            alt={serviceTitle}
+                                            fill
+                                            sizes="(max-width: 900px) 100vw, 50vw"
+                                            className={pageStyles.serviceImg}
+                                            priority={index === 0}
+                                            style={{ objectFit: 'cover' }}
+                                        />
+                                        <div className={pageStyles.serviceVisualBadge}>{tag}</div>
+                                    </div>
+
+                                    <div className={pageStyles.serviceContent}>
+                                        <div className={pageStyles.serviceTopLine}>
+                                            <div className={pageStyles.serviceNum}>
+                                                {String(index + 1).padStart(2, '0')}
+                                            </div>
+                                            <span className={pageStyles.serviceRule} />
+                                        </div>
+                                        <div className={pageStyles.serviceTag}>{tag}</div>
+                                        <h2 className={pageStyles.serviceName}>{serviceTitle}</h2>
+                                        <p className={pageStyles.serviceDesc}>{serviceDescription}</p>
+                                        <div className={pageStyles.serviceFooter}>
+                                            <span className={pageStyles.serviceCoverage}>Portland Metro coverage</span>
+                                            <Link href={serviceUrl} className={pageStyles.serviceCta}>
+                                                {t.learnMore} <ArrowIcon />
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </MobileServiceScrollCard>
+                            );
+                        })}
+                    </div>
+                </div>
+            </div>
+
+            {showContactModal && (
+                <Modal title={t.getInTouch} onClose={() => setShowContactModal(false)}>
+                    <ContactFormSection />
+                </Modal>
+            )}
+        </Layout>
+    );
+}
+
+let _servicesCache = null;
+let _servicesCacheTime = 0;
+const CACHE_TTL = 55_000;
+
+export async function getStaticProps() {
+    const now = Date.now();
+    if (_servicesCache && (now - _servicesCacheTime) < CACHE_TTL) {
+        return { props: { services: _servicesCache }, revalidate: 60 };
+    }
+
+    const db = await getDb();
+    const result = await db.execute('SELECT id, title, description, image, slug FROM services');
+    const rows = result.rows || [];
+    const services = rows.map((service) => ({
+        id: service.id,
+        title: service.title || '',
+        description: service.description || '',
+        image_url: service.image || '/assets/placeholder.jpg',
+        slug: service.slug || '',
+    }));
+
+    _servicesCache = services;
+    _servicesCacheTime = Date.now();
+
+    return { props: { services }, revalidate: 60 };
+}

@@ -1,0 +1,224 @@
+- generic [ref=e4]:
+  - banner [ref=e5]:
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - img [ref=e9]
+        - link "(503) 998-2340" [ref=e11] [cursor=pointer]:
+          - /url: tel:+15039982340
+      - generic [ref=e12]:
+        - img [ref=e13]
+        - link "jandrnwconstruction@gmail.com" [ref=e15] [cursor=pointer]:
+          - /url: mailto:jandrnwconstruction@gmail.com
+      - generic [ref=e16]: Available 24/7 · Licensed · Bonded · Insured · CCB 232708
+    - navigation [ref=e17]:
+      - link "J&R NW Construction J&R NW Construction Build Better, Restore Stronger" [ref=e18] [cursor=pointer]:
+        - /url: /
+        - img "J&R NW Construction" [ref=e20]
+        - generic [ref=e21]:
+          - text: J&R NW Construction
+          - generic [ref=e22]: Build Better, Restore Stronger
+      - button "Switch to light mode" [ref=e24] [cursor=pointer]:
+        - generic [ref=e25]: ☀
+      - button "Open menu" [ref=e26] [cursor=pointer]:
+        - generic [ref=e27]: MENU
+  - main [ref=e32]:
+    - generic [ref=e34]:
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - generic [ref=e39]: Our Services
+          - heading "Our Services" [level=1] [ref=e40]:
+            - text: Our
+            - emphasis [ref=e41]: Services
+          - paragraph [ref=e42]: Delivering top-tier restoration and construction services with precision, integrity, and a commitment to excellence. Your vision, our expertise.
+          - generic [ref=e43]:
+            - generic [ref=e44]: Home Remodeling
+            - generic [ref=e45]: Siding Installation
+            - generic [ref=e46]: Restoration & Reconstruction
+        - complementary "Service overview" [ref=e47]:
+          - generic [ref=e48]: Built for active job sites
+          - generic [ref=e49]:
+            - generic [ref=e50]:
+              - generic [ref=e51]: "07"
+              - generic [ref=e52]: Core services
+            - generic [ref=e53]:
+              - generic [ref=e54]: 24/7
+              - generic [ref=e55]: Emergency response
+            - generic [ref=e56]:
+              - generic [ref=e57]: CCB 232708
+              - generic [ref=e58]: Licensed + insured
+          - paragraph [ref=e59]: Clear estimates. Protected work areas. A crew that keeps the scope moving without losing finish quality.
+      - generic [ref=e60]:
+        - generic [ref=e61]:
+          - generic [ref=e62]:
+            - img "Home Remodeling" [ref=e63]
+            - generic [ref=e64]: Interior · Residential
+          - generic [ref=e65]:
+            - generic [ref=e67]: "01"
+            - generic [ref=e69]: Interior · Residential
+            - heading "Home Remodeling" [level=2] [ref=e70]
+            - paragraph [ref=e71]: Your home should reflect who you are and work the way you live. Maybe that means tearing down a wall to finally open up your living space. Maybe it's a bathroom that's been "fine" for fifteen years but you've always known could be something special. Maybe it's a basement that's been collecting boxes when it could be a home office, a rec room, or a guest suite. Whatever the vision we build it.
+            - generic [ref=e72]:
+              - generic [ref=e73]: Portland Metro coverage
+              - link "Learn More →" [ref=e74] [cursor=pointer]:
+                - /url: /services/remodeling
+                - text: Learn More →
+                - img [ref=e75]
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - img "Siding Installation" [ref=e79]
+            - generic [ref=e80]: Exterior · Protection
+          - generic [ref=e81]:
+            - generic [ref=e83]: "02"
+            - generic [ref=e85]: Exterior · Protection
+            - heading "Siding Installation" [level=2] [ref=e86]
+            - paragraph [ref=e87]: Your siding is your home's first line of defense against rain, wind, and rot. When it fails, damage doesn't stay outside. Our team installs and replaces siding with precision giving your home the protection and the appearance it deserves.
+            - generic [ref=e88]:
+              - generic [ref=e89]: Portland Metro coverage
+              - link "Learn More →" [ref=e90] [cursor=pointer]:
+                - /url: /services/siding
+                - text: Learn More →
+                - img [ref=e91]
+        - generic [ref=e93]:
+          - generic [ref=e94]:
+            - img "Restoration & Reconstruction" [ref=e95]
+            - generic [ref=e96]: Restoration · Reconstruction
+          - generic [ref=e97]:
+            - generic [ref=e99]: "03"
+            - generic [ref=e101]: Restoration · Reconstruction
+            - heading "Restoration & Reconstruction" [level=2] [ref=e102]
+            - paragraph [ref=e103]: When damage strikes a home whether from fire, water, a major storm, or structural failure the goal isn't just to put things back the way they were. The goal is to rebuild correctly, with materials and methods that leave the structure more resilient than it was before. Too many homeowners end up with restoration work that looks fine on the surface but was rushed, under-documented, or done without addressing the underlying cause. Months later, the problem returns or an inspector finds issues that complicate everything at resale.
+            - generic [ref=e104]:
+              - generic [ref=e105]: Portland Metro coverage
+              - link "Learn More →" [ref=e106] [cursor=pointer]:
+                - /url: /services/reconstruction
+                - text: Learn More →
+                - img [ref=e107]
+        - generic [ref=e109]:
+          - generic [ref=e110]:
+            - img "Mitigation & Emergency Services" [ref=e111]
+            - generic [ref=e112]: Emergency · 24/7
+          - generic [ref=e113]:
+            - generic [ref=e115]: "04"
+            - generic [ref=e117]: Emergency · 24/7
+            - heading "Mitigation & Emergency Services" [level=2] [ref=e118]
+            - paragraph [ref=e119]: Water damage, storm damage, flooding these don't wait for a convenient time. Neither do we. J&R NW Construction combines emergency response speed with full restoration capability, so you get one team handling everything from the first call to the final coat of paint.
+            - generic [ref=e120]:
+              - generic [ref=e121]: Portland Metro coverage
+              - link "Learn More →" [ref=e122] [cursor=pointer]:
+                - /url: /services/mitigation
+                - text: Learn More →
+                - img [ref=e123]
+        - generic [ref=e125]:
+          - generic [ref=e126]:
+            - img "Drywall Services" [ref=e127]
+            - generic [ref=e128]: Exterior · Painting
+          - generic [ref=e129]:
+            - generic [ref=e131]: "05"
+            - generic [ref=e133]: Exterior · Painting
+            - heading "Drywall Services" [level=2] [ref=e134]
+            - paragraph [ref=e135]: Bad drywall work shows in every shadow, every crack, every uneven patch. Our team delivers installations and repairs that are smooth, straight, and built to hold. Whether it's a small hole or an entire room, the result is always paint-ready and professional.
+            - generic [ref=e136]:
+              - generic [ref=e137]: Portland Metro coverage
+              - link "Learn More →" [ref=e138] [cursor=pointer]:
+                - /url: /services/drywall
+                - text: Learn More →
+                - img [ref=e139]
+        - generic [ref=e141]:
+          - generic [ref=e142]:
+            - img "Interior & Exterior Painting" [ref=e143]
+            - generic [ref=e144]: Interior · Drywall
+          - generic [ref=e145]:
+            - generic [ref=e147]: "06"
+            - generic [ref=e149]: Interior · Drywall
+            - heading "Interior & Exterior Painting" [level=2] [ref=e150]
+            - paragraph [ref=e151]: Paint is the fastest way to transform a space but only when it's done right. Our painters take surface preparation seriously, work cleanly, and finish with precision that makes every edge and corner look intentional.
+            - generic [ref=e152]:
+              - generic [ref=e153]: Portland Metro coverage
+              - link "Learn More →" [ref=e154] [cursor=pointer]:
+                - /url: /services/paiting
+                - text: Learn More →
+                - img [ref=e155]
+        - generic [ref=e157]:
+          - generic [ref=e158]:
+            - img "Waterproofing Services" [ref=e159]
+            - generic [ref=e160]: General · Repairs
+          - generic [ref=e161]:
+            - generic [ref=e163]: "07"
+            - generic [ref=e165]: General · Repairs
+            - heading "Waterproofing Services" [level=2] [ref=e166]
+            - paragraph [ref=e167]: "In the Pacific Northwest, moisture isn't a seasonal concern it's a year-round reality. Oregon averages over 140 rainy days per year in the Portland area, and that sustained moisture pressure finds every weakness in a home's envelope: foundation cracks, saturated soil pressing against basement walls, failed vapor barriers in crawl spaces, deteriorating sealants around penetrations, and improper grading that directs water toward your structure instead of away from it. When moisture finds a path in, it doesn't stop at the surface."
+            - generic [ref=e168]:
+              - generic [ref=e169]: Portland Metro coverage
+              - link "Learn More →" [ref=e170] [cursor=pointer]:
+                - /url: /services/waterproofing
+                - text: Learn More →
+                - img [ref=e171]
+  - contentinfo [ref=e173]:
+    - generic [ref=e174]:
+      - generic [ref=e175]:
+        - generic [ref=e176]:
+          - img "J&R NW Construction" [ref=e178]
+          - generic [ref=e179]:
+            - text: J&R NW Construction
+            - generic [ref=e180]: Build Better, Restore Stronger
+        - paragraph [ref=e181]: Family-owned and operated. Serving Oregon with integrity, craftsmanship, and 20+ years of experience.
+        - generic [ref=e182]:
+          - link "Facebook" [ref=e183] [cursor=pointer]:
+            - /url: https://www.facebook.com/JRNWConstruction/
+            - img [ref=e184]
+          - link "Instagram" [ref=e186] [cursor=pointer]:
+            - /url: https://www.instagram.com/jandrnwconstruction/
+            - img [ref=e187]
+          - link "Yelp" [ref=e189] [cursor=pointer]:
+            - /url: https://m.yelp.com/biz/j-and-r-nw-construction-portland-5
+            - img "Yelp" [ref=e190]
+          - link "Google" [ref=e191] [cursor=pointer]:
+            - /url: https://www.google.com/maps/place/J%26R+NW+Construction/
+            - img [ref=e192]
+      - generic [ref=e197]:
+        - heading "Services" [level=4] [ref=e198]
+        - list [ref=e199]:
+          - listitem [ref=e200]:
+            - link "Interior Construction & Remodeling" [ref=e201] [cursor=pointer]:
+              - /url: /services/interior-construction-and-remodeling
+          - listitem [ref=e202]:
+            - link "Restoration & Reconstruction" [ref=e203] [cursor=pointer]:
+              - /url: /services/restoration-and-reconstruction
+          - listitem [ref=e204]:
+            - link "Mitigation & Emergency Services" [ref=e205] [cursor=pointer]:
+              - /url: /services/mitigation-and-emergency-services
+          - listitem [ref=e206]:
+            - link "Siding" [ref=e207] [cursor=pointer]:
+              - /url: /services/siding
+          - listitem [ref=e208]:
+            - link "Paint" [ref=e209] [cursor=pointer]:
+              - /url: /services/paint
+          - listitem [ref=e210]:
+            - link "Drywall" [ref=e211] [cursor=pointer]:
+              - /url: /services/drywall
+      - generic [ref=e212]:
+        - heading "Home" [level=4] [ref=e213]
+        - list [ref=e214]:
+          - listitem [ref=e215]:
+            - link "Home" [ref=e216] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=e217]:
+            - link "Services" [ref=e218] [cursor=pointer]:
+              - /url: /services
+          - listitem [ref=e219]:
+            - link "Projects" [ref=e220] [cursor=pointer]:
+              - /url: /projects
+          - listitem [ref=e221]:
+            - link "Free Estimate" [ref=e222] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=e223]: "CCB: 232708"
+    - generic [ref=e224]:
+      - generic [ref=e225]: © 2025 J&R NW Construction LLC
+      - generic [ref=e226]:
+        - generic [ref=e227]: Licensed
+        - generic [ref=e229]: Bonded
+        - generic [ref=e231]: Insured
+        - generic [ref=e233]: BBB
+  - button "Emergency contact" [ref=e236] [cursor=pointer]:
+    - img [ref=e238]
+    - text: EMERGENCY – 24/7

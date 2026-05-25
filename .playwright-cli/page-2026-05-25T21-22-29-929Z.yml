@@ -1,0 +1,300 @@
+- generic [ref=e1]:
+  - button "Open chatbot" [ref=e3]:
+    - img "Bubble button icon" [ref=e4]
+    - img "Bubble Button"
+  - generic [ref=e7]:
+    - banner [ref=e8]:
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - img [ref=e12]
+          - link "(503) 998-2340" [ref=e14] [cursor=pointer]:
+            - /url: tel:+15039982340
+        - generic [ref=e16]:
+          - img [ref=e17]
+          - link "jandrnwconstruction@gmail.com" [ref=e19] [cursor=pointer]:
+            - /url: mailto:jandrnwconstruction@gmail.com
+        - generic [ref=e21]: Available 24/7 · Licensed · Bonded · Insured · CCB 232708
+      - generic [ref=e22]:
+        - generic [ref=e23]:
+          - text: 🌧Spring flooding & landslide season — Free water damage assessment. Don't let mold set in.
+          - link "Call (503) 998-2340" [ref=e24] [cursor=pointer]:
+            - /url: tel:+15039982340
+        - button "Dismiss" [ref=e25] [cursor=pointer]: ✕
+      - navigation [ref=e26]:
+        - link "J&R NW Construction J&R NW Construction Build Better, Restore Stronger" [ref=e27] [cursor=pointer]:
+          - /url: /
+          - img "J&R NW Construction" [ref=e29]
+          - generic [ref=e30]:
+            - text: J&R NW Construction
+            - generic [ref=e31]: Build Better, Restore Stronger
+        - generic [ref=e32]:
+          - list [ref=e33]:
+            - listitem [ref=e34]:
+              - link "Home" [ref=e35] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e36]:
+              - link "Services" [ref=e37] [cursor=pointer]:
+                - /url: /services
+            - listitem [ref=e38]:
+              - link "Projects" [ref=e39] [cursor=pointer]:
+                - /url: /projects
+          - generic [ref=e40]:
+            - link "Facebook" [ref=e41] [cursor=pointer]:
+              - /url: https://www.facebook.com/JRNWConstruction/
+              - img [ref=e42]
+            - link "Instagram" [ref=e44] [cursor=pointer]:
+              - /url: https://www.instagram.com/jandrnwconstruction/
+              - img [ref=e45]
+            - link "Yelp" [ref=e47] [cursor=pointer]:
+              - /url: https://m.yelp.com/biz/j-and-r-nw-construction-portland-5
+              - img "Yelp" [ref=e48]
+            - link "Google" [ref=e49] [cursor=pointer]:
+              - /url: https://www.google.com/maps/place/J%26R+NW+Construction/
+              - img [ref=e50]
+          - generic [ref=e55]:
+            - button "EN" [ref=e56] [cursor=pointer]
+            - button "ES" [ref=e57] [cursor=pointer]
+          - button "Free Estimate" [ref=e58] [cursor=pointer]
+          - button "Switch to light mode" [ref=e59] [cursor=pointer]:
+            - generic [ref=e60]: ☀
+    - main [ref=e61]:
+      - generic [ref=e63]:
+        - generic [ref=e65]:
+          - generic [ref=e66]: Our Services
+          - heading "Our Services" [level=1] [ref=e67]:
+            - text: Our
+            - emphasis [ref=e68]: Services
+          - paragraph [ref=e69]: Delivering top-tier restoration and construction services with precision, integrity, and a commitment to excellence. Your vision, our expertise.
+        - generic [ref=e70]:
+          - generic [ref=e71]:
+            - img "Home Remodeling" [ref=e73]
+            - generic [ref=e74]:
+              - generic [ref=e75]: "01"
+              - generic [ref=e76]: Interior · Residential
+              - generic [ref=e77]: Home Remodeling
+              - paragraph [ref=e78]: Your home should reflect who you are and work the way you live. Maybe that means tearing down a wall to finally open up your living space. Maybe it's a bathroom that's been "fine" for fifteen years but you've always known could be something special. Maybe it's a basement that's been collecting boxes when it could be a home office, a rec room, or a guest suite. Whatever the vision we build it.
+              - link "Learn More →" [ref=e79] [cursor=pointer]:
+                - /url: /services/remodeling
+                - text: Learn More →
+                - img [ref=e80]
+          - generic [ref=e82]:
+            - img "Siding Installation" [ref=e84]
+            - generic [ref=e85]:
+              - generic [ref=e86]: "02"
+              - generic [ref=e87]: Exterior · Protection
+              - generic [ref=e88]: Siding Installation
+              - paragraph [ref=e89]: Your siding is your home's first line of defense against rain, wind, and rot. When it fails, damage doesn't stay outside. Our team installs and replaces siding with precision giving your home the protection and the appearance it deserves.
+              - link "Learn More →" [ref=e90] [cursor=pointer]:
+                - /url: /services/siding
+                - text: Learn More →
+                - img [ref=e91]
+          - generic [ref=e93]:
+            - img "Restoration & Reconstruction" [ref=e95]
+            - generic [ref=e96]:
+              - generic [ref=e97]: "03"
+              - generic [ref=e98]: Restoration · Reconstruction
+              - generic [ref=e99]: Restoration & Reconstruction
+              - paragraph [ref=e100]: When damage strikes a home whether from fire, water, a major storm, or structural failure the goal isn't just to put things back the way they were. The goal is to rebuild correctly, with materials and methods that leave the structure more resilient than it was before. Too many homeowners end up with restoration work that looks fine on the surface but was rushed, under-documented, or done without addressing the underlying cause. Months later, the problem returns or an inspector finds issues that complicate everything at resale.
+              - link "Learn More →" [ref=e101] [cursor=pointer]:
+                - /url: /services/reconstruction
+                - text: Learn More →
+                - img [ref=e102]
+          - generic [ref=e104]:
+            - img "Mitigation & Emergency Services" [ref=e106]
+            - generic [ref=e107]:
+              - generic [ref=e108]: "04"
+              - generic [ref=e109]: Emergency · 24/7
+              - generic [ref=e110]: Mitigation & Emergency Services
+              - paragraph [ref=e111]: Water damage, storm damage, flooding these don't wait for a convenient time. Neither do we. J&R NW Construction combines emergency response speed with full restoration capability, so you get one team handling everything from the first call to the final coat of paint.
+              - link "Learn More →" [ref=e112] [cursor=pointer]:
+                - /url: /services/mitigation
+                - text: Learn More →
+                - img [ref=e113]
+          - generic [ref=e115]:
+            - img "Drywall Services" [ref=e117]
+            - generic [ref=e118]:
+              - generic [ref=e119]: "05"
+              - generic [ref=e120]: Exterior · Painting
+              - generic [ref=e121]: Drywall Services
+              - paragraph [ref=e122]: Bad drywall work shows in every shadow, every crack, every uneven patch. Our team delivers installations and repairs that are smooth, straight, and built to hold. Whether it's a small hole or an entire room, the result is always paint-ready and professional.
+              - link "Learn More →" [ref=e123] [cursor=pointer]:
+                - /url: /services/drywall
+                - text: Learn More →
+                - img [ref=e124]
+          - generic [ref=e126]:
+            - img "Interior & Exterior Painting" [ref=e128]
+            - generic [ref=e129]:
+              - generic [ref=e130]: "06"
+              - generic [ref=e131]: Interior · Drywall
+              - generic [ref=e132]: Interior & Exterior Painting
+              - paragraph [ref=e133]: Paint is the fastest way to transform a space but only when it's done right. Our painters take surface preparation seriously, work cleanly, and finish with precision that makes every edge and corner look intentional.
+              - link "Learn More →" [ref=e134] [cursor=pointer]:
+                - /url: /services/paiting
+                - text: Learn More →
+                - img [ref=e135]
+          - generic [ref=e137]:
+            - img "Waterproofing Services" [ref=e139]
+            - generic [ref=e140]:
+              - generic [ref=e141]: "07"
+              - generic [ref=e142]: General · Repairs
+              - generic [ref=e143]: Waterproofing Services
+              - paragraph [ref=e144]: "In the Pacific Northwest, moisture isn't a seasonal concern it's a year-round reality. Oregon averages over 140 rainy days per year in the Portland area, and that sustained moisture pressure finds every weakness in a home's envelope: foundation cracks, saturated soil pressing against basement walls, failed vapor barriers in crawl spaces, deteriorating sealants around penetrations, and improper grading that directs water toward your structure instead of away from it. When moisture finds a path in, it doesn't stop at the surface."
+              - link "Learn More →" [ref=e145] [cursor=pointer]:
+                - /url: /services/waterproofing
+                - text: Learn More →
+                - img [ref=e146]
+    - contentinfo [ref=e148]:
+      - generic [ref=e149]:
+        - generic [ref=e150]:
+          - generic [ref=e151]:
+            - img "J&R NW Construction" [ref=e153]
+            - generic [ref=e154]:
+              - text: J&R NW Construction
+              - generic [ref=e155]: Build Better, Restore Stronger
+          - paragraph [ref=e156]: Family-owned and operated. Serving Oregon with integrity, craftsmanship, and 20+ years of experience.
+          - generic [ref=e157]:
+            - link "Facebook" [ref=e158] [cursor=pointer]:
+              - /url: https://www.facebook.com/JRNWConstruction/
+              - img [ref=e159]
+            - link "Instagram" [ref=e161] [cursor=pointer]:
+              - /url: https://www.instagram.com/jandrnwconstruction/
+              - img [ref=e162]
+            - link "Yelp" [ref=e164] [cursor=pointer]:
+              - /url: https://m.yelp.com/biz/j-and-r-nw-construction-portland-5
+              - img "Yelp" [ref=e165]
+            - link "Google" [ref=e166] [cursor=pointer]:
+              - /url: https://www.google.com/maps/place/J%26R+NW+Construction/
+              - img [ref=e167]
+        - generic [ref=e172]:
+          - heading "Services" [level=4] [ref=e173]
+          - list [ref=e174]:
+            - listitem [ref=e175]:
+              - link "Interior Construction & Remodeling" [ref=e176] [cursor=pointer]:
+                - /url: /services/interior-construction-and-remodeling
+            - listitem [ref=e177]:
+              - link "Restoration & Reconstruction" [ref=e178] [cursor=pointer]:
+                - /url: /services/restoration-and-reconstruction
+            - listitem [ref=e179]:
+              - link "Mitigation & Emergency Services" [ref=e180] [cursor=pointer]:
+                - /url: /services/mitigation-and-emergency-services
+            - listitem [ref=e181]:
+              - link "Siding" [ref=e182] [cursor=pointer]:
+                - /url: /services/siding
+            - listitem [ref=e183]:
+              - link "Paint" [ref=e184] [cursor=pointer]:
+                - /url: /services/paint
+            - listitem [ref=e185]:
+              - link "Drywall" [ref=e186] [cursor=pointer]:
+                - /url: /services/drywall
+        - generic [ref=e187]:
+          - heading "Home" [level=4] [ref=e188]
+          - list [ref=e189]:
+            - listitem [ref=e190]:
+              - link "Home" [ref=e191] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e192]:
+              - link "Services" [ref=e193] [cursor=pointer]:
+                - /url: /services
+            - listitem [ref=e194]:
+              - link "Projects" [ref=e195] [cursor=pointer]:
+                - /url: /projects
+            - listitem [ref=e196]:
+              - link "Free Estimate" [ref=e197] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e198]: "CCB: 232708"
+      - generic [ref=e199]:
+        - generic [ref=e200]: © 2025 J&R NW Construction LLC
+        - generic [ref=e201]:
+          - generic [ref=e202]: Licensed
+          - generic [ref=e204]: Bonded
+          - generic [ref=e206]: Insured
+          - generic [ref=e208]: BBB
+    - button "Emergency contact" [ref=e211] [cursor=pointer]:
+      - img [ref=e213]
+      - text: EMERGENCY – 24/7
+  - generic [active]:
+    - generic [ref=e217]:
+      - generic [ref=e218]:
+        - generic [ref=e219]:
+          - navigation [ref=e220]:
+            - button "previous" [disabled] [ref=e221]:
+              - img "previous" [ref=e222]
+            - generic [ref=e224]:
+              - generic [ref=e225]: 1/
+              - text: "1"
+            - button "next" [disabled] [ref=e226]:
+              - img "next" [ref=e227]
+          - img
+        - generic [ref=e229]:
+          - generic [ref=e230]:
+            - img [ref=e231]
+            - generic "Latest available version is detected (16.2.6)." [ref=e233]: Next.js 16.2.6
+            - generic [ref=e234]: Turbopack
+          - img
+      - dialog "Runtime Error" [ref=e236]:
+        - generic [ref=e239]:
+          - generic [ref=e240]:
+            - generic [ref=e241]:
+              - generic [ref=e243]: Runtime Error
+              - generic [ref=e244]:
+                - button "Copy Error Info" [ref=e245] [cursor=pointer]:
+                  - img [ref=e246]
+                - button "No related documentation found" [disabled] [ref=e248]:
+                  - img [ref=e249]
+                - button "Attach Node.js inspector" [ref=e251] [cursor=pointer]:
+                  - img [ref=e252]
+            - generic [ref=e261]:
+              - text: Target ref is defined but not hydrated. For more information and steps for solving, visit
+              - link "https://motion.dev/troubleshooting/use-scroll-ref" [ref=e262] [cursor=pointer]:
+                - /url: https://motion.dev/troubleshooting/use-scroll-ref
+          - generic [ref=e264]:
+            - paragraph [ref=e266]:
+              - text: Call Stack
+              - generic [ref=e267]: "6"
+            - generic [ref=e268]:
+              - generic [ref=e269]:
+                - text: invariant
+                - button "Sourcemapping failed. Click to log cause of error." [ref=e270] [cursor=pointer]:
+                  - img [ref=e271]
+              - text: file:///C:/Users/Diego%20Ramirez/J-RNWConstructionSite/.next/dev/static/chunks/node_modules_0d5k6p-._.js (1608:19)
+            - generic [ref=e273]:
+              - generic [ref=e274]:
+                - text: useScroll.useEffect.tryStart
+                - button "Sourcemapping failed. Click to log cause of error." [ref=e275] [cursor=pointer]:
+                  - img [ref=e276]
+              - text: file:///C:/Users/Diego%20Ramirez/J-RNWConstructionSite/.next/dev/static/chunks/node_modules_framer-motion_dist_es_0.v9eaw._.js (4160:187)
+            - generic [ref=e278]:
+              - generic [ref=e279]:
+                - text: triggerCallback
+                - button "Sourcemapping failed. Click to log cause of error." [ref=e280] [cursor=pointer]:
+                  - img [ref=e281]
+              - text: file:///C:/Users/Diego%20Ramirez/J-RNWConstructionSite/.next/dev/static/chunks/node_modules_motion-dom_dist_es_0e~yid3._.js (1135:9)
+            - generic [ref=e283]:
+              - generic [ref=e284]: Set.forEach
+              - text: <anonymous>
+            - generic [ref=e285]:
+              - generic [ref=e286]:
+                - text: Object.process
+                - button "Sourcemapping failed. Click to log cause of error." [ref=e287] [cursor=pointer]:
+                  - img [ref=e288]
+              - text: file:///C:/Users/Diego%20Ramirez/J-RNWConstructionSite/.next/dev/static/chunks/node_modules_motion-dom_dist_es_0e~yid3._.js (1171:23)
+            - generic [ref=e290]:
+              - generic [ref=e291]:
+                - text: processBatch
+                - button "Sourcemapping failed. Click to log cause of error." [ref=e292] [cursor=pointer]:
+                  - img [ref=e293]
+              - text: file:///C:/Users/Diego%20Ramirez/J-RNWConstructionSite/.next/dev/static/chunks/node_modules_motion-dom_dist_es_0e~yid3._.js (1231:14)
+        - generic [ref=e295]: "1"
+        - generic [ref=e296]: "2"
+    - generic [ref=e301] [cursor=pointer]:
+      - button "Open Next.js Dev Tools" [ref=e302]:
+        - img [ref=e303]
+      - generic [ref=e306]:
+        - button "Open issues overlay" [ref=e307]:
+          - generic [ref=e308]:
+            - generic [ref=e309]: "0"
+            - generic [ref=e310]: "1"
+          - generic [ref=e311]: Issue
+        - button "Collapse issues badge" [ref=e312]:
+          - img [ref=e313]
+  - alert [ref=e315]

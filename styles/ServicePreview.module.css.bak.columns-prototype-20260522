@@ -1,0 +1,556 @@
+.previewPage {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top, rgba(201, 160, 47, 0.14), transparent 28%),
+        linear-gradient(180deg, #09101c 0%, #0e1726 100%);
+    color: #f3eee7;
+}
+
+.previewHero {
+    background-size: cover;
+    background-position: center;
+    border-bottom: 1px solid rgba(201, 160, 47, 0.18);
+}
+
+.previewHeroShell,
+.previewBodyShell,
+.previewIndexShell {
+    width: min(1600px, calc(100vw - 48px));
+    margin: 0 auto;
+}
+
+.previewHeroShell {
+    padding: 56px 0 42px;
+}
+
+.previewHeroGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.92fr);
+    gap: 28px;
+    align-items: start;
+}
+
+.previewHeroMain,
+.previewHeroPanel,
+.previewPanel,
+.previewSectionWide,
+.previewCloseBand,
+.previewServiceCard {
+    background: rgba(14, 23, 38, 0.8);
+    border: 1px solid rgba(201, 160, 47, 0.18);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+}
+
+.previewHeroMain {
+    padding: 36px 34px 30px;
+    min-height: 100%;
+}
+
+.previewBackLink,
+.previewTextLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #f3eee7;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.25s ease, color 0.25s ease;
+}
+
+.previewBackLink {
+    margin-bottom: 26px;
+    font-size: 0.92rem;
+}
+
+.previewBackLink:hover,
+.previewTextLink:hover {
+    color: #c9a02f;
+    border-color: rgba(201, 160, 47, 0.45);
+}
+
+.previewEyebrow,
+.previewSectionEyebrow,
+.previewPanelEyebrow,
+.previewInsetLabel {
+    margin: 0 0 14px;
+    color: #c9a02f;
+    font-size: 0.72rem;
+    line-height: 1;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.previewHeroTitle,
+.previewIndexTitle,
+.previewSectionWide h2,
+.previewPanel h2,
+.previewCloseBand h2 {
+    margin: 0;
+    font-family: "Barlow Condensed", sans-serif;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+}
+
+.previewHeroTitle {
+    max-width: 10ch;
+    font-size: clamp(3.6rem, 7vw, 5.8rem);
+    line-height: 0.92;
+}
+
+.previewHeroLead,
+.previewHeroCopy,
+.previewBodyText,
+.previewPanel p,
+.previewStatCard p,
+.previewProofCard p,
+.previewProjectCard p,
+.previewFaqItem p,
+.previewInset p,
+.previewCloseText,
+.previewIndexText,
+.previewServiceContent p {
+    color: rgba(243, 238, 231, 0.82);
+    line-height: 1.75;
+}
+
+.previewHeroLead {
+    max-width: 58ch;
+    margin: 22px 0 0;
+    font-size: 1.06rem;
+}
+
+.previewHeroCopy {
+    margin: 18px 0 0;
+    max-width: 72ch;
+    font-size: 1rem;
+}
+
+.previewHeroActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 28px;
+}
+
+.previewPrimaryButton,
+.previewSecondaryButton,
+.previewPanelButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 0 22px;
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.previewPrimaryButton,
+.previewPanelButton {
+    border: 1px solid #c9a02f;
+    background: #c9a02f;
+    color: #09101c;
+}
+
+.previewSecondaryButton {
+    border: 1px solid rgba(243, 238, 231, 0.18);
+    background: rgba(255, 255, 255, 0.02);
+    color: #f3eee7;
+}
+
+.previewPrimaryButton:hover,
+.previewSecondaryButton:hover,
+.previewPanelButton:hover {
+    transform: translateY(-1px);
+}
+
+.previewTrustRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.previewTrustRow span,
+.previewPanelTag {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 0 12px;
+    border: 1px solid rgba(243, 238, 231, 0.12);
+    background: rgba(255, 255, 255, 0.025);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(243, 238, 231, 0.72);
+}
+
+.previewHeroPanel {
+    padding: 28px 22px 22px;
+}
+
+.previewPanelTag {
+    margin-bottom: 18px;
+    color: #c9a02f;
+    border-color: rgba(201, 160, 47, 0.24);
+}
+
+.previewHeroPanel h2 {
+    margin: 0 0 12px;
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 2rem;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.previewHeroPanel p {
+    margin: 0 0 18px;
+}
+
+.previewStatsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+    border: 1px solid rgba(201, 160, 47, 0.16);
+}
+
+.previewStatCard {
+    min-height: 172px;
+    padding: 18px 16px 16px;
+    border-right: 1px solid rgba(201, 160, 47, 0.16);
+    border-bottom: 1px solid rgba(201, 160, 47, 0.16);
+}
+
+.previewStatCard:nth-child(2n) {
+    border-right: 0;
+}
+
+.previewStatCard:nth-last-child(-n + 2) {
+    border-bottom: 0;
+}
+
+.previewStatCard strong {
+    display: block;
+    margin-bottom: 8px;
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: clamp(2.8rem, 5vw, 4rem);
+    line-height: 0.9;
+    color: #c9a02f;
+}
+
+.previewStatCard span {
+    display: block;
+    margin-bottom: 10px;
+    color: #c9a02f;
+    font-size: 0.72rem;
+    line-height: 1.3;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.previewStatCard p {
+    margin: 0;
+    font-size: 0.96rem;
+}
+
+.previewBodyShell {
+    padding: 28px 0 72px;
+}
+
+.previewSectionWide,
+.previewPanel,
+.previewCloseBand {
+    padding: 26px 22px;
+}
+
+.previewSectionHeader {
+    margin-bottom: 20px;
+}
+
+.previewSectionWide h2,
+.previewPanel h2,
+.previewCloseBand h2,
+.previewIndexTitle {
+    font-size: clamp(2.4rem, 4vw, 3.5rem);
+    line-height: 0.95;
+}
+
+.previewProofGrid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.previewProofCard,
+.previewProjectCard {
+    min-height: 100%;
+    padding: 18px 16px 16px;
+    border: 1px solid rgba(201, 160, 47, 0.16);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.previewProofNumber {
+    display: block;
+    margin-bottom: 14px;
+    color: rgba(201, 160, 47, 0.85);
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 3rem;
+    line-height: 0.9;
+}
+
+.previewProofCard h3,
+.previewProcessItem h3,
+.previewFaqItem h3,
+.previewProjectCard h3,
+.previewInset h3 {
+    margin: 0 0 10px;
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 1.5rem;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.previewProofCard p,
+.previewProjectCard p,
+.previewFaqItem p,
+.previewInset p,
+.previewProcessItem p,
+.previewPanel p,
+.previewBodyText {
+    margin: 0;
+    font-size: 0.98rem;
+}
+
+.previewGridTwo {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+}
+
+.previewInnerStack {
+    margin-top: 22px;
+}
+
+.previewInset {
+    padding: 18px 16px;
+    border: 1px solid rgba(201, 160, 47, 0.16);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.previewInsetLabel {
+    margin-bottom: 12px;
+}
+
+.previewProcessList,
+.previewFaqList {
+    display: grid;
+    gap: 0;
+    margin-top: 18px;
+}
+
+.previewProcessItem,
+.previewFaqItem {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 18px;
+    padding: 18px 0;
+    border-top: 1px solid rgba(243, 238, 231, 0.08);
+}
+
+.previewProcessItem:first-child,
+.previewFaqItem:first-child {
+    border-top: 0;
+    padding-top: 0;
+}
+
+.previewProcessNumber {
+    color: #c9a02f;
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 2.35rem;
+    line-height: 0.85;
+}
+
+.previewProjectsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+}
+
+.previewTextLink {
+    margin-top: 18px;
+}
+
+.previewCloseBand {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 24px;
+    align-items: center;
+    margin-top: 24px;
+}
+
+.previewCloseText {
+    max-width: 62ch;
+    margin: 14px 0 0;
+}
+
+.previewIndexPage {
+    min-height: 100vh;
+    padding: 48px 0 72px;
+    background:
+        radial-gradient(circle at top, rgba(201, 160, 47, 0.14), transparent 30%),
+        linear-gradient(180deg, #09101c 0%, #0e1726 100%);
+}
+
+.previewIndexIntro {
+    margin-bottom: 28px;
+}
+
+.previewIndexText {
+    max-width: 60ch;
+    margin: 14px 0 0;
+}
+
+.previewIndexGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.previewServiceCard {
+    position: relative;
+    display: flex;
+    min-height: 320px;
+    overflow: hidden;
+    text-decoration: none;
+}
+
+.previewServiceImage,
+.previewServiceOverlay {
+    position: absolute;
+    inset: 0;
+}
+
+.previewServiceImage {
+    background-size: cover;
+    background-position: center;
+    transform: scale(1.01);
+}
+
+.previewServiceOverlay {
+    background: linear-gradient(180deg, rgba(9, 16, 28, 0.25) 0%, rgba(9, 16, 28, 0.9) 100%);
+}
+
+.previewServiceContent {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 100%;
+    padding: 24px;
+}
+
+.previewServiceNumber {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    margin-bottom: 18px;
+    border: 1px solid rgba(201, 160, 47, 0.4);
+    background: rgba(201, 160, 47, 0.1);
+    color: #c9a02f;
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.previewServiceContent h2 {
+    margin: 0 0 10px;
+    color: #f3eee7;
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: clamp(2rem, 3.4vw, 2.8rem);
+    line-height: 0.95;
+    text-transform: uppercase;
+}
+
+.previewServiceContent p {
+    max-width: 46ch;
+    margin: 0;
+}
+
+.previewServiceLink {
+    margin-top: 18px;
+    color: #c9a02f;
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 0.98rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+@media (max-width: 1100px) {
+    .previewHeroGrid,
+    .previewGridTwo,
+    .previewCloseBand,
+    .previewIndexGrid,
+    .previewProofGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .previewProjectsGrid,
+    .previewStatsGrid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 720px) {
+    .previewHeroShell,
+    .previewBodyShell,
+    .previewIndexShell {
+        width: min(100vw - 24px, 1600px);
+    }
+
+    .previewHeroShell {
+        padding-top: 28px;
+    }
+
+    .previewHeroMain,
+    .previewHeroPanel,
+    .previewSectionWide,
+    .previewPanel,
+    .previewCloseBand {
+        padding: 20px 16px;
+    }
+
+    .previewHeroTitle {
+        font-size: clamp(2.8rem, 16vw, 4rem);
+    }
+
+    .previewStatsGrid,
+    .previewProjectsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .previewProcessItem,
+    .previewFaqItem {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .previewTrustRow {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

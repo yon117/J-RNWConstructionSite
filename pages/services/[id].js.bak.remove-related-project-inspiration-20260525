@@ -1,0 +1,805 @@
+import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import Layout from '../../components/Layout';
+import Modal from '../../components/Modal';
+import ContactFormSection from '../../components/ContactFormSection';
+import styles from '../../styles/ServiceDetails.module.css';
+import { getDb } from '../../lib/db';
+import { useLang } from '../../context/LanguageContext';
+import { imageUrl } from '../../utils/imageUrl';
+import { sanitizeServiceObject, sanitizeServiceText } from '../../utils/sanitizeServiceText';
+
+const ArrowIcon = () => (
+    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+    </svg>
+);
+
+const PROCESS_STEPS = [
+    {
+        title: 'Free consultation',
+        desc: 'We assess the space and your goals, then define the cleanest path forward before work starts.',
+    },
+    {
+        title: 'Detailed estimate',
+        desc: 'You get clear pricing, scope, and expectations up front so there are no vague surprises later.',
+    },
+    {
+        title: 'Build phase',
+        desc: 'Our crew works with consistent communication, clean jobsite habits, and disciplined execution.',
+    },
+    {
+        title: 'Final walkthrough',
+        desc: 'We review the finished work together and close out only when the result is right.',
+    },
+];
+
+const splitTitleForAccent = (title) => {
+    const words = sanitizeServiceText(title || '').trim().split(/\s+/).filter(Boolean);
+    if (words.length <= 1) {
+        return { lead: '', accent: words[0] || 'Service' };
+    }
+
+    return {
+        lead: words.slice(0, -1).join(' '),
+        accent: words[words.length - 1],
+    };
+};
+
+const firstLine = (text) => sanitizeServiceText(text || '').split(/[\n.]+/).map((item) => item.trim()).find(Boolean) || '';
+
+export default function ServiceDetails({ service, images, randomProjects }) {
+    const router = useRouter();
+    const { t, lang } = useLang();
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [showContactModal, setShowContactModal] = useState(false);
+    const [carouselIndex, setCarouselIndex] = useState(0);
+    const [svc, setSvc] = useState(sanitizeServiceObject(service));
+    const [mobileOpenSection, setMobileOpenSection] = useState('overview');
+    const [pendingMobileScrollId, setPendingMobileScrollId] = useState('');
+    const autoPlayRef = useRef(null);
+
+    useEffect(() => {
+        if (!lang || lang === 'en') {
+            setSvc(sanitizeServiceObject(service));
+            return;
+        }
+
+        let cancelled = false;
+
+        async function translateService() {
+            const { translateText: runTranslateText } = await import('../../utils/translate');
+            const fields = [
+                'title', 'subtitle', 'header_desc', 'description', 'details', 'process_desc',
+                'ksp_title_1', 'ksp_desc_1', 'ksp_title_2', 'ksp_desc_2',
+                'ksp_title_3', 'ksp_desc_3', 'ksp_title_4', 'ksp_desc_4',
+                'faq_q_1', 'faq_a_1', 'faq_q_2', 'faq_a_2', 'faq_q_3', 'faq_a_3',
+                'faq_q_4', 'faq_a_4', 'faq_q_5', 'faq_a_5',
+            ];
+            const updated = sanitizeServiceObject({ ...service });
+
+            for (const field of fields) {
+                if (service[field]) {
+                    updated[field] = await runTranslateText(service[field], lang);
+                }
+            }
+
+            if (!cancelled) {
+                setSvc(sanitizeServiceObject(updated));
+            }
+        }
+
+        translateService();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [lang, service]);
+
+    const nextProject = () => setCarouselIndex((index) => (index + 1) % randomProjects.length);
+    const prevProject = () => setCarouselIndex((index) => (index - 1 + randomProjects.length) % randomProjects.length);
+
+    useEffect(() => {
+        if (!randomProjects || randomProjects.length <= 1) {
+            return undefined;
+        }
+
+        autoPlayRef.current = setInterval(nextProject, 4000);
+        return () => clearInterval(autoPlayRef.current);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [randomProjects?.length]);
+
+    const handleCarouselNav = (direction) => {
+        clearInterval(autoPlayRef.current);
+        if (direction === 'next') {
+            nextProject();
+        } else {
+            prevProject();
+        }
+        autoPlayRef.current = setInterval(nextProject, 4000);
+    };
+
+    if (router.isFallback) {
+        return <Layout title="Loading..."><div>{t.loading}</div></Layout>;
+    }
+
+    if (!service) {
+        return <Layout title="Service Not Found"><div>{t.serviceNotFound}</div></Layout>;
+    }
+
+    const openLightbox = (index) => {
+        setCurrentImageIndex(index);
+        setSelectedImage(images[index]);
+    };
+
+    const closeLightbox = () => {
+        setSelectedImage(null);
+    };
+
+    const nextImage = () => {
+        const nextIndex = (currentImageIndex + 1) % images.length;
+        setCurrentImageIndex(nextIndex);
+        setSelectedImage(images[nextIndex]);
+    };
+
+    const prevImage = () => {
+        const nextIndex = (currentImageIndex - 1 + images.length) % images.length;
+        setCurrentImageIndex(nextIndex);
+        setSelectedImage(images[nextIndex]);
+    };
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Escape') {
+            closeLightbox();
+        }
+        if (event.key === 'ArrowRight') {
+            nextImage();
+        }
+        if (event.key === 'ArrowLeft') {
+            prevImage();
+        }
+    };
+
+    const kspList = [1, 2, 3, 4]
+        .map((number) => ({
+            title: svc[`ksp_title_${number}`],
+            desc: svc[`ksp_desc_${number}`],
+        }))
+        .filter((item) => item.title);
+
+    const faqList = [1, 2, 3, 4, 5]
+        .map((number) => ({
+            q: svc[`faq_q_${number}`],
+            a: svc[`faq_a_${number}`],
+        }))
+        .filter((item) => item.q);
+
+    const pageTitle = service.page_title
+        ? sanitizeServiceText(service.page_title)
+        : `${svc.title} | J&R NW Construction`;
+
+    const heroImage = imageUrl(service.image_url || '/assets/placeholder.jpg');
+    const currentProject = randomProjects?.[carouselIndex];
+    const titleParts = splitTitleForAccent(svc.title);
+    const detailBlocks = [
+        { label: 'Overview', content: svc.description },
+        { label: 'Project approach', content: svc.process_desc },
+        { label: 'Why choose us', content: svc.details },
+    ].filter((item) => item.content);
+    const summaryItems = [
+        firstLine(svc.header_desc),
+        ...kspList.map((item) => firstLine(item.title)),
+        firstLine(svc.details),
+    ].filter(Boolean).slice(0, 3);
+    const stats = [
+        { value: String(kspList.length || 1).padStart(2, '0'), label: 'Key benefits' },
+        { value: String(images.length || 0).padStart(2, '0'), label: 'Project photos' },
+        { value: String(faqList.length || 0).padStart(2, '0'), label: 'Client FAQs' },
+    ];
+    const mobileSectionChips = [
+        { key: 'overview', label: 'Overview', targetId: 'mobile-overview' },
+        ...(kspList.length > 0 ? [{ key: 'benefits', label: 'Benefits', targetId: 'mobile-benefits' }] : []),
+        ...(detailBlocks.length > 0 ? [{ key: 'details', label: 'Details', targetId: 'mobile-details' }] : []),
+        { key: 'process', label: 'Process', targetId: 'mobile-process' },
+        ...(images.length > 0 ? [{ key: 'photos', label: 'Photos', targetId: 'mobile-photos' }] : []),
+        ...(faqList.length > 0 ? [{ key: 'faq', label: 'FAQ', targetId: 'mobile-faq' }] : []),
+        ...(currentProject ? [{ key: 'projects', label: 'Projects', targetId: 'mobile-projects' }] : []),
+    ];
+
+    const handleMobileSectionToggle = (key, targetId) => {
+        if (typeof window === 'undefined') return;
+
+        if (window.innerWidth > 768) {
+            document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return;
+        }
+
+        const next = mobileOpenSection === key ? '' : key;
+        setMobileOpenSection(next);
+        if (next) setPendingMobileScrollId(targetId);
+    };
+
+    useEffect(() => {
+        if (!pendingMobileScrollId || typeof window === 'undefined') return undefined;
+
+        const timer = window.setTimeout(() => {
+            document.getElementById(pendingMobileScrollId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            window.dispatchEvent(new Event('resize'));
+            setPendingMobileScrollId('');
+        }, 120);
+
+        return () => window.clearTimeout(timer);
+    }, [pendingMobileScrollId]);
+
+    return (
+        <Layout
+            title={`${pageTitle} | Portland OR | J&R NW Construction`}
+            description={service.description ? `${sanitizeServiceText(service.description).slice(0, 155).trim()}.` : `Professional ${svc.title} services in Portland, OR by J&R NW Construction. Licensed and insured contractor. CCB #232708. Free estimates call (503) 998-2340.`}
+            canonical={`/services/${service.id}`}
+            onContactClick={() => setShowContactModal(true)}
+        >
+            <div className={styles.serviceDetailsPage}>
+                <section className={styles.pageHero}>
+                    <div className={styles.pageHeroInner}>
+                        <button onClick={() => router.back()} className={styles.backButton}>
+                            {t.backToServices}
+                        </button>
+
+                        <div className={styles.heroGrid}>
+                            <div className={styles.heroCopy}>
+                                <div className={styles.sectionLabel}>{t.ourServicesLabel || 'Selected Service'}</div>
+                                <h1 className={styles.pageTitle}>
+                                    {titleParts.lead ? `${titleParts.lead} ` : ''}
+                                    <em>{titleParts.accent}</em>
+                                </h1>
+                                <p className={styles.pageSubtitle}>
+                                    {svc.subtitle || svc.header_desc || svc.description}
+                                </p>
+
+                                <div className={styles.heroActions}>
+                                    <button
+                                        type="button"
+                                        className={styles.primaryAction}
+                                        onClick={() => setShowContactModal(true)}
+                                    >
+                                        {t.getFreeEstimate || 'Get Free Estimate'} <ArrowIcon />
+                                    </button>
+                                    <Link href="/services" className={styles.secondaryAction}>
+                                        {t.backToServices || 'Back to Services'}
+                                    </Link>
+                                </div>
+                            </div>
+
+                            <div className={styles.heroPanel}>
+                                <div className={styles.heroImageWrap}>
+                                    <img
+                                        src={heroImage}
+                                        alt={sanitizeServiceText(svc.title)}
+                                        className={styles.heroImage}
+                                    />
+                                </div>
+
+                                <div className={styles.heroStats}>
+                                    {stats.map((stat) => (
+                                        <div key={stat.label} className={styles.heroStat}>
+                                            <span className={styles.heroStatValue}>{stat.value}</span>
+                                            <span className={styles.heroStatLabel}>{stat.label}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section className={styles.mobileChipNav} aria-label="Mobile service section shortcuts">
+                    <div className={styles.mobileChipNavInner}>
+                        {mobileSectionChips.map((chip) => (
+                            <button
+                                key={chip.key}
+                                type="button"
+                                className={`${styles.mobileChip} ${mobileOpenSection === chip.key ? styles.mobileChipActive : ''}`}
+                                onClick={() => handleMobileSectionToggle(chip.key, chip.targetId)}
+                            >
+                                {chip.label}
+                            </button>
+                        ))}
+                    </div>
+                </section>
+
+                <div className={styles.contentShell}>
+                    <div id="mobile-overview" className={`${styles.mobileSectionBlock} ${mobileOpenSection === 'overview' ? styles.mobileSectionBlockOpen : ''}`}>
+                        <button
+                            type="button"
+                            className={styles.mobileSectionToggle}
+                            onClick={() => handleMobileSectionToggle('overview', 'mobile-overview')}
+                        >
+                            <span>Overview</span>
+                            <span className={styles.mobileSectionToggleIcon}>{mobileOpenSection === 'overview' ? '-' : '+'}</span>
+                        </button>
+                        <div className={styles.mobileSectionPanel}>
+                    <section className={styles.introGrid}>
+                        <div className={styles.introCard}>
+                            <div className={styles.sectionLabel}>Service Focus</div>
+                            <h2 className={styles.sectionTitle}>{svc.title}</h2>
+                            {svc.header_desc && (
+                                <p className={styles.introText}>{svc.header_desc}</p>
+                            )}
+                            {summaryItems.length > 0 && (
+                                <div className={styles.introList}>
+                                    {summaryItems.map((item) => (
+                                        <div key={item} className={styles.introListItem}>
+                                            {item}
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        <div className={styles.serviceSummaryCard}>
+                            <div className={styles.cardEyebrow}>Quick Snapshot</div>
+                            <div className={styles.summaryRow}>
+                                <span className={styles.summaryValue}>{sanitizeServiceText(svc.title)}</span>
+                                <span className={styles.summaryLabel}>Service</span>
+                            </div>
+                            <div className={styles.summaryRow}>
+                                <span className={styles.summaryValue}>Licensed + Insured</span>
+                                <span className={styles.summaryLabel}>Company standard</span>
+                            </div>
+                            <div className={styles.summaryRow}>
+                                <span className={styles.summaryValue}>Portland Metro</span>
+                                <span className={styles.summaryLabel}>Primary coverage area</span>
+                            </div>
+                        </div>
+                    </section>
+                        </div>
+                    </div>
+
+                    {kspList.length > 0 && (
+                        <div id="mobile-benefits" className={`${styles.mobileSectionBlock} ${mobileOpenSection === 'benefits' ? styles.mobileSectionBlockOpen : ''}`}>
+                            <button
+                                type="button"
+                                className={styles.mobileSectionToggle}
+                                onClick={() => handleMobileSectionToggle('benefits', 'mobile-benefits')}
+                            >
+                                <span>Benefits</span>
+                                <span className={styles.mobileSectionToggleIcon}>{mobileOpenSection === 'benefits' ? '-' : '+'}</span>
+                            </button>
+                            <div className={styles.mobileSectionPanel}>
+                        <section className={styles.section}>
+                            <div className={styles.sectionHeader}>
+                                <div className={styles.sectionLabel}>Core Benefits</div>
+                                <h2 className={styles.sectionTitle}>Why this service works</h2>
+                            </div>
+
+                            <div className={styles.featureGrid}>
+                                {kspList.map((item, index) => (
+                                    <div key={item.title} className={styles.featureCard}>
+                                        <div className={styles.featureIndex}>
+                                            {String(index + 1).padStart(2, '0')}
+                                        </div>
+                                        <div className={styles.featureTitle}>{item.title}</div>
+                                        {item.desc && <p className={styles.featureDesc}>{item.desc}</p>}
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                            </div>
+                        </div>
+                    )}
+
+                    {detailBlocks.length > 0 && (
+                        <div id="mobile-details" className={`${styles.mobileSectionBlock} ${mobileOpenSection === 'details' ? styles.mobileSectionBlockOpen : ''}`}>
+                            <button
+                                type="button"
+                                className={styles.mobileSectionToggle}
+                                onClick={() => handleMobileSectionToggle('details', 'mobile-details')}
+                            >
+                                <span>Details</span>
+                                <span className={styles.mobileSectionToggleIcon}>{mobileOpenSection === 'details' ? '-' : '+'}</span>
+                            </button>
+                            <div className={styles.mobileSectionPanel}>
+                        <section className={styles.section}>
+                            <div className={styles.sectionHeader}>
+                                <div className={styles.sectionLabel}>Project Detail</div>
+                                <h2 className={styles.sectionTitle}>What to expect</h2>
+                            </div>
+
+                            <div className={styles.detailGrid}>
+                                {detailBlocks.map((block) => (
+                                    <div key={block.label} className={styles.detailCard}>
+                                        <div className={styles.detailLabel}>{block.label}</div>
+                                        <div className={styles.detailBody}>
+                                            {block.content.split('\n').map((paragraph, index) => (
+                                                paragraph.trim() ? <p key={`${block.label}-${index}`}>{paragraph}</p> : null
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                            </div>
+                        </div>
+                    )}
+
+                    <div id="mobile-process" className={`${styles.mobileSectionBlock} ${mobileOpenSection === 'process' ? styles.mobileSectionBlockOpen : ''}`}>
+                        <button
+                            type="button"
+                            className={styles.mobileSectionToggle}
+                            onClick={() => handleMobileSectionToggle('process', 'mobile-process')}
+                        >
+                            <span>Process</span>
+                            <span className={styles.mobileSectionToggleIcon}>{mobileOpenSection === 'process' ? '-' : '+'}</span>
+                        </button>
+                        <div className={styles.mobileSectionPanel}>
+                    <section className={styles.section}>
+                        <div className={styles.sectionHeader}>
+                            <div className={styles.sectionLabel}>Our Process</div>
+                            <h2 className={styles.sectionTitle}>How the job moves</h2>
+                        </div>
+
+                        <div className={styles.processGrid}>
+                            {PROCESS_STEPS.map((step, index) => (
+                                <div key={step.title} className={styles.processCard}>
+                                    <div className={styles.processNumber}>
+                                        {String(index + 1).padStart(2, '0')}
+                                    </div>
+                                    <div className={styles.processCardTitle}>{step.title}</div>
+                                    <p className={styles.processCardDesc}>{step.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                        </div>
+                    </div>
+
+                    {images.length > 0 && (
+                        <div id="mobile-photos" className={`${styles.mobileSectionBlock} ${mobileOpenSection === 'photos' ? styles.mobileSectionBlockOpen : ''}`}>
+                            <button
+                                type="button"
+                                className={styles.mobileSectionToggle}
+                                onClick={() => handleMobileSectionToggle('photos', 'mobile-photos')}
+                            >
+                                <span>Photos</span>
+                                <span className={styles.mobileSectionToggleIcon}>{mobileOpenSection === 'photos' ? '-' : '+'}</span>
+                            </button>
+                            <div className={styles.mobileSectionPanel}>
+                        <section className={styles.section}>
+                            <div className={styles.sectionHeader}>
+                                <div className={styles.sectionLabel}>Project Photos</div>
+                                <h2 className={styles.sectionTitle}>Recent visual references</h2>
+                            </div>
+
+                            <div className={styles.galleryGrid}>
+                                {images.map((image, index) => (
+                                    <button
+                                        key={image.id || `${image.image_url}-${index}`}
+                                        type="button"
+                                        className={styles.galleryButton}
+                                        onClick={() => openLightbox(index)}
+                                    >
+                                        <img
+                                            src={imageUrl(image.image_path || image.image_url || image.image)}
+                                            alt={`${sanitizeServiceText(svc.title)} ${index + 1}`}
+                                            className={styles.galleryImage}
+                                        />
+                                        <span className={styles.galleryCaption}>
+                                            View image {String(index + 1).padStart(2, '0')}
+                                        </span>
+                                    </button>
+                                ))}
+                            </div>
+                        </section>
+                            </div>
+                        </div>
+                    )}
+
+                    {faqList.length > 0 && (
+                        <div id="mobile-faq" className={`${styles.mobileSectionBlock} ${mobileOpenSection === 'faq' ? styles.mobileSectionBlockOpen : ''}`}>
+                            <button
+                                type="button"
+                                className={styles.mobileSectionToggle}
+                                onClick={() => handleMobileSectionToggle('faq', 'mobile-faq')}
+                            >
+                                <span>FAQ</span>
+                                <span className={styles.mobileSectionToggleIcon}>{mobileOpenSection === 'faq' ? '-' : '+'}</span>
+                            </button>
+                            <div className={styles.mobileSectionPanel}>
+                        <section className={styles.section}>
+                            <div className={styles.sectionHeader}>
+                                <div className={styles.sectionLabel}>Questions</div>
+                                <h2 className={styles.sectionTitle}>Common client questions</h2>
+                            </div>
+
+                            <div className={styles.faqList}>
+                                {faqList.map((item, index) => (
+                                    <div key={`${item.q}-${index}`} className={styles.faqItem}>
+                                        <p className={styles.faqQuestion}>{item.q}</p>
+                                        {item.a && <p className={styles.faqAnswer}>{item.a}</p>}
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                            </div>
+                        </div>
+                    )}
+
+                    {currentProject && (
+                        <div id="mobile-projects" className={`${styles.mobileSectionBlock} ${mobileOpenSection === 'projects' ? styles.mobileSectionBlockOpen : ''}`}>
+                            <button
+                                type="button"
+                                className={styles.mobileSectionToggle}
+                                onClick={() => handleMobileSectionToggle('projects', 'mobile-projects')}
+                            >
+                                <span>Projects</span>
+                                <span className={styles.mobileSectionToggleIcon}>{mobileOpenSection === 'projects' ? '-' : '+'}</span>
+                            </button>
+                            <div className={styles.mobileSectionPanel}>
+                        <section className={styles.projectsSection}>
+                            <div className={styles.sectionHeader}>
+                                <div className={styles.sectionLabel}>{t.ourWork || 'Our Work'}</div>
+                                <h2 className={styles.sectionTitle}>Related project inspiration</h2>
+                            </div>
+
+                            <div className={styles.carousel}>
+                                <button
+                                    type="button"
+                                    className={styles.carouselNav}
+                                    onClick={() => handleCarouselNav('prev')}
+                                    aria-label="Previous project"
+                                >
+                                    Prev
+                                </button>
+
+                                <Link href="/projects" className={styles.projectCard}>
+                                    <div className={styles.projectImageWrap}>
+                                        {currentProject.image ? (
+                                            <img
+                                                src={imageUrl(currentProject.image)}
+                                                alt={currentProject.title || 'Project'}
+                                                className={styles.projectImage}
+                                            />
+                                        ) : (
+                                            <div className={styles.projectCardPlaceholder}>Project preview</div>
+                                        )}
+                                    </div>
+
+                                    <div className={styles.projectCardContent}>
+                                        <div className={styles.cardEyebrow}>Featured Project</div>
+                                        <h3 className={styles.projectCardTitle}>{currentProject.title}</h3>
+                                        {currentProject.description && (
+                                            <p className={styles.projectCardDesc}>
+                                                {currentProject.description.length > 140
+                                                    ? `${currentProject.description.slice(0, 140)}...`
+                                                    : currentProject.description}
+                                            </p>
+                                        )}
+                                        <span className={styles.projectCardLink}>
+                                            {t.viewAllProjects || 'View All Projects'} <ArrowIcon />
+                                        </span>
+                                    </div>
+                                </Link>
+
+                                <button
+                                    type="button"
+                                    className={styles.carouselNav}
+                                    onClick={() => handleCarouselNav('next')}
+                                    aria-label="Next project"
+                                >
+                                    Next
+                                </button>
+                            </div>
+
+                            {randomProjects.length > 1 && (
+                                <div className={styles.carouselDots}>
+                                    {randomProjects.map((project, index) => (
+                                        <button
+                                            key={project.id || index}
+                                            type="button"
+                                            className={`${styles.carouselDot} ${index === carouselIndex ? styles.carouselDotActive : ''}`}
+                                            onClick={() => {
+                                                clearInterval(autoPlayRef.current);
+                                                setCarouselIndex(index);
+                                                autoPlayRef.current = setInterval(nextProject, 4000);
+                                            }}
+                                            aria-label={`Go to project ${index + 1}`}
+                                        />
+                                    ))}
+                                </div>
+                            )}
+                        </section>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                {selectedImage && (
+                    <div
+                        className={styles.lightbox}
+                        onClick={closeLightbox}
+                        onKeyDown={handleKeyDown}
+                        tabIndex={0}
+                    >
+                        <button type="button" className={styles.closeButton} onClick={closeLightbox}>Close</button>
+                        <button
+                            type="button"
+                            className={styles.prevButton}
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                prevImage();
+                            }}
+                        >
+                            Prev
+                        </button>
+                        <button
+                            type="button"
+                            className={styles.nextButton}
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                nextImage();
+                            }}
+                        >
+                            Next
+                        </button>
+                        <div className={styles.lightboxContent} onClick={(event) => event.stopPropagation()}>
+                            <img
+                                src={imageUrl(selectedImage.image_path || selectedImage.image_url || selectedImage.image)}
+                                alt={`${sanitizeServiceText(svc.title)} full size`}
+                            />
+                            <div className={styles.imageCounter}>
+                                {currentImageIndex + 1} / {images.length}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {showContactModal && (
+                    <Modal title={t.getInTouch} onClose={() => setShowContactModal(false)}>
+                        <ContactFormSection />
+                    </Modal>
+                )}
+            </div>
+        </Layout>
+    );
+}
+
+export async function getServerSideProps({ params, req }) {
+    try {
+        const db = await getDb();
+        const slug = params.id;
+
+        console.log('=== Service Details Request ===');
+        console.log('Requested slug:', slug);
+
+        const servicesResult = await db.execute(`
+            SELECT
+                id, title, description, header_desc, image, details, name,
+                slug, page_title, subtitle,
+                ksp_title_1, ksp_desc_1,
+                ksp_title_2, ksp_desc_2,
+                ksp_title_3, ksp_desc_3,
+                ksp_title_4, ksp_desc_4,
+                process_desc,
+                faq_q_1, faq_a_1,
+                faq_q_2, faq_a_2,
+                faq_q_3, faq_a_3,
+                faq_q_4, faq_a_4,
+                faq_q_5, faq_a_5
+            FROM services
+        `);
+
+        console.log('Total services in database:', servicesResult.rows?.length || 0);
+
+        if (!servicesResult.rows || servicesResult.rows.length === 0) {
+            console.log('ERROR: No services found in database');
+            return { notFound: true };
+        }
+
+        const services = servicesResult.rows.map((item) => ({
+            id: item.id,
+            title: item.title || '',
+            description: item.description || '',
+            header_desc: item.header_desc || '',
+            image_url: item.image || '',
+            details: item.details || '',
+            slug: item.slug || '',
+            page_title: item.page_title || '',
+            subtitle: item.subtitle || '',
+            ksp_title_1: item.ksp_title_1 || '',
+            ksp_desc_1: item.ksp_desc_1 || '',
+            ksp_title_2: item.ksp_title_2 || '',
+            ksp_desc_2: item.ksp_desc_2 || '',
+            ksp_title_3: item.ksp_title_3 || '',
+            ksp_desc_3: item.ksp_desc_3 || '',
+            ksp_title_4: item.ksp_title_4 || '',
+            ksp_desc_4: item.ksp_desc_4 || '',
+            process_desc: item.process_desc || '',
+            faq_q_1: item.faq_q_1 || '',
+            faq_a_1: item.faq_a_1 || '',
+            faq_q_2: item.faq_q_2 || '',
+            faq_a_2: item.faq_a_2 || '',
+            faq_q_3: item.faq_q_3 || '',
+            faq_a_3: item.faq_a_3 || '',
+            faq_q_4: item.faq_q_4 || '',
+            faq_a_4: item.faq_a_4 || '',
+            faq_q_5: item.faq_q_5 || '',
+            faq_a_5: item.faq_a_5 || '',
+        }));
+
+        console.log('Available services:');
+        services.forEach((item) => {
+            const generatedSlug = item.title
+                ? item.title.toLowerCase().trim().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+                : 'no-title';
+            console.log(`  - ID: ${item.id}, Title: "${item.title}", DB Slug: "${item.slug}", Generated: "${generatedSlug}"`);
+        });
+
+        const selectedService = services.find((item) => {
+            if (item.slug && item.slug === slug) {
+                return true;
+            }
+
+            if (item.title) {
+                const generatedSlug = item.title
+                    .toLowerCase()
+                    .trim()
+                    .replace(/&/g, 'and')
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/^-+|-+$/g, '');
+                if (generatedSlug === slug) {
+                    return true;
+                }
+            }
+
+            if (item.id.toString() === slug) {
+                return true;
+            }
+
+            return false;
+        });
+
+        if (!selectedService) {
+            console.log('ERROR: Service not found for slug:', slug);
+            return { notFound: true };
+        }
+
+        console.log('Service found:', selectedService.title);
+
+        const imagesResult = await db.execute({
+            sql: 'SELECT * FROM service_images WHERE service_id = ? ORDER BY display_order',
+            args: [selectedService.id],
+        });
+
+        const serviceImages = (imagesResult.rows || []).map((item) => ({
+            ...item,
+            image_url: item.image_path,
+        }));
+
+        const projectsResult = await db.execute(
+            'SELECT id, title, description, image FROM projects ORDER BY RANDOM() LIMIT 4'
+        );
+        const projectList = (projectsResult.rows || []).map((item) => ({
+            id: item.id,
+            title: item.title || '',
+            description: item.description || '',
+            image: item.image || '',
+        }));
+
+        console.log('Images found:', serviceImages.length);
+        console.log('Random projects found:', projectList.length);
+        console.log('=== End Service Details Request ===');
+
+        return {
+            props: {
+                service: selectedService,
+                images: serviceImages,
+                randomProjects: projectList,
+            },
+        };
+    } catch (error) {
+        console.error('Error fetching service details:', error);
+        return { notFound: true };
+    }
+}

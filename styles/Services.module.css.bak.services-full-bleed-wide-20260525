@@ -1,0 +1,690 @@
+/* ─── SERVICES PAGE ──────────────────────────────── */
+.servicesPage {
+    min-height: 100vh;
+    background: var(--dark);
+}
+
+/* Remove watermark completely */
+.servicesPage::before {
+    display: none;
+}
+
+.servicesContent {
+    position: relative;
+    z-index: 1;
+}
+
+/* ─── PAGE HERO ───────────────────────────────────── */
+.pageHero {
+    position: relative;
+    padding: 72px 40px 64px;
+    background: linear-gradient(135deg, var(--dark-mid) 0%, var(--dark) 100%);
+    overflow: hidden;
+}
+
+.pageHero::before {
+    content: '';
+    position: absolute;
+    right: -60px;
+    top: -60px;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200, 150, 30, 0.07) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.pageHeroInner {
+    max-width: 1760px;
+    margin: 0 auto;
+}
+
+.pageHeroGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+    gap: 28px;
+    align-items: end;
+}
+
+.pageHeroCopy {
+    max-width: 640px;
+}
+
+.sectionLabel {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.sectionLabel::before {
+    content: '';
+    width: 24px;
+    height: 2px;
+    background: var(--gold);
+    flex-shrink: 0;
+}
+
+.pageTitle {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(36px, 5vw, 60px);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+    color: var(--white);
+}
+
+.pageTitle em {
+    font-style: normal;
+    color: var(--gold);
+}
+
+.pageSubtitle {
+    font-size: 15px;
+    color: var(--text);
+    max-width: 560px;
+    line-height: 1.7;
+}
+
+.heroHighlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
+}
+
+.heroHighlightChip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 0 14px;
+    border: 1px solid rgba(200, 150, 30, 0.18);
+    border-radius: 999px;
+    background: rgba(15, 25, 35, 0.56);
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.heroPanel {
+    position: relative;
+    display: grid;
+    gap: 18px;
+    padding: 28px;
+    border: 1px solid rgba(200, 150, 30, 0.12);
+    border-radius: 4px;
+    background:
+        linear-gradient(180deg, rgba(21, 33, 45, 0.96) 0%, rgba(15, 25, 35, 0.96) 100%);
+    box-shadow: 0 24px 42px rgba(8, 14, 20, 0.24);
+    overflow: hidden;
+}
+
+.heroPanel::after {
+    content: '';
+    position: absolute;
+    inset: auto -10% -45% 38%;
+    height: 220px;
+    background: radial-gradient(circle, rgba(200, 150, 30, 0.12) 0%, transparent 68%);
+    pointer-events: none;
+}
+
+.heroPanelEyebrow {
+    position: relative;
+    z-index: 1;
+    color: rgba(200, 150, 30, 0.86);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.heroMetricGrid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.heroMetricCard {
+    display: grid;
+    gap: 8px;
+    min-height: 110px;
+    padding: 18px 16px;
+    border: 1px solid rgba(200, 150, 30, 0.08);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.heroMetricValue {
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(22px, 2vw, 34px);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+}
+
+.heroMetricLabel,
+.heroPanelNote {
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.heroMetricLabel {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 11px;
+}
+
+.heroPanelNote {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    max-width: 36ch;
+}
+
+/* ─── SERVICE LIST ────────────────────────────────── */
+.serviceList {
+    max-width: 1760px;
+    margin: 0 auto;
+    padding: 0 40px 80px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.serviceItem {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    min-height: 340px;
+    border: 1px solid rgba(200, 150, 30, 0.1);
+    background: rgba(15, 25, 35, 0.86);
+    box-shadow: 0 24px 44px rgba(8, 14, 20, 0.18);
+}
+
+/* Alternate direction every other item */
+.serviceItem:nth-child(even) {
+    direction: rtl;
+}
+
+.serviceItem:nth-child(even) > * {
+    direction: ltr;
+}
+
+.serviceImgWrap {
+    position: relative;
+    overflow: hidden;
+    min-height: 360px;
+}
+
+.serviceVisualBadge {
+    position: absolute;
+    left: 18px;
+    top: 18px;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0 12px;
+    border: 1px solid rgba(245, 243, 239, 0.18);
+    background: rgba(15, 25, 35, 0.72);
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    backdrop-filter: blur(10px);
+}
+
+.serviceImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s cubic-bezier(.165, .84, .44, 1), filter 0.3s ease;
+    filter: brightness(0.7) saturate(0.85);
+}
+
+.serviceItem:hover .serviceImg {
+    transform: scale(1.04);
+    filter: brightness(0.82) saturate(1);
+}
+
+.serviceContent {
+    background: var(--dark-card);
+    padding: 44px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.serviceContent::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+    transform-origin: left;
+}
+
+.serviceItem:hover .serviceContent::after {
+    transform: scaleX(1);
+}
+
+.serviceTopLine {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 6px;
+}
+
+.serviceNum {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 60px;
+    font-weight: 800;
+    color: rgba(200, 150, 30, 0.08);
+    line-height: 1;
+    margin-bottom: 4px;
+    letter-spacing: -0.03em;
+}
+
+.serviceRule {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(200, 150, 30, 0.22) 0%, rgba(200, 150, 30, 0) 100%);
+}
+
+.serviceTag {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.serviceName {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    margin-bottom: 14px;
+    color: var(--white);
+}
+
+.serviceDesc {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.75;
+    margin-bottom: 24px;
+    max-width: 44ch;
+}
+
+.serviceChips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 24px;
+}
+
+.serviceChip {
+    background: rgba(200, 150, 30, 0.08);
+    border: 1px solid rgba(200, 150, 30, 0.2);
+    border-radius: 2px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gold-light);
+    letter-spacing: 0.05em;
+}
+
+.serviceCta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gold);
+    color: var(--dark);
+    padding: 11px 22px;
+    border-radius: 3px;
+    border: none;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    width: fit-content;
+    transition: background 0.2s, transform 0.2s;
+    min-height: 44px;
+}
+
+.serviceFooter {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.serviceCoverage {
+    color: rgba(212, 207, 200, 0.74);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.serviceCta:hover {
+    background: var(--gold-light);
+    transform: translateX(2px);
+    color: var(--dark);
+}
+
+/* ─── FLOATING BUTTON ─────────────────────────────── */
+.floatingContactBtn {
+    position: fixed;
+    bottom: 28px;
+    left: 28px;
+    background: var(--gold);
+    color: var(--dark);
+    border: none;
+    border-radius: 50px;
+    padding: 14px 24px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(200, 150, 30, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    z-index: 999;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.floatingContactBtn:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 28px rgba(200, 150, 30, 0.5);
+}
+
+.floatingBtnIcon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.floatingBtnText {
+    white-space: nowrap;
+}
+
+/* ─── RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 900px) {
+    .serviceList {
+        grid-template-columns: 1fr;
+    }
+
+    .pageHeroGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .heroMetricGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .heroMetricCard {
+        min-height: auto;
+    }
+
+    .serviceItem,
+    .serviceItem:nth-child(even) {
+        grid-template-columns: 1fr;
+        direction: ltr;
+        min-height: auto;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .serviceItem:nth-child(even) > * {
+        direction: ltr;
+    }
+
+    .serviceImgWrap {
+        height: 200px; /* altura fija controlada */
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .serviceImg {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .serviceContent {
+        padding: 24px 20px;
+        width: 100%;
+    }
+
+    .serviceFooter {
+        align-items: flex-start;
+    }
+
+    .serviceName {
+        font-size: 20px;
+        white-space: normal;
+        word-wrap: break-word;
+    }
+
+    .serviceDesc {
+        font-size: 13px;
+        line-height: 1.65;
+        white-space: normal;
+    }
+
+    .serviceChips {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 768px) {
+    .pageHero {
+        padding: 40px 20px 32px;
+    }
+
+    .heroHighlights {
+        margin-top: 20px;
+    }
+
+    .heroHighlightChip {
+        min-height: 34px;
+        padding: 0 12px;
+        font-size: 11px;
+    }
+
+    .serviceList {
+        padding: 0 16px 48px;
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+}
+
+/* ── CONTAINER SCROLL PIN ── */
+.pinSection {
+    min-height: 100vh;
+    background: var(--dark-mid);
+    overflow: hidden;
+}
+
+.pinInner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 28px 60px;
+}
+
+.pinTitle {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(32px, 5vw, 54px);
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 48px;
+    letter-spacing: -0.01em;
+}
+
+.pinTrack {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+}
+
+.pinCard {
+    background: var(--dark-card);
+    padding: 32px 28px;
+    border-radius: 2px;
+    will-change: transform, opacity;
+    border-top: 2px solid rgba(200, 150, 30, 0.15);
+    transition: border-color 0.2s;
+}
+
+.pinCard:hover {
+    border-top-color: var(--gold);
+}
+
+.pinCardNum {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: rgba(200, 150, 30, 0.2);
+    line-height: 1;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+}
+
+.pinCardTitle {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    line-height: 1.2;
+}
+
+.pinCardDesc {
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text);
+}
+
+@media (max-width: 1024px) {
+    .pinTrack {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .pinSection {
+        min-height: auto;
+    }
+
+    .pinTrack {
+        grid-template-columns: 1fr;
+    }
+
+    .pinInner {
+        padding: 48px 18px 40px;
+    }
+}
+
+:global([data-theme="light"]) .pageHero {
+    background: linear-gradient(135deg, #f7f3ec 0%, #ece4d8 100%);
+}
+
+:global([data-theme="light"]) .servicesPage,
+:global([data-theme="light"]) .pinSection {
+    background: var(--surface-2);
+}
+
+:global([data-theme="light"]) .pageTitle,
+:global([data-theme="light"]) .serviceName,
+:global([data-theme="light"]) .pinTitle,
+:global([data-theme="light"]) .pinCardTitle,
+:global([data-theme="light"]) .heroMetricValue {
+    color: #0f1923;
+}
+
+:global([data-theme="light"]) .pageSubtitle,
+:global([data-theme="light"]) .serviceDesc,
+:global([data-theme="light"]) .pinCardDesc,
+:global([data-theme="light"]) .heroMetricLabel,
+:global([data-theme="light"]) .heroPanelNote {
+    color: #4b5563;
+}
+
+:global([data-theme="light"]) .serviceContent,
+:global([data-theme="light"]) .pinCard {
+    background: var(--surface-1);
+    border-color: rgba(15, 25, 35, 0.1);
+    box-shadow: 0 16px 36px rgba(15, 25, 35, 0.06);
+}
+
+:global([data-theme="light"]) .heroPanel {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(247, 243, 236, 0.98) 100%);
+    border-color: rgba(15, 25, 35, 0.08);
+    box-shadow: 0 18px 34px rgba(15, 25, 35, 0.08);
+}
+
+:global([data-theme="light"]) .heroMetricCard {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(15, 25, 35, 0.08);
+}
+
+:global([data-theme="light"]) .heroHighlightChip,
+:global([data-theme="light"]) .serviceVisualBadge {
+    background: rgba(255, 255, 255, 0.82);
+    border-color: rgba(15, 25, 35, 0.12);
+    color: #0f1923;
+}
+
+:global([data-theme="light"]) .serviceImg {
+    filter: brightness(0.92) saturate(0.9);
+}
+
+:global([data-theme="light"]) .serviceItem:hover .serviceImg {
+    filter: brightness(0.98) saturate(1);
+}
+
+:global([data-theme="light"]) .serviceChip {
+    background: rgba(200, 150, 30, 0.12);
+    border-color: rgba(200, 150, 30, 0.24);
+    color: #8b6510;
+}

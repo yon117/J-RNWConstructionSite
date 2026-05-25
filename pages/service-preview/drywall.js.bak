@@ -1,0 +1,116 @@
+import ServicePreviewDetail from './[id]';
+import { getDb } from '../../lib/db';
+
+function getServiceSlug(service) {
+    return (
+        service.slug
+        || (service.title
+            ? service.title
+                .toLowerCase()
+                .trim()
+                .replace(/&/g, 'and')
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '')
+            : 'service')
+    );
+}
+
+export default ServicePreviewDetail;
+
+export async function getServerSideProps() {
+    try {
+        const db = await getDb();
+        const slug = 'drywall';
+
+        const servicesResult = await db.execute(`
+            SELECT
+                id, title, description, header_desc, image, details, slug, page_title, subtitle,
+                ksp_title_1, ksp_desc_1,
+                ksp_title_2, ksp_desc_2,
+                ksp_title_3, ksp_desc_3,
+                ksp_title_4, ksp_desc_4,
+                process_desc,
+                faq_q_1, faq_a_1,
+                faq_q_2, faq_a_2,
+                faq_q_3, faq_a_3,
+                faq_q_4, faq_a_4,
+                faq_q_5, faq_a_5
+            FROM services
+        `);
+
+        const services = (servicesResult.rows || []).map((item) => ({
+            id: item.id,
+            title: item.title || '',
+            description: item.description || '',
+            header_desc: item.header_desc || '',
+            image_url: item.image || '',
+            details: item.details || '',
+            slug: item.slug || '',
+            page_title: item.page_title || '',
+            subtitle: item.subtitle || '',
+            ksp_title_1: item.ksp_title_1 || '',
+            ksp_desc_1: item.ksp_desc_1 || '',
+            ksp_title_2: item.ksp_title_2 || '',
+            ksp_desc_2: item.ksp_desc_2 || '',
+            ksp_title_3: item.ksp_title_3 || '',
+            ksp_desc_3: item.ksp_desc_3 || '',
+            ksp_title_4: item.ksp_title_4 || '',
+            ksp_desc_4: item.ksp_desc_4 || '',
+            process_desc: item.process_desc || '',
+            faq_q_1: item.faq_q_1 || '',
+            faq_a_1: item.faq_a_1 || '',
+            faq_q_2: item.faq_q_2 || '',
+            faq_a_2: item.faq_a_2 || '',
+            faq_q_3: item.faq_q_3 || '',
+            faq_a_3: item.faq_a_3 || '',
+            faq_q_4: item.faq_q_4 || '',
+            faq_a_4: item.faq_a_4 || '',
+            faq_q_5: item.faq_q_5 || '',
+            faq_a_5: item.faq_a_5 || '',
+        }));
+
+        const service = services.find((item) => (
+            (item.slug && item.slug === slug)
+            || getServiceSlug(item) === slug
+            || item.id.toString() === slug
+        ));
+
+        if (!service) {
+            return {
+                props: {
+                    service: null,
+                    randomProjects: [],
+                    errorMessage: `Service not found for slug: ${slug}`,
+                },
+            };
+        }
+
+        const projectsResult = await db.execute(
+            'SELECT id, title, description, image FROM projects ORDER BY RANDOM() LIMIT 4'
+        );
+
+        const randomProjects = (projectsResult.rows || []).map((project) => ({
+            id: project.id,
+            title: project.title || '',
+            description: project.description || '',
+            image: project.image || '',
+        }));
+
+        return {
+            props: {
+                service,
+                randomProjects,
+                errorMessage: null,
+            },
+        };
+    } catch (error) {
+        console.error('Service preview drywall error:', error);
+        return {
+            props: {
+                service: null,
+                randomProjects: [],
+                errorMessage: error?.message || String(error),
+            },
+        };
+    }
+}

@@ -1,0 +1,951 @@
+.serviceDetailsPage {
+    min-height: 100vh;
+    background: var(--dark);
+}
+
+.pageHero {
+    position: relative;
+    overflow: hidden;
+    padding: 72px 40px 56px;
+    background:
+        radial-gradient(circle at top right, rgba(200, 150, 30, 0.14) 0%, transparent 28%),
+        linear-gradient(135deg, var(--dark-mid) 0%, var(--dark) 100%);
+}
+
+.pageHero::before {
+    content: '';
+    position: absolute;
+    inset: auto -120px -120px auto;
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200, 150, 30, 0.12) 0%, transparent 72%);
+    pointer-events: none;
+}
+
+.pageHeroInner,
+.contentShell {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.backButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 28px;
+    padding: 10px 16px;
+    border: 1px solid rgba(200, 150, 30, 0.22);
+    border-radius: 3px;
+    background: rgba(15, 25, 35, 0.5);
+    color: var(--gold-light);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.backButton:hover {
+    background: rgba(200, 150, 30, 0.12);
+    border-color: rgba(200, 150, 30, 0.46);
+    transform: translateX(-2px);
+}
+
+.heroGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+    gap: 36px;
+    align-items: center;
+}
+
+.heroCopy {
+    position: relative;
+    z-index: 1;
+}
+
+.sectionLabel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.sectionLabel::before {
+    content: '';
+    width: 24px;
+    height: 2px;
+    background: var(--gold);
+    flex-shrink: 0;
+}
+
+.pageTitle,
+.sectionTitle,
+.projectCardTitle {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: var(--white);
+}
+
+.pageTitle {
+    margin: 0 0 18px;
+    font-size: clamp(40px, 5.8vw, 68px);
+    line-height: 0.92;
+}
+
+.pageTitle em {
+    font-style: normal;
+    color: var(--gold);
+}
+
+.pageSubtitle {
+    max-width: 560px;
+    margin: 0;
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.75;
+}
+
+.heroActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.primaryAction,
+.secondaryAction,
+.projectCardLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 3px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.primaryAction {
+    min-height: 46px;
+    padding: 11px 22px;
+    border: none;
+    background: var(--gold);
+    color: var(--dark);
+    cursor: pointer;
+}
+
+.primaryAction:hover {
+    background: var(--gold-light);
+    transform: translateX(2px);
+}
+
+.secondaryAction {
+    min-height: 46px;
+    padding: 11px 20px;
+    border: 1px solid rgba(245, 243, 239, 0.16);
+    color: var(--white);
+    background: transparent;
+}
+
+.secondaryAction:hover {
+    border-color: rgba(200, 150, 30, 0.32);
+    color: var(--gold-light);
+}
+
+.heroPanel {
+    display: grid;
+    gap: 16px;
+}
+
+.heroImageWrap {
+    position: relative;
+    overflow: hidden;
+    min-height: 420px;
+    border: 1px solid rgba(200, 150, 30, 0.12);
+    border-radius: 4px;
+    background: var(--dark-card);
+}
+
+.heroImageWrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(15, 25, 35, 0) 35%, rgba(15, 25, 35, 0.24) 100%);
+    pointer-events: none;
+}
+
+.heroImage,
+.galleryImage,
+.projectImage,
+.lightboxContent img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.heroImage {
+    filter: brightness(0.78) saturate(0.92);
+}
+
+.heroGalleryGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.heroGalleryButton {
+    padding: 0;
+    overflow: hidden;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.24s ease, border-color 0.24s ease;
+    background: var(--dark-card);
+    border: 1px solid rgba(200, 150, 30, 0.08);
+    box-shadow: 0 16px 36px rgba(8, 14, 20, 0.22);
+}
+
+.heroGalleryButton:hover {
+    transform: translateY(-2px);
+    border-color: rgba(200, 150, 30, 0.28);
+}
+
+.heroGalleryButton:hover .heroGalleryImage {
+    transform: scale(1.03);
+}
+
+.heroGalleryImage {
+    width: 100%;
+    aspect-ratio: 1 / 0.78;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.heroStats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.heroStat,
+.introCard,
+.serviceSummaryCard,
+.featureCard,
+.detailCard,
+.processCard,
+.faqItem,
+.projectCard,
+.galleryButton {
+    background: var(--dark-card);
+    border: 1px solid rgba(200, 150, 30, 0.08);
+    box-shadow: 0 16px 36px rgba(8, 14, 20, 0.22);
+}
+
+.heroStat {
+    padding: 18px 16px;
+}
+
+.heroStatValue,
+.featureIndex,
+.processNumber,
+.summaryValue {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.heroStatValue {
+    display: block;
+    margin-bottom: 6px;
+    color: rgba(200, 150, 30, 0.96);
+    font-size: 38px;
+}
+
+.heroStatLabel,
+.summaryLabel,
+.featureDesc,
+.detailBody p,
+.processCardDesc,
+.faqAnswer,
+.introText,
+.projectCardDesc {
+    color: var(--text);
+    line-height: 1.72;
+}
+
+.heroStatLabel,
+.summaryLabel {
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(212, 207, 200, 0.72);
+}
+
+.contentShell {
+    padding: 0 40px 80px;
+}
+
+.mobileChipNav,
+.mobileSectionToggle {
+    display: none;
+}
+
+.mobileChipNav {
+    padding: 0 40px 16px;
+    background: var(--dark);
+}
+
+.mobileChipNavInner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.mobileChipNavInner::-webkit-scrollbar {
+    display: none;
+}
+
+.mobileChip {
+    flex: 0 0 auto;
+    min-height: 40px;
+    padding: 0 14px;
+    border: 1px solid rgba(200, 150, 30, 0.18);
+    border-radius: 999px;
+    background: rgba(15, 25, 35, 0.82);
+    color: var(--white) !important;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.mobileChipActive {
+    background: var(--gold);
+    color: var(--white) !important;
+    border-color: var(--gold);
+}
+
+.mobileSectionBlock {
+    display: block;
+}
+
+.mobileSectionPanel {
+    display: block;
+}
+
+.introGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+    gap: 24px;
+    margin-top: -28px;
+    position: relative;
+    z-index: 2;
+}
+
+.introCard,
+.serviceSummaryCard {
+    padding: 32px;
+}
+
+.cardEyebrow,
+.detailLabel {
+    margin-bottom: 10px;
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.sectionTitle {
+    margin: 0;
+    font-size: clamp(28px, 3vw, 44px);
+    line-height: 0.98;
+}
+
+.introText {
+    margin: 18px 0 0;
+    font-size: 15px;
+}
+
+.introList {
+    display: grid;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.introListItem {
+    position: relative;
+    padding-left: 16px;
+    color: var(--white);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.introListItem::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+}
+
+.serviceSummaryCard {
+    display: grid;
+    gap: 18px;
+    align-content: start;
+}
+
+.summaryRow {
+    padding-top: 16px;
+    border-top: 1px solid rgba(245, 243, 239, 0.08);
+}
+
+.summaryRow:first-of-type {
+    padding-top: 0;
+    border-top: 0;
+}
+
+.summaryValue {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--white);
+    font-size: 28px;
+}
+
+.section,
+.projectsSection {
+    margin-top: 52px;
+}
+
+.sectionHeader {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.featureGrid,
+.processGrid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.featureCard,
+.processCard {
+    padding: 28px 24px;
+    min-height: 100%;
+}
+
+.featureIndex,
+.processNumber {
+    margin-bottom: 12px;
+    color: rgba(200, 150, 30, 0.18);
+    font-size: 56px;
+    letter-spacing: -0.03em;
+}
+
+.featureTitle {
+    margin-bottom: 10px;
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+.featureDesc,
+.processCardDesc,
+.projectCardDesc,
+.detailBody p,
+.faqAnswer {
+    margin: 0;
+    font-size: 14px;
+}
+
+.detailGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.detailCard {
+    padding: 28px 24px;
+}
+
+.detailBody {
+    display: grid;
+    gap: 12px;
+}
+
+.galleryGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.galleryButton {
+    padding: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    text-align: left;
+    transition: transform 0.24s ease, border-color 0.24s ease;
+}
+
+.galleryButton:hover {
+    transform: translateY(-4px);
+    border-color: rgba(200, 150, 30, 0.28);
+}
+
+.galleryButton:hover .galleryImage {
+    transform: scale(1.04);
+}
+
+.galleryImage {
+    aspect-ratio: 1 / 0.82;
+    transition: transform 0.4s ease;
+}
+
+.galleryCaption {
+    display: block;
+    padding: 14px 16px;
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.faqList {
+    display: grid;
+    gap: 12px;
+}
+
+.faqItem {
+    padding: 24px 24px 22px;
+}
+
+.faqQuestion {
+    margin: 0 0 10px;
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.08;
+    text-transform: uppercase;
+}
+
+.projectsSection {
+    padding-bottom: 8px;
+}
+
+.carousel {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 16px;
+    align-items: stretch;
+}
+
+.carouselNav,
+.closeButton,
+.prevButton,
+.nextButton {
+    border: none;
+    cursor: pointer;
+}
+
+.carouselNav {
+    align-self: center;
+    min-height: 48px;
+    padding: 0 18px;
+    border-radius: 3px;
+    background: rgba(200, 150, 30, 0.12);
+    color: var(--gold-light);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.carouselNav:hover {
+    background: rgba(200, 150, 30, 0.22);
+    transform: translateY(-2px);
+}
+
+.projectCard {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.95fr) minmax(0, 1.05fr);
+    overflow: hidden;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.projectImageWrap {
+    min-height: 320px;
+    background: rgba(15, 25, 35, 0.8);
+}
+
+.projectImage {
+    filter: brightness(0.78) saturate(0.92);
+}
+
+.projectCardContent {
+    display: grid;
+    align-content: center;
+    gap: 14px;
+    padding: 32px;
+}
+
+.projectCardTitle {
+    margin: 0;
+    font-size: clamp(28px, 3vw, 42px);
+    line-height: 0.98;
+}
+
+.projectCardLink {
+    margin-top: 8px;
+    color: var(--gold-light);
+}
+
+.projectCardPlaceholder {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    color: rgba(245, 243, 239, 0.7);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.carouselDots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.carouselDot {
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(245, 243, 239, 0.16);
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.carouselDotActive {
+    background: var(--gold);
+    transform: scale(1.15);
+}
+
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: grid;
+    place-items: center;
+    background: rgba(8, 12, 18, 0.92);
+}
+
+.lightboxContent {
+    position: relative;
+    width: min(92vw, 1080px);
+    max-height: 88vh;
+    overflow: hidden;
+    border-radius: 4px;
+    background: #000;
+}
+
+.lightboxContent img {
+    max-height: 88vh;
+    object-fit: contain;
+}
+
+.closeButton,
+.prevButton,
+.nextButton {
+    position: absolute;
+    z-index: 10000;
+    min-height: 44px;
+    padding: 0 16px;
+    border-radius: 3px;
+    background: rgba(15, 25, 35, 0.84);
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.closeButton {
+    top: 24px;
+    right: 24px;
+}
+
+.prevButton {
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.nextButton {
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.imageCounter {
+    position: absolute;
+    left: 18px;
+    bottom: 18px;
+    padding: 8px 12px;
+    border-radius: 3px;
+    background: rgba(15, 25, 35, 0.76);
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+@media (max-width: 1080px) {
+    .heroGrid,
+    .introGrid,
+    .projectCard {
+        grid-template-columns: 1fr;
+    }
+
+    .featureGrid,
+    .processGrid,
+    .galleryGrid,
+    .detailGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .heroImageWrap {
+        min-height: 360px;
+    }
+
+    .heroGalleryGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .pageHero {
+        padding: 48px 20px 40px;
+    }
+
+    .contentShell {
+        padding: 0 16px 56px;
+    }
+
+    .introGrid {
+        margin-top: 10px;
+    }
+
+    .mobileChipNav {
+        display: block;
+        padding: 0 16px 14px;
+    }
+
+    .mobileSectionToggle {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        min-height: 54px;
+        padding: 0 18px;
+        margin-top: 14px;
+        border: 1px solid rgba(200, 150, 30, 0.16);
+        border-radius: 4px;
+        background: var(--dark-card);
+        color: var(--white);
+        font-family: 'Barlow Condensed', sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+    }
+
+    .mobileSectionToggleIcon {
+        font-size: 18px;
+        line-height: 1;
+        color: var(--gold);
+    }
+
+    .mobileSectionPanel {
+        display: none;
+    }
+
+    .mobileSectionBlockOpen .mobileSectionPanel {
+        display: block;
+    }
+
+    .heroStats,
+    .featureGrid,
+    .processGrid,
+    .galleryGrid,
+    .detailGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .heroGalleryGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .introCard,
+    .serviceSummaryCard,
+    .featureCard,
+    .detailCard,
+    .processCard,
+    .faqItem,
+    .projectCardContent {
+        padding: 24px 20px;
+    }
+
+    .heroImageWrap,
+    .projectImageWrap {
+        min-height: 240px;
+    }
+
+    .carousel {
+        grid-template-columns: 1fr;
+    }
+
+    .carouselNav {
+        width: 100%;
+    }
+
+    .faqQuestion {
+        font-size: 20px;
+    }
+
+    .closeButton {
+        top: 12px;
+        right: 12px;
+    }
+
+    .prevButton,
+    .nextButton {
+        top: auto;
+        bottom: 18px;
+        transform: none;
+    }
+
+    .prevButton {
+        left: 12px;
+    }
+
+    .nextButton {
+        right: 12px;
+    }
+}
+
+:global([data-theme="light"]) .serviceDetailsPage {
+    background: var(--surface-2);
+}
+
+:global([data-theme="light"]) .pageHero {
+    background:
+        radial-gradient(circle at top right, rgba(200, 150, 30, 0.12) 0%, transparent 28%),
+        linear-gradient(135deg, #f7f3ec 0%, #ece4d8 100%);
+}
+
+:global([data-theme="light"]) .pageTitle,
+:global([data-theme="light"]) .sectionTitle,
+:global([data-theme="light"]) .projectCardTitle,
+:global([data-theme="light"]) .summaryValue,
+:global([data-theme="light"]) .featureTitle,
+:global([data-theme="light"]) .faqQuestion,
+:global([data-theme="light"]) .introListItem,
+:global([data-theme="light"]) .galleryCaption,
+:global([data-theme="light"]) .closeButton,
+:global([data-theme="light"]) .prevButton,
+:global([data-theme="light"]) .nextButton,
+:global([data-theme="light"]) .imageCounter {
+    color: #0f1923;
+}
+
+:global([data-theme="light"]) .pageSubtitle,
+:global([data-theme="light"]) .heroStatLabel,
+:global([data-theme="light"]) .summaryLabel,
+:global([data-theme="light"]) .featureDesc,
+:global([data-theme="light"]) .detailBody p,
+:global([data-theme="light"]) .processCardDesc,
+:global([data-theme="light"]) .faqAnswer,
+:global([data-theme="light"]) .introText,
+:global([data-theme="light"]) .projectCardDesc {
+    color: #4b5563;
+}
+
+:global([data-theme="light"]) .heroStat,
+:global([data-theme="light"]) .introCard,
+:global([data-theme="light"]) .serviceSummaryCard,
+:global([data-theme="light"]) .featureCard,
+:global([data-theme="light"]) .detailCard,
+:global([data-theme="light"]) .processCard,
+:global([data-theme="light"]) .faqItem,
+:global([data-theme="light"]) .projectCard,
+:global([data-theme="light"]) .galleryButton,
+:global([data-theme="light"]) .heroImageWrap {
+    background: var(--surface-1);
+    border-color: rgba(15, 25, 35, 0.1);
+    box-shadow: 0 16px 36px rgba(15, 25, 35, 0.06);
+}
+
+:global([data-theme="light"]) .backButton,
+:global([data-theme="light"]) .secondaryAction,
+:global([data-theme="light"]) .carouselNav,
+:global([data-theme="light"]) .closeButton,
+:global([data-theme="light"]) .prevButton,
+:global([data-theme="light"]) .nextButton,
+:global([data-theme="light"]) .imageCounter {
+    background: rgba(255, 255, 255, 0.82);
+    color: #0f1923;
+}
+
+:global([data-theme="light"]) .galleryCaption {
+    background: rgba(15, 25, 35, 0.03);
+}
+
+:global([data-theme="light"]) .mobileChip,
+:global([data-theme="light"]) .mobileChipActive,
+:global([data-theme="light"]) .mobileSectionToggle {
+    color: var(--white) !important;
+}
