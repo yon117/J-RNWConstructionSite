@@ -4,3 +4,10 @@ node_modules/
 
 .env.production
 .env.production.bak
+
+*.bak
+*.bak.*
+graphify-out/
+.playwright-cli/
+output/playwright/
+.superpowers/
