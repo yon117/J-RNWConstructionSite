@@ -7,8 +7,47 @@ import ContactFormSection from '../../components/ContactFormSection';
 import styles from '../../styles/ServiceDetails.module.css';
 import { getDb } from '../../lib/db';
 import { useLang } from '../../context/LanguageContext';
-import { translateText } from '../../utils/translate';
+import { imageUrl } from '../../utils/imageUrl';
 import { sanitizeServiceObject, sanitizeServiceText } from '../../utils/sanitizeServiceText';
+
+const ArrowIcon = () => (
+    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+    </svg>
+);
+
+const PROCESS_STEPS = [
+    {
+        title: 'Free consultation',
+        desc: 'We assess the space and your goals, then define the cleanest path forward before work starts.',
+    },
+    {
+        title: 'Detailed estimate',
+        desc: 'You get clear pricing, scope, and expectations up front so there are no vague surprises later.',
+    },
+    {
+        title: 'Build phase',
+        desc: 'Our crew works with consistent communication, clean jobsite habits, and disciplined execution.',
+    },
+    {
+        title: 'Final walkthrough',
+        desc: 'We review the finished work together and close out only when the result is right.',
+    },
+];
+
+const splitTitleForAccent = (title) => {
+    const words = sanitizeServiceText(title || '').trim().split(/\s+/).filter(Boolean);
+    if (words.length <= 1) {
+        return { lead: '', accent: words[0] || 'Service' };
+    }
+
+    return {
+        lead: words.slice(0, -1).join(' '),
+        accent: words[words.length - 1],
+    };
+};
+
+const firstLine = (text) => sanitizeServiceText(text || '').split(/[\n.]+/).map((item) => item.trim()).find(Boolean) || '';
 
 export default function ServiceDetails({ service, images, randomProjects }) {
     const router = useRouter();
@@ -18,38 +57,67 @@ export default function ServiceDetails({ service, images, randomProjects }) {
     const [showContactModal, setShowContactModal] = useState(false);
     const [carouselIndex, setCarouselIndex] = useState(0);
     const [svc, setSvc] = useState(sanitizeServiceObject(service));
-    useEffect(() => {
-        if (!lang || lang === 'en') { setSvc(sanitizeServiceObject(service)); return; }
-        import('../../utils/translate').then(async ({ translateText }) => {
-            const fields = ['title','subtitle','header_desc','description','details','process_desc',
-                'ksp_title_1','ksp_desc_1','ksp_title_2','ksp_desc_2','ksp_title_3','ksp_desc_3','ksp_title_4','ksp_desc_4',
-                'faq_q_1','faq_a_1','faq_q_2','faq_a_2','faq_q_3','faq_a_3','faq_q_4','faq_a_4','faq_q_5','faq_a_5'];
-            const updated = sanitizeServiceObject({ ...service });
-            for (const f of fields) {
-                if (service[f]) {
-                    updated[f] = await translateText(service[f], lang);
-                }
-            }
-            setSvc(sanitizeServiceObject(updated));
-        });
-    }, [lang, service]);
+    const [mobileOpenSection, setMobileOpenSection] = useState('');
+    const [pendingMobileScrollId, setPendingMobileScrollId] = useState('');
     const autoPlayRef = useRef(null);
 
-    const nextProject = () => setCarouselIndex(i => (i + 1) % randomProjects.length);
-    const prevProject = () => setCarouselIndex(i => (i - 1 + randomProjects.length) % randomProjects.length);
-
-    /* Auto-advance carousel every 4 seconds */
     useEffect(() => {
-        if (!randomProjects || randomProjects.length <= 1) return;
+        if (!lang || lang === 'en') {
+            setSvc(sanitizeServiceObject(service));
+            return;
+        }
+
+        let cancelled = false;
+
+        async function translateService() {
+            const { translateText: runTranslateText } = await import('../../utils/translate');
+            const fields = [
+                'title', 'subtitle', 'header_desc', 'description', 'details', 'process_desc',
+                'ksp_title_1', 'ksp_desc_1', 'ksp_title_2', 'ksp_desc_2',
+                'ksp_title_3', 'ksp_desc_3', 'ksp_title_4', 'ksp_desc_4',
+                'faq_q_1', 'faq_a_1', 'faq_q_2', 'faq_a_2', 'faq_q_3', 'faq_a_3',
+                'faq_q_4', 'faq_a_4', 'faq_q_5', 'faq_a_5',
+            ];
+            const updated = sanitizeServiceObject({ ...service });
+
+            for (const field of fields) {
+                if (service[field]) {
+                    updated[field] = await runTranslateText(service[field], lang);
+                }
+            }
+
+            if (!cancelled) {
+                setSvc(sanitizeServiceObject(updated));
+            }
+        }
+
+        translateService();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [lang, service]);
+
+    const nextProject = () => setCarouselIndex((index) => (index + 1) % randomProjects.length);
+    const prevProject = () => setCarouselIndex((index) => (index - 1 + randomProjects.length) % randomProjects.length);
+
+    useEffect(() => {
+        if (!randomProjects || randomProjects.length <= 1) {
+            return undefined;
+        }
+
         autoPlayRef.current = setInterval(nextProject, 4000);
         return () => clearInterval(autoPlayRef.current);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [randomProjects?.length]);
 
     const handleCarouselNav = (direction) => {
         clearInterval(autoPlayRef.current);
-        if (direction === 'next') nextProject();
-        else prevProject();
+        if (direction === 'next') {
+            nextProject();
+        } else {
+            prevProject();
+        }
         autoPlayRef.current = setInterval(nextProject, 4000);
     };
 
@@ -82,248 +150,388 @@ export default function ServiceDetails({ service, images, randomProjects }) {
         setSelectedImage(images[nextIndex]);
     };
 
-    const handleKeyDown = (e) => {
-        if (e.key === 'Escape') closeLightbox();
-        if (e.key === 'ArrowRight') nextImage();
-        if (e.key === 'ArrowLeft') prevImage();
+    const handleKeyDown = (event) => {
+        if (event.key === 'Escape') {
+            closeLightbox();
+        }
+        if (event.key === 'ArrowRight') {
+            nextImage();
+        }
+        if (event.key === 'ArrowLeft') {
+            prevImage();
+        }
     };
 
-    /* Collect Key Selling Points that have at least a title */
     const kspList = [1, 2, 3, 4]
-        .map(n => ({ title: svc[`ksp_title_${n}`], desc: svc[`ksp_desc_${n}`] }))
-        .filter(k => k.title);
+        .map((number) => ({
+            title: svc[`ksp_title_${number}`],
+            desc: svc[`ksp_desc_${number}`],
+        }))
+        .filter((item) => item.title);
 
-    /* Collect FAQs that have at least a question */
     const faqList = [1, 2, 3, 4, 5]
-        .map(n => ({ q: svc[`faq_q_${n}`], a: svc[`faq_a_${n}`] }))
-        .filter(f => f.q);
+        .map((number) => ({
+            q: svc[`faq_q_${number}`],
+            a: svc[`faq_a_${number}`],
+        }))
+        .filter((item) => item.q);
 
-    /* Page title: use page_title if set, otherwise fall back to service title */
     const pageTitle = service.page_title
         ? sanitizeServiceText(service.page_title)
         : `${svc.title} | J&R NW Construction`;
 
+    const heroImage = imageUrl(service.image_url || '/assets/placeholder.jpg');
+    const currentProject = randomProjects?.[carouselIndex];
+    const titleParts = splitTitleForAccent(svc.title);
+    const detailBlocks = [
+        { label: 'Overview', content: svc.description },
+        { label: 'Project approach', content: svc.process_desc },
+        { label: 'Why choose us', content: svc.details },
+    ].filter((item) => item.content);
+    const summaryItems = [
+        firstLine(svc.header_desc),
+        ...kspList.map((item) => firstLine(item.title)),
+        firstLine(svc.details),
+    ].filter(Boolean).slice(0, 3);
+    const handleMobileSectionToggle = (key, targetId) => {
+        if (typeof window === 'undefined') return;
+
+        if (window.innerWidth > 768) {
+            document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return;
+        }
+
+        const next = mobileOpenSection === key ? '' : key;
+        setMobileOpenSection(next);
+        if (next) setPendingMobileScrollId(targetId);
+    };
+
+    useEffect(() => {
+        if (!pendingMobileScrollId || typeof window === 'undefined') return undefined;
+
+        const timer = window.setTimeout(() => {
+            document.getElementById(pendingMobileScrollId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            window.dispatchEvent(new Event('resize'));
+            setPendingMobileScrollId('');
+        }, 120);
+
+        return () => window.clearTimeout(timer);
+    }, [pendingMobileScrollId]);
+
     return (
         <Layout
             title={`${pageTitle} | Portland OR | J&R NW Construction`}
-            description={service.description ? sanitizeServiceText(service.description).slice(0, 155).trim() + '.' : `Professional ${svc.title} services in Portland, OR by J&R NW Construction. Licensed & insured contractor. CCB #232708. Free estimates — call (503) 998-2340.`}
+            description={service.description ? `${sanitizeServiceText(service.description).slice(0, 155).trim()}.` : `Professional ${svc.title} services in Portland, OR by J&R NW Construction. Licensed and insured contractor. CCB #232708. Free estimates call (503) 998-2340.`}
             canonical={`/services/${service.id}`}
             onContactClick={() => setShowContactModal(true)}
         >
             <div className={styles.serviceDetailsPage}>
+                <section className={styles.pageHero}>
+                    <div className={styles.pageHeroInner}>
+                        <div className={styles.heroGrid}>
+                            <div className={styles.heroCopy}>
+                                <div className={styles.sectionLabel}>{t.ourServicesLabel || 'Selected Service'}</div>
+                                <h1 className={styles.pageTitle}>
+                                    {titleParts.lead ? `${titleParts.lead} ` : ''}
+                                    <em>{titleParts.accent}</em>
+                                </h1>
+                                <p className={styles.pageSubtitle}>
+                                    {svc.subtitle || svc.header_desc || svc.description}
+                                </p>
 
-                {/* ── Hero Section ──────────────────────────────────────── */}
-                <div className={styles.hero} style={{ backgroundImage: `url(${service.image_url || '/assets/placeholder.jpg'})` }}>
-                    <div className={styles.heroOverlay}></div>
-                    <button onClick={() => router.back()} className={styles.backButton}>
-                        {t.backToServices}
-                    </button>
-                    <div className={styles.heroContent}>
-                        {/* Pill / badge label */}
-                        <div className={styles.heroLabel}>{svc.title}</div>
-                        {/* Sub-name / headline */}
-                        <h1>{svc.subtitle || svc.title}</h1>
-                        {svc.header_desc && (
-                            <p className={styles.shortDescription}>{svc.header_desc}</p>
-                        )}
-                    </div>
-                    
-                </div>
+                                <div className={styles.heroActions}>
+                                    <button
+                                        type="button"
+                                        className={styles.primaryAction}
+                                        onClick={() => setShowContactModal(true)}
+                                    >
+                                        {t.getFreeEstimate || 'Get Free Estimate'} <ArrowIcon />
+                                    </button>
+                                    <Link href="/services" className={styles.secondaryAction}>
+                                        {t.backToServices || 'Back to Services'}
+                                    </Link>
+                                </div>
+                            </div>
 
-                {/* ── Main Content ──────────────────────────────────────── */}
-                <div className={`container ${styles.contentWrapper}`}>
+                            <div className={styles.heroPanel}>
+                                <div className={styles.heroImageWrap}>
+                                    <img
+                                        src={heroImage}
+                                        alt={sanitizeServiceText(svc.title)}
+                                        className={styles.heroImage}
+                                    />
+                                </div>
 
-                    {/* ── Key Selling Points ─────────────────────────────── */}
-                    {kspList.length > 0 && (
-                        <div className={styles.kspSection}>
-                            <div className={styles.kspGrid}>
-                                {kspList.map((k, i) => (
-                                    <div key={i} className={styles.kspCard}>
-                                        <div className={styles.kspIcon}>◈</div>
-                                        <strong className={styles.kspTitle}>{k.title}</strong>
-                                        <p className={styles.kspDesc}>{k.desc}</p>
-                                    </div>
-                                ))}
                             </div>
                         </div>
-                    )}
+                    </div>
+                </section>
 
-                    {/* ── Copy Blocks (description → process_desc → details/Why Choose Us) ── */}
-                    {(svc.description || svc.process_desc || svc.details) && (
-                        <div className={styles.copyBlocksSection}>
-
-                            {svc.description && (
-                                <div className={styles.copyBlock}>
-                                    <div className={styles.copyBlockContent}>
-                                        <p>{svc.description}</p>
-                                    </div>
-                                </div>
+                <div className={styles.contentShell}>
+                    <div id="mobile-overview" className={`${styles.mobileSectionBlock} ${mobileOpenSection === 'overview' ? styles.mobileSectionBlockOpen : ''}`}>
+                        <button
+                            type="button"
+                            className={styles.mobileSectionToggle}
+                            onClick={() => handleMobileSectionToggle('overview', 'mobile-overview')}
+                        >
+                            <span>Overview</span>
+                            <span className={styles.mobileSectionToggleIcon}>{mobileOpenSection === 'overview' ? '-' : '+'}</span>
+                        </button>
+                        <div className={styles.mobileSectionPanel}>
+                    <section className={styles.introGrid}>
+                        <div className={styles.introCard}>
+                            <div className={styles.sectionLabel}>Service Focus</div>
+                            <h2 className={styles.sectionTitle}>{svc.title}</h2>
+                            {svc.header_desc && (
+                                <p className={styles.introText}>{svc.header_desc}</p>
                             )}
-
-                            {svc.process_desc && (
-                                <div className={styles.copyBlock}>
-                                    <div className={styles.copyBlockContent}>
-                                        {svc.process_desc.split('\n').map((para, idx) =>
-                                            para.trim() && <p key={idx}>{para}</p>
-                                        )}
-                                    </div>
-                                </div>
-                            )}
-
-                            {svc.details && (
-                                <div className={styles.copyBlock}>
-                                    <p className={styles.copyBlockLabel}>Why Choose Us</p>
-                                    <div className={styles.copyBlockContent}>
-                                        {svc.details.split('\n').map((para, idx) =>
-                                            para.trim() && <p key={idx}>{para}</p>
-                                        )}
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    )}
-
-                    {/* ── Our Process Section ── */}
-                    {/* ── Our Process (fixed steps — same on every service page) ── */}
-                    {(() => {
-                        const PROCESS_STEPS = [
-                            {
-                                title: 'Free consultation',
-                                desc:  'We assess the space and listen to your goals — no sales pitch, just real conversation about what you want and what it takes to get there.',
-                            },
-                            {
-                                title: 'Detailed estimate',
-                                desc:  'Transparent pricing with a full line-item breakdown. No vague totals, no hidden costs. You know exactly what you\'re paying for before anything starts.',
-                            },
-                            {
-                                title: 'Build phase',
-                                desc:  'Skilled crew on site daily, clean workspace maintained, and open communication throughout. You always know where the project stands.',
-                            },
-                            {
-                                title: 'Final walkthrough',
-                                desc:  'We walk every inch of the finished space with you. We don\'t close out the job until you\'re fully satisfied with the result.',
-                            },
-                        ];
-                        return (
-                            <div className={styles.processSection}>
-                                <p className={styles.processSectionLabel}>Our Process</p>
-                                <div className={styles.processList}>
-                                    {PROCESS_STEPS.map((step, i) => (
-                                        <div key={i} className={styles.processItem}>
-                                            <div className={styles.processNumber}>{i + 1}</div>
-                                            <div className={styles.processContent}>
-                                                <strong className={styles.processTitle}>{step.title}</strong>
-                                                <p className={styles.processDesc}>{step.desc}</p>
-                                            </div>
+                            {summaryItems.length > 0 && (
+                                <div className={styles.introList}>
+                                    {summaryItems.map((item) => (
+                                        <div key={item} className={styles.introListItem}>
+                                            {item}
                                         </div>
                                     ))}
                                 </div>
-                            </div>
-                        );
-                    })()}
+                            )}
+                        </div>
 
-                    {/* ── FAQ Section ────────────────────────────────────── */}
+                        <div className={styles.serviceSummaryCard}>
+                            <div className={styles.cardEyebrow}>Quick Snapshot</div>
+                            <div className={styles.summaryRow}>
+                                <span className={styles.summaryValue}>{sanitizeServiceText(svc.title)}</span>
+                                <span className={styles.summaryLabel}>Service</span>
+                            </div>
+                            <div className={styles.summaryRow}>
+                                <span className={styles.summaryValue}>Licensed + Insured</span>
+                                <span className={styles.summaryLabel}>Company standard</span>
+                            </div>
+                            <div className={styles.summaryRow}>
+                                <span className={styles.summaryValue}>Portland Metro</span>
+                                <span className={styles.summaryLabel}>Primary coverage area</span>
+                            </div>
+                        </div>
+                    </section>
+                        </div>
+                    </div>
+
+                    {kspList.length > 0 && (
+                        <div id="mobile-benefits" className={`${styles.mobileSectionBlock} ${mobileOpenSection === 'benefits' ? styles.mobileSectionBlockOpen : ''}`}>
+                            <button
+                                type="button"
+                                className={styles.mobileSectionToggle}
+                                onClick={() => handleMobileSectionToggle('benefits', 'mobile-benefits')}
+                            >
+                                <span>Benefits</span>
+                                <span className={styles.mobileSectionToggleIcon}>{mobileOpenSection === 'benefits' ? '-' : '+'}</span>
+                            </button>
+                            <div className={styles.mobileSectionPanel}>
+                        <section className={styles.section}>
+                            <div className={styles.sectionHeader}>
+                                <div className={styles.sectionLabel}>Core Benefits</div>
+                                <h2 className={styles.sectionTitle}>Why this service works</h2>
+                            </div>
+
+                            <div className={styles.featureGrid}>
+                                {kspList.map((item, index) => (
+                                    <div key={item.title} className={styles.featureCard}>
+                                        <div className={styles.featureIndex}>
+                                            {String(index + 1).padStart(2, '0')}
+                                        </div>
+                                        <div className={styles.featureTitle}>{item.title}</div>
+                                        {item.desc && <p className={styles.featureDesc}>{item.desc}</p>}
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                            </div>
+                        </div>
+                    )}
+
+                    {detailBlocks.length > 0 && (
+                        <div id="mobile-details" className={`${styles.mobileSectionBlock} ${mobileOpenSection === 'details' ? styles.mobileSectionBlockOpen : ''}`}>
+                            <button
+                                type="button"
+                                className={styles.mobileSectionToggle}
+                                onClick={() => handleMobileSectionToggle('details', 'mobile-details')}
+                            >
+                                <span>Details</span>
+                                <span className={styles.mobileSectionToggleIcon}>{mobileOpenSection === 'details' ? '-' : '+'}</span>
+                            </button>
+                            <div className={styles.mobileSectionPanel}>
+                        <section className={styles.section}>
+                            <div className={styles.sectionHeader}>
+                                <div className={styles.sectionLabel}>Project Detail</div>
+                                <h2 className={styles.sectionTitle}>What to expect</h2>
+                            </div>
+
+                            <div className={styles.detailGrid}>
+                                {detailBlocks.map((block) => (
+                                    <div key={block.label} className={styles.detailCard}>
+                                        <div className={styles.detailLabel}>{block.label}</div>
+                                        <div className={styles.detailBody}>
+                                            {block.content.split('\n').map((paragraph, index) => (
+                                                paragraph.trim() ? <p key={`${block.label}-${index}`}>{paragraph}</p> : null
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                            </div>
+                        </div>
+                    )}
+
+                    <div id="mobile-process" className={`${styles.mobileSectionBlock} ${mobileOpenSection === 'process' ? styles.mobileSectionBlockOpen : ''}`}>
+                        <button
+                            type="button"
+                            className={styles.mobileSectionToggle}
+                            onClick={() => handleMobileSectionToggle('process', 'mobile-process')}
+                        >
+                            <span>Process</span>
+                            <span className={styles.mobileSectionToggleIcon}>{mobileOpenSection === 'process' ? '-' : '+'}</span>
+                        </button>
+                        <div className={styles.mobileSectionPanel}>
+                    <section className={styles.section}>
+                        <div className={styles.sectionHeader}>
+                            <div className={styles.sectionLabel}>Our Process</div>
+                            <h2 className={styles.sectionTitle}>How the job moves</h2>
+                        </div>
+
+                        <div className={styles.processGrid}>
+                            {PROCESS_STEPS.map((step, index) => (
+                                <div key={step.title} className={styles.processCard}>
+                                    <div className={styles.processNumber}>
+                                        {String(index + 1).padStart(2, '0')}
+                                    </div>
+                                    <div className={styles.processCardTitle}>{step.title}</div>
+                                    <p className={styles.processCardDesc}>{step.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                        </div>
+                    </div>
+
                     {faqList.length > 0 && (
-                        <div className={styles.faqSection}>
+                        <div id="mobile-faq" className={`${styles.mobileSectionBlock} ${mobileOpenSection === 'faq' ? styles.mobileSectionBlockOpen : ''}`}>
+                            <button
+                                type="button"
+                                className={styles.mobileSectionToggle}
+                                onClick={() => handleMobileSectionToggle('faq', 'mobile-faq')}
+                            >
+                                <span>FAQ</span>
+                                <span className={styles.mobileSectionToggleIcon}>{mobileOpenSection === 'faq' ? '-' : '+'}</span>
+                            </button>
+                            <div className={styles.mobileSectionPanel}>
+                        <section className={styles.section}>
+                            <div className={styles.sectionHeader}>
+                                <div className={styles.sectionLabel}>Questions</div>
+                                <h2 className={styles.sectionTitle}>Common client questions</h2>
+                            </div>
+
                             <div className={styles.faqList}>
-                                {faqList.map((item, i) => (
-                                    <div key={i} className={styles.faqItem}>
-                                        <p className={styles.faqQuestion}>Q: {item.q}</p>
+                                {faqList.map((item, index) => (
+                                    <div key={`${item.q}-${index}`} className={styles.faqItem}>
+                                        <p className={styles.faqQuestion}>{item.q}</p>
                                         {item.a && <p className={styles.faqAnswer}>{item.a}</p>}
                                     </div>
                                 ))}
                             </div>
+                        </section>
+                            </div>
                         </div>
                     )}
 
+                    {currentProject && (
+                        <div id="mobile-projects" className={`${styles.mobileSectionBlock} ${mobileOpenSection === 'projects' ? styles.mobileSectionBlockOpen : ''}`}>
+                            <button
+                                type="button"
+                                className={styles.mobileSectionToggle}
+                                onClick={() => handleMobileSectionToggle('projects', 'mobile-projects')}
+                            >
+                                <span>Projects</span>
+                                <span className={styles.mobileSectionToggleIcon}>{mobileOpenSection === 'projects' ? '-' : '+'}</span>
+                            </button>
+                            <div className={styles.mobileSectionPanel}>
+                        <section className={styles.projectsSection}>
+                            <div className={styles.sectionHeader}>
+                                <div className={styles.sectionLabel}>{t.ourWork || 'Our Work'}</div>
+                                <h2 className={styles.sectionTitle}>PORTAFOLIO</h2>
+                            </div>
 
-                    {/* ── Random Projects Carousel ──────────────────────── */}
-                    {randomProjects && randomProjects.length > 0 && (
-                        <div className={styles.projectsShowcase}>
-                            <h2 className={styles.showcaseTitle}>{t.ourWork || 'Our Work'}</h2>
-                            <p className={styles.showcaseSubtitle}>
-                                {t.projectsSubtitle || 'Explore some of our completed projects'}
-                            </p>
-
-                            {/* Carousel */}
                             <div className={styles.carousel}>
                                 <button
-                                    className={styles.carouselBtn + ' ' + styles.carouselBtnPrev}
+                                    type="button"
+                                    className={styles.carouselNav}
                                     onClick={() => handleCarouselNav('prev')}
                                     aria-label="Previous project"
                                 >
-                                    ‹
+                                    Prev
                                 </button>
 
-                                <div className={styles.carouselTrack}>
-                                    {randomProjects.map((project, index) => (
-                                        <Link
-                                            key={project.id}
-                                            href="/projects"
-                                            className={
-                                                styles.carouselSlide +
-                                                (index === carouselIndex ? ' ' + styles.carouselSlideActive : '')
-                                            }
-                                            aria-hidden={index !== carouselIndex}
-                                        >
-                                            <div className={styles.carouselImage}>
-                                                {project.image ? (
-                                                    <img src={project.image} alt={project.title || 'Project'} />
-                                                ) : (
-                                                    <div className={styles.projectCardPlaceholder}><span>🏗️</span></div>
-                                                )}
-                                                <div className={styles.carouselOverlay}>
-                                                    <span className={styles.projectCardViewBtn}>
-                                                        {t.viewProject || 'View Projects →'}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div className={styles.projectCardInfo}>
-                                                <h3 className={styles.projectCardTitle}>{project.title}</h3>
-                                                {project.description && (
-                                                    <p className={styles.projectCardDesc}>
-                                                        {project.description.length > 120
-                                                            ? project.description.slice(0, 120) + '…'
-                                                            : project.description}
-                                                    </p>
-                                                )}
-                                            </div>
-                                        </Link>
-                                    ))}
-                                </div>
+                                <Link href="/projects" className={styles.projectCard}>
+                                    <div className={styles.projectImageWrap}>
+                                        {currentProject.image ? (
+                                            <img
+                                                src={imageUrl(currentProject.image)}
+                                                alt={currentProject.title || 'Project'}
+                                                className={styles.projectImage}
+                                            />
+                                        ) : (
+                                            <div className={styles.projectCardPlaceholder}>Project preview</div>
+                                        )}
+                                    </div>
+
+                                    <div className={styles.projectCardContent}>
+                                        <div className={styles.cardEyebrow}>Featured Project</div>
+                                        <h3 className={styles.projectCardTitle}>{currentProject.title}</h3>
+                                        {currentProject.description && (
+                                            <p className={styles.projectCardDesc}>
+                                                {currentProject.description.length > 140
+                                                    ? `${currentProject.description.slice(0, 140)}...`
+                                                    : currentProject.description}
+                                            </p>
+                                        )}
+                                        <span className={styles.projectCardLink}>
+                                            {t.viewAllProjects || 'View All Projects'} <ArrowIcon />
+                                        </span>
+                                    </div>
+                                </Link>
 
                                 <button
-                                    className={styles.carouselBtn + ' ' + styles.carouselBtnNext}
+                                    type="button"
+                                    className={styles.carouselNav}
                                     onClick={() => handleCarouselNav('next')}
                                     aria-label="Next project"
                                 >
-                                    ›
+                                    Next
                                 </button>
                             </div>
 
-                            {/* Dot indicators */}
-                            <div className={styles.carouselDots}>
-                                {randomProjects.map((_, i) => (
-                                    <button
-                                        key={i}
-                                        className={styles.carouselDot + (i === carouselIndex ? ' ' + styles.carouselDotActive : '')}
-                                        onClick={() => { clearInterval(autoPlayRef.current); setCarouselIndex(i); autoPlayRef.current = setInterval(nextProject, 4000); }}
-                                        aria-label={`Go to project ${i + 1}`}
-                                    />
-                                ))}
-                            </div>
-
-                            <div className={styles.projectsCta}>
-                                <Link href="/projects" className={styles.viewAllBtn}>
-                                    {t.viewAllProjects || 'View All Projects'} →
-                                </Link>
+                            {randomProjects.length > 1 && (
+                                <div className={styles.carouselDots}>
+                                    {randomProjects.map((project, index) => (
+                                        <button
+                                            key={project.id || index}
+                                            type="button"
+                                            className={`${styles.carouselDot} ${index === carouselIndex ? styles.carouselDotActive : ''}`}
+                                            onClick={() => {
+                                                clearInterval(autoPlayRef.current);
+                                                setCarouselIndex(index);
+                                                autoPlayRef.current = setInterval(nextProject, 4000);
+                                            }}
+                                            aria-label={`Go to project ${index + 1}`}
+                                        />
+                                    ))}
+                                </div>
+                            )}
+                        </section>
                             </div>
                         </div>
                     )}
+                </div>
 
-                </div>{/* end contentWrapper */}
-
-                {/* ── Lightbox Modal ──────────────────────────────────── */}
                 {selectedImage && (
                     <div
                         className={styles.lightbox}
@@ -331,13 +539,31 @@ export default function ServiceDetails({ service, images, randomProjects }) {
                         onKeyDown={handleKeyDown}
                         tabIndex={0}
                     >
-                        <button className={styles.closeButton} onClick={closeLightbox}>✕</button>
-                        <button className={styles.prevButton} onClick={(e) => { e.stopPropagation(); prevImage(); }}>‹</button>
-                        <button className={styles.nextButton} onClick={(e) => { e.stopPropagation(); nextImage(); }}>›</button>
-                        <div className={styles.lightboxContent} onClick={(e) => e.stopPropagation()}>
+                        <button type="button" className={styles.closeButton} onClick={closeLightbox}>Close</button>
+                        <button
+                            type="button"
+                            className={styles.prevButton}
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                prevImage();
+                            }}
+                        >
+                            Prev
+                        </button>
+                        <button
+                            type="button"
+                            className={styles.nextButton}
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                nextImage();
+                            }}
+                        >
+                            Next
+                        </button>
+                        <div className={styles.lightboxContent} onClick={(event) => event.stopPropagation()}>
                             <img
-                                src={selectedImage.image_path || selectedImage.image_url || selectedImage.image}
-                                alt={`${svc.title} - Full Size`}
+                                src={imageUrl(selectedImage.image_path || selectedImage.image_url || selectedImage.image)}
+                                alt={`${sanitizeServiceText(svc.title)} full size`}
                             />
                             <div className={styles.imageCounter}>
                                 {currentImageIndex + 1} / {images.length}
@@ -346,7 +572,6 @@ export default function ServiceDetails({ service, images, randomProjects }) {
                     </div>
                 )}
 
-                {/* ── Contact Form Modal ───────────────────────────────── */}
                 {showContactModal && (
                     <Modal title={t.getInTouch} onClose={() => setShowContactModal(false)}>
                         <ContactFormSection />
@@ -365,7 +590,6 @@ export async function getServerSideProps({ params, req }) {
         console.log('=== Service Details Request ===');
         console.log('Requested slug:', slug);
 
-        // Fetch all services including new fields
         const servicesResult = await db.execute(`
             SELECT
                 id, title, description, header_desc, image, details, name,
@@ -390,107 +614,106 @@ export async function getServerSideProps({ params, req }) {
             return { notFound: true };
         }
 
-        // Map database rows to service objects
-        const services = servicesResult.rows.map(s => ({
-            id:           s.id,
-            title:        s.title        || '',
-            description:  s.description  || '',
-            header_desc:  s.header_desc  || '',
-            image_url:    s.image        || '',
-            details:      s.details      || '',
-            slug:         s.slug         || '',
-            page_title:   s.page_title   || '',
-            subtitle:     s.subtitle     || '',
-            ksp_title_1:  s.ksp_title_1  || '',
-            ksp_desc_1:   s.ksp_desc_1   || '',
-            ksp_title_2:  s.ksp_title_2  || '',
-            ksp_desc_2:   s.ksp_desc_2   || '',
-            ksp_title_3:  s.ksp_title_3  || '',
-            ksp_desc_3:   s.ksp_desc_3   || '',
-            ksp_title_4:  s.ksp_title_4  || '',
-            ksp_desc_4:   s.ksp_desc_4   || '',
-            process_desc: s.process_desc || '',
-            faq_q_1:      s.faq_q_1      || '',
-            faq_a_1:      s.faq_a_1      || '',
-            faq_q_2:      s.faq_q_2      || '',
-            faq_a_2:      s.faq_a_2      || '',
-            faq_q_3:      s.faq_q_3      || '',
-            faq_a_3:      s.faq_a_3      || '',
-            faq_q_4:      s.faq_q_4      || '',
-            faq_a_4:      s.faq_a_4      || '',
-            faq_q_5:      s.faq_q_5      || '',
-            faq_a_5:      s.faq_a_5      || '',
+        const services = servicesResult.rows.map((item) => ({
+            id: item.id,
+            title: item.title || '',
+            description: item.description || '',
+            header_desc: item.header_desc || '',
+            image_url: item.image || '',
+            details: item.details || '',
+            slug: item.slug || '',
+            page_title: item.page_title || '',
+            subtitle: item.subtitle || '',
+            ksp_title_1: item.ksp_title_1 || '',
+            ksp_desc_1: item.ksp_desc_1 || '',
+            ksp_title_2: item.ksp_title_2 || '',
+            ksp_desc_2: item.ksp_desc_2 || '',
+            ksp_title_3: item.ksp_title_3 || '',
+            ksp_desc_3: item.ksp_desc_3 || '',
+            ksp_title_4: item.ksp_title_4 || '',
+            ksp_desc_4: item.ksp_desc_4 || '',
+            process_desc: item.process_desc || '',
+            faq_q_1: item.faq_q_1 || '',
+            faq_a_1: item.faq_a_1 || '',
+            faq_q_2: item.faq_q_2 || '',
+            faq_a_2: item.faq_a_2 || '',
+            faq_q_3: item.faq_q_3 || '',
+            faq_a_3: item.faq_a_3 || '',
+            faq_q_4: item.faq_q_4 || '',
+            faq_a_4: item.faq_a_4 || '',
+            faq_q_5: item.faq_q_5 || '',
+            faq_a_5: item.faq_a_5 || '',
         }));
 
         console.log('Available services:');
-        services.forEach(s => {
-            const generatedSlug = s.title
-                ? s.title.toLowerCase().trim().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+        services.forEach((item) => {
+            const generatedSlug = item.title
+                ? item.title.toLowerCase().trim().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
                 : 'no-title';
-            console.log(`  - ID: ${s.id}, Title: "${s.title}", DB Slug: "${s.slug}", Generated: "${generatedSlug}"`);
+            console.log(`  - ID: ${item.id}, Title: "${item.title}", DB Slug: "${item.slug}", Generated: "${generatedSlug}"`);
         });
 
-        // Find by: 1) explicit slug column, 2) generated slug from title, 3) ID
-        const service = services.find(s => {
-            // Match explicit slug saved in DB
-            if (s.slug && s.slug === slug) return true;
+        const selectedService = services.find((item) => {
+            if (item.slug && item.slug === slug) {
+                return true;
+            }
 
-            // Match generated slug from title (legacy behavior)
-            if (s.title) {
-                const generatedSlug = s.title
+            if (item.title) {
+                const generatedSlug = item.title
                     .toLowerCase()
                     .trim()
                     .replace(/&/g, 'and')
                     .replace(/[^a-z0-9]+/g, '-')
                     .replace(/^-+|-+$/g, '');
-                if (generatedSlug === slug) return true;
+                if (generatedSlug === slug) {
+                    return true;
+                }
             }
 
-            // Match by ID
-            if (s.id.toString() === slug) return true;
+            if (item.id.toString() === slug) {
+                return true;
+            }
 
             return false;
         });
 
-        if (!service) {
+        if (!selectedService) {
             console.log('ERROR: Service not found for slug:', slug);
             return { notFound: true };
         }
 
-        console.log('Service found:', service.title);
+        console.log('Service found:', selectedService.title);
 
-        // Get service images
         const imagesResult = await db.execute({
             sql: 'SELECT * FROM service_images WHERE service_id = ? ORDER BY display_order',
-            args: [service.id]
+            args: [selectedService.id],
         });
 
-        const images = (imagesResult.rows || []).map(img => ({
-            ...img,
-            image_url: img.image_path
+        const serviceImages = (imagesResult.rows || []).map((item) => ({
+            ...item,
+            image_url: item.image_path,
         }));
 
-        // Get random projects for the "Our Work" showcase
         const projectsResult = await db.execute(
             'SELECT id, title, description, image FROM projects ORDER BY RANDOM() LIMIT 4'
         );
-        const randomProjects = (projectsResult.rows || []).map(p => ({
-            id:          p.id,
-            title:       p.title       || '',
-            description: p.description || '',
-            image:       p.image       || ''
+        const projectList = (projectsResult.rows || []).map((item) => ({
+            id: item.id,
+            title: item.title || '',
+            description: item.description || '',
+            image: item.image || '',
         }));
 
-        console.log('Images found:', images.length);
-        console.log('Random projects found:', randomProjects.length);
+        console.log('Images found:', serviceImages.length);
+        console.log('Random projects found:', projectList.length);
         console.log('=== End Service Details Request ===');
 
         return {
             props: {
-                service:        service,
-                images:         images,
-                randomProjects: randomProjects
-            }
+                service: selectedService,
+                images: serviceImages,
+                randomProjects: projectList,
+            },
         };
     } catch (error) {
         console.error('Error fetching service details:', error);
