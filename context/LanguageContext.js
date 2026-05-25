@@ -5,7 +5,7 @@ const translations = {
         // Nav
         home: 'Home',
         services: 'Services',
-        projects: 'Projects',
+        projects: 'Portfolio',
         phoneLabel: 'Phone',
         emailLabel: 'Email',
         licenseLabel: 'CCB',
@@ -115,7 +115,7 @@ const translations = {
         loadingReviews: 'Loading reviews...',
 
         // Projects page
-        ourProjects: 'Our Projects',
+        ourProjects: 'Portfolio',
         portfolioLabel: 'Portfolio',
         projectsIntro: 'We transform spaces and revive structures with expertise and care. Our projects range from restoring the beauty of historical buildings to reconstructing damaged properties.',
         completedProjects: 'Completed Projects',
