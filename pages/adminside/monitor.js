@@ -103,6 +103,18 @@ export default function Monitor() {
     const [ga4Error, setGa4Error]     = useState('');
     const [clicks, setClicks]         = useState(null);
 
+    const renderGoogleReconnect = (color = '#4285F4') => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div className={styles.aiError}>
+                Google connection expired or revoked. Reconnect account.
+            </div>
+            <a href="/api/auth/google-sc-connect" className={styles.depBtn}
+                style={{ borderColor: color, color, textAlign: 'center', textDecoration: 'none', display: 'inline-block' }}>
+                Reconnect Google Account
+            </a>
+        </div>
+    );
+
     useEffect(() => {
         setLoading(true);
         setFetchError('');
@@ -129,7 +141,9 @@ export default function Monitor() {
         fetch(`/api/monitor/searchconsole${params}`)
             .then(r => r.json())
             .then(data => {
-                if (data.notConnected) setScError('NOT_CONNECTED');
+                if (data.reconnectRequired) setScError('RECONNECT_REQUIRED');
+                else if (data.notConnected) setScError('NOT_CONNECTED');
+                else if (data.error === 'invalid_grant') setScError('RECONNECT_REQUIRED');
                 else if (data.error) setScError(data.error);
                 else setSc(data);
             })
@@ -144,7 +158,9 @@ export default function Monitor() {
         fetch(`/api/monitor/ga4${params}`)
             .then(r => r.json())
             .then(data => {
-                if (data.notConnected) setGa4Error('NOT_CONNECTED');
+                if (data.reconnectRequired) setGa4Error('RECONNECT_REQUIRED');
+                else if (data.notConnected) setGa4Error('NOT_CONNECTED');
+                else if (data.error === 'invalid_grant') setGa4Error('RECONNECT_REQUIRED');
                 else if (data.error) setGa4Error(data.error);
                 else setGa4(data);
             })
@@ -393,7 +409,9 @@ export default function Monitor() {
                             <button className={styles.depBtn} style={{ borderColor: '#4285F4', color: '#4285F4' }} onClick={loadGA4}>
                                 Load GA4 Data
                             </button>
-                            {ga4Error === 'NOT_CONNECTED' ? (
+                            {ga4Error === 'RECONNECT_REQUIRED' ? (
+                                renderGoogleReconnect('#4285F4')
+                            ) : ga4Error === 'NOT_CONNECTED' ? (
                                 <a href="/api/auth/google-sc-connect" className={styles.depBtn}
                                     style={{ borderColor: '#4285F4', color: '#4285F4', textAlign: 'center', textDecoration: 'none', display: 'inline-block' }}>
                                     Connect Google Account
@@ -597,7 +615,9 @@ export default function Monitor() {
                             <button className={styles.depBtn} style={{ borderColor: '#4CAF50', color: '#4CAF50' }} onClick={loadSC}>
                                 Load Search Console Data
                             </button>
-                            {scError === 'NOT_CONNECTED' || scError?.includes('NOT_CONNECTED') ? (
+                            {scError === 'RECONNECT_REQUIRED' ? (
+                                renderGoogleReconnect('#4CAF50')
+                            ) : scError === 'NOT_CONNECTED' || scError?.includes('NOT_CONNECTED') ? (
                                 <a href="/api/auth/google-sc-connect" className={styles.depBtn}
                                     style={{ borderColor: '#4285F4', color: '#4285F4', textAlign: 'center', textDecoration: 'none', display: 'inline-block' }}>
                                     Connect Google Account
