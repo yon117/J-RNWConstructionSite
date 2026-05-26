@@ -33,6 +33,11 @@ function MobileContainerScrollCard({ children, className, ...props }) {
     const cardRef = useRef(null);
     const prefersReducedMotion = useReducedMotion();
     const [isMobile, setIsMobile] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     useEffect(() => {
         if (typeof window === 'undefined') return undefined;
@@ -53,10 +58,9 @@ function MobileContainerScrollCard({ children, className, ...props }) {
         return () => mediaQuery.removeListener(syncViewport);
     }, []);
 
-    const { scrollYProgress } = useScroll({
-        target: cardRef,
-        offset: ['start end', 'end start'],
-    });
+    const { scrollYProgress } = useScroll(
+        mounted ? { target: cardRef, offset: ['start end', 'end start'] } : {}
+    );
 
     const rotate = useTransform(scrollYProgress, [0, 1], [16, 0]);
     const scale = useTransform(scrollYProgress, [0, 1], [0.92, 1]);
