@@ -1,5 +1,4 @@
 import { useRef, useState, useEffect } from 'react';
-import gsap from 'gsap';
 import { VerticalCutReveal } from './ui/VerticalCutReveal';
 import styles from './WordCycler.module.css';
 
@@ -24,34 +23,50 @@ export default function WordCycler() {
   const wrapRef = useRef(null);
 
   useEffect(() => {
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced || !wordRef.current) return;
+    let cancelled = false;
+    let id;
 
-    gsap.from(wordRef.current, {
-      y: 24,
-      opacity: 0,
-      duration: 0.55,
-      ease: 'power3.out',
-    });
+    const run = async () => {
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced || !wordRef.current) return;
 
-    const id = setInterval(() => {
-      gsap.to(wordRef.current, {
-        y: -20,
+      const { default: gsap } = await import('gsap');
+      if (cancelled || !wordRef.current) return;
+
+      gsap.from(wordRef.current, {
+        y: 24,
         opacity: 0,
-        duration: 0.28,
-        ease: 'power2.in',
-        onComplete: () => {
-          setIndex((i) => (i + 1) % PHRASES.length);
-          gsap.fromTo(
-            wordRef.current,
-            { y: 22, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.38, ease: 'power3.out' }
-          );
-        },
+        duration: 0.55,
+        ease: 'power3.out',
       });
-    }, INTERVAL);
 
-    return () => clearInterval(id);
+      id = setInterval(() => {
+        if (!wordRef.current) return;
+
+        gsap.to(wordRef.current, {
+          y: -20,
+          opacity: 0,
+          duration: 0.28,
+          ease: 'power2.in',
+          onComplete: () => {
+            setIndex((i) => (i + 1) % PHRASES.length);
+            if (!wordRef.current) return;
+            gsap.fromTo(
+              wordRef.current,
+              { y: 22, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.38, ease: 'power3.out' }
+            );
+          },
+        });
+      }, INTERVAL);
+    };
+
+    run();
+
+    return () => {
+      cancelled = true;
+      if (id) clearInterval(id);
+    };
   }, []);
 
   return (

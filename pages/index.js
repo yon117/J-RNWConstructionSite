@@ -198,11 +198,18 @@ const HANDLE_ITEMS = [
 ];
 
 const HOME_NAV_SECTIONS = [
-    { id: 'section-reviews', label: 'What Our Clients Say', num: '01' },
+    { id: 'section-services', label: 'Services', num: '01' },
     { id: 'section-process', label: 'How We Work', num: '02' },
-    { id: 'section-services', label: 'Services', num: '03' },
+    { id: 'section-reviews', label: 'What Our Clients Say', num: '03' },
     { id: 'section-portfolio', label: 'Projects', num: '04' },
     { id: 'section-contact', label: 'Contact', num: '05' },
+];
+
+const HOME_TRUST_ITEMS = [
+    { Icon: ShieldIcon, value: '20+', label: 'Years in Portland', meta: 'Family-run general contractor' },
+    { Icon: StarIcon, value: '5.0', label: 'Google Rating', meta: 'Trusted by local homeowners' },
+    { Icon: CheckIcon, value: 'CCB', label: '#232708', meta: 'Licensed, bonded, insured' },
+    { Icon: PhoneIcon, value: '24/7', label: 'Emergency Response', meta: 'Fast help when damage hits' },
 ];
 
 // WARNING SIGNS moved to components/WarningSigns.js
@@ -211,6 +218,8 @@ const HOME_NAV_SECTIONS = [
 export default function Home({ projects = [] }) {
     const [showContactModal, setShowContactModal] = useState(false);
     const [openFaqs, setOpenFaqs] = useState(new Set());
+    const [mobileOpenSection, setMobileOpenSection] = useState('');
+    const [pendingMobileScrollId, setPendingMobileScrollId] = useState('');
     const { t } = useLang();
 
     const handleEstimateClick = () => {
@@ -222,6 +231,31 @@ export default function Home({ projects = [] }) {
             window.fbq('track', 'Contact');
         }
     };
+
+    const handleMobileSectionToggle = (key, targetId) => {
+        if (typeof window === 'undefined') return;
+
+        if (window.innerWidth > 768) {
+            document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return;
+        }
+
+        const next = mobileOpenSection === key ? '' : key;
+        setMobileOpenSection(next);
+        if (next) setPendingMobileScrollId(targetId);
+    };
+
+    useEffect(() => {
+        if (!pendingMobileScrollId || typeof window === 'undefined') return undefined;
+
+        const timer = window.setTimeout(() => {
+            document.getElementById(pendingMobileScrollId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            window.dispatchEvent(new Event('resize'));
+            setPendingMobileScrollId('');
+        }, 120);
+
+        return () => window.clearTimeout(timer);
+    }, [pendingMobileScrollId]);
 
     return (
         <Layout
@@ -240,17 +274,41 @@ export default function Home({ projects = [] }) {
                 <HomeContactForm t={t} />
             </HeroSection>
 
+            <section className={styles.trustBand} aria-label="J&R NW Construction trust signals">
+                <div className={styles.trustBandInner} data-anim="stagger-group">
+                    {HOME_TRUST_ITEMS.map((item) => (
+                        <div key={item.label} className={styles.trustBandCard} data-anim-child>
+                            <div className={styles.trustBandIcon}>
+                                <item.Icon />
+                            </div>
+                            <div className={styles.trustBandCopy}>
+                                <span className={styles.trustBandValue}>{item.value}</span>
+                                <span className={styles.trustBandLabel}>{item.label}</span>
+                                <span className={styles.trustBandMeta}>{item.meta}</span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
             {/* Left section nav — desktop only */}
             <LeftNav sections={HOME_NAV_SECTIONS} />
 
-            {/* ── REVIEWS ── */}
-            <Reviews sectionId="section-reviews" />
-
+            <div id="mobile-services" className={`${styles.mobileSectionBlock} ${mobileOpenSection === 'services' ? styles.mobileSectionBlockOpen : ''}`}>
+            <button
+                type="button"
+                className={styles.mobileSectionToggle}
+                onClick={() => handleMobileSectionToggle('services', 'mobile-services')}
+            >
+                <span>Services</span>
+                <span className={styles.mobileSectionToggleIcon}>{mobileOpenSection === 'services' ? '-' : '+'}</span>
+            </button>
+            <div className={styles.mobileSectionPanel}>
             {/* ── ROW: PROCESS + SERVICES ── */}
             <div className={styles.horizRow} data-layout="horiz-row">
 
               {/* ── BENTO: HOW WE WORK + HANDLE EVERYTHING ── */}
-              <section id="section-process" className={styles.bentoSection}>
+              <section id="section-process" className={`${styles.bentoSection} ${styles.mobileProcessOrder}`}>
                   <div className={styles.bentoGrid}>
                       <div className={styles.bentoPrimary} data-anim="fade-up">
                           <div className={styles.sectionLabel}>How We Work</div>
@@ -291,7 +349,7 @@ export default function Home({ projects = [] }) {
               </section>
 
               {/* ── SERVICES PREVIEW ── */}
-              <section id="section-services" className={styles.servicesSection}>
+              <section id="section-services" className={`${styles.servicesSection} ${styles.mobileServicesOrder}`} data-anim="section-reveal">
                   <div className={styles.servicesInner}>
                       <div className={styles.servicesLeft} data-anim="fade-up">
                           <div className={styles.sectionLabel}>{t.ourServicesLabel || 'What We Do'}</div>
@@ -337,7 +395,34 @@ export default function Home({ projects = [] }) {
               </section>
 
             </div>{/* end horizRow process+services */}
+            </div>
+            </div>
 
+            <div id="mobile-reviews" className={`${styles.mobileSectionBlock} ${mobileOpenSection === 'reviews' ? styles.mobileSectionBlockOpen : ''}`}>
+            <button
+                type="button"
+                className={styles.mobileSectionToggle}
+                onClick={() => handleMobileSectionToggle('reviews', 'mobile-reviews')}
+            >
+                <span>Reviews</span>
+                <span className={styles.mobileSectionToggleIcon}>{mobileOpenSection === 'reviews' ? '-' : '+'}</span>
+            </button>
+            <div className={styles.mobileSectionPanel}>
+            {/* ── REVIEWS ── */}
+            <Reviews sectionId="section-reviews" />
+            </div>
+            </div>
+
+            <div id="mobile-warnings" className={`${styles.mobileSectionBlock} ${mobileOpenSection === 'warnings' ? styles.mobileSectionBlockOpen : ''}`}>
+            <button
+                type="button"
+                className={styles.mobileSectionToggle}
+                onClick={() => handleMobileSectionToggle('warnings', 'mobile-warnings')}
+            >
+                <span>Warning Signs</span>
+                <span className={styles.mobileSectionToggleIcon}>{mobileOpenSection === 'warnings' ? '-' : '+'}</span>
+            </button>
+            <div className={styles.mobileSectionPanel}>
             {/* ── ROW: WARNING SIGNS + PHOTO STATS (flip: right sticks) ── */}
             <div className={`${styles.horizRow} ${styles.horizRowFlip}`} data-layout="horiz-row-flip">
 
@@ -361,13 +446,18 @@ export default function Home({ projects = [] }) {
                   </p>
                   <div className={styles.photoBentoStatsGrid}>
                     {[
-                      { num: '20+', label: 'Years Experience' },
-                      { num: '50+', label: 'Families Served' },
+                      { num: '20+', label: 'Years Experience', count: '20', suffix: '+' },
+                      { num: '50+', label: 'Families Served', count: '50', suffix: '+' },
                       { num: '★ 5.0', label: 'Google Rating' },
-                      { num: '24/7', label: 'Emergency' },
+                      { num: '24/7', label: 'Emergency', count: '24', suffix: '/7' },
                     ].map((s, i) => (
                       <div key={i} className={styles.photoBentoStat}>
-                        <span className={styles.scrollStatNum}>{s.num}</span>
+                        <span
+                            className={styles.scrollStatNum}
+                            {...(s.count ? { 'data-countup': s.count, 'data-countup-suffix': s.suffix || '' } : {})}
+                        >
+                            {s.num}
+                        </span>
                         <span className={styles.scrollStatLabel}>{s.label}</span>
                       </div>
                     ))}
@@ -376,11 +466,23 @@ export default function Home({ projects = [] }) {
               </section>
 
             </div>{/* end horizRow warnings+stats */}
+            </div>
+            </div>
 
+            <div id="mobile-projects" className={`${styles.mobileSectionBlock} ${mobileOpenSection === 'projects' ? styles.mobileSectionBlockOpen : ''}`}>
+            <button
+                type="button"
+                className={styles.mobileSectionToggle}
+                onClick={() => handleMobileSectionToggle('projects', 'mobile-projects')}
+            >
+                <span>Projects</span>
+                <span className={styles.mobileSectionToggleIcon}>{mobileOpenSection === 'projects' ? '-' : '+'}</span>
+            </button>
+            <div className={styles.mobileSectionPanel}>
             {/* ── PROJECTS + ABOUT: SPLIT ROW ── */}
             <div id="section-portfolio" className={styles.splitRow}>
             {/* ── PORTFOLIO PREVIEW ── */}
-            <section className={styles.projectsSection}>
+            <section className={styles.projectsSection} data-anim="section-reveal">
                 <div className={styles.projectsInner}>
                     <div className={styles.projectsHeader}>
                         <div>
@@ -421,7 +523,7 @@ export default function Home({ projects = [] }) {
             </section>
 
             {/* ── ABOUT ── */}
-            <section className={styles.aboutSection}>
+            <section className={styles.aboutSection} data-anim="section-reveal">
                 <div className={styles.aboutInner}>
                     <div className={styles.aboutLogoWrap} data-anim="about-logo">
                         <Image src="/logo.png" alt="J&R NW Construction" width={220} height={220} style={{ borderRadius: '50%' }} />
@@ -436,11 +538,23 @@ export default function Home({ projects = [] }) {
                 </div>
             </section>
             </div>{/* end splitRow projects+about */}
+            </div>
+            </div>
 
+            <div id="mobile-info" className={`${styles.mobileSectionBlock} ${mobileOpenSection === 'info' ? styles.mobileSectionBlockOpen : ''}`}>
+            <button
+                type="button"
+                className={styles.mobileSectionToggle}
+                onClick={() => handleMobileSectionToggle('info', 'mobile-info')}
+            >
+                <span>Areas + FAQ</span>
+                <span className={styles.mobileSectionToggleIcon}>{mobileOpenSection === 'info' ? '-' : '+'}</span>
+            </button>
+            <div className={styles.mobileSectionPanel}>
             {/* ── AREAS + FAQ: SPLIT ROW ── */}
             <div className={`${styles.splitRow} ${styles.splitRowAlt}`}>
             {/* ── SERVICE AREAS ── */}
-            <section className={styles.areasSection}>
+            <section className={styles.areasSection} data-anim="section-reveal">
                 <div className={styles.areasInner}>
                     <div className={styles.areasLeft}>
                         <div className={styles.sectionLabel}>Where We Work</div>
@@ -474,7 +588,7 @@ export default function Home({ projects = [] }) {
             </section>
 
             {/* ── FAQ / OBJECTION HANDLING ── */}
-            <section className={styles.faqSection}>
+            <section className={styles.faqSection} data-anim="section-reveal">
                 <div className={styles.faqInner}>
                     <div className={styles.sectionHeader} data-anim="fade-up">
                         <div className={styles.sectionLabel}>{t.faqLabel || 'Got Questions?'}</div>
@@ -514,9 +628,21 @@ export default function Home({ projects = [] }) {
             </section>
 
             </div>{/* end splitRow areas+faq */}
+            </div>
+            </div>
 
+            <div id="mobile-estimate" className={`${styles.mobileSectionBlock} ${mobileOpenSection === 'estimate' ? styles.mobileSectionBlockOpen : ''}`}>
+            <button
+                type="button"
+                className={styles.mobileSectionToggle}
+                onClick={() => handleMobileSectionToggle('estimate', 'mobile-estimate')}
+            >
+                <span>Estimate</span>
+                <span className={styles.mobileSectionToggleIcon}>{mobileOpenSection === 'estimate' ? '-' : '+'}</span>
+            </button>
+            <div className={styles.mobileSectionPanel}>
             {/* ── BOTTOM CTA ── */}
-            <section id="section-contact" className={styles.bottomCtaSection}>
+            <section id="section-contact" className={styles.bottomCtaSection} data-anim="section-reveal">
                 <div className={styles.bottomCtaInner}>
                     <div className={styles.sectionLabel}>Ready to Start?</div>
                     <h2 className={styles.bottomCtaTitle}>
@@ -534,7 +660,7 @@ export default function Home({ projects = [] }) {
                         </a>
                     </div>
                     <div className={styles.bottomCtaTrust}>
-                        <span>★★★★★ 5.0 on Google</span>
+                                        <span>★★★★★ 5.0 on Google and Yelp</span>
                         <span className={styles.trustSep}>·</span>
                         <span>Licensed &amp; Insured · CCB #232708</span>
                         <span className={styles.trustSep}>·</span>
@@ -542,6 +668,8 @@ export default function Home({ projects = [] }) {
                     </div>
                 </div>
             </section>
+            </div>
+            </div>
 
             {/* Contact Modal */}
             {showContactModal && (

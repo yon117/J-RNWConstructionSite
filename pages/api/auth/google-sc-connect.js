@@ -1,5 +1,6 @@
 import { parse } from 'cookie';
 import { isValidSessionToken } from '../../../lib/auth';
+import { getGoogleOAuthRedirectUri } from '../../../lib/site-url';
 
 export default function handler(req, res) {
     const cookies = parse(req.headers.cookie || '');
@@ -7,9 +8,13 @@ export default function handler(req, res) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 
+    if (!process.env.GOOGLE_OAUTH_CLIENT_ID || !process.env.GOOGLE_OAUTH_CLIENT_SECRET) {
+        return res.redirect('/adminside/monitor?sc_error=google_oauth_config_missing');
+    }
+
     const params = new URLSearchParams({
         client_id:     process.env.GOOGLE_OAUTH_CLIENT_ID,
-        redirect_uri:  'http://localhost:3000/api/auth/google-sc-callback',
+        redirect_uri:  getGoogleOAuthRedirectUri(req),
         response_type: 'code',
         scope:         [
             'https://www.googleapis.com/auth/webmasters.readonly',

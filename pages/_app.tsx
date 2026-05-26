@@ -7,13 +7,7 @@ import { Barlow, Barlow_Condensed } from "next/font/google";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(useGSAP, ScrollTrigger);
-}
+import ScrollMotion from "../components/ScrollMotion";
 
 if (typeof window !== 'undefined') {
   history.scrollRestoration = 'manual';
@@ -23,8 +17,6 @@ const Bubble = dynamic(
   () => import("@typebot.io/react").then((mod) => mod.Bubble),
   { ssr: false }
 );
-
-const ScrollMotion = dynamic(() => import("../components/ScrollMotion"), { ssr: false });
 
 const barlow = Barlow({
   subsets: ["latin"],
@@ -108,6 +100,9 @@ export default function App({ Component, pageProps }: AppProps) {
     const track = (url: string) => {
       if (url.startsWith('/adminside') || url.startsWith('/admin')) return;
       const device_type = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+      if (typeof window !== 'undefined' && (window as any).fbq) {
+        (window as any).fbq('track', 'PageView');
+      }
       fetch('/api/monitor/pageview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -155,6 +150,7 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [router.events]);
 
   const isAdmin = router.pathname.startsWith('/admin') || router.pathname.startsWith('/adminside');
+  const enableScrollMotion = !isAdmin && router.pathname === '/';
 
   return (
     <LanguageProvider>
@@ -184,7 +180,7 @@ export default function App({ Component, pageProps }: AppProps) {
           </>
         )}
         <Component {...pageProps} />
-        {!isAdmin && <ScrollMotion />}
+        {enableScrollMotion && <ScrollMotion />}
         {!isAdmin && (
           <Bubble
             typebot="j-r-nw-construction-bot-jo87vrh"

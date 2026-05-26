@@ -1,10 +1,5 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Lenis from 'lenis';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const TOGGLE = 'play none none none';
 
@@ -22,12 +17,12 @@ function sideOffset(index, strength = 1) {
     return index % 2 === 0 ? -distance : distance;
 }
 
-function connectLenis(lenis) {
+function connectLenis(lenis, ScrollTrigger) {
     lenis.on('scroll', ScrollTrigger.update);
     ScrollTrigger.addEventListener('refresh', () => lenis.resize());
 }
 
-function revealFromSide(el, index, { strength = 1, y = 72, duration = 0.95 } = {}) {
+function revealFromSide(gsap, el, index, { strength = 1, y = 72, duration = 0.95 } = {}) {
     const x = sideOffset(index, strength);
 
     gsap.fromTo(
@@ -52,7 +47,36 @@ function revealFromSide(el, index, { strength = 1, y = 72, duration = 0.95 } = {
     );
 }
 
-function setupAnimations() {
+function animateCountUp(gsap, ScrollTrigger, el) {
+    const target = Number(el.getAttribute('data-countup'));
+    if (Number.isNaN(target)) return;
+
+    const prefix = el.getAttribute('data-countup-prefix') || '';
+    const suffix = el.getAttribute('data-countup-suffix') || '';
+    const decimalsAttr = el.getAttribute('data-countup-decimals');
+    const decimals = decimalsAttr ? Number(decimalsAttr) : (Number.isInteger(target) ? 0 : 1);
+    const state = { value: 0 };
+
+    gsap.to(state, {
+        value: target,
+        duration: isMobileViewport() ? 0.9 : 1.2,
+        ease: 'power2.out',
+        onStart: () => {
+            el.textContent = `${prefix}${(0).toFixed(decimals)}${suffix}`;
+        },
+        onUpdate: () => {
+            el.textContent = `${prefix}${state.value.toFixed(decimals)}${suffix}`;
+        },
+        scrollTrigger: {
+            trigger: el,
+            start: isMobileViewport() ? 'top 96%' : 'top 90%',
+            once: true,
+            invalidateOnRefresh: true,
+        },
+    });
+}
+
+function setupAnimations(gsap, ScrollTrigger) {
     const isMobile = isMobileViewport();
     const heroBg = document.querySelector('[data-anim="hero-bg"]');
     if (heroBg && !isMobile) {
@@ -89,13 +113,29 @@ function setupAnimations() {
 
     gsap.utils.toArray('[data-anim="fade-up"]').forEach((el) => {
         gsap.from(el, {
-            y: 36,
+            y: isMobile ? 20 : 36,
             autoAlpha: 0,
-            duration: 0.75,
+            duration: isMobile ? 0.52 : 0.75,
             ease: 'power2.out',
             scrollTrigger: {
                 trigger: el,
-                start: 'top 88%',
+                start: isMobile ? 'top 94%' : 'top 88%',
+                once: true,
+                invalidateOnRefresh: true,
+            },
+        });
+    });
+
+    gsap.utils.toArray('[data-anim="section-reveal"]').forEach((el, i) => {
+        gsap.from(el, {
+            y: isMobile ? 22 : 44,
+            autoAlpha: 0,
+            duration: isMobile ? 0.56 : 0.8,
+            delay: isMobile ? 0 : i * 0.03,
+            ease: 'power2.out',
+            scrollTrigger: {
+                trigger: el,
+                start: isMobile ? 'top 95%' : 'top 90%',
                 once: true,
                 invalidateOnRefresh: true,
             },
@@ -119,7 +159,7 @@ function setupAnimations() {
             return;
         }
 
-        revealFromSide(el, i + 1, { strength: 1.25, y: 60, duration: 1.05 });
+        revealFromSide(gsap, el, i + 1, { strength: 1.25, y: 60, duration: 1.05 });
     });
 
     gsap.utils.toArray('[data-anim="stat"]').forEach((el, i) => {
@@ -139,18 +179,22 @@ function setupAnimations() {
             return;
         }
 
-        revealFromSide(el, i, { strength: 0.75, y: 50, duration: 0.85 });
+        revealFromSide(gsap, el, i, { strength: 0.75, y: 50, duration: 0.85 });
+    });
+
+    gsap.utils.toArray('[data-countup]').forEach((el) => {
+        animateCountUp(gsap, ScrollTrigger, el);
     });
 
     gsap.utils.toArray('[data-anim="service-card"]').forEach((el) => {
         gsap.from(el, {
-            y: 40,
+            y: isMobile ? 24 : 40,
             autoAlpha: 0,
-            duration: 0.8,
+            duration: isMobile ? 0.58 : 0.8,
             ease: 'power2.out',
             scrollTrigger: {
                 trigger: el,
-                start: 'top 88%',
+                start: isMobile ? 'top 94%' : 'top 88%',
                 once: true,
                 invalidateOnRefresh: true,
             },
@@ -174,18 +218,18 @@ function setupAnimations() {
             return;
         }
 
-        revealFromSide(el, i, { strength: 1.1, y: 70, duration: 0.9 });
+        revealFromSide(gsap, el, i, { strength: 1.1, y: 70, duration: 0.9 });
     });
 
     gsap.utils.toArray('[data-anim="project-card"]').forEach((el) => {
         gsap.from(el, {
-            y: 36,
+            y: isMobile ? 20 : 36,
             autoAlpha: 0,
-            duration: 0.75,
+            duration: isMobile ? 0.52 : 0.75,
             ease: 'power2.out',
             scrollTrigger: {
                 trigger: el,
-                start: 'top 88%',
+                start: isMobile ? 'top 94%' : 'top 88%',
                 once: true,
                 invalidateOnRefresh: true,
             },
@@ -202,8 +246,8 @@ function setupAnimations() {
             {
                 autoAlpha: 1,
                 y: 0,
-                duration: 0.6,
-                stagger: 0.09,
+                duration: isMobile ? 0.48 : 0.6,
+                stagger: isMobile ? 0.06 : 0.09,
                 ease: 'power2.out',
                 scrollTrigger: {
                     trigger: group,
@@ -254,7 +298,6 @@ function setupAnimations() {
         if (!leftCol || !rightCol || leftCol === rightCol) return;
 
         const scrollingCol = flip ? leftCol : rightCol;
-        const stickyCol    = flip ? rightCol : leftCol;
 
         // Scrolling column: subtle upward parallax for depth contrast
         gsap.to(scrollingCol, {
@@ -269,19 +312,6 @@ function setupAnimations() {
             },
         });
 
-        // Sticky column: fades as the section exits so the release feels intentional
-        gsap.to(stickyCol, {
-            opacity: 0.68,
-            scale: 0.976,
-            ease: 'none',
-            scrollTrigger: {
-                trigger: row,
-                start: 'bottom 68%',
-                end: 'bottom top',
-                scrub: 0.45,
-                invalidateOnRefresh: true,
-            },
-        });
     });
 
     ScrollTrigger.refresh();
@@ -300,60 +330,80 @@ export default function ScrollMotion() {
     useEffect(() => {
         if (prefersReducedMotion()) return undefined;
 
+        let cancelled = false;
         let ctx;
+        let gsapRef;
+        let ScrollTriggerRef;
         const run = () => {
+            if (!gsapRef || !ScrollTriggerRef || cancelled) return;
             ctx?.revert();
-            ctx = gsap.context(() => setupAnimations());
+            ctx = gsapRef.context(() => setupAnimations(gsapRef, ScrollTriggerRef));
         };
-
-        const raf = requestAnimationFrame(() => requestAnimationFrame(run));
+        let raf = 0;
         const refresh = () => {
-            requestAnimationFrame(() => requestAnimationFrame(run));
+            raf = requestAnimationFrame(() => requestAnimationFrame(run));
         };
 
-        const mobile = isMobileViewport();
         let lenis;
         let ticker;
         let bodyObs;
 
-        if (!mobile) {
-            document.documentElement.classList.add('lenis', 'lenis-smooth');
+        const init = async () => {
+            const [{ default: gsap }, { ScrollTrigger }, { default: Lenis }] = await Promise.all([
+                import('gsap'),
+                import('gsap/ScrollTrigger'),
+                import('lenis'),
+            ]);
+            if (cancelled) return;
 
-            lenis = new Lenis({
-                duration: 1.1,
-                smoothWheel: true,
-                touchMultiplier: 1.6,
-            });
+            gsap.registerPlugin(ScrollTrigger);
+            gsapRef = gsap;
+            ScrollTriggerRef = ScrollTrigger;
 
-            connectLenis(lenis);
+            const mobile = isMobileViewport();
+            if (!mobile) {
+                document.documentElement.classList.add('lenis', 'lenis-smooth');
 
-            ticker = (time) => lenis.raf(time * 1000);
-            gsap.ticker.add(ticker);
-            gsap.ticker.lagSmoothing(0);
+                lenis = new Lenis({
+                    duration: 1.1,
+                    smoothWheel: true,
+                    touchMultiplier: 1.6,
+                });
 
-            const pauseIfLocked = () => {
-                const locked = document.body.style.overflow === 'hidden';
-                if (locked) lenis.stop();
-                else lenis.start();
-            };
+                connectLenis(lenis, ScrollTrigger);
 
-            bodyObs = new MutationObserver(pauseIfLocked);
-            bodyObs.observe(document.body, { attributes: true, attributeFilter: ['style'] });
-        }
+                ticker = (time) => lenis.raf(time * 1000);
+                gsap.ticker.add(ticker);
+                gsap.ticker.lagSmoothing(0);
 
-        document.documentElement.classList.add('scroll-motion-ready');
-        router.events.on('routeChangeComplete', refresh);
-        window.addEventListener('resize', refresh);
+                const pauseIfLocked = () => {
+                    const locked = document.body.style.overflow === 'hidden';
+                    if (locked) lenis.stop();
+                    else lenis.start();
+                };
+
+                bodyObs = new MutationObserver(pauseIfLocked);
+                bodyObs.observe(document.body, { attributes: true, attributeFilter: ['style'] });
+            }
+
+            document.documentElement.classList.add('scroll-motion-ready');
+            refresh();
+            router.events.on('routeChangeComplete', refresh);
+            window.addEventListener('resize', refresh);
+        };
+
+        init();
 
         return () => {
+            cancelled = true;
             cancelAnimationFrame(raf);
             router.events.off('routeChangeComplete', refresh);
             window.removeEventListener('resize', refresh);
             bodyObs?.disconnect();
             ctx?.revert();
-            if (ticker) gsap.ticker.remove(ticker);
+            if (ticker && gsapRef) gsapRef.ticker.remove(ticker);
             lenis?.destroy();
-            ScrollTrigger.getAll().forEach((st) => st.kill());
+            ScrollTriggerRef?.getAll().forEach((st) => st.kill());
             document.documentElement.classList.remove('lenis', 'lenis-smooth', 'scroll-motion-ready');
         };
     }, [router.events, router.asPath]);

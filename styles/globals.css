@@ -6,7 +6,7 @@ html, body {
   scroll-behavior: auto;
 }
 
-/* ── Vertical Cut Reveal keyframes ── */
+/* â”€â”€ Vertical Cut Reveal keyframes â”€â”€ */
 @keyframes vcr-reveal {
   from { transform: translateY(112%); }
   to   { transform: translateY(0);    }
@@ -49,7 +49,7 @@ html.lenis body {
     visibility: hidden;
   }
 
-  /* Hero animates on load in HeroSection — never leave it invisible */
+  /* Hero animates on load in HeroSection â€” never leave it invisible */
   html.scroll-motion-ready [data-anim="hero-section"] [data-cut-line],
   html.scroll-motion-ready [data-anim="hero-section"] [data-hero-fade],
   html.scroll-motion-ready [data-anim="hero-bg"] {
@@ -81,7 +81,7 @@ html.lenis body {
   color-scheme: dark;
 }
 
-/* Light mode — toggled via ThemeContext on <html data-theme="light"> */
+/* Light mode â€” toggled via ThemeContext on <html data-theme="light"> */
 [data-theme="light"] {
   --dark:       #F5F3EF;
   --dark-mid:   #E8E4DD;

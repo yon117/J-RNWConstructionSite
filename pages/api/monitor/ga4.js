@@ -2,10 +2,21 @@ import { google } from 'googleapis';
 import { parse } from 'cookie';
 import { isValidSessionToken } from '../../../lib/auth';
 import { getDb } from '../../../lib/db';
+import { getGoogleOAuthRedirectUri } from '../../../lib/site-url';
 
 const PROPERTY_ID = process.env.GOOGLE_GA4_PROPERTY_ID;
 
-async function getAuth() {
+function assertGoogleConfig() {
+    if (!process.env.GOOGLE_OAUTH_CLIENT_ID || !process.env.GOOGLE_OAUTH_CLIENT_SECRET) {
+        throw new Error('GOOGLE_OAUTH_CONFIG_MISSING');
+    }
+    if (!PROPERTY_ID) {
+        throw new Error('GA4_PROPERTY_ID_MISSING');
+    }
+}
+
+async function getAuth(req) {
+    assertGoogleConfig();
     const db = await getDb();
     const result = await db.execute({
         sql: 'SELECT value FROM settings WHERE key = ?',
@@ -17,7 +28,7 @@ async function getAuth() {
     const oauth2 = new google.auth.OAuth2(
         process.env.GOOGLE_OAUTH_CLIENT_ID,
         process.env.GOOGLE_OAUTH_CLIENT_SECRET,
-        'http://localhost:3000/api/auth/google-sc-callback'
+        getGoogleOAuthRedirectUri(req)
     );
     oauth2.setCredentials({ refresh_token: refreshToken });
     return oauth2;
@@ -35,7 +46,7 @@ export default async function handler(req, res) {
     const startDate = `${days}daysAgo`;
 
     try {
-        const auth = await getAuth();
+        const auth = await getAuth(req);
         const analyticsdata = google.analyticsdata({ version: 'v1beta', auth });
 
         const [summaryRes, byDayRes, topPagesRes, sourcesRes] = await Promise.all([
@@ -114,6 +125,12 @@ export default async function handler(req, res) {
     } catch (err) {
         if (err.message === 'NOT_CONNECTED') {
             return res.status(200).json({ notConnected: true });
+        }
+        if (err.message === 'GOOGLE_OAUTH_CONFIG_MISSING') {
+            return res.status(500).json({ error: 'Google OAuth env vars missing' });
+        }
+        if (err.message === 'GA4_PROPERTY_ID_MISSING') {
+            return res.status(500).json({ error: 'GOOGLE_GA4_PROPERTY_ID missing' });
         }
         console.error('GA4 error:', err.message);
         res.status(500).json({ error: err.message });

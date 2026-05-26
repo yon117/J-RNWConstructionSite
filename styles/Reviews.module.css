@@ -1,6 +1,6 @@
 .reviewsSection {
     position: relative;
-    overflow: hidden;
+    overflow: clip;
     padding: 88px 20px 96px;
     background:
         linear-gradient(180deg, rgba(247, 243, 236, 0.98) 0%, rgba(243, 236, 226, 0.96) 58%, rgba(239, 231, 220, 0.82) 100%),
@@ -21,6 +21,7 @@
     z-index: 1;
     max-width: 1440px;
     margin: 0 auto;
+    overflow-x: clip;
 }
 
 .header {
@@ -34,6 +35,7 @@
 
 .header h2 {
     margin: 0;
+    font-family: 'Barlow Condensed', sans-serif;
     color: #101723;
     font-size: clamp(2.2rem, 4vw, 3.7rem);
     font-weight: 700;
@@ -57,7 +59,7 @@
 
 .marqueeViewport {
     position: relative;
-    overflow: hidden;
+    overflow: clip;
     mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
     -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
 }
@@ -86,7 +88,7 @@
     flex-direction: column;
     justify-content: space-between;
     gap: 20px;
-    width: min(332px, 82vw);
+    width: min(332px, calc(100vw - 52px));
     min-height: 212px;
     padding: 22px;
     border: 1px solid rgba(16, 23, 35, 0.08);
@@ -394,7 +396,7 @@
     }
 
     .reviewCard {
-        width: min(300px, 86vw);
+        width: min(300px, calc(100vw - 32px));
         min-height: 204px;
         padding: 20px;
     }
@@ -431,7 +433,7 @@
     }
 
     .reviewCard {
-        width: min(274px, 88vw);
+        width: min(274px, calc(100vw - 28px));
         min-height: 196px;
         padding: 18px;
         border-radius: 24px;

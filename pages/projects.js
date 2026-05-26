@@ -89,7 +89,7 @@ export default function Projects({ projects }) {
         if (!gridRef.current) return;
         if (typeof window !== 'undefined' && window.innerWidth < 769) return;
 
-        let mm;
+        const mm = gsap.matchMedia();
 
         mm.add('(prefers-reduced-motion: no-preference) and (min-width: 769px)', () => {
             const cards = gridRef.current.querySelectorAll('[data-tilt-card]');

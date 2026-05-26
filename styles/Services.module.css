@@ -1,4 +1,4 @@
-/* ─── SERVICES PAGE ──────────────────────────────── */
+/* ─── SERVICES PAGE ───────────────────────────────── */
 .servicesPage {
     min-height: 100vh;
     background: var(--dark);
@@ -87,6 +87,24 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 40px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+@media (min-width: 1180px) {
+    .serviceList {
+        max-width: min(1720px, calc(100vw - 48px));
+        padding: 0 24px 80px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px;
+    }
+
+    .serviceItem {
+        grid-template-columns: minmax(0, 1.18fr) minmax(360px, 0.82fr);
+        min-height: clamp(400px, 31vw, 560px);
+    }
 }
 
 .serviceItem {
@@ -126,6 +144,23 @@
 .serviceItem:hover .serviceImg {
     transform: scale(1.04);
     filter: brightness(0.82) saturate(1);
+}
+
+@media (min-width: 1180px) {
+    .serviceImgWrap {
+        background: var(--dark);
+        min-height: 100%;
+    }
+
+    .serviceImg {
+        object-fit: contain;
+        object-position: center;
+    }
+
+    .serviceItem:hover .serviceImg {
+        transform: none;
+        filter: brightness(0.82) saturate(1);
+    }
 }
 
 .serviceContent {
@@ -293,7 +328,7 @@
     }
 
     .serviceImgWrap {
-        height: 200px; /* altura fija controlada */
+        height: 200px;
         width: 100%;
         overflow: hidden;
     }
@@ -330,6 +365,16 @@
 @media (max-width: 768px) {
     .pageHero {
         padding: 40px 20px 32px;
+    }
+
+    .serviceImgWrap {
+        height: 240px;
+        background: var(--dark);
+    }
+
+    .serviceImg {
+        object-fit: contain;
+        object-position: center top;
     }
 
     .serviceList {

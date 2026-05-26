@@ -46,7 +46,7 @@ const Reviews = ({ sectionId }) => {
 
     if (loading) {
         return (
-            <section id={sectionId} className={styles.reviewsSection}>
+            <section id={sectionId} className={styles.reviewsSection} data-anim="section-reveal">
                 <div className={styles.container}>
                     <div className={styles.header}>
                         <h2>{t.whatClientsSay || 'What Our Clients Say'}</h2>
@@ -115,7 +115,7 @@ const Reviews = ({ sectionId }) => {
     );
 
     return (
-        <section id={sectionId} className={styles.reviewsSection}>
+        <section id={sectionId} className={styles.reviewsSection} data-anim="section-reveal">
             <div className={styles.container}>
                 <div className={styles.header}>
                     <h2>{t.whatClientsSay || 'What Our Clients Say'}</h2>

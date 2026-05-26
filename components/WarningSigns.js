@@ -86,7 +86,7 @@ export default function WarningSigns({ onCta }) {
   const d = WARNINGS[index];
 
   return (
-    <section className={styles.section}>
+    <section className={styles.section} data-anim="section-reveal">
       <div className={styles.header}>
         <span className={styles.eyebrow}>Field Guide · Inspector's Notes</span>
         <h2 className={styles.h2}>Warning Signs <em>In Your Home</em></h2>

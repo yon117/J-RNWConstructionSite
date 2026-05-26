@@ -2,10 +2,16 @@ import { google } from 'googleapis';
 import { parse } from 'cookie';
 import { isValidSessionToken } from '../../../lib/auth';
 import { getDb } from '../../../lib/db';
+import { getGoogleOAuthRedirectUri, getSearchConsoleSiteUrl } from '../../../lib/site-url';
 
-const SITE_URL = 'https://jandrnw.com/';
+function assertGoogleConfig() {
+    if (!process.env.GOOGLE_OAUTH_CLIENT_ID || !process.env.GOOGLE_OAUTH_CLIENT_SECRET) {
+        throw new Error('GOOGLE_OAUTH_CONFIG_MISSING');
+    }
+}
 
-async function getAuth() {
+async function getAuth(req) {
+    assertGoogleConfig();
     const db = await getDb();
     await db.execute(`CREATE TABLE IF NOT EXISTS settings (
         key TEXT PRIMARY KEY,
@@ -23,7 +29,7 @@ async function getAuth() {
     const oauth2 = new google.auth.OAuth2(
         process.env.GOOGLE_OAUTH_CLIENT_ID,
         process.env.GOOGLE_OAUTH_CLIENT_SECRET,
-        'http://localhost:3000/api/auth/google-sc-callback'
+        getGoogleOAuthRedirectUri(req)
     );
     oauth2.setCredentials({ refresh_token: refreshToken });
     return oauth2;
@@ -41,14 +47,15 @@ export default async function handler(req, res) {
     const endDate   = new Date();
     const startDate = new Date(Date.now() - days * 86400000);
     const fmt = d => d.toISOString().slice(0, 10);
+    const siteUrl = getSearchConsoleSiteUrl(req);
 
     try {
-        const auth = await getAuth();
+        const auth = await getAuth(req);
         const sc   = google.searchconsole({ version: 'v1', auth });
 
         const [overviewRes, pagesRes, queriesRes] = await Promise.all([
             sc.searchanalytics.query({
-                siteUrl: SITE_URL,
+                siteUrl,
                 requestBody: {
                     startDate: fmt(startDate),
                     endDate:   fmt(endDate),
@@ -57,23 +64,21 @@ export default async function handler(req, res) {
                 },
             }),
             sc.searchanalytics.query({
-                siteUrl: SITE_URL,
+                siteUrl,
                 requestBody: {
                     startDate: fmt(startDate),
                     endDate:   fmt(endDate),
                     dimensions: ['page'],
                     rowLimit: 10,
-                    orderBy: [{ fieldName: 'clicks', sortOrder: 'DESCENDING' }],
                 },
             }),
             sc.searchanalytics.query({
-                siteUrl: SITE_URL,
+                siteUrl,
                 requestBody: {
                     startDate: fmt(startDate),
                     endDate:   fmt(endDate),
                     dimensions: ['query'],
                     rowLimit: 10,
-                    orderBy: [{ fieldName: 'clicks', sortOrder: 'DESCENDING' }],
                 },
             }),
         ]);
@@ -97,7 +102,7 @@ export default async function handler(req, res) {
             },
             byDate:   rows.map(r => ({ date: r.keys[0], clicks: r.clicks, impressions: r.impressions })),
             topPages: (pagesRes.data.rows || []).map(r => ({
-                page:        r.keys[0].replace(SITE_URL, '/'),
+                page:        siteUrl.startsWith('sc-domain:') ? r.keys[0] : r.keys[0].replace(siteUrl, '/'),
                 clicks:      r.clicks,
                 impressions: r.impressions,
                 ctr:         (r.ctr * 100).toFixed(1),
@@ -114,6 +119,9 @@ export default async function handler(req, res) {
     } catch (err) {
         if (err.message === 'NOT_CONNECTED') {
             return res.status(200).json({ notConnected: true });
+        }
+        if (err.message === 'GOOGLE_OAUTH_CONFIG_MISSING') {
+            return res.status(500).json({ error: 'Google OAuth env vars missing' });
         }
         console.error('Search Console error:', err.message);
         res.status(500).json({ error: err.message });

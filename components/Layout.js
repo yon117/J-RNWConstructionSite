@@ -10,14 +10,20 @@ import styles from './Layout.module.css';
 
 // SVG icons inline (no emoji, no extra packages)
 const PhoneIcon = () => (
-    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.948V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 7V6a1 1 0 000-1z" />
+    <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+        <path fillRule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.51z" clipRule="evenodd"/>
     </svg>
 );
 
 const MailIcon = () => (
-    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+    <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+        <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z"/>
+    </svg>
+);
+
+const BannerAlertIcon = () => (
+    <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" style={{width:'13px',height:'13px',flexShrink:0}}>
+        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
     </svg>
 );
 
@@ -72,28 +78,28 @@ const SERVICE_LINKS = [
 
 const SEASONAL_MESSAGES = {
     winter: [
-        { text: 'Frozen or burst pipes? Structural ice damage? We respond same day — call (503) 998-2340.', icon: '🌨' },
-        { text: 'Ice dams on your roof cause hidden water damage. Free inspection available now.', icon: '❄️' },
-        { text: 'Atmospheric rivers hitting Oregon hard — flooding in your basement? We fix it fast.', icon: '🌊' },
-        { text: 'Wind storm knocked something loose? Emergency structural repairs — call us today.', icon: '💨' },
+        { text: 'Frozen or burst pipes? Structural ice damage? We respond same day.' },
+        { text: 'Ice dams on your roof cause hidden water damage. Free inspection available now.' },
+        { text: 'Atmospheric rivers hitting Oregon hard — flooding in your basement? We fix it fast.' },
+        { text: 'Wind storm knocked something loose? Emergency structural repairs — call us today.' },
     ],
     spring: [
-        { text: 'Spring flooding & landslide season — Free water damage assessment. Don\'t let mold set in.', icon: '🌧' },
-        { text: 'Snowmelt + spring rain = foundation flooding risk. Get a free inspection before it worsens.', icon: '🌱' },
-        { text: 'Mold from winter moisture trapped inside? We find it and fix it. Free assessment.', icon: '🔍' },
-        { text: 'Roof damage from winter storms showing up now? Don\'t wait — free estimate available.', icon: '🏠' },
+        { text: 'Spring flooding & landslide season — Free water damage assessment. Don\'t let mold set in.' },
+        { text: 'Snowmelt + spring rain = foundation flooding risk. Get a free inspection before it worsens.' },
+        { text: 'Mold from winter moisture trapped inside? We find it and fix it. Free assessment.' },
+        { text: 'Roof damage from winter storms showing up now? Don\'t wait — free estimate available.' },
     ],
     summer: [
-        { text: 'Wildfire season in Oregon — protect your home\'s exterior before smoke & heat cause damage.', icon: '🔥' },
-        { text: 'Heat cracking your exterior paint or siding? Free estimate before it gets worse.', icon: '☀️' },
-        { text: 'Dry rot on decks and siding peaks in summer. Catch it early — free inspection.', icon: '🌡️' },
-        { text: 'Summer is the best time for exterior projects — book now before slots fill up.', icon: '🏗️' },
+        { text: 'Wildfire season in Oregon — protect your home\'s exterior before smoke & heat cause damage.' },
+        { text: 'Heat cracking your exterior paint or siding? Free estimate before it gets worse.' },
+        { text: 'Dry rot on decks and siding peaks in summer. Catch it early — free inspection.' },
+        { text: 'Summer is the best time for exterior projects — book now before slots fill up.' },
     ],
     fall: [
-        { text: 'Fall windstorm season approaching — schedule exterior repairs before winter arrives.', icon: '🍂' },
-        { text: 'Clogged gutters cause ice dams and roof damage. Clean & repair before first freeze.', icon: '🍁' },
-        { text: 'Gaps in caulking and siding let Oregon rains in — waterproofing estimates available now.', icon: '🌂' },
-        { text: 'Pre-winter inspection season — catch problems now before cold locks them in. Free estimate.', icon: '🏡' },
+        { text: 'Fall windstorm season approaching — schedule exterior repairs before winter arrives.' },
+        { text: 'Clogged gutters cause ice dams and roof damage. Clean & repair before first freeze.' },
+        { text: 'Gaps in caulking and siding let Oregon rains in — waterproofing estimates available now.' },
+        { text: 'Pre-winter inspection season — catch problems now before cold locks them in. Free estimate.' },
     ],
 };
 
@@ -103,6 +109,14 @@ function getSeasonMessages() {
     if (m >= 2 && m <= 4)   return SEASONAL_MESSAGES.spring;
     if (m >= 5 && m <= 8)   return SEASONAL_MESSAGES.summer;
     return SEASONAL_MESSAGES.fall;
+}
+
+function getSeasonName() {
+    const m = new Date().getMonth();
+    if (m === 11 || m <= 1) return 'WINTER';
+    if (m >= 2 && m <= 4)   return 'SPRING';
+    if (m >= 5 && m <= 8)   return 'SUMMER';
+    return 'FALL';
 }
 
 export default function Layout({ children, title = 'J&R NW Construction | Portland General Contractor', description = DEFAULT_DESCRIPTION, canonical, onContactClick }) {
@@ -121,6 +135,7 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
     const [bannerIdx, setBannerIdx] = useState(0);
     const seasonMsgs = getSeasonMessages();
     const banner = seasonMsgs[bannerIdx];
+    const seasonName = getSeasonName();
 
     useEffect(() => {
         const dismissed = sessionStorage.getItem('bannerDismissed');
@@ -317,11 +332,11 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
             {/* ── SEASONAL BANNER ── */}
             {showBanner && (
                 <div className={styles.seasonalBanner}>
-                    <span className={styles.seasonalText}>
-                        <span className={styles.seasonalIcon}>{banner.icon}</span>
-                        {banner.text}
-                        {' '}<a href="tel:+15039982340" className={styles.seasonalLink} onClick={() => { fetch('/api/monitor/click', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'phone_click' }), keepalive: true }).catch(() => {}); }}>Call (503) 998-2340</a>
-                    </span>
+                    <div className={styles.seasonalContent}>
+                        <span className={styles.seasonalBadge}>{seasonName}</span>
+                        <BannerAlertIcon />
+                        <span className={styles.seasonalText}>{banner.text}</span>
+                    </div>
                     <button className={styles.bannerClose} onClick={dismissBanner} aria-label="Dismiss">✕</button>
                 </div>
             )}
@@ -489,7 +504,6 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
             {/* ── MAIN ── */}
             <main className={styles.main}>{children}</main>
 
-            {/* ── FOOTER ── */}
             <footer className={styles.footer}>
                 <div className={styles.footerTop}>
                     <div className={styles.footerBrand}>

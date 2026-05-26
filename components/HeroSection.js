@@ -1,7 +1,5 @@
 import Link from 'next/link';
-import { useRef } from 'react';
-import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
+import { useEffect, useRef } from 'react';
 import InteractiveHouse from './InteractiveHouse';
 import WordCycler from './WordCycler';
 import { VerticalCutReveal } from './ui/VerticalCutReveal';
@@ -18,22 +16,39 @@ export default function HeroSection({
 }) {
   const sectionRef = useRef(null);
 
-  useGSAP(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  useEffect(() => {
+    let cancelled = false;
+    let ctx;
 
-    const fades = sectionRef.current?.querySelectorAll('[data-hero-fade]');
-    if (fades?.length) {
-      gsap.set(fades, { autoAlpha: 0, y: 28 });
-      gsap.to(fades, {
-        autoAlpha: 1,
-        y: 0,
-        duration: 0.75,
-        stagger: 0.1,
-        ease: 'power3.out',
-        delay: 1.1,
-      });
-    }
-  }, { scope: sectionRef });
+    const run = async () => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const { default: gsap } = await import('gsap');
+      if (cancelled) return;
+
+      ctx = gsap.context(() => {
+        const fades = sectionRef.current?.querySelectorAll('[data-hero-fade]');
+        if (!fades?.length) return;
+
+        gsap.set(fades, { autoAlpha: 0, y: 28 });
+        gsap.to(fades, {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.75,
+          stagger: 0.1,
+          ease: 'power3.out',
+          delay: 1.1,
+        });
+      }, sectionRef);
+    };
+
+    run();
+
+    return () => {
+      cancelled = true;
+      ctx?.revert();
+    };
+  }, []);
 
   const scrollToForm = () => {
     const el = document.getElementById('hero-form');
@@ -173,7 +188,7 @@ export default function HeroSection({
               <div className={styles.heroReviewItems}>
                 <span className={styles.heroReviewIcon}><YelpLogoIcon /></span>
                 <span className={styles.heroReviewIcon}><GoogleLogoIcon /></span>
-                <span className={styles.heroReviewStars}>★★★★★</span>
+                <span className={styles.heroReviewStars}>{"\u2605\u2605\u2605\u2605\u2605"}</span>
                 <span className={styles.heroReviewCount}>50+ reviews</span>
               </div>
             </div>
@@ -212,11 +227,11 @@ export default function HeroSection({
 
       <div className={styles.heroStats}>
         <div className={styles.statBox} data-anim="stat">
-          <div className={styles.statNum}>20+</div>
+          <div className={styles.statNum} data-countup="20" data-countup-suffix="+">20+</div>
           <div className={styles.statLabel}>{t.yearsExp || 'Years Exp.'}</div>
         </div>
         <div className={styles.statBox} data-anim="stat">
-          <div className={styles.statNum}>50+</div>
+          <div className={styles.statNum} data-countup="50" data-countup-suffix="+">50+</div>
           <div className={styles.statLabel}>Families Served</div>
         </div>
         <div className={styles.statBox} data-anim="stat">

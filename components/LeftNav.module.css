@@ -1,4 +1,5 @@
 .nav {
+  --nav-peek: 28px;
   position: fixed;
   left: 0;
   top: 50%;
@@ -19,6 +20,13 @@
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
+  transform: translate3d(calc(-100% + var(--nav-peek)), -50%, 0);
+}
+
+.navVisible:hover,
+.navVisible:focus-within,
+.navVisible:active,
+.navExpanded {
   transform: translate3d(0, -50%, 0);
 }
 

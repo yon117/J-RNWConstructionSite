@@ -1,4 +1,5 @@
 import { getDb } from '../../../lib/db';
+import { getGoogleOAuthRedirectUri } from '../../../lib/site-url';
 
 export default async function handler(req, res) {
     const { code, error } = req.query;
@@ -9,6 +10,9 @@ export default async function handler(req, res) {
     if (!code) {
         return res.redirect('/adminside/monitor?sc_error=no_code');
     }
+    if (!process.env.GOOGLE_OAUTH_CLIENT_ID || !process.env.GOOGLE_OAUTH_CLIENT_SECRET) {
+        return res.redirect('/adminside/monitor?sc_error=google_oauth_config_missing');
+    }
 
     try {
         const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
@@ -18,12 +22,16 @@ export default async function handler(req, res) {
                 code,
                 client_id:     process.env.GOOGLE_OAUTH_CLIENT_ID,
                 client_secret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
-                redirect_uri:  'http://localhost:3000/api/auth/google-sc-callback',
+                redirect_uri:  getGoogleOAuthRedirectUri(req),
                 grant_type:    'authorization_code',
             }),
         });
 
         const tokens = await tokenRes.json();
+        if (!tokenRes.ok) {
+            const message = tokens.error_description || tokens.error || 'token_exchange_failed';
+            return res.redirect('/adminside/monitor?sc_error=' + encodeURIComponent(message));
+        }
         if (!tokens.refresh_token) {
             return res.redirect('/adminside/monitor?sc_error=no_refresh_token');
         }

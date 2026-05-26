@@ -1,34 +1,90 @@
+import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import Layout from '../components/Layout';
 import Modal from '../components/Modal';
 import ContactFormSection from '../components/ContactFormSection';
-import Link from 'next/link';
-import Image from 'next/image';
-import Head from 'next/head';
-import { getDb } from '../lib/db';
-import { useState, useEffect } from 'react';
 import { useLang } from '../context/LanguageContext';
+import { getDb } from '../lib/db';
+import pageStyles from '../styles/Services.module.css';
 import { imageUrl } from '../utils/imageUrl';
 import { sanitizeServiceText } from '../utils/sanitizeServiceText';
-import pageStyles from '../styles/Services.module.css';
 
-// SVG arrow icon
 const ArrowIcon = () => (
     <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
     </svg>
 );
 
-// Service tag map — assign a tag label per index
 const SERVICE_TAGS = [
-    'Interior · Residential',
-    'Exterior · Protection',
-    'Restoration · Reconstruction',
-    'Emergency · 24/7',
-    'Exterior · Painting',
-    'Interior · Drywall',
-    'General · Repairs',
-    'Commercial · Residential',
+    'Interior - Residential',
+    'Exterior - Protection',
+    'Restoration - Reconstruction',
+    'Emergency - 24/7',
+    'Exterior - Painting',
+    'Interior - Drywall',
+    'General - Repairs',
+    'Commercial - Residential',
 ];
+
+function MobileContainerScrollCard({ children, className, ...props }) {
+    const cardRef = useRef(null);
+    const prefersReducedMotion = useReducedMotion();
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return undefined;
+
+        const mediaQuery = window.matchMedia('(max-width: 768px)');
+        const syncViewport = (event) => {
+            setIsMobile(event?.matches ?? mediaQuery.matches);
+        };
+
+        syncViewport();
+
+        if (typeof mediaQuery.addEventListener === 'function') {
+            mediaQuery.addEventListener('change', syncViewport);
+            return () => mediaQuery.removeEventListener('change', syncViewport);
+        }
+
+        mediaQuery.addListener(syncViewport);
+        return () => mediaQuery.removeListener(syncViewport);
+    }, []);
+
+    const { scrollYProgress } = useScroll({
+        target: cardRef,
+        offset: ['start end', 'end start'],
+    });
+
+    const rotate = useTransform(scrollYProgress, [0, 1], [16, 0]);
+    const scale = useTransform(scrollYProgress, [0, 1], [0.92, 1]);
+
+    return (
+        <motion.div
+            ref={cardRef}
+            className={className}
+            style={
+                isMobile && !prefersReducedMotion
+                    ? {
+                        rotateX: rotate,
+                        scale,
+                        width: '100%',
+                        transformPerspective: 1000,
+                        transformOrigin: 'center top',
+                        willChange: 'transform',
+                        boxShadow:
+                            '0 0 #0000004d, 0 9px 20px #0000004a, 0 37px 37px #00000042, 0 84px 50px #00000026, 0 149px 60px #0000000a, 0 233px 65px #00000003',
+                    }
+                    : undefined
+            }
+            {...props}
+        >
+            {children}
+        </motion.div>
+    );
+}
 
 export default function Services({ services }) {
     const [showContactModal, setShowContactModal] = useState(false);
@@ -36,17 +92,36 @@ export default function Services({ services }) {
     const [displayServices, setDisplayServices] = useState(services);
 
     useEffect(() => {
-        if (!lang || lang === 'en') { setDisplayServices(services); return; }
+        if (!lang || lang === 'en') {
+            setDisplayServices(services);
+            return;
+        }
+
         let cancelled = false;
+
         async function translate() {
             const { translateArray } = await import('../utils/translate');
-            const titles = await translateArray(services.map(s => s.title), lang);
-            const descs  = await translateArray(services.map(s => s.description), lang);
-            if (!cancelled) setDisplayServices(services.map((s, i) => ({ ...s, title: titles[i], description: descs[i] })));
+            const titles = await translateArray(services.map((service) => service.title), lang);
+            const descriptions = await translateArray(services.map((service) => service.description), lang);
+
+            if (!cancelled) {
+                setDisplayServices(
+                    services.map((service, index) => ({
+                        ...service,
+                        title: titles[index],
+                        description: descriptions[index],
+                    }))
+                );
+            }
         }
+
         translate();
-        return () => { cancelled = true; };
+
+        return () => {
+            cancelled = true;
+        };
     }, [lang, services]);
+
     const SERVICE_TAG_KEYS = [
         'serviceTag1',
         'serviceTag2',
@@ -59,44 +134,62 @@ export default function Services({ services }) {
     ];
 
     const serviceSchema = {
-        "@context": "https://schema.org",
-        "@type": "ItemList",
-        "name": "J&R NW Construction Services",
-        "description": "Full-service contractor in Portland OR — remodeling, siding, restoration, painting, drywall & emergency services.",
-        "url": "https://jandrnw.com/services",
-        "itemListElement": displayServices.map((s, i) => ({
-            "@type": "ListItem",
-            "position": i + 1,
-            "item": {
-                "@type": "Service",
-                "name": s.title,
-                "description": s.description || "",
-                "provider": {
-                    "@type": "LocalBusiness",
-                    "name": "J&R NW Construction LLC",
-                    "telephone": "+15039982340",
-                    "url": "https://jandrnw.com"
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: 'J&R NW Construction Services',
+        description: 'Full-service contractor in Portland OR - remodeling, siding, restoration, painting, drywall and emergency services.',
+        url: 'https://jandrnw.com/services',
+        itemListElement: displayServices.map((service, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            item: {
+                '@type': 'Service',
+                name: service.title,
+                description: service.description || '',
+                provider: {
+                    '@type': 'LocalBusiness',
+                    name: 'J&R NW Construction LLC',
+                    telephone: '+15039982340',
+                    url: 'https://jandrnw.com',
                 },
-                "areaServed": "Portland Metro, OR",
-                "url": `https://jandrnw.com/services/${s.id}`
-            }
-        }))
+                areaServed: 'Portland Metro, OR',
+                url: `https://jandrnw.com/services/${service.id}`,
+            },
+        })),
     };
+
+    const getServiceSlug = (service) => (
+        service.slug
+        || (service.title
+            ? service.title
+                .toLowerCase()
+                .trim()
+                .replace(/&/g, 'and')
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '')
+            : 'service')
+    );
+
+    const getServiceTag = (index) => (
+        t[SERVICE_TAG_KEYS[index]]
+        || SERVICE_TAGS[index]
+        || t.constructionOregon
+        || 'Construction - Oregon'
+    );
 
     return (
         <Layout
             title="Construction Services Portland OR | Remodeling, Siding & Restoration | J&R NW Construction"
-            description="Portland OR construction services — remodeling, siding, water damage restoration, painting & drywall. Free estimates. Licensed contractor CCB #232708. Call (503) 998-2340."
+            description="Portland OR construction services - remodeling, siding, water damage restoration, painting and drywall. Free estimates. Licensed contractor CCB #232708. Call (503) 998-2340."
             canonical="/services"
             onContactClick={() => setShowContactModal(true)}
         >
             <Head>
                 <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
             </Head>
+
             <div className={pageStyles.servicesPage}>
                 <div className={pageStyles.servicesContent}>
-
-                    {/* ── PAGE HERO ── */}
                     <div className={pageStyles.pageHero}>
                         <div className={pageStyles.pageHeroInner}>
                             <div className={pageStyles.sectionLabel}>{t.ourServicesLabel || 'What We Offer'}</div>
@@ -108,28 +201,19 @@ export default function Services({ services }) {
                         </div>
                     </div>
 
-                    {/* ── CONTAINER SCROLL PIN ── */}
-
-                    {/* ── SERVICE ITEMS ── */}
                     <div className={pageStyles.serviceList}>
                         {displayServices.map((service, index) => {
-                            const slug = service.slug
-                                || (service.title
-                                    ? service.title
-                                        .toLowerCase()
-                                        .trim()
-                                        .replace(/&/g, 'and')
-                                        .replace(/[^a-z0-9]+/g, '-')
-                                        .replace(/^-+|-+$/g, '')
-                                    : 'service');
-                            const serviceUrl = `/services/${slug}`;
-                            const tag = t[SERVICE_TAG_KEYS[index]] || SERVICE_TAGS[index] || t.constructionOregon || 'Construction · Oregon';
+                            const serviceUrl = `/services/${getServiceSlug(service)}`;
+                            const tag = getServiceTag(index);
                             const serviceTitle = sanitizeServiceText(service.title) || service.title;
                             const serviceDescription = sanitizeServiceText(service.description) || '';
 
                             return (
-                                <div className={pageStyles.serviceItem} key={service.id} data-anim="service-item">
-                                    {/* Image */}
+                                <MobileContainerScrollCard
+                                    className={pageStyles.serviceItem}
+                                    key={service.id}
+                                    data-anim="service-item"
+                                >
                                     <div className={pageStyles.serviceImgWrap}>
                                         <Image
                                             src={imageUrl(service.image_url)}
@@ -138,11 +222,9 @@ export default function Services({ services }) {
                                             sizes="(max-width: 900px) 100vw, 50vw"
                                             className={pageStyles.serviceImg}
                                             priority={index === 0}
-                                            style={{ objectFit: 'cover' }}
                                         />
                                     </div>
 
-                                    {/* Content */}
                                     <div className={pageStyles.serviceContent}>
                                         <div className={pageStyles.serviceNum}>
                                             {String(index + 1).padStart(2, '0')}
@@ -154,15 +236,13 @@ export default function Services({ services }) {
                                             {t.learnMore} <ArrowIcon />
                                         </Link>
                                     </div>
-                                </div>
+                                </MobileContainerScrollCard>
                             );
                         })}
                     </div>
-
                 </div>
             </div>
 
-            {/* Contact Modal */}
             {showContactModal && (
                 <Modal title={t.getInTouch} onClose={() => setShowContactModal(false)}>
                     <ContactFormSection />
@@ -183,20 +263,18 @@ export async function getStaticProps() {
     }
 
     const db = await getDb();
-    const result = await db.execute(
-        'SELECT id, title, description, image, slug FROM services'
-    );
+    const result = await db.execute('SELECT id, title, description, image, slug FROM services');
     const rows = result.rows || [];
-    const services = rows.map(s => ({
-        id:          s.id,
-        title:       s.title || '',
-        description: s.description || '',
-        image_url:   s.image || '/assets/placeholder.jpg',
-        slug:        s.slug || '',
+    const services = rows.map((service) => ({
+        id: service.id,
+        title: service.title || '',
+        description: service.description || '',
+        image_url: service.image || '/assets/placeholder.jpg',
+        slug: service.slug || '',
     }));
+
     _servicesCache = services;
     _servicesCacheTime = Date.now();
+
     return { props: { services }, revalidate: 60 };
 }
-
-

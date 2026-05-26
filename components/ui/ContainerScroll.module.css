@@ -1,6 +1,6 @@
 /* Outer scroll driver — tall enough to give scroll room */
 .container {
-  height: 220vh;
+  height: 160vh;
   position: relative;
   background: var(--dark);
   border-top: 1px solid rgba(200, 150, 30, 0.08);

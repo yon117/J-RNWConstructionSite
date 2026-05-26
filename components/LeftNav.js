@@ -1,50 +1,87 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import styles from './LeftNav.module.css';
 
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
 }
 
+const MARGIN = 150;
+const HIDE_DELAY = 400;
+
 export default function LeftNav({ sections = [] }) {
   const [active, setActive] = useState(null);
   const [progress, setProgress] = useState({});
   const [visible, setVisible] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const wasVisible = useRef(false);
+  const hideTimer = useRef(null);
+  const expandTimer = useRef(null);
 
   useEffect(() => {
     if (typeof window === 'undefined' || sections.length === 0) return undefined;
 
     let frameId = 0;
 
+    const commitHide = () => {
+      wasVisible.current = false;
+      setVisible(false);
+      setActive(null);
+      hideTimer.current = null;
+    };
+
     const updateNav = () => {
-      const orderedSections = sections
+      const resolved = sections
         .map((section) => {
           const el = document.getElementById(section.id);
           return el ? { ...section, el } : null;
         })
         .filter(Boolean);
 
-      if (!orderedSections.length) {
+      if (!resolved.length) {
+        clearTimeout(hideTimer.current);
+        clearTimeout(expandTimer.current);
+        hideTimer.current = null;
+        expandTimer.current = null;
+        wasVisible.current = false;
         setVisible(false);
+        setExpanded(false);
         setActive(null);
         setProgress({});
         return;
       }
 
-      const focusLine = window.innerHeight * 0.42;
-      const firstRect = orderedSections[0].el.getBoundingClientRect();
-      const lastRect = orderedSections[orderedSections.length - 1].el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const focusLine = vh * 0.42;
+
+      const firstRect = resolved[0].el.getBoundingClientRect();
+      const lastRect = resolved[resolved.length - 1].el.getBoundingClientRect();
       const shouldShow = window.innerWidth > 1100
         && firstRect.top <= focusLine
-        && lastRect.bottom >= window.innerHeight * 0.22;
+        && lastRect.bottom >= vh * 0.22;
+
+      if (shouldShow) {
+        if (hideTimer.current) {
+          clearTimeout(hideTimer.current);
+          hideTimer.current = null;
+        }
+        wasVisible.current = true;
+        setVisible(true);
+      } else if (wasVisible.current) {
+        if (!hideTimer.current) {
+          hideTimer.current = setTimeout(commitHide, HIDE_DELAY);
+        }
+      } else {
+        setVisible(false);
+        setExpanded(false);
+      }
 
       const nextProgress = {};
-      let nextActive = orderedSections[0].id;
+      let nextActive = resolved[0].id;
 
-      orderedSections.forEach((section) => {
+      resolved.forEach((section) => {
         const rect = section.el.getBoundingClientRect();
         const rawProgress = (focusLine - rect.top) / Math.max(rect.height, 1);
-        const sectionProgress = clamp(rawProgress, 0, 1);
-        nextProgress[section.id] = sectionProgress;
+        nextProgress[section.id] = clamp(rawProgress, 0, 1);
 
         if (rawProgress >= 0) {
           nextActive = section.id;
@@ -52,8 +89,7 @@ export default function LeftNav({ sections = [] }) {
       });
 
       setProgress(nextProgress);
-      setActive(shouldShow ? nextActive : null);
-      setVisible(shouldShow);
+      if (wasVisible.current) setActive(nextActive);
     };
 
     const requestUpdate = () => {
@@ -61,14 +97,25 @@ export default function LeftNav({ sections = [] }) {
       frameId = requestAnimationFrame(updateNav);
     };
 
+    const handleScroll = () => {
+      if (window.innerWidth > 1100) {
+        setExpanded(true);
+        clearTimeout(expandTimer.current);
+        expandTimer.current = setTimeout(() => setExpanded(false), 220);
+      }
+      requestUpdate();
+    };
+
     requestUpdate();
-    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', requestUpdate);
     window.addEventListener('load', requestUpdate);
 
     return () => {
       cancelAnimationFrame(frameId);
-      window.removeEventListener('scroll', requestUpdate);
+      clearTimeout(hideTimer.current);
+      clearTimeout(expandTimer.current);
+      window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', requestUpdate);
       window.removeEventListener('load', requestUpdate);
     };
@@ -82,7 +129,7 @@ export default function LeftNav({ sections = [] }) {
 
   return (
     <nav
-      className={`${styles.nav} ${visible ? styles.navVisible : ''}`}
+      className={`${styles.nav} ${visible ? styles.navVisible : ''} ${expanded ? styles.navExpanded : ''}`}
       aria-label="Page sections"
     >
       {sections.map(({ id, label, num }) => {

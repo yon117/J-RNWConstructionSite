@@ -389,6 +389,24 @@
     position: relative;
 }
 
+@media (min-width: 1180px) {
+    .pageHeroInner,
+    .filterBar,
+    .projectsGrid {
+        max-width: min(1720px, calc(100vw - 48px));
+    }
+
+    .filterBar,
+    .projectsGrid {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .projectsGrid {
+        grid-auto-rows: 290px;
+    }
+}
+
 @media (max-width: 768px) {
     .projectCard {
         transform: none !important;
