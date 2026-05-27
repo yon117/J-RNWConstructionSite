@@ -63,6 +63,17 @@ function vitalRating(name, value) {
     return 'unknown';
 }
 
+function REAL_VITAL_COLOR(name) {
+    return VITAL_ORDER.includes(name) ? '#4CAF50' : '#D4AF37';
+}
+
+function SEO_PRIORITY_COLOR(priority) {
+    if (priority === 'high') return '#ef5350';
+    if (priority === 'medium') return '#FF9800';
+    if (priority === 'low') return '#2196F3';
+    return '#4CAF50';
+}
+
 function StatCard({ label, value, sub, color, delay }) {
     return (
         <div className={styles.statCard} style={{ animationDelay: `${delay || 0}ms`, borderColor: color }}>
@@ -102,6 +113,9 @@ export default function Monitor() {
     const [ga4Loading, setGa4Loading] = useState(false);
     const [ga4Error, setGa4Error]     = useState('');
     const [clicks, setClicks]         = useState(null);
+    const [seo, setSeo]               = useState(null);
+    const [seoLoading, setSeoLoading] = useState(false);
+    const [seoError, setSeoError]     = useState('');
 
     const renderGoogleReconnect = (color = '#4285F4') => (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -179,6 +193,47 @@ export default function Monitor() {
             })
             .catch(() => setDepsError('Failed to run check'))
             .finally(() => setDepsLoading(false));
+    };
+
+    const loadSEO = () => {
+        setSeoLoading(true);
+        setSeoError('');
+        const params = range.days ? `?days=${range.days}` : '?days=30';
+        fetch(`/api/monitor/seo${params}`)
+            .then(r => r.json())
+            .then(data => {
+                if (data.error) setSeoError(data.error);
+                else setSeo(data);
+            })
+            .catch(() => setSeoError('Failed to load SEO diagnostics'))
+            .finally(() => setSeoLoading(false));
+    };
+
+    const exportSeoCsv = () => {
+        if (!seo?.checks?.length || typeof window === 'undefined') return;
+        const rows = [
+            ['severity', 'priority', 'title', 'detail', 'next_step', 'local_hits', 'search_console_impressions', 'search_console_clicks'],
+            ...seo.checks.map((check) => [
+                check.severity,
+                check.priority,
+                check.title,
+                (check.detail || '').replace(/\s+/g, ' ').trim(),
+                (check.action || '').replace(/\s+/g, ' ').trim(),
+                String(check.localHits || 0),
+                String(check.searchConsoleImpressions || 0),
+                String(check.searchConsoleClicks || 0),
+            ]),
+        ];
+        const csv = rows.map((row) => row.map((cell) => `"${String(cell ?? '').replace(/"/g, '""')}"`).join(',')).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `seo-diagnostics-${range.label}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
     };
 
     if (loading) return <AdminLayout title="Monitor"><div className={styles.loading}>Loading monitor data...</div></AdminLayout>;
@@ -605,6 +660,190 @@ export default function Monitor() {
                         Click tasks to mark done. Dates saved in browser. Reset each group when starting a new cycle.
                     </p>
                     <MaintenanceChecklist />
+                </div>
+
+                {/* SEO Diagnostics */}
+                <div className={styles.chartCard} style={{ marginTop: 24, borderColor: 'rgba(212,175,55,0.28)' }}>
+                    <h2 className={styles.sectionTitle}>SEO Diagnostics</h2>
+                    <p style={{ color: '#777', fontSize: '0.85rem', margin: '0 0 14px' }}>
+                        Reads internal SEO signals only: sitemap, robots, service URL variants, preview traffic, tracked vitals, and Search Console connection state.
+                    </p>
+                    <button className={styles.depBtn} style={{ borderColor: '#D4AF37', color: '#D4AF37' }} onClick={loadSEO} disabled={seoLoading}>
+                        {seoLoading ? 'Scanning SEO...' : 'Run SEO Diagnostics'}
+                    </button>
+                    {seoError && <div className={styles.aiError} style={{ marginTop: 10 }}>{seoError}</div>}
+                    {seoLoading && <div className={styles.depScanning}>Checking sitemap, robots, traffic variants, and monitor telemetry...</div>}
+                    {seo && (
+                        <div style={{ marginTop: 16 }}>
+                            <div className={styles.scTotals}>
+                                {[
+                                    { label: 'SEO Score', value: `${seo.score || 0}/100`, color: seo.score >= 85 ? '#4CAF50' : seo.score >= 65 ? '#FF9800' : '#ef5350' },
+                                    { label: 'Warnings', value: seo.summary.warning || 0, color: '#FF9800' },
+                                    { label: 'High Priority', value: seo.summary.priority?.high || 0, color: '#ef5350' },
+                                    { label: 'Medium Priority', value: seo.summary.priority?.medium || 0, color: '#2196F3' },
+                                    { label: 'Good', value: seo.summary.good || 0, color: '#4CAF50' },
+                                    { label: 'Preview Hits', value: Number(seo.traffic.previewHits || 0).toLocaleString(), color: '#E91E63' },
+                                    { label: 'Numeric URL Hits', value: Number(seo.traffic.numericServiceHits || 0).toLocaleString(), color: '#2196F3' },
+                                    { label: 'Legacy URL Hits', value: Number(seo.traffic.legacyServiceHits || 0).toLocaleString(), color: '#D4AF37' },
+                                    { label: 'Querystring Hits', value: Number(seo.traffic.queryStringHits || 0).toLocaleString(), color: '#9C27B0' },
+                                ].map(({ label, value, color }) => (
+                                    <div key={label} className={styles.scCard} style={{ borderColor: `${color}40` }}>
+                                        <div className={styles.vulnCount} style={{ color, fontSize: '1.5rem' }}>{value}</div>
+                                        <div className={styles.vulnLabel}>{label}</div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginTop: 16, flexWrap: 'wrap' }}>
+                                <div style={{ color: '#888', fontSize: '0.78rem' }}>
+                                    Search Console linked pages in diagnostics: {Number(seo.searchConsole?.pageMetricsCount || 0).toLocaleString()}
+                                </div>
+                                <button className={styles.resetBtn} onClick={exportSeoCsv}>Export CSV</button>
+                            </div>
+
+                            {seo.priorityQueue?.length > 0 && (
+                                <div style={{ marginTop: 20 }}>
+                                    <div style={{ color: '#888', fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
+                                        Priority Queue
+                                    </div>
+                                    <table className={styles.table}>
+                                        <thead><tr><th>Priority</th><th>Check</th><th>Local Hits</th><th>SC Impressions</th><th>Why It Matters</th></tr></thead>
+                                        <tbody>
+                                            {seo.priorityQueue.map((check, i) => (
+                                                <tr key={`${check.title}-${i}`}>
+                                                    <td style={{ color: SEO_PRIORITY_COLOR(check.priority), fontWeight: 700, textTransform: 'uppercase', fontSize: '0.76rem' }}>{check.priority}</td>
+                                                    <td style={{ fontSize: '0.82rem', color: '#f3ead2' }}>{check.title}</td>
+                                                    <td style={{ color: '#D4AF37', fontWeight: 700 }}>{Number(check.localHits || 0).toLocaleString()}</td>
+                                                    <td style={{ color: '#4CAF50', fontWeight: 700 }}>{Number(check.searchConsoleImpressions || 0).toLocaleString()}</td>
+                                                    <td style={{ fontSize: '0.8rem', color: '#cfcfcf' }}>{check.detail}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+
+                            <div style={{ marginTop: 18 }}>
+                                <div style={{ color: '#888', fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
+                                    Findings
+                                </div>
+                                <table className={styles.table}>
+                                    <thead><tr><th>Severity</th><th>Priority</th><th>Check</th><th>Evidence</th><th>Recommended Next Step</th></tr></thead>
+                                    <tbody>
+                                        {seo.checks.map((check, i) => {
+                                            const color = check.severity === 'good'
+                                                ? '#4CAF50'
+                                                : check.severity === 'info'
+                                                    ? '#2196F3'
+                                                    : check.severity === 'critical'
+                                                        ? '#ef5350'
+                                                        : '#FF9800';
+                                            return (
+                                                <tr key={i}>
+                                                    <td style={{ color, fontWeight: 700, textTransform: 'uppercase', fontSize: '0.76rem' }}>{check.severity}</td>
+                                                    <td style={{ color: SEO_PRIORITY_COLOR(check.priority), fontWeight: 700, textTransform: 'uppercase', fontSize: '0.76rem' }}>{check.priority}</td>
+                                                    <td style={{ fontSize: '0.82rem', color: '#f3ead2' }}>{check.title}</td>
+                                                    <td style={{ fontSize: '0.8rem', color: '#cfcfcf' }}>
+                                                        <div>{check.detail}</div>
+                                                        {(check.localHits > 0 || check.searchConsoleImpressions > 0) && (
+                                                            <div style={{ color: '#8f8f8f', marginTop: 4 }}>
+                                                                Local hits: {Number(check.localHits || 0).toLocaleString()} · SC impressions: {Number(check.searchConsoleImpressions || 0).toLocaleString()} · SC clicks: {Number(check.searchConsoleClicks || 0).toLocaleString()}
+                                                            </div>
+                                                        )}
+                                                    </td>
+                                                    <td style={{ fontSize: '0.8rem', color: '#9a9a9a' }}>{check.action}</td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {seo.traffic.servicePathVariants?.length > 0 && (
+                                <div style={{ marginTop: 20 }}>
+                                    <div style={{ color: '#888', fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
+                                        Service URL Variants Seen In Traffic
+                                    </div>
+                                    <table className={styles.table}>
+                                        <thead><tr><th>Service</th><th>Slug</th><th>Variants</th><th>Total Hits</th></tr></thead>
+                                        <tbody>
+                                            {seo.traffic.servicePathVariants.map((item) => (
+                                                <tr key={item.id}>
+                                                    <td style={{ fontSize: '0.82rem', color: '#f3ead2' }}>{item.title}</td>
+                                                    <td style={{ fontFamily: 'monospace', fontSize: '0.8rem', color: '#D4AF37' }}>{item.slug || 'â€”'}</td>
+                                                    <td style={{ fontSize: '0.78rem', color: '#ccc', maxWidth: 420 }}>
+                                                        {item.variants.map((variant) => `${variant.path} (${variant.views})`).join(', ')}
+                                                    </td>
+                                                    <td style={{ color: '#4CAF50', fontWeight: 700 }}>{Number(item.total).toLocaleString()}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+
+                            {(seo.sitemap?.missingServiceSlugs?.length > 0 || seo.metrics?.trackedVitalNames?.length > 0 || seo.searchConsole?.impactedPages?.length > 0) && (
+                                <div className={styles.chartsRow} style={{ marginTop: 20 }}>
+                                    <div>
+                                        <div style={{ color: '#888', fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
+                                            Missing Sitemap Service Slugs
+                                        </div>
+                                        {seo.sitemap.missingServiceSlugs?.length > 0 ? (
+                                            <table className={styles.table}>
+                                                <thead><tr><th>Path</th></tr></thead>
+                                                <tbody>
+                                                    {seo.sitemap.missingServiceSlugs.map((slugPath) => (
+                                                        <tr key={slugPath}>
+                                                            <td style={{ fontFamily: 'monospace', fontSize: '0.8rem', color: '#FF9800' }}>{slugPath}</td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        ) : <div className={styles.empty}>No sitemap slug gaps detected</div>}
+                                    </div>
+                                    <div>
+                                        <div style={{ color: '#888', fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
+                                            Tracked Vitals Metrics
+                                        </div>
+                                        {seo.metrics.trackedVitalNames?.length > 0 ? (
+                                            <table className={styles.table}>
+                                                <thead><tr><th>Metric</th></tr></thead>
+                                                <tbody>
+                                                    {seo.metrics.trackedVitalNames.map((metric) => (
+                                                        <tr key={metric}>
+                                                            <td style={{ fontFamily: 'monospace', fontSize: '0.8rem', color: REAL_VITAL_COLOR(metric) }}>{metric}</td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        ) : <div className={styles.empty}>No vitals stored yet</div>}
+                                    </div>
+                                </div>
+                            )}
+
+                            {seo.searchConsole?.impactedPages?.length > 0 && (
+                                <div style={{ marginTop: 20 }}>
+                                    <div style={{ color: '#888', fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
+                                        Problematic Pages With Search Console Visibility
+                                    </div>
+                                    <table className={styles.table}>
+                                        <thead><tr><th>Page</th><th>Impressions</th><th>Clicks</th><th>Pos</th><th>Triggered Checks</th></tr></thead>
+                                        <tbody>
+                                            {seo.searchConsole.impactedPages.map((page) => (
+                                                <tr key={page.path}>
+                                                    <td style={{ fontFamily: 'monospace', fontSize: '0.8rem', color: '#f3ead2' }}>{page.path}</td>
+                                                    <td style={{ color: '#4CAF50', fontWeight: 700 }}>{Number(page.impressions || 0).toLocaleString()}</td>
+                                                    <td style={{ color: '#D4AF37', fontWeight: 700 }}>{Number(page.clicks || 0).toLocaleString()}</td>
+                                                    <td style={{ color: '#FF9800' }}>{page.position}</td>
+                                                    <td style={{ fontSize: '0.78rem', color: '#cfcfcf' }}>{page.checks.join(', ')}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
 
                 {/* SEO / Search Console */}
