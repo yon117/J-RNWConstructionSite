@@ -161,14 +161,20 @@ export default function App({ Component, pageProps }: AppProps) {
         {!isAdmin && (
           <>
             <Script
-              src="https://www.googletagmanager.com/gtag/js?id=G-8GM4CDHB35"
+              src="https://www.googletagmanager.com/gtag/js?id=AW-17362940957"
               strategy="afterInteractive"
             />
-            <Script id="ga4-init" strategy="afterInteractive">{`
+            <Script id="google-tag-init" strategy="afterInteractive">{`
               window.dataLayer=window.dataLayer||[];
               function gtag(){dataLayer.push(arguments);}
               gtag('js',new Date());
+              gtag('config','AW-17362940957');
               gtag('config','G-8GM4CDHB35');
+            `}</Script>
+            <Script id="google-ads-phone-snippet" strategy="afterInteractive">{`
+              gtag('config', 'AW-17362940957/FsnzCNCdi6YcEJ3opddA', {
+                'phone_conversion_number': '(503) 998-2340'
+              });
             `}</Script>
             <Script id="gtm-init" strategy="afterInteractive">{`
               (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
