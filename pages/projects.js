@@ -3,6 +3,7 @@ import Layout from '../components/Layout';
 import Modal from '../components/Modal';
 import ContactFormSection from '../components/ContactFormSection';
 import { getDb } from '../lib/db';
+import { ensureProjectDisplayOrder, projectImageSelect } from '../lib/projectOrdering';
 import { useLang } from '../context/LanguageContext';
 import { imageUrl } from '../utils/imageUrl';
 import gsap from 'gsap';
@@ -347,20 +348,12 @@ export default function Projects({ projects }) {
     );
 }
 
-let _projectsCache = null;
-let _projectsCacheTime = 0;
-const CACHE_TTL = 55_000;
-
 export async function getStaticProps() {
-    const now = Date.now();
-    if (_projectsCache && (now - _projectsCacheTime) < CACHE_TTL) {
-        return { props: { projects: _projectsCache }, revalidate: 60 };
-    }
-
     const db = await getDb();
+    const columns = await ensureProjectDisplayOrder(db);
 
     const projectsResult = await db.execute(
-        'SELECT id, title, description, details, image, category FROM projects ORDER BY created_at DESC'
+        `SELECT id, title, description, details, category, display_order, ${projectImageSelect(columns)} FROM projects ORDER BY display_order ASC, id DESC`
     );
 
     const rows = projectsResult.rows || [];
@@ -408,7 +401,5 @@ export async function getStaticProps() {
         project.imageCount = countMap[project.id] || 1;
     }
 
-    _projectsCache = projects;
-    _projectsCacheTime = Date.now();
     return { props: { projects }, revalidate: 60 };
 }

@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import AdminLayout from '../../components/AdminLayout';
 import styles from '../../styles/Admin.module.css';
 import { parse } from 'cookie';
 import { isValidSessionToken } from '../../lib/auth';
+import { ArrowDown, ArrowUp, Check, Download, Edit3, GripVertical, RotateCcw, Save, X } from 'lucide-react';
+import { imageUrl } from '../../utils/imageUrl';
 
 export default function AdminProjects() {
     const [projects, setProjects] = useState([]);
@@ -19,6 +21,17 @@ export default function AdminProjects() {
     const [pendingImages, setPendingImages] = useState([]);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [creatingProject, setCreatingProject] = useState(false);
+    const [savingProjectOrder, setSavingProjectOrder] = useState(false);
+    const [savedProjects, setSavedProjects] = useState([]);
+    const [projectOrderDirty, setProjectOrderDirty] = useState(false);
+    const [draggedProjectIndex, setDraggedProjectIndex] = useState(null);
+    const [projectOrderMessage, setProjectOrderMessage] = useState('');
+    const [editingImageNameId, setEditingImageNameId] = useState(null);
+    const [imageNameDraft, setImageNameDraft] = useState('');
+    const [renamingImageId, setRenamingImageId] = useState(null);
+    const [seoRenamePreviewProjectId, setSeoRenamePreviewProjectId] = useState(null);
+    const [seoRenameSuggestions, setSeoRenameSuggestions] = useState([]);
+    const [applyingSeoRenames, setApplyingSeoRenames] = useState(false);
 
     useEffect(() => {
         fetchProjects();
@@ -29,6 +42,9 @@ export default function AdminProjects() {
             const res = await fetch('/api/projects');
             const data = await res.json();
             setProjects(data);
+            setSavedProjects(JSON.parse(JSON.stringify(data)));
+            setProjectOrderDirty(false);
+            setProjectOrderMessage('');
         } catch (error) {
             console.error('Failed to fetch projects:', error);
         } finally {
@@ -129,10 +145,12 @@ export default function AdminProjects() {
 
             setUploadProgress(10);
 
-            // Fetch the newly created project to get its ID
-            const projectsRes = await fetch('/api/projects');
-            const projectsData = await projectsRes.json();
-            const newProjectId = projectsData[projectsData.length - 1].id;
+            const createData = await createRes.json();
+            const newProjectId = createData.project?.id;
+
+            if (!newProjectId) {
+                throw new Error('Project was created, but its ID was not returned');
+            }
 
             console.log('New project ID:', newProjectId);
 
@@ -405,6 +423,258 @@ export default function AdminProjects() {
         setHasUnsavedChanges(false);
     };
 
+    const reorderProjects = (fromIndex, toIndex) => {
+        if (fromIndex === toIndex || fromIndex < 0 || toIndex < 0 || fromIndex >= projects.length || toIndex >= projects.length) return;
+
+        const nextProjects = [...projects];
+        const [movedProject] = nextProjects.splice(fromIndex, 1);
+        nextProjects.splice(toIndex, 0, movedProject);
+        setProjects(nextProjects);
+        setProjectOrderDirty(true);
+        setProjectOrderMessage('');
+    };
+
+    const saveProjectOrder = async () => {
+        setSavingProjectOrder(true);
+        setProjectOrderMessage('');
+
+        try {
+            const orderedProjects = projects.map((project, index) => ({
+                id: project.id,
+                display_order: index + 1
+            }));
+
+            const res = await fetch('/api/projects', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ projects: orderedProjects })
+            });
+
+            if (!res.ok) throw new Error('Failed to save project order');
+
+            const nextSavedProjects = projects.map((project, index) => ({
+                ...project,
+                display_order: index + 1
+            }));
+            setProjects(nextSavedProjects);
+            setSavedProjects(JSON.parse(JSON.stringify(nextSavedProjects)));
+            setProjectOrderDirty(false);
+            setProjectOrderMessage('Order saved');
+        } catch (error) {
+            console.error('Failed to save project order:', error);
+            alert('Failed to save project order');
+            fetchProjects();
+        } finally {
+            setSavingProjectOrder(false);
+        }
+    };
+
+    const getProjectImagePath = (img) => img.image_path || img.image_url || img.image || '';
+
+    const getImageDownloadName = (img) => {
+        const imagePath = getProjectImagePath(img);
+        const filename = imagePath.split('/').pop();
+        return filename || `project-image-${img.id}.jpg`;
+    };
+
+    const getImageSeoName = (img) => {
+        const filename = getImageDownloadName(img);
+        return filename.replace(/\.[a-z0-9]+$/i, '');
+    };
+
+    const handleEditImageName = (img) => {
+        setEditingImageNameId(img.id);
+        setImageNameDraft(getImageSeoName(img));
+    };
+
+    const handleCancelImageNameEdit = () => {
+        setEditingImageNameId(null);
+        setImageNameDraft('');
+    };
+
+    const handleSaveImageName = async (img, projectId) => {
+        setRenamingImageId(img.id);
+
+        try {
+            const res = await fetch(`/api/projects/${projectId}/images`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ imageId: img.id, seoName: imageNameDraft })
+            });
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.error || 'Failed to rename image');
+            }
+
+            setProjectImages(projectImages.map(image => (
+                image.id === img.id
+                    ? { ...image, image_path: data.image_path, image_url: data.image_path }
+                    : image
+            )));
+            setOriginalImages(originalImages.map(image => (
+                image.id === img.id
+                    ? { ...image, image_path: data.image_path, image_url: data.image_path }
+                    : image
+            )));
+            handleCancelImageNameEdit();
+            await fetchProjects();
+        } catch (error) {
+            console.error('Failed to rename image:', error);
+            alert(error.message);
+        } finally {
+            setRenamingImageId(null);
+        }
+    };
+
+    const seoSlug = (value) => String(value || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/\.[a-z0-9]+$/i, '')
+        .replace(/&/g, ' and ')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .slice(0, 70);
+
+    const categorySeoLabel = (category) => {
+        const labels = {
+            remodeling: 'remodeling',
+            siding: 'siding',
+            restoration: 'restoration',
+            drywall: 'drywall',
+            emergency: 'emergency-restoration',
+            painting: 'painting',
+            waterproofing: 'waterproofing',
+            mitigation: 'damage-mitigation'
+        };
+        return labels[category] || category || 'construction-project';
+    };
+
+    const buildSeoImageBase = (project) => {
+        const parts = [
+            project.title,
+            categorySeoLabel(project.category),
+            project.location || 'portland-oregon',
+            'jr-nw-construction'
+        ];
+        return seoSlug(parts.filter(Boolean).join(' ')) || `project-${project.id}`;
+    };
+
+    const buildSeoRenameSuggestions = (project) => {
+        const base = buildSeoImageBase(project);
+        const localImages = projectImages.filter(img => getProjectImagePath(img).startsWith('/uploads/'));
+        const nonLocalImages = projectImages.filter(img => !getProjectImagePath(img).startsWith('/uploads/'));
+
+        return {
+            suggestions: localImages.map((img, index) => ({
+                imageId: img.id,
+                oldName: getImageDownloadName(img),
+                seoName: `${base}-${String(index + 1).padStart(2, '0')}`
+            })),
+            skipped: nonLocalImages.map(img => ({
+                imageId: img.id,
+                oldName: getImageDownloadName(img),
+                reason: 'Not a local /uploads image'
+            }))
+        };
+    };
+
+    const handlePreviewSeoRenames = (project) => {
+        const { suggestions, skipped } = buildSeoRenameSuggestions(project);
+        setSeoRenamePreviewProjectId(project.id);
+        setSeoRenameSuggestions([...suggestions, ...skipped]);
+    };
+
+    const handleCancelSeoRenamePreview = () => {
+        setSeoRenamePreviewProjectId(null);
+        setSeoRenameSuggestions([]);
+    };
+
+    const handleApplySeoRenames = async (projectId) => {
+        const renames = seoRenameSuggestions
+            .filter(suggestion => suggestion.seoName)
+            .map(suggestion => ({
+                imageId: suggestion.imageId,
+                seoName: suggestion.seoName
+            }));
+
+        if (renames.length === 0) {
+            alert('No local uploaded images can be renamed.');
+            return;
+        }
+
+        setApplyingSeoRenames(true);
+
+        try {
+            const res = await fetch(`/api/projects/${projectId}/images`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ renames })
+            });
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.error || 'Failed to apply SEO names');
+            }
+
+            const successful = (data.results || []).filter(result => result.success);
+            const failed = (data.results || []).filter(result => !result.success);
+            const pathMap = new Map(successful.map(result => [result.imageId, result.image_path]));
+
+            setProjectImages(projectImages.map(img => (
+                pathMap.has(img.id)
+                    ? { ...img, image_path: pathMap.get(img.id), image_url: pathMap.get(img.id) }
+                    : img
+            )));
+            setOriginalImages(originalImages.map(img => (
+                pathMap.has(img.id)
+                    ? { ...img, image_path: pathMap.get(img.id), image_url: pathMap.get(img.id) }
+                    : img
+            )));
+            await fetchProjects();
+            handleCancelSeoRenamePreview();
+
+            if (failed.length > 0) {
+                alert(`${successful.length} image(s) renamed. ${failed.length} skipped or failed.`);
+            } else {
+                alert(`${successful.length} image(s) renamed for SEO.`);
+            }
+        } catch (error) {
+            console.error('Failed to apply SEO names:', error);
+            alert(error.message);
+        } finally {
+            setApplyingSeoRenames(false);
+        }
+    };
+
+    const handleMoveProject = (index, direction) => {
+        const nextIndex = index + direction;
+        if (savingProjectOrder) return;
+        reorderProjects(index, nextIndex);
+    };
+
+    const handleProjectDragStart = (e, index) => {
+        if (editingId || savingProjectOrder) return;
+        setDraggedProjectIndex(index);
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', String(index));
+    };
+
+    const handleProjectDrop = (e, dropIndex) => {
+        e.preventDefault();
+        const dragIndex = draggedProjectIndex ?? parseInt(e.dataTransfer.getData('text/plain'), 10);
+        setDraggedProjectIndex(null);
+        if (Number.isNaN(dragIndex) || savingProjectOrder) return;
+        reorderProjects(dragIndex, dropIndex);
+    };
+
+    const handleCancelProjectOrder = () => {
+        setProjects(JSON.parse(JSON.stringify(savedProjects)));
+        setProjectOrderDirty(false);
+        setProjectOrderMessage('');
+    };
+
     if (loading) {
         return <AdminLayout title="Projects"><div>Loading...</div></AdminLayout>;
     }
@@ -414,6 +684,31 @@ export default function AdminProjects() {
             <button onClick={() => setShowAddForm(!showAddForm)} className={styles.addBtn}>
                 {showAddForm ? 'Cancel' : '+ Add New Project'}
             </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '16px' }}>
+                <button
+                    type="button"
+                    onClick={saveProjectOrder}
+                    className={styles.addBtn}
+                    disabled={!projectOrderDirty || savingProjectOrder}
+                    style={{ marginBottom: 0, display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                >
+                    <Save size={16} /> {savingProjectOrder ? 'Saving order...' : 'Save Order'}
+                </button>
+                <button
+                    type="button"
+                    onClick={handleCancelProjectOrder}
+                    className={styles.actionBtn}
+                    disabled={!projectOrderDirty || savingProjectOrder}
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                >
+                    <RotateCcw size={16} /> Reset Order
+                </button>
+                {(projectOrderDirty || projectOrderMessage) && (
+                    <span style={{ color: projectOrderDirty ? 'var(--accent)' : '#4CAF50', fontSize: '0.9rem' }}>
+                        {projectOrderDirty ? 'Unsaved order changes' : projectOrderMessage}
+                    </span>
+                )}
+            </div>
 
             {showAddForm && (
                 <div style={{
@@ -532,18 +827,40 @@ export default function AdminProjects() {
                 <table>
                     <thead>
                         <tr>
+                            <th>Order</th>
+                            <th>Thumbnail</th>
                             <th>Title</th>
                             <th>Description</th>
                             <th>Details</th>
+                            <th>Category</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {projects.map((project) => (
-                            <>
-                                <tr key={project.id}>
+                        {projects.map((project, index) => (
+                            <Fragment key={project.id}>
+                                <tr
+                                    key={project.id}
+                                    draggable={editingId !== project.id && !savingProjectOrder}
+                                    onDragStart={(e) => handleProjectDragStart(e, index)}
+                                    onDragOver={handleDragOver}
+                                    onDrop={(e) => handleProjectDrop(e, index)}
+                                    onDragEnd={() => setDraggedProjectIndex(null)}
+                                    style={{
+                                        opacity: draggedProjectIndex === index ? 0.55 : 1,
+                                        cursor: editingId === project.id ? 'default' : 'grab'
+                                    }}
+                                >
                                     {editingId === project.id ? (
                                         <>
+                                            <td>{index + 1}</td>
+                                            <td>
+                                                <img
+                                                    src={imageUrl(project.image || project.image_url)}
+                                                    alt={project.title}
+                                                    style={{ width: '88px', height: '58px', objectFit: 'cover', borderRadius: '4px', border: '1px solid rgba(212, 175, 55, 0.45)' }}
+                                                />
+                                            </td>
                                             <td>
                                                 <input
                                                     type="text"
@@ -596,6 +913,42 @@ export default function AdminProjects() {
                                         </>
                                     ) : (
                                         <>
+                                            <td>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                    <GripVertical size={16} aria-hidden="true" />
+                                                    <span>{index + 1}</span>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleMoveProject(index, -1)}
+                                                        className={styles.actionBtn}
+                                                        disabled={index === 0 || savingProjectOrder}
+                                                        title="Move up"
+                                                        aria-label={`Move ${project.title} up`}
+                                                        style={{ padding: '6px', marginRight: 0 }}
+                                                    >
+                                                        <ArrowUp size={14} />
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleMoveProject(index, 1)}
+                                                        className={styles.actionBtn}
+                                                        disabled={index === projects.length - 1 || savingProjectOrder}
+                                                        title="Move down"
+                                                        aria-label={`Move ${project.title} down`}
+                                                        style={{ padding: '6px', marginRight: 0 }}
+                                                    >
+                                                        <ArrowDown size={14} />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <img
+                                                    src={imageUrl(project.image || project.image_url)}
+                                                    alt={project.title}
+                                                    loading="lazy"
+                                                    style={{ width: '88px', height: '58px', objectFit: 'cover', borderRadius: '4px', border: '1px solid rgba(212, 175, 55, 0.45)' }}
+                                                />
+                                            </td>
                                             <td>{project.title}</td>
                                             <td>{project.description}</td>
                                             <td>{project.details || 'N/A'}</td>
@@ -616,7 +969,7 @@ export default function AdminProjects() {
                                 </tr>
                                 {managingImagesId === project.id && (
                                     <tr>
-                                        <td colSpan="4" style={{ background: 'rgba(0,0,0,0.2)', padding: '20px' }}>
+                                        <td colSpan="7" style={{ background: 'rgba(0,0,0,0.2)', padding: '20px' }}>
                                             <h4 style={{ color: 'var(--accent)', marginBottom: '15px' }}>Manage Images for: {project.title}</h4>
                                             <div style={{ marginBottom: '15px' }}>
                                                 <label style={{ color: 'var(--text-light)', marginRight: '10px', display: 'block', marginBottom: '8px' }}>Add New Image(s):</label>
@@ -664,6 +1017,81 @@ export default function AdminProjects() {
                                             <p style={{ color: 'var(--accent)', marginBottom: '10px', fontSize: '0.9rem' }}>
                                                 💡 Tip: Drag and drop images to reorder. The first image will be the project thumbnail.
                                             </p>
+                                            <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap', marginBottom: '15px' }}>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handlePreviewSeoRenames(project)}
+                                                    className={styles.actionBtn + ' ' + styles.editBtn}
+                                                    disabled={projectImages.length === 0 || applyingSeoRenames}
+                                                    style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 'bold' }}
+                                                >
+                                                    <Edit3 size={14} /> Auto SEO Names
+                                                </button>
+                                                <span style={{ color: 'var(--text-light)', opacity: 0.75, fontSize: '0.85rem' }}>
+                                                    Preview names from project title, category, Portland Oregon, and image order.
+                                                </span>
+                                            </div>
+                                            {seoRenamePreviewProjectId === project.id && (
+                                                <div style={{ marginBottom: '15px', padding: '14px', border: '1px solid var(--accent)', borderRadius: '6px', background: 'rgba(0,0,0,0.18)' }}>
+                                                    <h5 style={{ color: 'var(--accent)', marginBottom: '10px', fontSize: '1rem' }}>SEO rename preview</h5>
+                                                    <div style={{ display: 'grid', gap: '8px', marginBottom: '12px' }}>
+                                                        {seoRenameSuggestions.map((suggestion, suggestionIndex) => (
+                                                            <div
+                                                                key={suggestion.imageId}
+                                                                style={{
+                                                                    display: 'grid',
+                                                                    gridTemplateColumns: 'minmax(170px, 1fr) minmax(220px, 1.2fr)',
+                                                                    gap: '10px',
+                                                                    alignItems: 'center'
+                                                                }}
+                                                            >
+                                                                <div style={{ color: 'var(--text-light)', fontSize: '0.82rem', wordBreak: 'break-word', opacity: suggestion.seoName ? 1 : 0.6 }}>
+                                                                    {suggestion.oldName}
+                                                                </div>
+                                                                {suggestion.seoName ? (
+                                                                    <input
+                                                                        type="text"
+                                                                        value={suggestion.seoName}
+                                                                        onChange={(e) => {
+                                                                            const nextSuggestions = [...seoRenameSuggestions];
+                                                                            nextSuggestions[suggestionIndex] = {
+                                                                                ...suggestion,
+                                                                                seoName: e.target.value
+                                                                            };
+                                                                            setSeoRenameSuggestions(nextSuggestions);
+                                                                        }}
+                                                                        style={{ width: '100%', padding: '8px', background: 'rgba(255,255,255,0.1)', border: '1px solid #555', color: 'var(--text-light)', borderRadius: '4px', fontSize: '0.82rem' }}
+                                                                    />
+                                                                ) : (
+                                                                    <div style={{ color: '#ffb3b3', fontSize: '0.82rem' }}>
+                                                                        Skipped: {suggestion.reason}
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleApplySeoRenames(project.id)}
+                                                            className={styles.actionBtn + ' ' + styles.editBtn}
+                                                            disabled={applyingSeoRenames}
+                                                            style={{ background: '#4CAF50', display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 'bold' }}
+                                                        >
+                                                            <Check size={14} /> {applyingSeoRenames ? 'Applying...' : 'Apply SEO Names'}
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={handleCancelSeoRenamePreview}
+                                                            className={styles.actionBtn}
+                                                            disabled={applyingSeoRenames}
+                                                            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                                                        >
+                                                            <X size={14} /> Cancel Preview
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            )}
                                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '10px', marginBottom: '15px' }}>
                                                 {projectImages.map((img, index) => (
                                                     <div
@@ -723,7 +1151,69 @@ export default function AdminProjects() {
                                                                 MAIN
                                                             </div>
                                                         )}
-                                                        <img src={img.image_path || img.image_url || img.image} alt="Project" style={{ width: '100%', height: '150px', objectFit: 'cover' }} />
+                                                        <img
+                                                            src={imageUrl(getProjectImagePath(img))}
+                                                            alt={getImageSeoName(img)}
+                                                            style={{ width: '100%', height: '150px', objectFit: 'cover', display: 'block' }}
+                                                        />
+                                                        <div style={{ padding: '8px', background: 'rgba(0,0,0,0.55)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                                            {editingImageNameId === img.id ? (
+                                                                <>
+                                                                    <input
+                                                                        type="text"
+                                                                        value={imageNameDraft}
+                                                                        onChange={(e) => setImageNameDraft(e.target.value)}
+                                                                        onMouseDown={(e) => e.stopPropagation()}
+                                                                        placeholder="seo-photo-name"
+                                                                        style={{ width: '100%', padding: '7px', background: 'rgba(255,255,255,0.1)', border: '1px solid var(--accent)', color: 'var(--text-light)', borderRadius: '4px', fontSize: '0.8rem' }}
+                                                                    />
+                                                                    <div style={{ display: 'flex', gap: '6px' }}>
+                                                                        <button
+                                                                            type="button"
+                                                                            onClick={() => handleSaveImageName(img, project.id)}
+                                                                            className={styles.actionBtn + ' ' + styles.editBtn}
+                                                                            disabled={renamingImageId === img.id}
+                                                                            style={{ marginRight: 0, padding: '6px 8px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                                                                        >
+                                                                            <Check size={13} /> {renamingImageId === img.id ? 'Saving' : 'Save'}
+                                                                        </button>
+                                                                        <button
+                                                                            type="button"
+                                                                            onClick={handleCancelImageNameEdit}
+                                                                            className={styles.actionBtn}
+                                                                            disabled={renamingImageId === img.id}
+                                                                            style={{ marginRight: 0, padding: '6px 8px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                                                                        >
+                                                                            <X size={13} /> Cancel
+                                                                        </button>
+                                                                    </div>
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <div title={getImageDownloadName(img)} style={{ color: 'var(--text-light)', fontSize: '0.78rem', lineHeight: 1.35, wordBreak: 'break-word' }}>
+                                                                        {getImageDownloadName(img)}
+                                                                    </div>
+                                                                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                                                                        <button
+                                                                            type="button"
+                                                                            onClick={() => handleEditImageName(img)}
+                                                                            className={styles.actionBtn + ' ' + styles.editBtn}
+                                                                            style={{ marginRight: 0, padding: '6px 8px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                                                                        >
+                                                                            <Edit3 size={13} /> SEO
+                                                                        </button>
+                                                                        <a
+                                                                            href={imageUrl(getProjectImagePath(img))}
+                                                                            download={getImageDownloadName(img)}
+                                                                            className={styles.actionBtn}
+                                                                            style={{ marginRight: 0, padding: '6px 8px', display: 'inline-flex', alignItems: 'center', gap: '4px', textDecoration: 'none', color: 'var(--text-light)' }}
+                                                                        >
+                                                                            <Download size={13} /> Download
+                                                                        </a>
+                                                                    </div>
+                                                                </>
+                                                            )}
+                                                        </div>
                                                         <button
                                                             onClick={() => handleDeleteImage(img.id, project.id)}
                                                             style={{ position: 'absolute', top: '5px', right: '5px', background: '#ff6b6b', color: 'white', border: 'none', borderRadius: '4px', padding: '5px 10px', cursor: 'pointer', zIndex: 1 }}
@@ -759,7 +1249,7 @@ export default function AdminProjects() {
                                         </td>
                                     </tr>
                                 )}
-                            </>
+                            </Fragment>
                         ))}
                     </tbody>
                 </table>
