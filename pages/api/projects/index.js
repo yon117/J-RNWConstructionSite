@@ -32,11 +32,11 @@ export default async function handler(req, res) {
 
         if (req.method === 'POST') {
             const { title, description, image_url, details, category } = req.body;
-            const maxOrderResult = await db.execute('SELECT COALESCE(MAX(display_order), 0) AS max_order FROM projects');
-            const displayOrder = (maxOrderResult.rows?.[0]?.max_order || 0) + 1;
+            const displayOrder = 1;
             const hasImage = columns.has('image');
             const imageColumn = hasImage ? 'image' : 'image_url';
 
+            await db.execute('UPDATE projects SET display_order = display_order + 1');
             await db.execute({
                 sql: `INSERT INTO projects (title, description, details, ${imageColumn}, category, display_order) VALUES (?, ?, ?, ?, ?, ?)`,
                 args: [title || '', description || '', details || '', image_url || '', category || '', displayOrder]
