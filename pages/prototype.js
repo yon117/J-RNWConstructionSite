@@ -745,16 +745,13 @@ export async function getStaticProps() {
         );
         const rows = result.rows || [];
         const firstImagesResult = await db.execute(`
-            SELECT pi.project_id, pi.image_path
-            FROM project_images pi
-            INNER JOIN (
-                SELECT project_id, MIN(display_order) AS min_order
-                FROM project_images GROUP BY project_id
-            ) first ON pi.project_id = first.project_id AND pi.display_order = first.min_order
+            SELECT project_id, image_path
+            FROM project_images
+            ORDER BY project_id ASC, display_order ASC, id ASC
         `);
         const firstImageMap = {};
         for (const row of (firstImagesResult.rows || [])) {
-            firstImageMap[row.project_id] = row.image_path;
+            if (!firstImageMap[row.project_id]) firstImageMap[row.project_id] = row.image_path;
         }
         const projects = rows.map(p => ({
             id: p.id, title: p.title || '', image: p.image || null,

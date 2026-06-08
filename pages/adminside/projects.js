@@ -266,7 +266,7 @@ export default function AdminProjects() {
         let firstImageUrl = null;
 
         try {
-            for (const file of pendingImages) {
+            for (const [index, file] of pendingImages.entries()) {
                 const formData = new FormData();
                 formData.append('file', file);
 
@@ -292,7 +292,7 @@ export default function AdminProjects() {
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             image_url: uploadData.imageUrl,
-                            display_order: projectImages.length + 1
+                            display_order: projectImages.length + index + 1
                         })
                     });
 
@@ -345,7 +345,8 @@ export default function AdminProjects() {
             });
 
             if (res.ok) {
-                fetchProjectImages(projectId);
+                await fetchProjectImages(projectId);
+                await fetchProjects();
             }
         } catch (error) {
             console.error('Failed to delete image:', error);

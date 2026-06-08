@@ -2,6 +2,7 @@ import { getDb } from '../../../lib/db';
 import { parse } from 'cookie';
 import { isValidSessionToken } from '../../../lib/auth';
 import { ensureProjectDisplayOrder, projectImageSelect } from '../../../lib/projectOrdering';
+import { firstImageByProject } from '../../../lib/projectImageOrdering.mjs';
 
 async function revalidateProjectsPage(res) {
     if (typeof res.revalidate !== 'function') return;
@@ -13,6 +14,12 @@ async function revalidateProjectsPage(res) {
     }
 }
 
+async function getProjectImageColumn(db) {
+    const result = await db.execute('PRAGMA table_info(project_images)');
+    const columns = new Set((result.rows || []).map(column => column.name));
+    return columns.has('image_path') ? 'image_path' : 'image_url';
+}
+
 export default async function handler(req, res) {
     try {
         const db = await getDb();
@@ -21,7 +28,15 @@ export default async function handler(req, res) {
         if (req.method === 'GET') {
             res.setHeader('Cache-Control', 'no-store');
             const result = await db.execute(`SELECT *, ${projectImageSelect(columns)} FROM projects ORDER BY display_order ASC, id DESC`);
-            return res.status(200).json(result.rows);
+            const rows = result.rows || [];
+            const imageColumn = await getProjectImageColumn(db);
+            const imagesResult = await db.execute(`SELECT id, project_id, ${imageColumn} AS image_path, display_order FROM project_images ORDER BY project_id ASC, display_order ASC, id ASC`);
+            const firstImageMap = firstImageByProject(imagesResult.rows || []);
+            const projects = rows.map(project => ({
+                ...project,
+                image: firstImageMap[project.id] || project.image || project.image_url || ''
+            }));
+            return res.status(200).json(projects);
         }
 
         // All write methods require auth

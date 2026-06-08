@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { parse } from 'cookie';
 import { isValidSessionToken } from '../../../../lib/auth';
+import { chooseDisplayOrder, normalizeImageOrder } from '../../../../lib/projectImageOrdering.mjs';
 
 async function getImageColumn(db) {
     const result = await db.execute('PRAGMA table_info(project_images)');
@@ -51,6 +52,22 @@ async function revalidateProjectsPage(res) {
     } catch (error) {
         console.warn('Failed to revalidate /projects:', error.message);
     }
+}
+
+async function syncProjectThumbnail(db, projectId, imageColumn) {
+    const projectImageColumn = await getProjectImageColumn(db);
+    if (!projectImageColumn) return;
+
+    const firstImageResult = await db.execute({
+        sql: `SELECT ${imageColumn} AS image_path FROM project_images WHERE project_id = ? ORDER BY display_order ASC, id ASC LIMIT 1`,
+        args: [projectId]
+    });
+    const nextImage = firstImageResult.rows?.[0]?.image_path || '';
+
+    await db.execute({
+        sql: `UPDATE projects SET ${projectImageColumn} = ? WHERE id = ?`,
+        args: [nextImage, projectId]
+    });
 }
 
 async function renameProjectImage(db, projectId, imageColumn, imageId, seoName) {
@@ -116,7 +133,7 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
         try {
             const result = await db.execute({
-                sql: `SELECT *, ${imageColumn} AS image_path FROM project_images WHERE project_id = ? ORDER BY display_order`,
+                sql: `SELECT *, ${imageColumn} AS image_path FROM project_images WHERE project_id = ? ORDER BY display_order ASC, id ASC`,
                 args: [id]
             });
             res.status(200).json(result.rows);
@@ -143,10 +160,17 @@ export default async function handler(req, res) {
                 return;
             }
 
+            const existingImages = await db.execute({
+                sql: 'SELECT id, display_order FROM project_images WHERE project_id = ?',
+                args: [id]
+            });
+            const nextDisplayOrder = chooseDisplayOrder(existingImages.rows || [], display_order);
+
             await db.execute({
                 sql: `INSERT INTO project_images (project_id, ${imageColumn}, display_order) VALUES (?, ?, ?)`,
-                args: [id, image_url, display_order || 0]
+                args: [id, image_url, nextDisplayOrder]
             });
+            await syncProjectThumbnail(db, id, imageColumn);
             await revalidateProjectsPage(res);
             res.status(201).json({ success: true });
         } catch (error) {
@@ -201,14 +225,14 @@ export default async function handler(req, res) {
                 return;
             }
 
-            // Update each image's display_order
-            for (const img of images) {
+            for (const img of normalizeImageOrder(images)) {
                 await db.execute({
                     sql: 'UPDATE project_images SET display_order = ? WHERE id = ?',
                     args: [img.display_order, img.id]
                 });
             }
 
+            await syncProjectThumbnail(db, id, imageColumn);
             await revalidateProjectsPage(res);
             res.status(200).json({ success: true });
         } catch (error) {
@@ -222,6 +246,7 @@ export default async function handler(req, res) {
                 sql: 'DELETE FROM project_images WHERE id = ?',
                 args: [imageId]
             });
+            await syncProjectThumbnail(db, id, imageColumn);
             await revalidateProjectsPage(res);
             res.status(200).json({ success: true });
         } catch (error) {

@@ -371,13 +371,9 @@ export async function getStaticProps() {
     // Batch fetch first image + count per project (2 queries total, not N*2)
     const [firstImagesResult, countsResult] = await Promise.all([
         db.execute(`
-            SELECT pi.project_id, pi.image_path
-            FROM project_images pi
-            INNER JOIN (
-                SELECT project_id, MIN(display_order) AS min_order
-                FROM project_images
-                GROUP BY project_id
-            ) first ON pi.project_id = first.project_id AND pi.display_order = first.min_order
+            SELECT project_id, image_path
+            FROM project_images
+            ORDER BY project_id ASC, display_order ASC, id ASC
         `),
         db.execute(`
             SELECT project_id, COUNT(*) as count
@@ -388,7 +384,7 @@ export async function getStaticProps() {
 
     const firstImageMap = {};
     for (const row of firstImagesResult.rows || []) {
-        firstImageMap[row.project_id] = row.image_path;
+        if (!firstImageMap[row.project_id]) firstImageMap[row.project_id] = row.image_path;
     }
 
     const countMap = {};
