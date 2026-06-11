@@ -547,7 +547,10 @@ export default function AdminProjects() {
             emergency: 'emergency-restoration',
             painting: 'painting',
             waterproofing: 'waterproofing',
-            mitigation: 'damage-mitigation'
+            mitigation: 'damage-mitigation',
+            deck: 'deck-repair',
+            mold: 'mold-mitigation',
+            'structural-repair': 'structural-support-repair'
         };
         return labels[category] || category || 'construction-project';
     };
@@ -764,6 +767,9 @@ export default function AdminProjects() {
                                 <option value="restoration">Restoration</option>
                                 <option value="drywall">Drywall</option>
                                 <option value="emergency">Emergency</option>
+                                <option value="deck">Deck</option>
+                                <option value="mold">Mold</option>
+                                <option value="structural-repair">Structural Support/Repair</option>
                             </select>
                         </div>
                         <div className={styles.formGroup}>
@@ -901,6 +907,9 @@ export default function AdminProjects() {
                                                     <option value="painting" style={{background:'#2a2a2a',color:'#fff'}}>Painting</option>
                                                     <option value="waterproofing" style={{background:'#2a2a2a',color:'#fff'}}>Waterproofing</option>
                                                     <option value="mitigation" style={{background:'#2a2a2a',color:'#fff'}}>Mitigation</option>
+                                                    <option value="deck" style={{background:'#2a2a2a',color:'#fff'}}>Deck</option>
+                                                    <option value="mold" style={{background:'#2a2a2a',color:'#fff'}}>Mold</option>
+                                                    <option value="structural-repair" style={{background:'#2a2a2a',color:'#fff'}}>Structural Support/Repair</option>
                                                 </select>
                                             </td>
                                             <td>

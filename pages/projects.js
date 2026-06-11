@@ -23,6 +23,9 @@ const FILTERS = [
     { id: 'painting',     labelKey: 'filterPainting',     label: 'Painting' },
     { id: 'waterproofing',labelKey: 'filterWaterproofing',label: 'Waterproofing' },
     { id: 'mitigation',   labelKey: 'filterMitigation',   label: 'Mitigation' },
+    { id: 'deck',         labelKey: 'filterDeck',         label: 'Deck' },
+    { id: 'mold',         labelKey: 'filterMold',         label: 'Mold' },
+    { id: 'structural-repair', labelKey: 'filterStructuralRepair', label: 'Structural Support/Repair' },
 ];
 
 export default function Projects({ projects }) {
@@ -79,21 +82,6 @@ export default function Projects({ projects }) {
     const filteredProjects = activeFilter === 'all'
         ? displayProjects
         : displayProjects.filter(p => p.category === activeFilter);
-    const featuredProjects = displayProjects.slice(0, 3);
-    const featuredCopy = lang === 'es'
-        ? {
-            titleLead: 'Proyectos',
-            titleEm: 'Destacados',
-            description: 'Miniaturas completas al inicio. Prueba visual rápida, detalles al tocar.',
-            aria: 'Proyectos destacados',
-        }
-        : {
-            titleLead: 'Featured',
-            titleEm: 'Projects',
-            description: 'Full project thumbnails up front. Quick proof first, details on tap.',
-            aria: 'Featured projects',
-        };
-
     const gridRef = useRef(null);
 
     const handleProjectKeyDown = (event, project) => {
@@ -201,55 +189,6 @@ export default function Projects({ projects }) {
                             </div>
                         </div>
                     </div>
-
-                    {/* ── FEATURED PROJECTS ── */}
-                    {featuredProjects.length > 0 && (
-                        <section className={pageStyles.featuredProjects} aria-label={featuredCopy.aria}>
-                            <div className={pageStyles.featuredHeader}>
-                                <div>
-                                    <div className={pageStyles.sectionLabel}>{t.ourWork || 'Our Work'}</div>
-                                    <h2 className={pageStyles.featuredTitle}>
-                                        {featuredCopy.titleLead} <em>{featuredCopy.titleEm}</em>
-                                    </h2>
-                                </div>
-                                <p>{featuredCopy.description}</p>
-                            </div>
-
-                            <div className={pageStyles.featuredGrid}>
-                                {featuredProjects.map(project => (
-                                    <article
-                                        key={project.id}
-                                        className={pageStyles.featuredCard}
-                                        onClick={() => handleProjectClick(project)}
-                                        onKeyDown={(event) => handleProjectKeyDown(event, project)}
-                                        role="button"
-                                        tabIndex={0}
-                                    >
-                                        <div className={pageStyles.featuredMedia}>
-                                            <img
-                                                src={imageUrl(project.image)}
-                                                alt={project.title}
-                                                loading="eager"
-                                                decoding="async"
-                                            />
-                                            {project.imageCount > 1 && (
-                                                <span className={pageStyles.photoBadge}>
-                                                    {project.imageCount} {t.photos || 'Photos'}
-                                                </span>
-                                            )}
-                                        </div>
-                                        <div className={pageStyles.featuredBody}>
-                                            <div className={pageStyles.projectCategory}>
-                                                {project.category || t.constructionOregon || 'Construction · Oregon'}
-                                            </div>
-                                            <h3>{project.title}</h3>
-                                            <p>{project.description || project.details}</p>
-                                        </div>
-                                    </article>
-                                ))}
-                            </div>
-                        </section>
-                    )}
 
                     {/* ── FILTERS ── */}
                     <div className={pageStyles.filterBar}>

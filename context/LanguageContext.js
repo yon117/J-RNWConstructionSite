@@ -149,6 +149,9 @@ const translations = {
         filterPainting: 'Painting',
         filterWaterproofing: 'Waterproofing',
         filterMitigation: 'Mitigation',
+        filterDeck: 'Deck',
+        filterMold: 'Mold',
+        filterStructuralRepair: 'Structural Support/Repair',
 
         // Service detail page
         ourProcess: 'Our Process',
@@ -314,6 +317,9 @@ const translations = {
         filterPainting: 'Pintura',
         filterWaterproofing: 'Impermeabilización',
         filterMitigation: 'Mitigación',
+        filterDeck: 'Deck',
+        filterMold: 'Moho',
+        filterStructuralRepair: 'Soporte/Reparación estructural',
 
         // Service detail page
         ourProcess: 'Nuestro Proceso',

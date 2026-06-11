@@ -7,7 +7,7 @@ import WarningSigns from '../components/WarningSigns';
 import HeroSection from '../components/HeroSection';
 import LeftNav from '../components/LeftNav';
 import styles from '../styles/Home.module.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useLang } from '../context/LanguageContext';
 import { getDb } from '../lib/db';
 import { imageUrl } from '../utils/imageUrl';
@@ -212,14 +212,78 @@ const HOME_TRUST_ITEMS = [
     { Icon: PhoneIcon, value: '24/7', label: 'Emergency Response', meta: 'Fast help when damage hits' },
 ];
 
+const HOME_PROJECT_CARD_COUNT = 3;
+const HOME_PROJECT_SWAP_MS = 5600;
+const HOME_PROJECT_EXIT_MS = 360;
+
+function pickRandomProjects(projects, currentProjects = [], count = HOME_PROJECT_CARD_COUNT) {
+    if (projects.length <= count) return projects;
+
+    const currentIds = new Set(currentProjects.map(project => project.id));
+    const freshPool = projects.filter(project => !currentIds.has(project.id));
+    const pool = freshPool.length >= count ? freshPool : projects;
+
+    return [...pool]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, count);
+}
+
+function HomeProjectCard({ project, idx, projectCycle, phase }) {
+    const rawImage = project.firstImage || project.image;
+    const [imageFailed, setImageFailed] = useState(false);
+
+    useEffect(() => {
+        setImageFailed(false);
+    }, [rawImage, project.id]);
+
+    return (
+        <article
+            key={`${projectCycle}-${project.id}-${idx}`}
+            className={`${styles.projectCard} ${styles.projectSwapCard} ${phase === 'exit' ? styles.projectSwapExit : styles.projectSwapEnter}`}
+            style={{ '--project-delay': `${idx * 80}ms` }}
+        >
+            <div className={styles.projectMedia}>
+                {rawImage && !imageFailed ? (
+                    <Image
+                        src={imageUrl(rawImage)}
+                        alt={project.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        className={styles.projectImage}
+                        onError={() => setImageFailed(true)}
+                    />
+                ) : (
+                    <div className={styles.projectFallback} aria-hidden="true">
+                        <span>J&amp;R NW</span>
+                    </div>
+                )}
+            </div>
+            <div className={styles.projectOverlay}>
+                <span className={styles.projectCategory}>{project.category || 'Remodel'}</span>
+                <div className={styles.projectTitle}>{project.title}</div>
+                {(project.description || project.details) ? (
+                    <p className={styles.projectMeta}>{project.description || project.details}</p>
+                ) : null}
+            </div>
+        </article>
+    );
+}
+
 // WARNING SIGNS moved to components/WarningSigns.js
 
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 export default function Home({ projects = [] }) {
+    const displayableProjects = useMemo(
+        () => projects.filter(project => project.firstImage || project.image),
+        [projects]
+    );
     const [showContactModal, setShowContactModal] = useState(false);
     const [openFaqs, setOpenFaqs] = useState(new Set());
     const [mobileOpenSection, setMobileOpenSection] = useState('');
     const [pendingMobileScrollId, setPendingMobileScrollId] = useState('');
+    const [visibleProjects, setVisibleProjects] = useState(() => displayableProjects.slice(0, HOME_PROJECT_CARD_COUNT));
+    const [projectCycle, setProjectCycle] = useState(0);
+    const [projectSwapPhase, setProjectSwapPhase] = useState('enter');
     const { t } = useLang();
 
     const handleEstimateClick = () => {
@@ -256,6 +320,36 @@ export default function Home({ projects = [] }) {
 
         return () => window.clearTimeout(timer);
     }, [pendingMobileScrollId]);
+
+    useEffect(() => {
+        setVisibleProjects(displayableProjects.slice(0, HOME_PROJECT_CARD_COUNT));
+        setProjectCycle(0);
+        setProjectSwapPhase('enter');
+    }, [displayableProjects]);
+
+    useEffect(() => {
+        if (displayableProjects.length <= HOME_PROJECT_CARD_COUNT || typeof window === 'undefined') return undefined;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+
+        const pendingTimeouts = new Set();
+        const timer = window.setInterval(() => {
+            setProjectSwapPhase('exit');
+
+            const timeout = window.setTimeout(() => {
+                setVisibleProjects(current => pickRandomProjects(displayableProjects, current));
+                setProjectCycle(current => current + 1);
+                setProjectSwapPhase('enter');
+                pendingTimeouts.delete(timeout);
+            }, HOME_PROJECT_EXIT_MS);
+
+            pendingTimeouts.add(timeout);
+        }, HOME_PROJECT_SWAP_MS);
+
+        return () => {
+            window.clearInterval(timer);
+            pendingTimeouts.forEach(timeout => window.clearTimeout(timeout));
+        };
+    }, [displayableProjects]);
 
     return (
         <Layout
@@ -496,27 +590,14 @@ export default function Home({ projects = [] }) {
                         </Link>
                     </div>
                     <div className={styles.projectsGrid}>
-                        {projects.slice(0, 5).map((project, idx) => (
-                            <div
-                                key={project.id}
-                                className={`${styles.projectCard} ${idx === 0 ? styles.featured : ''}`}
-                                style={{ position: 'relative' }}
-                            >
-                                <Image
-                                    src={imageUrl(project.firstImage || project.image)}
-                                    alt={project.title}
-                                    fill
-                                    sizes="(max-width: 768px) 100vw, 50vw"
-                                    style={{ objectFit: 'cover', filter: 'brightness(0.7)' }}
-                                />
-                                <div className={styles.projectOverlay}>
-                                    <span className={styles.projectCategory}>{project.category || 'Remodel'}</span>
-                                    <div className={styles.projectTitle}>{project.title}</div>
-                                    {idx === 0 && (project.description || project.details) ? (
-                                        <p className={styles.projectMeta}>{project.description || project.details}</p>
-                                    ) : null}
-                                </div>
-                            </div>
+                        {visibleProjects.map((project, idx) => (
+                            <HomeProjectCard
+                                key={`${projectCycle}-${project.id}-${idx}`}
+                                project={project}
+                                idx={idx}
+                                projectCycle={projectCycle}
+                                phase={projectSwapPhase}
+                            />
                         ))}
                     </div>
                 </div>
@@ -805,7 +886,7 @@ export async function getStaticProps() {
         const db = await getDb();
 
         const result = await db.execute(
-            'SELECT id, title, image, category FROM projects ORDER BY created_at DESC LIMIT 5'
+            'SELECT id, title, description, details, image, category FROM projects ORDER BY created_at DESC LIMIT 24'
         );
         const rows = result.rows || [];
 
@@ -824,6 +905,8 @@ export async function getStaticProps() {
         const projects = rows.map(p => ({
             id: p.id,
             title: p.title || '',
+            description: p.description || '',
+            details: p.details || '',
             image: p.image || null,
             category: p.category || '',
             firstImage: firstImageMap[p.id] || p.image || null,

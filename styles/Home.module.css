@@ -1240,48 +1240,130 @@
 
 .projectsGrid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    grid-template-rows: 280px 280px;
-    gap: 3px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
     border-radius: 4px;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .projectCard {
     position: relative;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
     cursor: pointer;
-    background: var(--dark-card);
-    min-height: 260px;
+    background: #0b1420;
+    border: 1px solid rgba(200, 150, 30, 0.12);
+    min-height: 390px;
+    isolation: isolate;
+}
+
+.projectSwapCard {
+    animation-duration: 560ms;
+    animation-timing-function: cubic-bezier(.165, .84, .44, 1);
+    animation-fill-mode: both;
+    animation-delay: var(--project-delay, 0ms);
+    will-change: transform, opacity;
+}
+
+.projectSwapEnter {
+    animation-name: projectSwapIn;
+}
+
+.projectSwapExit {
+    animation-name: projectSwapOut;
+    animation-duration: 360ms;
+    animation-delay: 0ms;
+}
+
+@keyframes projectSwapIn {
+    from {
+        opacity: 0;
+        transform: translateY(28px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes projectSwapOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-24px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .projectSwapCard {
+        animation: none;
+    }
 }
 
 .projectCard.featured {
-    grid-row: span 2;
-    min-height: 563px;
+    min-height: 390px;
+}
+
+.projectMedia {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: #08121c;
+    border-bottom: 1px solid rgba(200, 150, 30, 0.12);
+}
+
+.projectImage {
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(0.78) saturate(0.9);
+    transform: scale(1.01);
+    transition: filter 0.3s ease, transform 0.5s ease;
 }
 
 .projectPhoto {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
     display: block;
     transition: transform 0.5s ease, filter 0.3s;
-    filter: brightness(0.65) saturate(0.8);
+    filter: brightness(0.78) saturate(0.9);
 }
 
-.projectCard:hover .projectPhoto {
-    transform: scale(1.05);
-    filter: brightness(0.8) saturate(1);
+.projectCard:hover .projectPhoto,
+.projectCard:hover .projectImage {
+    filter: brightness(0.92) saturate(1);
+    transform: scale(1.045);
+}
+
+.projectFallback {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background:
+        linear-gradient(145deg, rgba(8, 18, 28, 0.96), rgba(26, 39, 54, 0.88)),
+        repeating-linear-gradient(90deg, rgba(200, 150, 30, 0.08) 0 1px, transparent 1px 52px);
+    color: rgba(245, 243, 239, 0.24);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(34px, 5vw, 74px);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 }
 
 .projectOverlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(8, 18, 28, 0.95) 0%, transparent 55%);
+    position: relative;
+    background: linear-gradient(180deg, rgba(11, 20, 32, 0.98) 0%, rgba(8, 18, 28, 1) 100%);
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    gap: 6px;
+    justify-content: flex-start;
+    gap: 8px;
+    flex: 1;
     padding: 18px 18px 20px;
 }
 
@@ -1295,14 +1377,14 @@
 }
 
 .projectMeta {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--gray);
     font-weight: 500;
     margin-top: 0;
     letter-spacing: 0.02em;
-    line-height: 1.35;
+    line-height: 1.45;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -1313,7 +1395,7 @@
 
 .projectTitle {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 16px;
+    font-size: 19px;
     font-weight: 800;
     text-transform: uppercase;
     line-height: 1.08;
@@ -1325,12 +1407,12 @@
 }
 
 .projectCard.featured .projectTitle {
-    font-size: 26px;
+    font-size: 19px;
     -webkit-line-clamp: 3;
 }
 
 .projectCard:not(.featured) .projectMeta {
-    display: none;
+    display: -webkit-box;
 }
 
 .photoBadge {
@@ -2600,20 +2682,20 @@
   padding: 0;
 }
 .splitRow .projectsGrid {
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 240px 240px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
 }
 .splitRow .projectOverlay {
-  gap: 4px;
-  padding: 14px 16px 16px;
+  gap: 8px;
+  padding: 16px;
 }
 .splitRow .projectTitle {
-  font-size: 14px;
-  line-height: 1.08;
+  font-size: 17px;
+  line-height: 1.1;
   -webkit-line-clamp: 2;
 }
 .splitRow .projectCard.featured .projectTitle {
-  font-size: 18px;
+  font-size: 17px;
   -webkit-line-clamp: 3;
 }
 .splitRow .areasSection {
@@ -2641,7 +2723,7 @@
   .splitRowAlt { grid-template-columns: 1fr; }
   .splitRow > section:last-child,
   .splitRow > div:last-child { border-left: none; border-top: 1px solid rgba(255,255,255,0.05); }
-  .splitRow .projectsGrid { grid-template-columns: 1fr 1fr; grid-template-rows: 220px 220px; }
+  .splitRow .projectsGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 600px) {
   .hwwStepsCompact { grid-template-columns: 1fr; }
