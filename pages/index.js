@@ -7,7 +7,7 @@ import WarningSigns from '../components/WarningSigns';
 import HeroSection from '../components/HeroSection';
 import LeftNav from '../components/LeftNav';
 import styles from '../styles/Home.module.css';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useLang } from '../context/LanguageContext';
 import { getDb } from '../lib/db';
 import { imageUrl } from '../utils/imageUrl';
@@ -214,7 +214,35 @@ const HOME_TRUST_ITEMS = [
 
 const HOME_PROJECT_CARD_COUNT = 3;
 const HOME_PROJECT_SWAP_MS = 5600;
+const HOME_PROJECT_PRELOAD_MS = 520;
 const HOME_PROJECT_EXIT_MS = 360;
+const HOME_PROJECT_PRELOAD_WIDTHS = [640, 828];
+
+function getProjectImagePath(project) {
+    return project.firstImage || project.image || '';
+}
+
+function getOptimizedProjectImageUrls(rawImage) {
+    if (!rawImage) return [];
+    const src = imageUrl(rawImage);
+    if (!src || src.startsWith('data:') || src.startsWith('/_next/image')) return src ? [src] : [];
+
+    return HOME_PROJECT_PRELOAD_WIDTHS.map(width =>
+        `/_next/image?url=${encodeURIComponent(src)}&w=${width}&q=75`
+    );
+}
+
+function preloadProjectImages(projects) {
+    if (typeof window === 'undefined') return;
+
+    projects.forEach(project => {
+        getOptimizedProjectImageUrls(getProjectImagePath(project)).forEach(src => {
+            const img = new window.Image();
+            img.decoding = 'async';
+            img.src = src;
+        });
+    });
+}
 
 function pickRandomProjects(projects, currentProjects = [], count = HOME_PROJECT_CARD_COUNT) {
     if (projects.length <= count) return projects;
@@ -229,7 +257,7 @@ function pickRandomProjects(projects, currentProjects = [], count = HOME_PROJECT
 }
 
 function HomeProjectCard({ project, idx, projectCycle, phase }) {
-    const rawImage = project.firstImage || project.image;
+    const rawImage = getProjectImagePath(project);
     const [imageFailed, setImageFailed] = useState(false);
 
     useEffect(() => {
@@ -250,6 +278,9 @@ function HomeProjectCard({ project, idx, projectCycle, phase }) {
                         fill
                         sizes="(max-width: 768px) 100vw, 33vw"
                         className={styles.projectImage}
+                        priority={projectCycle === 0}
+                        loading={projectCycle === 0 ? undefined : 'eager'}
+                        quality={72}
                         onError={() => setImageFailed(true)}
                     />
                 ) : (
@@ -284,6 +315,7 @@ export default function Home({ projects = [] }) {
     const [visibleProjects, setVisibleProjects] = useState(() => displayableProjects.slice(0, HOME_PROJECT_CARD_COUNT));
     const [projectCycle, setProjectCycle] = useState(0);
     const [projectSwapPhase, setProjectSwapPhase] = useState('enter');
+    const visibleProjectsRef = useRef(visibleProjects);
     const { t } = useLang();
 
     const handleEstimateClick = () => {
@@ -328,21 +360,45 @@ export default function Home({ projects = [] }) {
     }, [displayableProjects]);
 
     useEffect(() => {
+        visibleProjectsRef.current = visibleProjects;
+    }, [visibleProjects]);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return undefined;
+
+        const preload = () => preloadProjectImages(displayableProjects.slice(0, 12));
+        if ('requestIdleCallback' in window) {
+            const idleId = window.requestIdleCallback(preload, { timeout: 1200 });
+            return () => window.cancelIdleCallback(idleId);
+        }
+
+        const timeout = window.setTimeout(preload, 800);
+        return () => window.clearTimeout(timeout);
+    }, [displayableProjects]);
+
+    useEffect(() => {
         if (displayableProjects.length <= HOME_PROJECT_CARD_COUNT || typeof window === 'undefined') return undefined;
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
 
         const pendingTimeouts = new Set();
         const timer = window.setInterval(() => {
-            setProjectSwapPhase('exit');
+            const nextProjects = pickRandomProjects(displayableProjects, visibleProjectsRef.current);
+            preloadProjectImages(nextProjects);
 
-            const timeout = window.setTimeout(() => {
-                setVisibleProjects(current => pickRandomProjects(displayableProjects, current));
+            const exitTimeout = window.setTimeout(() => {
+                setProjectSwapPhase('exit');
+                pendingTimeouts.delete(exitTimeout);
+            }, HOME_PROJECT_PRELOAD_MS);
+
+            const swapTimeout = window.setTimeout(() => {
+                setVisibleProjects(nextProjects);
                 setProjectCycle(current => current + 1);
                 setProjectSwapPhase('enter');
-                pendingTimeouts.delete(timeout);
-            }, HOME_PROJECT_EXIT_MS);
+                pendingTimeouts.delete(swapTimeout);
+            }, HOME_PROJECT_PRELOAD_MS + HOME_PROJECT_EXIT_MS);
 
-            pendingTimeouts.add(timeout);
+            pendingTimeouts.add(exitTimeout);
+            pendingTimeouts.add(swapTimeout);
         }, HOME_PROJECT_SWAP_MS);
 
         return () => {
