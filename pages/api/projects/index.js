@@ -70,7 +70,7 @@ export default async function handler(req, res) {
             return res.status(201).json({ success: true, project: newProject.rows?.[0] || null });
 
         } else if (req.method === 'PUT') {
-            const { id, title, description, image_url, details, category, projects } = req.body;
+            const { id, title, description, image_url, image, details, category, projects } = req.body;
 
             if (Array.isArray(projects)) {
                 for (const project of projects) {
@@ -83,18 +83,34 @@ export default async function handler(req, res) {
                 return res.status(200).json({ success: true });
             }
 
-            if (image_url !== undefined) {
-                const imageColumn = columns.has('image') ? 'image' : 'image_url';
-                await db.execute({
-                    sql: `UPDATE projects SET title = ?, description = ?, details = ?, ${imageColumn} = ?, category = ? WHERE id = ?`,
-                    args: [title || '', description || '', details || '', image_url, category ?? '', id]
-                });
-            } else {
-                await db.execute({
-                    sql: 'UPDATE projects SET title = ?, description = ?, details = ?, category = ? WHERE id = ?',
-                    args: [title || '', description || '', details || '', category ?? '', id]
-                });
+            const existingResult = await db.execute({
+                sql: `SELECT id, title, description, details, category, ${projectImageSelect(columns)} FROM projects WHERE id = ? LIMIT 1`,
+                args: [id]
+            });
+            const existing = existingResult.rows?.[0];
+
+            if (!existing) {
+                return res.status(404).json({ error: 'Project not found' });
             }
+
+            const imageColumn = columns.has('image') ? 'image' : 'image_url';
+            const nextImage = image_url !== undefined
+                ? image_url
+                : image !== undefined
+                    ? image
+                    : existing.image || '';
+
+            await db.execute({
+                sql: `UPDATE projects SET title = ?, description = ?, details = ?, ${imageColumn} = ?, category = ? WHERE id = ?`,
+                args: [
+                    title !== undefined ? title : existing.title || '',
+                    description !== undefined ? description : existing.description || '',
+                    details !== undefined ? details : existing.details || '',
+                    nextImage,
+                    category !== undefined ? category : existing.category || '',
+                    id
+                ]
+            });
             await revalidateProjectsPage(res);
             return res.status(200).json({ success: true });
 
