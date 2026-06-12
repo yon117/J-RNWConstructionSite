@@ -151,6 +151,7 @@ const translations = {
         filterMitigation: 'Mitigation',
         filterDeck: 'Deck',
         filterMold: 'Mold',
+        filterCeiling: 'Ceiling',
         filterStructuralRepair: 'Structural Support/Repair',
 
         // Service detail page
@@ -319,6 +320,7 @@ const translations = {
         filterMitigation: 'Mitigación',
         filterDeck: 'Deck',
         filterMold: 'Moho',
+        filterCeiling: 'Techo',
         filterStructuralRepair: 'Soporte/Reparación estructural',
 
         // Service detail page

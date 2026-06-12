@@ -550,6 +550,7 @@ export default function AdminProjects() {
             mitigation: 'damage-mitigation',
             deck: 'deck-repair',
             mold: 'mold-mitigation',
+            ceiling: 'ceiling-repair',
             'structural-repair': 'structural-support-repair'
         };
         return labels[category] || category || 'construction-project';
@@ -769,6 +770,7 @@ export default function AdminProjects() {
                                 <option value="emergency">Emergency</option>
                                 <option value="deck">Deck</option>
                                 <option value="mold">Mold</option>
+                                <option value="ceiling">Ceiling</option>
                                 <option value="structural-repair">Structural Support/Repair</option>
                             </select>
                         </div>
@@ -909,6 +911,7 @@ export default function AdminProjects() {
                                                     <option value="mitigation" style={{background:'#2a2a2a',color:'#fff'}}>Mitigation</option>
                                                     <option value="deck" style={{background:'#2a2a2a',color:'#fff'}}>Deck</option>
                                                     <option value="mold" style={{background:'#2a2a2a',color:'#fff'}}>Mold</option>
+                                                    <option value="ceiling" style={{background:'#2a2a2a',color:'#fff'}}>Ceiling</option>
                                                     <option value="structural-repair" style={{background:'#2a2a2a',color:'#fff'}}>Structural Support/Repair</option>
                                                 </select>
                                             </td>
