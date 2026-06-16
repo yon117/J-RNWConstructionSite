@@ -26,6 +26,7 @@ const FILTERS = [
     { id: 'deck',         labelKey: 'filterDeck',         label: 'Deck' },
     { id: 'mold',         labelKey: 'filterMold',         label: 'Mold' },
     { id: 'ceiling',      labelKey: 'filterCeiling',      label: 'Ceiling' },
+    { id: 'dry-rot',      labelKey: 'filterDryRot',      label: 'Dry Rot' },
     { id: 'structural-repair', labelKey: 'filterStructuralRepair', label: 'Structural Support/Repair' },
 ];
 

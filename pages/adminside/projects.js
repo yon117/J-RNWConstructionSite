@@ -551,6 +551,7 @@ export default function AdminProjects() {
             deck: 'deck-repair',
             mold: 'mold-mitigation',
             ceiling: 'ceiling-repair',
+            'dry-rot': 'dry-rot-repair',
             'structural-repair': 'structural-support-repair'
         };
         return labels[category] || category || 'construction-project';
@@ -771,6 +772,7 @@ export default function AdminProjects() {
                                 <option value="deck">Deck</option>
                                 <option value="mold">Mold</option>
                                 <option value="ceiling">Ceiling</option>
+                                <option value="dry-rot">Dry Rot</option>
                                 <option value="structural-repair">Structural Support/Repair</option>
                             </select>
                         </div>
@@ -912,6 +914,7 @@ export default function AdminProjects() {
                                                     <option value="deck" style={{background:'#2a2a2a',color:'#fff'}}>Deck</option>
                                                     <option value="mold" style={{background:'#2a2a2a',color:'#fff'}}>Mold</option>
                                                     <option value="ceiling" style={{background:'#2a2a2a',color:'#fff'}}>Ceiling</option>
+                                                    <option value="dry-rot" style={{background:'#2a2a2a',color:'#fff'}}>Dry Rot</option>
                                                     <option value="structural-repair" style={{background:'#2a2a2a',color:'#fff'}}>Structural Support/Repair</option>
                                                 </select>
                                             </td>

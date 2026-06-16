@@ -152,6 +152,7 @@ const translations = {
         filterDeck: 'Deck',
         filterMold: 'Mold',
         filterCeiling: 'Ceiling',
+        filterDryRot: 'Dry Rot',
         filterStructuralRepair: 'Structural Support/Repair',
 
         // Service detail page
@@ -321,6 +322,7 @@ const translations = {
         filterDeck: 'Deck',
         filterMold: 'Moho',
         filterCeiling: 'Techo',
+        filterDryRot: 'Madera podrida',
         filterStructuralRepair: 'Soporte/Reparación estructural',
 
         // Service detail page
