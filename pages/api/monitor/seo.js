@@ -44,6 +44,22 @@ async function safeReadFile(filePath) {
     }
 }
 
+async function safeFetchText(url) {
+    try {
+        const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+        if (!res.ok) return '';
+        return await res.text();
+    } catch {
+        return '';
+    }
+}
+
+function getBaseUrl(req) {
+    const proto = req.headers['x-forwarded-proto'] || 'https';
+    const host = req.headers['x-forwarded-host'] || req.headers.host || 'jandrnw.com';
+    return `${proto}://${host}`;
+}
+
 async function tableExists(db, name) {
     try {
         const result = await db.execute({
@@ -198,7 +214,7 @@ export default async function handler(req, res) {
                 })
                 : Promise.resolve({ rows: [] }),
             safeReadFile(path.join(process.cwd(), 'public', 'robots.txt')),
-            safeReadFile(path.join(process.cwd(), 'public', 'sitemap.xml')),
+            safeFetchText(`${getBaseUrl(req)}/sitemap.xml`),
             safeReadFile(path.join(process.cwd(), 'components', 'Layout.js')),
             safeReadFile(path.join(process.cwd(), 'pages', 'services.js')),
             safeReadFile(path.join(process.cwd(), 'pages', 'services', '[id].js')),
