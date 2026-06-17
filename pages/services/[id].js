@@ -10,6 +10,8 @@ import { useLang } from '../../context/LanguageContext';
 import { imageUrl } from '../../utils/imageUrl';
 import { sanitizeServiceObject, sanitizeServiceText } from '../../utils/sanitizeServiceText';
 
+const { mergeDefaultServices } = require('../../lib/defaultServices');
+
 const ArrowIcon = () => (
     <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -609,12 +611,7 @@ export async function getServerSideProps({ params, req }) {
 
         console.log('Total services in database:', servicesResult.rows?.length || 0);
 
-        if (!servicesResult.rows || servicesResult.rows.length === 0) {
-            console.log('ERROR: No services found in database');
-            return { notFound: true };
-        }
-
-        const services = servicesResult.rows.map((item) => ({
+        const services = mergeDefaultServices((servicesResult.rows || []).map((item) => ({
             id: item.id,
             title: item.title || '',
             description: item.description || '',
@@ -643,7 +640,7 @@ export async function getServerSideProps({ params, req }) {
             faq_a_4: item.faq_a_4 || '',
             faq_q_5: item.faq_q_5 || '',
             faq_a_5: item.faq_a_5 || '',
-        }));
+        })));
 
         console.log('Available services:');
         services.forEach((item) => {

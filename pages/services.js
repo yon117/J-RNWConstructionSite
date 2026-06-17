@@ -12,6 +12,8 @@ import pageStyles from '../styles/Services.module.css';
 import { imageUrl } from '../utils/imageUrl';
 import { sanitizeServiceText } from '../utils/sanitizeServiceText';
 
+const { findDefaultService, mergeDefaultServices } = require('../lib/defaultServices');
+
 const ArrowIcon = () => (
     <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -210,7 +212,12 @@ export default function Services({ services }) {
                             const serviceUrl = `/services/${getServiceSlug(service)}`;
                             const tag = getServiceTag(index);
                             const serviceTitle = sanitizeServiceText(service.title) || service.title;
-                            const serviceDescription = sanitizeServiceText(service.description) || '';
+                            const defaultService = findDefaultService(service);
+                            const isMoldService = `${serviceTitle} ${service.slug || ''}`.toLowerCase().includes('mold');
+                            const moldDescription = 'Mold mitigation for homes affected by moisture, leaks, poor ventilation, or water damage. We remove damaged materials, treat affected areas, and rebuild cleanly.';
+                            const serviceDescription = sanitizeServiceText(
+                                isMoldService ? moldDescription : service.description || defaultService?.description
+                            ) || '';
 
                             return (
                                 <MobileContainerScrollCard
@@ -269,13 +276,13 @@ export async function getStaticProps() {
     const db = await getDb();
     const result = await db.execute('SELECT id, title, description, image, slug FROM services');
     const rows = result.rows || [];
-    const services = rows.map((service) => ({
+    const services = mergeDefaultServices(rows.map((service) => ({
         id: service.id,
         title: service.title || '',
         description: service.description || '',
         image_url: service.image || '/assets/placeholder.jpg',
         slug: service.slug || '',
-    }));
+    })));
 
     _servicesCache = services;
     _servicesCacheTime = Date.now();

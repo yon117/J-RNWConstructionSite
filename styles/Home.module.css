@@ -205,7 +205,7 @@
 
 .heroCutLineBody {
     font-family: 'Barlow', sans-serif;
-    font-size: clamp(14px, 1.65vw, 17px);
+    font-size: clamp(16.9px, 2vw, 20.6px);
     font-weight: 400;
     line-height: 1.55;
     color: var(--text);
@@ -215,9 +215,23 @@
 }
 
 .heroCutLineCities {
-    font-size: 13px;
+    font-size: 15.7px;
     opacity: 0.7;
     padding-top: 0.55em;
+}
+
+.heroCutLineServiceArea {
+    display: inline-block !important;
+    width: fit-content;
+    max-width: min(100%, 760px);
+    margin-top: 8px;
+    padding: 10px 14px 11px;
+    border-left: 3px solid var(--gold);
+    border-radius: 4px;
+    background: rgba(200, 150, 30, 0.12);
+    color: #f7d77b;
+    opacity: 1;
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.18);
 }
 
 .heroCycler {
@@ -442,12 +456,19 @@
     }
 
     .heroCutLineBody {
-        font-size: 14px;
+        font-size: 16.9px;
         line-height: 1.55;
     }
 
     .heroCutLineCities {
-        font-size: 12px;
+        font-size: 14.5px;
+    }
+
+    .heroCutLineServiceArea {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 10px;
+        padding: 10px 12px;
     }
 
     .heroCycler {
@@ -3028,6 +3049,12 @@
 :global([data-theme="light"]) .trustItem,
 :global([data-theme="light"]) .heroCredentials {
   color: rgba(245, 243, 239, 0.9);
+}
+
+:global([data-theme="light"]) .heroCutLineServiceArea {
+  color: #f7d77b;
+  background: rgba(200, 150, 30, 0.16);
+  border-left-color: var(--gold);
 }
 
 :global([data-theme="light"]) .heroReviewCount,

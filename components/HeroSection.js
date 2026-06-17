@@ -110,17 +110,25 @@ export default function HeroSection({
               transition={{ ...B_SPRING, delay: 0.78 }}
               className={styles.heroCutLineBody}
             >
-              {"Drywall · Restoration · Mitigation · Emergency Services."}
+              {"Drywall · Restoration · Mitigation · Mold."}
             </VerticalCutReveal>
 
             <VerticalCutReveal
-              splitBy="words"
-              staggerDuration={0.04}
-              staggerFrom="first"
+              splitBy="lines"
               transition={{ ...B_SPRING, delay: 0.90 }}
-              className={`${styles.heroCutLineBody} ${styles.heroCutLineCities}`}
+              className={styles.heroCutLineBody}
             >
-              {"Portland · Tigard · Tualatin · Gresham · Happy Valley · Oregon City"}
+              {"Structural Support/Repair · Emergency Services."}
+            </VerticalCutReveal>
+
+            <VerticalCutReveal
+              splitBy="lines"
+              staggerDuration={0.06}
+              staggerFrom="first"
+              transition={{ ...B_SPRING, delay: 1.02 }}
+              className={`${styles.heroCutLineBody} ${styles.heroCutLineCities} ${styles.heroCutLineServiceArea}`}
+            >
+              {"Service Area: Portland · Tigard · Tualatin · Gresham · Happy Valley · Oregon City\nNot listed? Contact us to confirm coverage."}
             </VerticalCutReveal>
 
           </h1>
