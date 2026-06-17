@@ -15,9 +15,9 @@ const nextConfig = {
     return [
       { source: '/services/paiting', destination: '/services/painting', permanent: true },
       { source: '/services/paint', destination: '/services/painting', permanent: true },
-      { source: '/services/interior-construction-and-remodeling', destination: '/services', permanent: true },
-      { source: '/services/restoration-and-reconstruction', destination: '/services', permanent: true },
-      { source: '/services/mitigation-and-emergency-services', destination: '/services', permanent: true },
+      { source: '/services/interior-construction-and-remodeling', destination: '/services/remodeling', permanent: true },
+      { source: '/services/restoration-and-reconstruction', destination: '/services/reconstruction', permanent: true },
+      { source: '/services/mitigation-and-emergency-services', destination: '/services/mitigation', permanent: true },
     ];
   },
 

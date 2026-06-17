@@ -68,9 +68,9 @@ const SITE_URL = 'https://jandrnw.com';
 const DEFAULT_DESCRIPTION = 'J&R NW Construction — Portland\'s trusted general contractor. Home remodeling, siding installation, water damage restoration & repairs. Licensed, bonded & insured. CCB #232708. Call (503) 998-2340.';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/assets/home-hero-bg.jpg`;
 const SERVICE_LINKS = [
-    { href: '/services', labelKey: 'pt1' },
-    { href: '/services', labelKey: 'pt2' },
-    { href: '/services', labelKey: 'pt3' },
+    { href: '/services/remodeling', labelKey: 'pt1' },
+    { href: '/services/reconstruction', labelKey: 'pt2' },
+    { href: '/services/mitigation', labelKey: 'pt3' },
     { href: '/services/siding', labelKey: 'pt6' },
     { href: '/services/painting', labelKey: 'pt5' },
     { href: '/services/drywall', labelKey: 'pt7' },
