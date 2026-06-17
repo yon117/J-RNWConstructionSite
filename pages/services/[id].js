@@ -224,7 +224,7 @@ export default function ServiceDetails({ service, images, randomProjects }) {
         <Layout
             title={`${pageTitle} | Portland OR | J&R NW Construction`}
             description={service.description ? `${sanitizeServiceText(service.description).slice(0, 155).trim()}.` : `Professional ${svc.title} services in Portland, OR by J&R NW Construction. Licensed and insured contractor. CCB #232708. Free estimates call (503) 998-2340.`}
-            canonical={`/services/${service.id}`}
+            canonical={`/services/${service.slug || service.id}`}
             onContactClick={() => setShowContactModal(true)}
         >
             <div className={styles.serviceDetailsPage}>

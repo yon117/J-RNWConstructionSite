@@ -16,12 +16,14 @@ export default async function handler(req, res) {
         return res.status(200).json({ ok: true });
     }
 
+    const cleanPath = path.split('?')[0];
+
     try {
         const db = await getDb();
         await db.execute(CREATE_TABLE);
         await db.execute({
             sql: 'INSERT INTO page_views (path, referrer, device_type) VALUES (?, ?, ?)',
-            args: [path, referrer || '', device_type || 'desktop'],
+            args: [cleanPath, referrer || '', device_type || 'desktop'],
         });
         res.status(200).json({ ok: true });
     } catch (error) {

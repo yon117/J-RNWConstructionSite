@@ -159,7 +159,7 @@ export default function Services({ services }) {
                     url: 'https://jandrnw.com',
                 },
                 areaServed: 'Portland Metro, OR',
-                url: `https://jandrnw.com/services/${service.id}`,
+                url: `https://jandrnw.com/services/${service.slug || service.id}`,
             },
         })),
     };

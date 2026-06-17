@@ -3,5 +3,6 @@ Allow: /
 Disallow: /admin/
 Disallow: /adminside/
 Disallow: /api/
+Disallow: /service-preview/
 
 Sitemap: https://jandrnw.com/sitemap.xml
