@@ -129,26 +129,22 @@
 .heroBadge {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    background: rgba(200, 150, 30, 0.12);
-    border: 1px solid rgba(200, 150, 30, 0.35);
-    border-radius: 2px;
-    padding: 5px 14px;
-    font-size: 11px;
-    font-weight: 600;
+    gap: 0;
+    background: none;
+    border: none;
+    border-left: 2px solid var(--gold);
+    border-radius: 0;
+    padding: 3px 0 3px 10px;
+    font-size: 10px;
+    font-weight: 700;
     color: var(--gold);
-    letter-spacing: 0.15em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     margin-bottom: 28px;
 }
 
 .heroBadgeDot {
-    width: 6px;
-    height: 6px;
-    background: var(--gold);
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-    flex-shrink: 0;
+    display: none;
 }
 
 @keyframes pulse {
@@ -214,6 +210,10 @@
     padding-top: 0.4em;
 }
 
+.heroCutLineServices {
+    color: rgba(232, 215, 170, 0.85);
+}
+
 .heroCutLineCities {
     font-size: 15.7px;
     opacity: 0.7;
@@ -246,7 +246,7 @@
     max-width: 620px;
     min-width: 0;
     z-index: 2;
-    align-self: start;
+    align-self: center;
     justify-self: center;
     transform: translateX(-8px);
 }
@@ -257,7 +257,7 @@
     max-width: 456px;
     min-width: 0;
     z-index: 2;
-    align-self: start;
+    align-self: center;
     justify-self: start;
 }
 
@@ -285,51 +285,78 @@
     width: 100%;
 }
 
+.heroActionsRow {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
 .btnPrimary {
-    background: var(--gold);
-    color: var(--dark);
-    padding: 14px 28px;
+    background: #C5A028;
+    color: #1B2A44;
+    padding: 15px 36px;
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 15px;
     font-weight: 700;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.09em;
     text-transform: uppercase;
     border: none;
-    border-radius: 3px;
+    border-radius: 2px;
     cursor: pointer;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    transition: background 0.2s, transform 0.2s;
     min-height: 48px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 16px 34px rgba(200, 150, 30, 0.22);
-}
-
-.btnPrimary::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: -65%;
-    width: 42%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.26), transparent);
-    transform: skewX(-22deg);
-    animation: ctaSheen 7s ease-in-out infinite;
-    pointer-events: none;
+    transition: filter 0.12s;
 }
 
 .btnPrimary:hover {
-    background: var(--gold-light);
-    transform: translateY(-1px);
-    color: var(--dark);
+    filter: brightness(1.08);
+    color: #1B2A44;
 }
 
 .btnPrimary:focus-visible {
-    outline: 2px solid var(--gold);
+    outline: 2px solid #C5A028;
     outline-offset: 3px;
+}
+
+.btnEmergency {
+    background: #9B2C2C;
+    color: #ffffff;
+    padding: 15px 22px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    transition: filter 0.12s;
+}
+
+.btnEmergency:hover {
+    filter: brightness(1.12);
+    color: #ffffff;
+}
+
+.btnEmergency:focus-visible {
+    outline: 2px solid #9B2C2C;
+    outline-offset: 3px;
+}
+
+.btnEmDiv {
+    width: 1px;
+    height: 1.1em;
+    background: rgba(255, 255, 255, 0.38);
+    margin: 0 13px;
+    flex-shrink: 0;
+    display: inline-block;
 }
 
 .btnSecondary {
@@ -482,7 +509,8 @@
     }
 
     .btnPrimary,
-    .btnSecondary {
+    .btnSecondary,
+    .btnEmergency {
         width: 100%;
         justify-content: center;
         min-height: 56px;
@@ -832,6 +860,14 @@
     background: var(--surface-1);
 }
 
+.desktopOnly {
+    display: block;
+}
+
+.mobileOnly {
+    display: none;
+}
+
 .mobileSectionToggle {
     display: none;
 }
@@ -859,6 +895,14 @@
 
     .trustBandValue {
         font-size: 24px;
+    }
+
+    .desktopOnly {
+        display: none;
+    }
+
+    .mobileOnly {
+        display: block;
     }
 
     .mobileSectionBlock {
@@ -896,6 +940,18 @@
 
     .mobileSectionBlockOpen .mobileSectionPanel {
         display: block;
+    }
+
+    .mobileSectionAlwaysOpen .mobileSectionToggle {
+        display: none;
+    }
+
+    .mobileSectionAlwaysOpen .mobileSectionPanel {
+        display: block;
+    }
+
+    .heroActionsRow {
+        justify-content: center;
     }
 
     .sectionLabel {
@@ -1917,7 +1973,8 @@
     }
 
     .btnPrimary,
-    .btnSecondary {
+    .btnSecondary,
+    .btnEmergency {
         justify-content: center;
         width: 100%;
     }

@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import Layout from '../components/Layout';
@@ -157,7 +158,7 @@ const PROCESS_STEPS = [
     { Icon: HowWeWorkPhoneIcon,    num: '01', title: 'Free Consultation',  desc: 'Tell us about your project. We listen before we plan.' },
     { Icon: HowWeWorkClipboardIcon, num: '02', title: 'Custom Plan & Quote', desc: 'Transparent pricing with no hidden surprises.'          },
     { Icon: HowWeWorkHammerIcon,   num: '03', title: 'Quality Construction', desc: 'We build with care, on schedule and on budget.'        },
-    { Icon: HowWeWorkCheckIcon,    num: '04', title: 'Final Walkthrough',   desc: 'Your satisfaction is the only sign-off that counts.'   },
+    { Icon: HowWeWorkCheckIcon,    num: '04', title: 'Final Walkthrough',   desc: 'We review every detail together — your work is backed by our written workmanship warranty.', stepLink: '/warranty', stepLinkText: 'Learn more →' },
 ];
 
 // Static service cards for the home preview
@@ -316,7 +317,8 @@ export default function Home({ projects = [] }) {
     const [projectCycle, setProjectCycle] = useState(0);
     const [projectSwapPhase, setProjectSwapPhase] = useState('enter');
     const visibleProjectsRef = useRef(visibleProjects);
-    const { t } = useLang();
+    const { t, lang } = useLang();
+    const isEs = lang === 'es';
 
     const handleEstimateClick = () => {
         setShowContactModal(true);
@@ -415,6 +417,25 @@ export default function Home({ projects = [] }) {
             onContactClick={() => setShowContactModal(true)}
         >
 
+            {/* FAQPage structured data */}
+            <Head>
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "FAQPage",
+                        "mainEntity": [
+                            { "@type": "Question", "name": "How fast can you start?", "acceptedAnswer": { "@type": "Answer", "text": "We typically respond within 2 hours and can schedule a free estimate the same or next day. Many emergency jobs start same day." } },
+                            { "@type": "Question", "name": "How much does it cost?", "acceptedAnswer": { "@type": "Answer", "text": "Every project is different. We offer free, no-obligation estimates with detailed written quotes. No hidden fees, no surprises." } },
+                            { "@type": "Question", "name": "Are you licensed and insured?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Oregon CCB #232708. Fully licensed, bonded, and insured. We carry full liability and workers' compensation coverage on every job." } },
+                            { "@type": "Question", "name": "Do you work with insurance claims?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. We regularly work alongside insurance adjusters for water damage, fire, and structural repairs. We document everything for your claim." } },
+                            { "@type": "Question", "name": "What areas do you serve?", "acceptedAnswer": { "@type": "Answer", "text": "Serving Portland, Tigard, Tualatin, Gresham, Happy Valley, Oregon City, Milwaukie, Hillsboro & Beaverton." } },
+                            { "@type": "Question", "name": "Do you guarantee your work?", "acceptedAnswer": { "@type": "Answer", "text": "Yes — in writing. Our work is backed by a written workmanship warranty of up to 5 years depending on the service (5 years on siding, 4 on painting). See full terms at https://jandrnw.com/warranty" } },
+                        ]
+                    }) }}
+                />
+            </Head>
+
             {/* ── HERO ── */}
             <HeroSection
                 t={t}
@@ -444,20 +465,16 @@ export default function Home({ projects = [] }) {
             {/* Left section nav — desktop only */}
             <LeftNav sections={HOME_NAV_SECTIONS} />
 
-            <div id="mobile-services" className={`${styles.mobileSectionBlock} ${mobileOpenSection === 'services' ? styles.mobileSectionBlockOpen : ''}`}>
-            <button
-                type="button"
-                className={styles.mobileSectionToggle}
-                onClick={() => handleMobileSectionToggle('services', 'mobile-services')}
-            >
-                <span>Services</span>
-                <span className={styles.mobileSectionToggleIcon}>{mobileOpenSection === 'services' ? '-' : '+'}</span>
-            </button>
+            {/* ── REVIEWS — always visible ── */}
+            <div className={`${styles.mobileSectionBlock} ${styles.mobileSectionAlwaysOpen}`}>
             <div className={styles.mobileSectionPanel}>
-            {/* ── ROW: PROCESS + SERVICES ── */}
-            <div className={styles.horizRow} data-layout="horiz-row">
+            <Reviews sectionId="section-reviews" />
+            </div>
+            </div>
 
-              {/* ── BENTO: HOW WE WORK + HANDLE EVERYTHING ── */}
+            {/* ── DESKTOP: How We Work + Services side by side (original layout) ── */}
+            <div className={styles.desktopOnly}>
+            <div className={styles.horizRow} data-layout="horiz-row">
               <section id="section-process" className={`${styles.bentoSection} ${styles.mobileProcessOrder}`}>
                   <div className={styles.bentoGrid}>
                       <div className={styles.bentoPrimary} data-anim="fade-up">
@@ -470,7 +487,7 @@ export default function Home({ projects = [] }) {
                                       <div>
                                           <div className={styles.hwwIcon}><step.Icon /></div>
                                           <h3 className={styles.hwwStepTitle}>{step.title}</h3>
-                                          <p className={styles.hwwStepDesc}>{step.desc}</p>
+                                          <p className={styles.hwwStepDesc}>{step.desc}{step.stepLink && <> <Link href={step.stepLink} style={{ color: '#C5A028', fontSize: '0.85em' }}>{step.stepLinkText}</Link></>}</p>
                                       </div>
                                   </div>
                               ))}
@@ -497,8 +514,6 @@ export default function Home({ projects = [] }) {
                       </div>
                   </div>
               </section>
-
-              {/* ── SERVICES PREVIEW ── */}
               <section id="section-services" className={`${styles.servicesSection} ${styles.mobileServicesOrder}`} data-anim="section-reveal">
                   <div className={styles.servicesInner}>
                       <div className={styles.servicesLeft} data-anim="fade-up">
@@ -543,23 +558,109 @@ export default function Home({ projects = [] }) {
                       </div>
                   </div>
               </section>
-
-            </div>{/* end horizRow process+services */}
             </div>
             </div>
 
-            <div id="mobile-reviews" className={`${styles.mobileSectionBlock} ${mobileOpenSection === 'reviews' ? styles.mobileSectionBlockOpen : ''}`}>
+            {/* ── MOBILE: How We Work always visible + Services accordion ── */}
+            <div className={styles.mobileOnly}>
+            <div className={`${styles.mobileSectionBlock} ${styles.mobileSectionAlwaysOpen}`}>
+            <div className={styles.mobileSectionPanel}>
+            <section className={`${styles.bentoSection} ${styles.mobileProcessOrder}`}>
+                  <div className={styles.bentoGrid}>
+                      <div className={styles.bentoPrimary} data-anim="fade-up">
+                          <div className={styles.sectionLabel}>How We Work</div>
+                          <h2 className={styles.sectionTitle}>From First Call to <em>Final Nail</em></h2>
+                          <div className={styles.hwwStepsCompact} data-anim="stagger-group">
+                              {PROCESS_STEPS.map((step) => (
+                                  <div key={`m-${step.num}`} className={styles.hwwStepCompact} data-anim-child>
+                                      <div className={styles.hwwNumSmall}>{step.num}</div>
+                                      <div>
+                                          <div className={styles.hwwIcon}><step.Icon /></div>
+                                          <h3 className={styles.hwwStepTitle}>{step.title}</h3>
+                                          <p className={styles.hwwStepDesc}>{step.desc}{step.stepLink && <> <Link href={step.stepLink} style={{ color: '#C5A028', fontSize: '0.85em' }}>{step.stepLinkText}</Link></>}</p>
+                                      </div>
+                                  </div>
+                              ))}
+                          </div>
+                      </div>
+                      <div className={styles.bentoStack}>
+                          <div className={styles.bentoTopCard} data-anim="fade-up">
+                              <div className={styles.sectionLabel}>One Call. Zero Stress.</div>
+                              <h2 className={styles.sectionTitle}>We Handle <em>Everything</em></h2>
+                              <p className={styles.handleSubtitle}>Materials, disposal, cleanup — we own the whole job. You come home to a space that looks like new.</p>
+                          </div>
+                          <div className={styles.bentoHandleGrid} data-anim="stagger-group">
+                              {HANDLE_ITEMS.map((item, i) => (
+                                  <div key={`mh-${i}`} className={styles.bentoCard} data-anim-child>
+                                      <div className={styles.handleCardTop}>
+                                          <div className={styles.handleIcon}><item.Icon /></div>
+                                          <span className={styles.handleStepNum}>0{i + 1}</span>
+                                      </div>
+                                      <h3 className={styles.handleCardTitle}>{item.title}</h3>
+                                      <p className={styles.handleCardDesc}>{item.desc}</p>
+                                  </div>
+                              ))}
+                          </div>
+                      </div>
+                  </div>
+              </section>
+            </div>
+            </div>
+            <div id="mobile-services" className={`${styles.mobileSectionBlock} ${mobileOpenSection === 'services' ? styles.mobileSectionBlockOpen : ''}`}>
             <button
                 type="button"
                 className={styles.mobileSectionToggle}
-                onClick={() => handleMobileSectionToggle('reviews', 'mobile-reviews')}
+                onClick={() => handleMobileSectionToggle('services', 'mobile-services')}
             >
-                <span>Reviews</span>
-                <span className={styles.mobileSectionToggleIcon}>{mobileOpenSection === 'reviews' ? '-' : '+'}</span>
+                <span>Services</span>
+                <span className={styles.mobileSectionToggleIcon}>{mobileOpenSection === 'services' ? '-' : '+'}</span>
             </button>
             <div className={styles.mobileSectionPanel}>
-            {/* ── REVIEWS ── */}
-            <Reviews sectionId="section-reviews" />
+              <section className={`${styles.servicesSection} ${styles.mobileServicesOrder}`} data-anim="section-reveal">
+                  <div className={styles.servicesInner}>
+                      <div className={styles.servicesLeft} data-anim="fade-up">
+                          <div className={styles.sectionLabel}>{t.ourServicesLabel || 'What We Do'}</div>
+                          <h2 className={styles.sectionTitle}>
+                              {t.ourServices.split(' ')[0]} <em>{t.ourServices.split(' ').slice(1).join(' ')}</em>
+                          </h2>
+                          <p className={styles.servicesLeftDesc}>
+                              From emergency response to full remodels — we handle every project under one roof.
+                          </p>
+                          <Link href="/services" className={styles.btnSecondary} style={{ marginTop: 28 }}>
+                              {t.ourServices} <ArrowIcon />
+                          </Link>
+                      </div>
+                      <div className={styles.servicesRight}>
+                          <div className={styles.servicesGrid} data-anim="stagger-group">
+                              {HOME_SERVICES.map((svc, idx) => (
+                                  <Link href={`/services/${HOME_SERVICE_SLUGS[svc.key]}`} key={`ms-${svc.key}`} className={styles.serviceCard} data-anim="service-card">
+                                      <div className={styles.serviceCardGhostNum}>{String(idx + 1).padStart(2, '0')}</div>
+                                      <div className={styles.serviceCardNum}>
+                                          <span className={styles.serviceCardIndex}>{String(idx + 1).padStart(2, '0')}</span>
+                                          <span className={styles.serviceCardTotal}>&nbsp;/ {String(HOME_SERVICES.length).padStart(2, '0')}</span>
+                                          <span className={styles.serviceCardCat}>{svc.category}</span>
+                                      </div>
+                                      <div className={styles.serviceName}>{t[svc.key]}</div>
+                                      <p className={styles.serviceDesc}>{svc.desc}</p>
+                                      <span className={styles.serviceLink}>{t.learnMore} &rarr;</span>
+                                  </Link>
+                              ))}
+                          </div>
+                          <div className={styles.emergencyStrip}>
+                              <div className={styles.emergencyStripContent}>
+                                  <div>
+                                      <h3 className={styles.emergencyStripTitle}>Need Immediate Assistance?</h3>
+                                      <p className={styles.emergencyStripDesc}>Our emergency response teams are on standby 24/7 to handle critical property damage and restoration needs.</p>
+                                  </div>
+                                  <a href="tel:5039982340" className={styles.emergencyStripBtn} onClick={() => { if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'phone_click', { event_category: 'contact', event_label: 'emergency_strip' }); }}>
+                                      Call (503) 998-2340
+                                  </a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </section>
+            </div>
             </div>
             </div>
 
@@ -670,7 +771,12 @@ export default function Home({ projects = [] }) {
                         <h2 className={styles.sectionTitle}>
                             J&amp;R NW <em>Construction</em>
                         </h2>
-                        <p>{t.companyDesc}</p>
+                        {t.companyDesc.split('\n\n').map((para, i) => (
+                            <p key={i} style={{ marginBottom: '0.9em', lineHeight: 1.75 }}>{para}</p>
+                        ))}
+                        {t.companyDescSig && (
+                            <p style={{ marginTop: '1.2em', fontSize: '0.82rem', opacity: 0.55, fontStyle: 'italic' }}>— {t.companyDescSig}</p>
+                        )}
                     </div>
                 </div>
             </section>
@@ -741,7 +847,7 @@ export default function Home({ projects = [] }) {
                             { cat: 'Compliance', q: t.faqQ3, a: t.faqA3 },
                             { cat: 'Claims',     q: t.faqQ4, a: t.faqA4 },
                             { cat: 'Logistics',  q: t.faqQ5, a: t.faqA5 },
-                            { cat: 'Quality',    q: t.faqQ6, a: t.faqA6 },
+                            { cat: 'Quality',    q: t.faqQ6, a: t.faqA6, warrantyLink: true },
                         ].map((item, i) => (
                             <div key={i} className={`${styles.faqAccordion} ${openFaqs.has(i) ? styles.faqOpen : ''}`} data-anim="faq-item">
                                 <button className={styles.faqTrigger} onClick={() => setOpenFaqs(prev => { const n = new Set(prev); n.has(i) ? n.delete(i) : n.add(i); return n; })}>
@@ -756,7 +862,7 @@ export default function Home({ projects = [] }) {
                                     </span>
                                 </button>
                                 <div className={styles.faqAnswer}>
-                                    <p>{item.a}</p>
+                                    <p>{item.a}{item.warrantyLink && <> <Link href="/warranty" style={{ color: '#C5A028', textDecoration: 'underline' }}>{isEs ? 'Ver términos completos de garantía.' : 'See our full warranty terms.'}</Link></>}</p>
                                 </div>
                             </div>
                         ))}
