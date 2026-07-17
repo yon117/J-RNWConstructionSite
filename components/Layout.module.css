@@ -622,31 +622,31 @@
 .footerBadges {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 0;
     flex-wrap: wrap;
 }
 
 .footerBadge {
     display: flex;
     align-items: center;
-    gap: 4px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 2px;
-    padding: 3px 10px;
-    font-size: 10px;
+    gap: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+    padding: 0 12px;
+    font-size: 9px;
     font-weight: 600;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--text);
+    color: rgba(255, 255, 255, 0.38);
+}
+
+.footerBadge + .footerBadge {
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .footerBadgeDot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--gold);
-    flex-shrink: 0;
+    display: none;
 }
 
 /* ─── RESPONSIVE ─────────────────────────────────── */
@@ -840,30 +840,34 @@
     gap: 10px;
 }
 .emergencyBtn {
-    background: #b84040;
+    background: #9B2C2C;
     color: #fff;
     border: none;
-    border-radius: 8px;
+    border-radius: 2px;
     padding: 13px 20px;
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.1em;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 8px;
-    box-shadow: 0 4px 24px rgba(184,64,64,0.4);
-    transition: background 0.2s, box-shadow 0.2s;
+    gap: 0;
+    transition: filter 0.12s;
     white-space: nowrap;
 }
-.emergencyBtn:hover { background: #c94a4a; box-shadow: 0 6px 30px rgba(184,64,64,0.6); }
+.emergencyBtn:hover { filter: brightness(1.12); }
 .emergencyDot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #fff;
-    animation: pulse 1.4s infinite;
+    display: none;
+}
+.emergencyDivider {
+    width: 1px;
+    height: 1.1em;
+    background: rgba(255, 255, 255, 0.38);
+    margin: 0 12px;
     flex-shrink: 0;
+    display: inline-block;
 }
 @keyframes pulse {
     0%, 100% { opacity: 1; transform: scale(1); }
@@ -1065,7 +1069,8 @@
     color: #8A9BAA;
 }
 :global([data-theme="light"]) .footerBadge {
-    color: #D4CFC8;
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(255, 255, 255, 0.08);
+    color: rgba(30, 30, 30, 0.38);
+}
+:global([data-theme="light"]) .footerBadge + .footerBadge {
+    border-left-color: rgba(0, 0, 0, 0.12);
 }

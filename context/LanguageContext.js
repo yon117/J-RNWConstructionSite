@@ -18,7 +18,7 @@ const translations = {
         callUs: 'Call Us Now!! 24/7 Phone |',
 
         // Hero
-        yourTrusted: "Portland's #1",
+        yourTrusted: "Portland's Trusted",
         generalContractor: 'General Contractor',
         inOregon: 'in Oregon',
         licensed: 'Licensed',
@@ -26,7 +26,8 @@ const translations = {
         insured: 'Insured',
         heroItem1: 'Serving Homes & Businesses for Over 20 Years',
         heroItem2: 'Remodeling · Additions · Siding · Painting',
-        heroItem3: 'Drywall · Restoration · Mitigation · Emergency Services',
+        heroItem3: 'Drywall · Restoration · Mitigation · Mold',
+        heroItem4: 'Structural Support/Repair · Emergency Services',
         lookUsUp: 'Look us up on',
         fullyLicensed: 'Fully Licensed & Insured · 100% Satisfaction Guarantee',
         accredited: 'Accredited',
@@ -82,15 +83,17 @@ const translations = {
 
         // About / original hero
         weWorkForYou: 'We Work For You',
-        companyDesc: "At J&R NW Construction, our mission is to deliver reliable, high-quality residential and light commercial remodels, siding projects, and interior/exterior reconstruction. With over 20 years of experience, our family-owned team is dedicated to restoring not just buildings—but confidence, comfort, and long-term value. From water mitigation and full restoration to interior upgrades, exterior improvements, and complete siding remodels, we provide end-to-end solutions built on craftsmanship, safety, and integrity. Every project is approached with the same commitment: to protect your property, enhance your space, and exceed your expectations. We don't just repair and remodel—we help rebuild trust in the places you live and work.",
+        companyDesc: "J&R NW Construction was built the honest way: on the job site, with a crew whose combined experience spans more than 20 years in the trade.\n\nIn those years we saw the same thing again and again: for a family or a business owner, a burst pipe, storm damage, or a remodel gone wrong isn't just a construction problem. It's stress in the place that's supposed to be your refuge. That's why this company exists: to restore not just buildings, but confidence, comfort, and peace of mind.\n\nWe treat every client like family. Whether it's an unexpected emergency or the project you've been dreaming about, we carry the weight of it from the first call to the final walkthrough, so you never have to carry it alone. Our crew walks into your home with the same care and respect they'd give their own — building quality that holds its value for years.\n\nWe don't just repair and remodel. We rebuild trust in the places where your life happens.",
+        companyDescSig: 'Julio Ramirez — Founder, J&R NW Construction · CCB #232708',
         companyDescShort: 'Family-owned and operated. Serving Oregon with integrity, craftsmanship, and 20+ years of experience.',
+        familyOwned: 'Family-owned — we treat your home like ours.',
 
         // Floating button & modals
         getEstimate: 'Get Your Free Estimate',
         getInTouch: 'Get in Touch',
 
         // Footer
-        copyright: '© 2025 J&R NW Construction LLC',
+        copyright: '© 2026 J&R NW Construction LLC',
         callUsNow: 'Call Us Now!!',
 
         // FAQ
@@ -107,7 +110,7 @@ const translations = {
         faqQ5: 'What areas do you serve?',
         faqA5: 'Serving Portland, Tigard, Tualatin, Gresham, Happy Valley, Oregon City, Milwaukie, Hillsboro & Beaverton.',
         faqQ6: 'Do you guarantee your work?',
-        faqA6: 'We do it right the first time — every time. Our crew takes full ownership of every project. 5-star ratings on Yelp and Google reflect the standard we hold ourselves to on every single job.',
+        faqA6: 'Yes — in writing. Our work is backed by a written workmanship warranty of up to 5 years depending on the service (5 years on siding, 4 on painting).',
 
         // Reviews section
         whatClientsSay: 'What Our Clients Say',
@@ -195,7 +198,8 @@ const translations = {
         insured: 'Garantizado',
         heroItem1: 'Sirviendo Hogares y Negocios por más de 20 Años',
         heroItem2: 'Remodelación · Adiciones · Revestimiento · Pintura',
-        heroItem3: 'Tablaroca · Restauración · Mitigación · Servicios de Emergencia',
+        heroItem3: 'Tablaroca · Restauración · Mitigación · Moho',
+        heroItem4: 'Soporte/Reparación estructural · Servicios de Emergencia',
         lookUsUp: 'Encuéntranos en',
         fullyLicensed: 'Totalmente Licenciado y Asegurado · 100% Garantía de Satisfacción',
         accredited: 'Acreditado',
@@ -252,15 +256,17 @@ const translations = {
 
         // About / original hero
         weWorkForYou: 'Trabajamos Para Ti',
-        companyDesc: 'En J&R NW Construction, nuestra misión es ofrecer remodelaciones residenciales y comerciales ligeras de alta calidad, proyectos de revestimiento y reconstrucción interior/exterior de manera confiable. Con más de 20 años de experiencia, nuestro equipo familiar está dedicado a restaurar no solo edificios, sino también la confianza, el confort y el valor a largo plazo. Desde mitigación de agua y restauración completa hasta mejoras interiores, mejoras exteriores y remodelaciones completas de revestimiento, ofrecemos soluciones integrales basadas en artesanía, seguridad e integridad. Cada proyecto se aborda con el mismo compromiso: proteger su propiedad, mejorar su espacio y superar sus expectativas.',
+        companyDesc: "J&R NW Construction se construyó de la manera honesta: en la obra, con un equipo que acumula más de 20 años de experiencia en el oficio.\n\nEn esos años vimos lo mismo una y otra vez: para una familia o el dueño de un negocio, una tubería rota, un daño por tormenta o una remodelación mal hecha no es solo un problema de construcción. Es estrés en el lugar que debería ser su refugio. Por eso existe esta empresa: para restaurar no solo edificios, sino la confianza, la comodidad y la tranquilidad.\n\nTratamos a cada cliente como familia. Ya sea una emergencia inesperada o el proyecto que siempre ha soñado, nosotros cargamos con el peso desde la primera llamada hasta el recorrido final, para que usted nunca lo cargue solo. Nuestro equipo entra a su casa con el mismo cuidado y respeto que le daría a la suya, construyendo calidad que conserva su valor por años.\n\nNo solo reparamos y remodelamos. Reconstruimos la confianza en los lugares donde pasa su vida.",
+        companyDescSig: 'Julio Ramirez — Fundador, J&R NW Construction · CCB #232708',
         companyDescShort: 'Empresa familiar. Sirviendo a Oregon con integridad, artesanía y más de 20 años de experiencia.',
+        familyOwned: 'Empresa familiar — tratamos su casa como la nuestra.',
 
         // Floating button & modals
         getEstimate: 'Obtén tu Estimado Gratis',
         getInTouch: 'Contáctanos',
 
         // Footer
-        copyright: '© 2025 J&R NW Construction LLC',
+        copyright: '© 2026 J&R NW Construction LLC',
         callUsNow: '¡Llámanos Ahora!!',
 
         // FAQ
@@ -277,7 +283,7 @@ const translations = {
         faqQ5: '¿Qué áreas sirven?',
         faqA5: 'Servimos Portland, Tigard, Tualatin, Gresham, Happy Valley, Oregon City, Milwaukie, Hillsboro y Beaverton.',
         faqQ6: '¿Garantizan su trabajo?',
-        faqA6: 'Lo hacemos bien desde la primera vez, siempre. Nuestro equipo asume total responsabilidad de cada proyecto. Las calificaciones de 5 estrellas en Yelp y Google reflejan el estándar que mantenemos en cada trabajo.',
+        faqA6: 'Sí — por escrito. Nuestro trabajo está respaldado por una garantía de mano de obra por escrito de hasta 5 años según el servicio (5 años en revestimiento, 4 en pintura).',
 
         // Reviews section
         whatClientsSay: 'Lo Que Dicen Nuestros Clientes',

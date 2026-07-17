@@ -249,8 +249,10 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                         "openingHours": "Mo-Su 00:00-24:00",
                         "address": {
                             "@type": "PostalAddress",
+                            "streetAddress": "17942 SE Division St",
                             "addressLocality": "Portland",
                             "addressRegion": "OR",
+                            "postalCode": "97236",
                             "addressCountry": "US"
                         },
                         "geo": {
@@ -518,6 +520,11 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                         </div>
                         <p>{t.companyDescShort || 'Family-owned and operated. Serving Oregon with integrity, craftsmanship, and 20+ years of experience.'}</p>
                         <div id="bbb-seal" style={{ marginTop: '10px' }} />
+                        <div style={{ marginTop: '8px', fontSize: '11px' }}>
+                            <a href="/warranty" style={{ color: '#C5A028', textDecoration: 'none', fontWeight: 600 }}>
+                                ✓ Up to 5-Year Workmanship Warranty
+                            </a>
+                        </div>
                         <div className={styles.footerSocials}>
                             <a href="https://www.facebook.com/JRNWConstruction/" target="_blank" rel="noreferrer"
                                 className={styles.footerSocialIcon} title="Facebook"><FacebookIcon /></a>
@@ -551,6 +558,16 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                             <li><a href="/projects">{t.projects}</a></li>
                             <li><Link href="/" style={{ color: 'inherit' }}>{t.navEstimate}</Link></li>
                             <li style={{ marginTop: '8px', fontSize: '11px', color: 'var(--gray)' }}>CCB: 232708</li>
+                            <li style={{ marginTop: '16px', fontSize: '11px', color: 'var(--gray)', lineHeight: 1.6 }}>
+                                J&amp;R NW Construction LLC<br />
+                                17942 SE Division St<br />
+                                Portland, OR 97236<br />
+                                <a href="tel:+15039982340" style={{ color: 'var(--gray)' }}>(503) 998-2340</a>
+                            </li>
+                            <li style={{ marginTop: '12px', fontSize: '11px' }}><a href="/warranty" style={{ color: 'var(--gray)' }}>Warranty</a></li>
+                            <li style={{ fontSize: '11px' }}><a href="/our-process" style={{ color: 'var(--gray)' }}>Our Process</a></li>
+                            <li style={{ marginTop: '8px', fontSize: '11px' }}><a href="/terms-of-use" style={{ color: 'var(--gray)' }}>Terms of Use</a></li>
+                            <li style={{ fontSize: '11px' }}><a href="/privacy-policy" style={{ color: 'var(--gray)' }}>Privacy Policy</a></li>
                         </ul>
                     </div>
                 </div>
@@ -587,8 +604,8 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                     onClick={() => setShowEmergency(v => !v)}
                     aria-label="Emergency contact"
                 >
-                    <span className={styles.emergencyDot} />
-                    <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.948V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 7V5z"/></svg>
+                    <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.948V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 7V5z"/></svg>
+                    <span className={styles.emergencyDivider} />
                     EMERGENCY – 24/7
                 </button>
             </div>
