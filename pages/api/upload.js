@@ -149,8 +149,8 @@ export default async function handler(req, res) {
                     // Copy file to uploads directory
                     fs.copyFileSync(file.filepath, filepath);
 
-                    // Auto-compress in background (non-blocking)
-                    compressUpload(filepath);
+                    // Compress before responding so client gets the smaller URL
+                    await compressUpload(filepath);
 
                     // Clean up temp file
                     try {

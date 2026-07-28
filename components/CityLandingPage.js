@@ -145,8 +145,8 @@ function ContactForm() {
                     {emailError && <p className={homeStyles.validationError}>{emailError}</p>}
                 </div>
                 <div className={homeStyles.formGroup}>
-                    <label>Project Type</label>
-                    <select name="projectType" value={form.projectType} onChange={handleChange} required>
+                    <label htmlFor="cityProjectType">Project Type</label>
+                    <select id="cityProjectType" name="projectType" value={form.projectType} onChange={handleChange} required>
                         <option value="" disabled>Select Service Type</option>
                         {PROJECT_TYPES.map(pt => <option key={pt} value={pt}>{pt}</option>)}
                     </select>

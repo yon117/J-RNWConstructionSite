@@ -54,7 +54,7 @@ export function VerticalCutReveal({
     <span
       className={className}
       style={{ display: 'block', ...containerStyle }}
-      aria-label={text}
+      aria-hidden="true"
     >
       {segments.map((seg, i) => {
         const delay = baseDelay + staggerDelay(i, segments.length, staggerFrom, staggerDuration);

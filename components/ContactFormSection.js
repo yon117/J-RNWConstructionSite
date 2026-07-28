@@ -162,7 +162,10 @@ export default function ContactFormSection() {
 
                         {/* Service Type Dropdown */}
                         <div style={{ width: '100%' }}>
+                            <label htmlFor="contactServiceType" style={{ display: 'none' }}>Service Type</label>
                             <select
+                                id="contactServiceType"
+                                aria-label="Service Type"
                                 value={contactForm.serviceType}
                                 onChange={e => setContactForm({ ...contactForm, serviceType: e.target.value, otherService: '' })}
                                 required

@@ -1,31 +1,23 @@
 /**
- * imageUrl(path)
+ * imageUrl(path, options)
  *
- * Devuelve la URL correcta para una imagen según el entorno:
- *  - En producción: devuelve el path tal cual (los archivos existen en el servidor).
- *  - En desarrollo local: si el path es /uploads/..., lo redirige al
- *    proxy local (/api/image-proxy?path=...) que hace fetch desde producción.
+ * Routes /uploads/ images through the Next.js image optimizer (/_next/image)
+ * for automatic WebP/AVIF conversion, resizing, and caching.
+ * Absolute URLs (Cloudinary, etc.) are returned as-is.
  *
- * Uso: <img src={imageUrl(service.image_url)} />
+ * Usage: <img src={imageUrl(service.image_url)} />
+ *        <img src={imageUrl(service.image_url, { w: 400 })} />  // thumbnail
  */
-export function imageUrl(path) {
+export function imageUrl(path, { w = 1200, q = 78 } = {}) {
   if (!path) return '/assets/placeholder.jpg';
 
-  // Si ya es una URL absoluta, úsala directamente
   if (path.startsWith('http://') || path.startsWith('https://')) {
     return path;
   }
 
-  // Solo redirigir al proxy si estamos en el cliente en localhost
-  // (en producción los archivos existen físicamente en /uploads/)
-  // Note: Images are now local in dev, so no need for proxy
-  // if (
-  //   path.startsWith('/uploads/') &&
-  //   typeof window !== 'undefined' &&
-  //   (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-  // ) {
-  //   return `/api/image-proxy?path=${encodeURIComponent(path)}`;
-  // }
+  if (path.startsWith('/uploads/')) {
+    return `/_next/image?url=${encodeURIComponent(path)}&w=${w}&q=${q}`;
+  }
 
   return path;
 }

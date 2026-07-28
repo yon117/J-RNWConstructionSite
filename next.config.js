@@ -5,6 +5,10 @@ const nextConfig = {
   // Optimización de imágenes — agregar WebP/AVIF
   images: {
     formats: ['image/avif', 'image/webp'],
+    localPatterns: [
+      { pathname: '/uploads/**' },
+      { pathname: '/assets/**' },
+    ],
     remotePatterns: [
       { protocol: 'https', hostname: 'res.cloudinary.com' },
       { protocol: 'https', hostname: 'images.unsplash.com' },

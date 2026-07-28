@@ -1010,8 +1010,8 @@ const handleSubmit = async (e) => {
                     {emailError && <p className={styles.validationError}>{emailError}</p>}
                 </div>
                 <div className={styles.formGroup}>
-                    <label>{t.projectType}</label>
-                    <select value={form.projectType} required
+                    <label htmlFor="indexProjectType">{t.projectType}</label>
+                    <select id="indexProjectType" value={form.projectType} required
                         onChange={e => setForm({ ...form, projectType: e.target.value })}>
                         <option value="" disabled>Select Service Type</option>
                         {PROJECT_TYPES.map(pt => (

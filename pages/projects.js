@@ -299,7 +299,7 @@ export default function Projects({ projects }) {
                     {projectImages.map((img, idx) => (
                         <img
                             key={img.id}
-                            src={imageUrl(img.image_path)}
+                            src={imageUrl(img.image_path, { w: 200 })}
                             alt={`Thumbnail ${idx + 1}`}
                             className={`${pageStyles.thumbnail} ${idx === currentImageIndex ? pageStyles.thumbnailActive : ''}`}
                             onClick={() => setCurrentImageIndex(idx)}
