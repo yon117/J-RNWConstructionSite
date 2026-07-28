@@ -76,6 +76,7 @@ const SERVICE_LINKS = [
     { href: '/services/drywall', labelKey: 'pt7' },
 ];
 
+// Full set — used for cross-linking between city/service landing pages (CityLandingPage "Nearby Service Areas")
 export const SERVICE_AREA_LINKS = [
     { href: '/portland-general-contractor', label: 'Portland' },
     { href: '/general-contractor-tigard', label: 'Tigard' },
@@ -83,16 +84,28 @@ export const SERVICE_AREA_LINKS = [
     { href: '/general-contractor-lake-oswego', label: 'Lake Oswego' },
     { href: '/general-contractor-west-linn', label: 'West Linn' },
     { href: '/general-contractor-clackamas', label: 'Clackamas' },
-    { href: '/waterproofing-portland', label: 'Waterproofing – Portland' },
-    { href: '/waterproofing-hillsboro', label: 'Waterproofing – Hillsboro' },
-    { href: '/waterproofing-beaverton', label: 'Waterproofing – Beaverton' },
-    { href: '/waterproofing-tigard', label: 'Waterproofing – Tigard' },
-    { href: '/structural-repair-portland', label: 'Structural Repair – Portland' },
-    { href: '/structural-repair-gresham', label: 'Structural Repair – Gresham' },
-    { href: '/structural-repair-beaverton', label: 'Structural Repair – Beaverton' },
-    { href: '/siding-contractor-beaverton', label: 'Siding – Beaverton' },
-    { href: '/bathroom-remodel-gresham', label: 'Bathroom Remodel – Gresham' },
-    { href: '/water-damage-restoration-portland', label: 'Water Damage – Portland' },
+    { href: '/waterproofing-portland', label: 'Portland' },
+    { href: '/waterproofing-hillsboro', label: 'Hillsboro' },
+    { href: '/waterproofing-beaverton', label: 'Beaverton' },
+    { href: '/waterproofing-tigard', label: 'Tigard' },
+    { href: '/structural-repair-portland', label: 'Portland' },
+    { href: '/structural-repair-gresham', label: 'Gresham' },
+    { href: '/structural-repair-beaverton', label: 'Beaverton' },
+    { href: '/siding-contractor-beaverton', label: 'Beaverton' },
+    { href: '/bathroom-remodel-gresham', label: 'Gresham' },
+    { href: '/water-damage-restoration-portland', label: 'Portland' },
+];
+
+// One link per city, no repeated labels — used in the site-wide footer only
+const FOOTER_AREA_LINKS = [
+    { href: '/portland-general-contractor', label: 'Portland' },
+    { href: '/general-contractor-tigard', label: 'Tigard' },
+    { href: '/general-contractor-hillsboro', label: 'Hillsboro' },
+    { href: '/general-contractor-lake-oswego', label: 'Lake Oswego' },
+    { href: '/general-contractor-west-linn', label: 'West Linn' },
+    { href: '/general-contractor-clackamas', label: 'Clackamas' },
+    { href: '/waterproofing-beaverton', label: 'Beaverton' },
+    { href: '/bathroom-remodel-gresham', label: 'Gresham' },
 ];
 
 const SEASONAL_MESSAGES = {
@@ -593,7 +606,7 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                     <div className={styles.footerCol}>
                         <h4>Service Areas</h4>
                         <ul className={styles.footerAreasList}>
-                            {SERVICE_AREA_LINKS.map((areaLink) => (
+                            {FOOTER_AREA_LINKS.map((areaLink) => (
                                 <li key={areaLink.href}>
                                     <Link href={areaLink.href}>{areaLink.label}</Link>
                                 </li>
