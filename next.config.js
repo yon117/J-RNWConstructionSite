@@ -6,8 +6,7 @@ const nextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
     localPatterns: [
-      { pathname: '/uploads/**' },
-      { pathname: '/assets/**' },
+      { pathname: '/**', search: '' },
     ],
     remotePatterns: [
       { protocol: 'https', hostname: 'res.cloudinary.com' },
