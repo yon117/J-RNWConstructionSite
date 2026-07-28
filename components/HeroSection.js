@@ -67,7 +67,7 @@ export default function HeroSection({
             {t.navSubtitle}
           </div>
 
-          <h1 className={styles.heroCutHeadline} aria-label="Portland's number one general contractor">
+          <h1 className={styles.heroCutHeadline} aria-label="Portland's trusted general contractor">
             <VerticalCutReveal
               splitBy="words"
               staggerDuration={0.1}
@@ -75,7 +75,7 @@ export default function HeroSection({
               transition={{ ...T_SPRING, delay: 0.05 }}
               className={styles.heroCutLineTitle}
             >
-              {"Portland's #1"}
+              {"Portland's Trusted"}
             </VerticalCutReveal>
 
             <VerticalCutReveal
@@ -100,7 +100,7 @@ export default function HeroSection({
             <VerticalCutReveal
               splitBy="lines"
               transition={{ ...B_SPRING, delay: 0.66 }}
-              className={styles.heroCutLineBody}
+              className={`${styles.heroCutLineBody} ${styles.heroCutLineServices}`}
             >
               {"Remodeling · Additions · Siding · Painting."}
             </VerticalCutReveal>
@@ -108,7 +108,7 @@ export default function HeroSection({
             <VerticalCutReveal
               splitBy="lines"
               transition={{ ...B_SPRING, delay: 0.78 }}
-              className={styles.heroCutLineBody}
+              className={`${styles.heroCutLineBody} ${styles.heroCutLineServices}`}
             >
               {"Drywall · Restoration · Mitigation · Mold."}
             </VerticalCutReveal>
@@ -116,7 +116,7 @@ export default function HeroSection({
             <VerticalCutReveal
               splitBy="lines"
               transition={{ ...B_SPRING, delay: 0.90 }}
-              className={styles.heroCutLineBody}
+              className={`${styles.heroCutLineBody} ${styles.heroCutLineServices}`}
             >
               {"Structural Support/Repair · Emergency Services."}
             </VerticalCutReveal>
@@ -128,7 +128,7 @@ export default function HeroSection({
               transition={{ ...B_SPRING, delay: 1.02 }}
               className={`${styles.heroCutLineBody} ${styles.heroCutLineCities} ${styles.heroCutLineServiceArea}`}
             >
-              {"Service Area: Portland · Tigard · Tualatin · Gresham · Happy Valley · Oregon City\nNot listed? Contact us to confirm coverage."}
+              {"Service Area: Portland · Beaverton · Hillsboro · Tigard · Tualatin · Gresham · Lake Oswego · West Linn · Happy Valley · Oregon City · Milwaukie · Clackamas\nNot listed? Contact us to confirm coverage."}
             </VerticalCutReveal>
 
           </h1>
@@ -168,27 +168,25 @@ export default function HeroSection({
             <WordCycler />
           </div>
 
-          <div className={styles.heroActions} data-hero-fade>
-            <button type="button" className={styles.btnPrimary} onClick={scrollToForm}>
-              {t.getFreeEstimate} <ArrowIcon />
-            </button>
-            <Link href="/projects" className={styles.btnSecondary}>
-              {t.viewOurWork}
+          {t.familyOwned && (
+            <p data-hero-fade style={{ fontSize: '0.78rem', opacity: 0.6, letterSpacing: '0.05em', fontStyle: 'italic', margin: '0 0 2px' }}>
+              {t.familyOwned}
+            </p>
+          )}
+          <div className={styles.heroActionsRow} data-hero-fade>
+            <div className={styles.heroActions} style={{ margin: 0, width: 'auto' }}>
+              <button type="button" className={styles.btnPrimary} onClick={scrollToForm}>
+                {t.getFreeEstimate} <ArrowIcon />
+              </button>
+              <Link href="/projects" className={styles.btnSecondary}>
+                {t.viewOurWork}
+              </Link>
+            </div>
+            <Link href="/warranty" aria-label="View our workmanship warranty" style={{ display: 'inline-flex', textDecoration: 'none', flexShrink: 0 }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/warranty-badge.png" alt="Up to 5-Year Workmanship Warranty" width={121} height={121} style={{ display: 'block' }} />
             </Link>
           </div>
-
-          <a
-            href="tel:5039982340"
-            className={styles.heroCallLink}
-            data-hero-fade
-            onClick={() => {
-              if (typeof window !== 'undefined' && window.gtag) {
-                window.gtag('event', 'phone_click', { event_category: 'contact', event_label: 'hero_call' });
-              }
-            }}
-          >
-            <PhoneIcon /> (503) 998-2340 — Tap to Call
-          </a>
 
           <div className={styles.heroReviewBlock} data-hero-fade>
             <div className={styles.heroReviewRow}>
@@ -220,6 +218,8 @@ export default function HeroSection({
               100% Satisfaction Guarantee
             </div>
           </div>
+
+
         </div>
 
         <div className={styles.heroHouseCol} data-hero-fade>

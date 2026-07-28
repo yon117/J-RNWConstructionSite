@@ -3,6 +3,7 @@ import { parse } from 'cookie';
 import { isValidSessionToken } from '../../../lib/auth';
 import { getDb } from '../../../lib/db';
 import { getGoogleOAuthRedirectUri, getSearchConsoleSiteUrl } from '../../../lib/site-url';
+import { isGoogleReconnectRequiredError } from '../../../lib/google-oauth';
 
 function assertGoogleConfig() {
     if (!process.env.GOOGLE_OAUTH_CLIENT_ID || !process.env.GOOGLE_OAUTH_CLIENT_SECRET) {
@@ -120,10 +121,13 @@ export default async function handler(req, res) {
         if (err.message === 'NOT_CONNECTED') {
             return res.status(200).json({ notConnected: true });
         }
+        if (isGoogleReconnectRequiredError(err)) {
+            return res.status(200).json({ reconnectRequired: true, error: 'RECONNECT_REQUIRED' });
+        }
         if (err.message === 'GOOGLE_OAUTH_CONFIG_MISSING') {
             return res.status(500).json({ error: 'Google OAuth env vars missing' });
         }
-        console.error('Search Console error:', err.message);
+        console.error('Search Console error:', err.message, err.response?.data || '');
         res.status(500).json({ error: err.message });
     }
 }
