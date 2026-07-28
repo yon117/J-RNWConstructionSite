@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
-import Layout from './Layout';
+import Link from 'next/link';
+import Layout, { SERVICE_AREA_LINKS } from './Layout';
 import Modal from './Modal';
 import styles from '../styles/CityLandingPage.module.css';
 import homeStyles from '../styles/Home.module.css';
@@ -321,6 +322,21 @@ export default function CityLandingPage({ data }) {
                         <div className={styles.chipsGrid}>
                             {neighborhoods.map((n) => (
                                 <span key={n} className={styles.chip}>{n}</span>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* ── NEARBY SERVICE AREAS (cross-links) ── */}
+                <section className={styles.neighborhoodsSection}>
+                    <div className={styles.neighborhoodsInner}>
+                        <span className={styles.sectionLabel}>Also Serving</span>
+                        <h2 className={styles.sectionTitle}>Nearby Service Areas</h2>
+                        <div className={styles.chipsGrid}>
+                            {SERVICE_AREA_LINKS.filter((areaLink) => areaLink.href !== canonical).map((areaLink) => (
+                                <Link key={areaLink.href} href={areaLink.href} className={styles.chip}>
+                                    {areaLink.label}
+                                </Link>
                             ))}
                         </div>
                     </div>

@@ -76,6 +76,25 @@ const SERVICE_LINKS = [
     { href: '/services/drywall', labelKey: 'pt7' },
 ];
 
+export const SERVICE_AREA_LINKS = [
+    { href: '/portland-general-contractor', label: 'Portland' },
+    { href: '/general-contractor-tigard', label: 'Tigard' },
+    { href: '/general-contractor-hillsboro', label: 'Hillsboro' },
+    { href: '/general-contractor-lake-oswego', label: 'Lake Oswego' },
+    { href: '/general-contractor-west-linn', label: 'West Linn' },
+    { href: '/general-contractor-clackamas', label: 'Clackamas' },
+    { href: '/waterproofing-portland', label: 'Waterproofing – Portland' },
+    { href: '/waterproofing-hillsboro', label: 'Waterproofing – Hillsboro' },
+    { href: '/waterproofing-beaverton', label: 'Waterproofing – Beaverton' },
+    { href: '/waterproofing-tigard', label: 'Waterproofing – Tigard' },
+    { href: '/structural-repair-portland', label: 'Structural Repair – Portland' },
+    { href: '/structural-repair-gresham', label: 'Structural Repair – Gresham' },
+    { href: '/structural-repair-beaverton', label: 'Structural Repair – Beaverton' },
+    { href: '/siding-contractor-beaverton', label: 'Siding – Beaverton' },
+    { href: '/bathroom-remodel-gresham', label: 'Bathroom Remodel – Gresham' },
+    { href: '/water-damage-restoration-portland', label: 'Water Damage – Portland' },
+];
+
 const SEASONAL_MESSAGES = {
     winter: [
         { text: 'Frozen or burst pipes? Structural ice damage? We respond same day.' },
@@ -551,6 +570,17 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                             <li><a href="/projects">{t.projects}</a></li>
                             <li><Link href="/" style={{ color: 'inherit' }}>{t.navEstimate}</Link></li>
                             <li style={{ marginTop: '8px', fontSize: '11px', color: 'var(--gray)' }}>CCB: 232708</li>
+                        </ul>
+                    </div>
+
+                    <div className={styles.footerCol}>
+                        <h4>Service Areas</h4>
+                        <ul className={styles.footerAreasList}>
+                            {SERVICE_AREA_LINKS.map((areaLink) => (
+                                <li key={areaLink.href}>
+                                    <Link href={areaLink.href}>{areaLink.label}</Link>
+                                </li>
+                            ))}
                         </ul>
                     </div>
                 </div>
