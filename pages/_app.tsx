@@ -177,7 +177,7 @@ export default function App({ Component, pageProps }: AppProps) {
         </Head>
         {!isAdmin && (
           <>
-            <Script id="bbb-seal" strategy="lazyOnload">{`
+            <Script id="bbb-seal" strategy="afterInteractive">{`
               var bbb = bbb || [];
               bbb.push(["bbbid", "greatwestpacific"]);
               bbb.push(["bid", "1000117288"]);
@@ -219,7 +219,7 @@ export default function App({ Component, pageProps }: AppProps) {
           </>
         )}
         <Component {...pageProps} />
-        {enableScrollMotion && deferred && <ScrollMotion />}
+        {enableScrollMotion && <ScrollMotion />}
         {!isAdmin && deferred && (
           <Bubble
             typebot="j-r-nw-construction-bot-jo87vrh"
