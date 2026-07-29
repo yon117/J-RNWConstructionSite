@@ -2,20 +2,20 @@ import { useEffect, useState } from 'react';
 import styles from './InteractiveHouse.module.css';
 
 const EXTERIOR_IMAGES = {
-  default: '/images/exterior-main.png',
-  siding: '/images/exterior-siding-before-after.png',
-  emergency: '/images/exterior-emergency.png',
-  remodeling: '/images/exterior-remodeling-before-after.png',
+  default: '/images/exterior-main.webp',
+  siding: '/images/exterior-siding-before-after.webp',
+  emergency: '/images/exterior-emergency.webp',
+  remodeling: '/images/exterior-remodeling-before-after.webp',
 };
 
 const INTERIOR_IMAGES = {
-  default: '/images/interior-main.png',
-  remodeling: '/images/interior-remodeling.png',
-  additions: '/images/interior-additions.png',
-  drywall: '/images/interior-drywall.png',
-  restoration: '/images/interior-restoration.png',
-  mitigation: '/images/interior-mitigation.png',
-  emergency: '/images/interior-emergency.png',
+  default: '/images/interior-main.webp',
+  remodeling: '/images/interior-remodeling.webp',
+  additions: '/images/interior-additions.webp',
+  drywall: '/images/interior-drywall.webp',
+  restoration: '/images/interior-restoration.webp',
+  mitigation: '/images/interior-mitigation.webp',
+  emergency: '/images/interior-emergency.webp',
 };
 
 const EXTERIOR_SERVICES = [
@@ -168,8 +168,8 @@ export default function InteractiveHouse() {
             alt="Interactive construction service preview"
             className={styles.baseImage}
             draggable={false}
-            width={1254}
-            height={1254}
+            width={722}
+            height={722}
             loading="lazy"
           />
 
@@ -179,8 +179,8 @@ export default function InteractiveHouse() {
               alt=""
               className={`${styles.fadeImage} ${isFading ? styles.fadeIn : ''}`}
               draggable={false}
-              width={1254}
-              height={1254}
+              width={722}
+              height={722}
             />
           ) : null}
 

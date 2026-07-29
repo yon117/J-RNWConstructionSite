@@ -184,7 +184,7 @@ export default function HeroSection({
             </div>
             <Link href="/warranty" aria-label="View our workmanship warranty" style={{ display: 'inline-flex', textDecoration: 'none', flexShrink: 0 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/warranty-badge.png" alt="Up to 5-Year Workmanship Warranty" width={121} height={121} style={{ display: 'block' }} />
+              <img src="/warranty-badge.webp" alt="Up to 5-Year Workmanship Warranty" width={121} height={121} style={{ display: 'block' }} />
             </Link>
           </div>
 
