@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './InteractiveHouse.module.css';
 
 const EXTERIOR_IMAGES = {
@@ -104,18 +104,6 @@ export default function InteractiveHouse() {
   const [nextImage, setNextImage] = useState(null);
   const [isFading, setIsFading] = useState(false);
 
-  const allImages = useMemo(
-    () => [...Object.values(EXTERIOR_IMAGES), ...Object.values(INTERIOR_IMAGES)],
-    []
-  );
-
-  useEffect(() => {
-    allImages.forEach((src) => {
-      const img = new Image();
-      img.src = src;
-    });
-  }, [allImages]);
-
   const currentImage =
     mode === 'exterior' ? EXTERIOR_IMAGES[activeExterior] : INTERIOR_IMAGES[activeInterior];
 
@@ -180,6 +168,9 @@ export default function InteractiveHouse() {
             alt="Interactive construction service preview"
             className={styles.baseImage}
             draggable={false}
+            width={1254}
+            height={1254}
+            loading="lazy"
           />
 
           {nextImage ? (
@@ -188,6 +179,8 @@ export default function InteractiveHouse() {
               alt=""
               className={`${styles.fadeImage} ${isFading ? styles.fadeIn : ''}`}
               draggable={false}
+              width={1254}
+              height={1254}
             />
           ) : null}
 
