@@ -227,7 +227,7 @@ export default function App({ Component, pageProps }: AppProps) {
             theme={{
               button: {
                 backgroundColor: "#1D1D1D",
-                customIconSrc: "https://s3.typebotstorage.com/public/workspaces/cmo20jc8e000007kvcr9wsbe1/typebots/cmo23mpkg000108l7ujo87vrh/bubble-icon?v=1778516713075",
+                customIconSrc: "/typebot-icon.webp",
                 size: "large",
               } as any,
             }}
