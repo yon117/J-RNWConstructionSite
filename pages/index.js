@@ -853,7 +853,7 @@ export default function Home({ projects = [] }) {
                                 <button className={styles.faqTrigger} onClick={() => setOpenFaqs(prev => { const n = new Set(prev); n.has(i) ? n.delete(i) : n.add(i); return n; })}>
                                     <div className={styles.faqTriggerLeft}>
                                         <span className={styles.faqChip}>{item.cat}</span>
-                                        <h4 className={styles.faqQ}>{item.q}</h4>
+                                        <h3 className={styles.faqQ}>{item.q}</h3>
                                     </div>
                                     <span className={styles.faqChevron}>
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
