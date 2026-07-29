@@ -6,7 +6,7 @@ import { LanguageProvider } from "../context/LanguageContext";
 import { Barlow, Barlow_Condensed } from "next/font/google";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ScrollMotion from "../components/ScrollMotion";
 
 if (typeof window !== 'undefined') {
@@ -149,6 +149,23 @@ export default function App({ Component, pageProps }: AppProps) {
     };
   }, [router.events]);
 
+  const [deferred, setDeferred] = useState(false);
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    const activate = () => {
+      setDeferred(true);
+      clearTimeout(timer);
+    };
+    timer = setTimeout(activate, 2000);
+    window.addEventListener('scroll', activate, { passive: true, once: true });
+    window.addEventListener('pointerdown', activate, { once: true });
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', activate);
+      window.removeEventListener('pointerdown', activate);
+    };
+  }, []);
+
   const isAdmin = router.pathname.startsWith('/admin') || router.pathname.startsWith('/adminside');
   const enableScrollMotion = !isAdmin && router.pathname === '/';
 
@@ -160,7 +177,7 @@ export default function App({ Component, pageProps }: AppProps) {
         </Head>
         {!isAdmin && (
           <>
-            <Script id="bbb-seal" strategy="afterInteractive">{`
+            <Script id="bbb-seal" strategy="lazyOnload">{`
               var bbb = bbb || [];
               bbb.push(["bbbid", "greatwestpacific"]);
               bbb.push(["bid", "1000117288"]);
@@ -202,8 +219,8 @@ export default function App({ Component, pageProps }: AppProps) {
           </>
         )}
         <Component {...pageProps} />
-        {enableScrollMotion && <ScrollMotion />}
-        {!isAdmin && (
+        {enableScrollMotion && deferred && <ScrollMotion />}
+        {!isAdmin && deferred && (
           <Bubble
             typebot="j-r-nw-construction-bot-jo87vrh"
             apiHost="https://typebot.io"

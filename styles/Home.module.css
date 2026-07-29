@@ -1410,6 +1410,7 @@
         linear-gradient(110deg, transparent 0%, rgba(200, 150, 30, 0.08) 42%, transparent 58%),
         linear-gradient(145deg, #08121c 0%, #111d2b 100%);
     transform: translateX(-110%);
+    will-change: transform;
     animation: projectMediaWarmup 1.25s ease-in-out infinite;
 }
 

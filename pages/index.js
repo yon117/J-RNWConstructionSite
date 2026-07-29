@@ -280,7 +280,7 @@ function HomeProjectCard({ project, idx, projectCycle, phase }) {
                         sizes="(max-width: 768px) 100vw, 33vw"
                         className={styles.projectImage}
                         priority={projectCycle === 0}
-                        loading={projectCycle === 0 ? undefined : 'eager'}
+                        loading={projectCycle === 0 ? undefined : 'lazy'}
                         quality={72}
                         onError={() => setImageFailed(true)}
                     />
