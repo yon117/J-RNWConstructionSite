@@ -581,7 +581,7 @@
     height: 15px;
 }
 
-.footerCol h4 {
+.footerCol h3 {
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 13px;
     font-weight: 700;
@@ -600,13 +600,15 @@
 .footerCol ul li {
     font-size: 13px;
     color: var(--gray);
-    padding: 4px 0;
 }
 
 .footerCol ul li a {
     color: var(--gray);
     text-decoration: none;
     transition: color 0.2s;
+    display: block;
+    padding: 4px 0;
+    min-height: 24px;
 }
 
 .footerCol ul li a:hover {
@@ -1068,7 +1070,7 @@
 :global([data-theme="light"]) .footer .navBrandText span {
     color: rgba(245, 243, 239, 0.65);
 }
-:global([data-theme="light"]) .footerCol h4 {
+:global([data-theme="light"]) .footerCol h3 {
     color: #F5F3EF;
 }
 :global([data-theme="light"]) .footerBrand p,

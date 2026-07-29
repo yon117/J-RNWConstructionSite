@@ -572,7 +572,7 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                     </div>
 
                     <div className={styles.footerCol}>
-                        <h4>{t.services}</h4>
+                        <h3>{t.services}</h3>
                         <ul>
                             {SERVICE_LINKS.map((serviceLink) => (
                                 <li key={serviceLink.href}>
@@ -583,7 +583,7 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                     </div>
 
                     <div className={styles.footerCol}>
-                        <h4>{t.home}</h4>
+                        <h3>{t.home}</h3>
                         <ul>
                             <li><a href="/">{t.home}</a></li>
                             <li><a href="/services">{t.services}</a></li>
@@ -604,7 +604,7 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                     </div>
 
                     <div className={styles.footerCol}>
-                        <h4>Service Areas</h4>
+                        <h3>Service Areas</h3>
                         <ul className={styles.footerAreasList}>
                             {FOOTER_AREA_LINKS.map((areaLink) => (
                                 <li key={areaLink.href}>

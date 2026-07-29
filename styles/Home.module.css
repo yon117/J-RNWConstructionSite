@@ -410,7 +410,7 @@
 }
 
 .trustSep {
-    color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.35);
     font-size: 12px;
 }
 
@@ -1453,7 +1453,7 @@
     background:
         linear-gradient(145deg, rgba(8, 18, 28, 0.96), rgba(26, 39, 54, 0.88)),
         repeating-linear-gradient(90deg, rgba(200, 150, 30, 0.08) 0 1px, transparent 1px 52px);
-    color: rgba(245, 243, 239, 0.24);
+    color: rgba(245, 243, 239, 0.5);
     font-family: 'Barlow Condensed', sans-serif;
     font-size: clamp(34px, 5vw, 74px);
     font-weight: 800;

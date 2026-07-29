@@ -160,6 +160,22 @@ export default function App({ Component, pageProps }: AppProps) {
         </Head>
         {!isAdmin && (
           <>
+            <Script id="bbb-seal" strategy="afterInteractive">{`
+              var bbb = bbb || [];
+              bbb.push(["bbbid", "greatwestpacific"]);
+              bbb.push(["bid", "1000117288"]);
+              bbb.push(["chk", "A690EB6EA0"]);
+              bbb.push(["pos", "bottom-left"]);
+              (function () {
+                var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
+                var s = document.createElement("script");
+                s.type = "text/javascript";
+                s.async = true;
+                s.src = scheme + "seal-alaskaoregonwesternwashington.bbb.org/badge/badge.min.js";
+                var t = document.getElementsByTagName("script")[0];
+                t.parentNode.insertBefore(s, t);
+              })();
+            `}</Script>
             <Script
               src="https://www.googletagmanager.com/gtag/js?id=AW-17362940957"
               strategy="afterInteractive"

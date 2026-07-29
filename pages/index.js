@@ -532,7 +532,7 @@ export default function Home({ projects = [] }) {
                           <div className={styles.servicesGrid} data-anim="stagger-group">
                               {HOME_SERVICES.map((svc, idx) => (
                                   <Link href={`/services/${HOME_SERVICE_SLUGS[svc.key]}`} key={svc.key} className={styles.serviceCard} data-anim="service-card">
-                                      <div className={styles.serviceCardGhostNum}>{String(idx + 1).padStart(2, '0')}</div>
+                                      <div className={styles.serviceCardGhostNum} aria-hidden="true">{String(idx + 1).padStart(2, '0')}</div>
                                       <div className={styles.serviceCardNum}>
                                           <span className={styles.serviceCardIndex}>{String(idx + 1).padStart(2, '0')}</span>
                                           <span className={styles.serviceCardTotal}>&nbsp;/ {String(HOME_SERVICES.length).padStart(2, '0')}</span>
@@ -634,7 +634,7 @@ export default function Home({ projects = [] }) {
                           <div className={styles.servicesGrid} data-anim="stagger-group">
                               {HOME_SERVICES.map((svc, idx) => (
                                   <Link href={`/services/${HOME_SERVICE_SLUGS[svc.key]}`} key={`ms-${svc.key}`} className={styles.serviceCard} data-anim="service-card">
-                                      <div className={styles.serviceCardGhostNum}>{String(idx + 1).padStart(2, '0')}</div>
+                                      <div className={styles.serviceCardGhostNum} aria-hidden="true">{String(idx + 1).padStart(2, '0')}</div>
                                       <div className={styles.serviceCardNum}>
                                           <span className={styles.serviceCardIndex}>{String(idx + 1).padStart(2, '0')}</span>
                                           <span className={styles.serviceCardTotal}>&nbsp;/ {String(HOME_SERVICES.length).padStart(2, '0')}</span>
@@ -904,9 +904,9 @@ export default function Home({ projects = [] }) {
                     </div>
                     <div className={styles.bottomCtaTrust}>
                                         <span>★★★★★ 5.0 on Google and Yelp</span>
-                        <span className={styles.trustSep}>·</span>
+                        <span className={styles.trustSep} aria-hidden="true">·</span>
                         <span>Licensed &amp; Insured · CCB #232708</span>
-                        <span className={styles.trustSep}>·</span>
+                        <span className={styles.trustSep} aria-hidden="true">·</span>
                         <span>50+ Families Served</span>
                     </div>
                 </div>
