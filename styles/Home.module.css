@@ -1070,10 +1070,12 @@
     content: '';
     position: absolute;
     top: 10px; left: 10px;
-    width: 14px; height: 14px;
+    width: 22px; height: 22px;
     border-top: 2px solid var(--gold);
     border-left: 2px solid var(--gold);
-    transition: width 0.2s, height 0.2s;
+    transition: transform 0.2s;
+    transform: scale(0.636);
+    transform-origin: top left;
 }
 
 /* Bottom-right corner bracket */
@@ -1081,15 +1083,17 @@
     content: '';
     position: absolute;
     bottom: 10px; right: 10px;
-    width: 14px; height: 14px;
+    width: 22px; height: 22px;
     border-bottom: 2px solid var(--gold);
     border-right: 2px solid var(--gold);
-    transition: width 0.2s, height 0.2s;
+    transition: transform 0.2s;
+    transform: scale(0.636);
+    transform-origin: bottom right;
 }
 
 .serviceCard:hover { background: #131e30; border-color: #253548; }
 .serviceCard:hover::before,
-.serviceCard:hover::after { width: 22px; height: 22px; }
+.serviceCard:hover::after { transform: scale(1); }
 
 .serviceCardGhostNum {
     position: absolute;

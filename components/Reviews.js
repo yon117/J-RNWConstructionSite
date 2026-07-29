@@ -107,7 +107,7 @@ const Reviews = ({ sectionId }) => {
             <div className={styles.reviewMeta}>
                 <div className={styles.avatar}>{review.avatar}</div>
                 <div className={styles.reviewerInfo}>
-                    <h4>{review.name}</h4>
+                    <h3>{review.name}</h3>
                     <p className={styles.designation}>{review.date}</p>
                 </div>
             </div>
@@ -174,7 +174,7 @@ const Reviews = ({ sectionId }) => {
                             <div className={styles.reviewMeta}>
                                 <div className={styles.avatar}>{activeReview.avatar}</div>
                                 <div className={styles.reviewerInfo}>
-                                    <h4>{activeReview.name}</h4>
+                                    <h3>{activeReview.name}</h3>
                                     <p className={styles.designation}>{activeReview.date}</p>
                                 </div>
                             </div>

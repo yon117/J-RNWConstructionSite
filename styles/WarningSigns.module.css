@@ -380,19 +380,29 @@
   margin-top: 20px;
 }
 .dotBtn {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
   border: 0;
+  background: transparent;
   padding: 0;
   cursor: pointer;
-  transition: 0.25s;
 }
-.dotOn {
-  background: var(--gold, #C8961E);
-  width: 24px;
+.dotBtn::before {
+  content: '';
+  width: 8px;
+  height: 8px;
   border-radius: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  transition: transform 0.25s, background 0.25s;
+  transform-origin: center;
+}
+.dotOn::before {
+  background: var(--gold, #C8961E);
+  transform: scaleX(3);
 }
 .pagerLabel {
   font-weight: 700;
@@ -528,7 +538,9 @@
   color: rgba(15, 25, 35, 0.28);
 }
 
-:global([data-theme="light"]) .pill,
-:global([data-theme="light"]) .dotBtn {
+:global([data-theme="light"]) .pill {
+  background: rgba(15, 25, 35, 0.08);
+}
+:global([data-theme="light"]) .dotBtn::before {
   background: rgba(15, 25, 35, 0.08);
 }
