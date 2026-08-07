@@ -158,7 +158,7 @@ const PROCESS_STEPS = [
     { Icon: HowWeWorkPhoneIcon,    num: '01', title: 'Free Consultation',  desc: 'Tell us about your project. We listen before we plan.' },
     { Icon: HowWeWorkClipboardIcon, num: '02', title: 'Custom Plan & Quote', desc: 'Transparent pricing with no hidden surprises.'          },
     { Icon: HowWeWorkHammerIcon,   num: '03', title: 'Quality Construction', desc: 'We build with care, on schedule and on budget.'        },
-    { Icon: HowWeWorkCheckIcon,    num: '04', title: 'Final Walkthrough',   desc: 'We review every detail together — your work is backed by our written workmanship warranty.', stepLink: '/warranty', stepLinkText: 'Learn more →' },
+    { Icon: HowWeWorkCheckIcon,    num: '04', title: 'Final Walkthrough',   desc: 'We review every detail together — your work is backed by our written workmanship warranty.' },
 ];
 
 // Static service cards for the home preview
@@ -430,7 +430,7 @@ export default function Home({ projects = [] }) {
                             { "@type": "Question", "name": "Are you licensed and insured?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Oregon CCB #232708. Fully licensed, bonded, and insured. We carry full liability and workers' compensation coverage on every job." } },
                             { "@type": "Question", "name": "Do you work with insurance claims?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. We regularly work alongside insurance adjusters for water damage, fire, and structural repairs. We document everything for your claim." } },
                             { "@type": "Question", "name": "What areas do you serve?", "acceptedAnswer": { "@type": "Answer", "text": "Serving Portland, Tigard, Tualatin, Gresham, Happy Valley, Oregon City, Milwaukie, Hillsboro & Beaverton." } },
-                            { "@type": "Question", "name": "Do you guarantee your work?", "acceptedAnswer": { "@type": "Answer", "text": "Yes — in writing. Our work is backed by a written workmanship warranty of up to 5 years depending on the service (5 years on siding, 4 on painting). See full terms at https://jandrnw.com/warranty" } },
+                            { "@type": "Question", "name": "Do you guarantee your work?", "acceptedAnswer": { "@type": "Answer", "text": "Yes — in writing. Our work is backed by a written workmanship warranty of up to 5 years depending on the service (5 years on siding, 4 on painting)." } },
                         ]
                     }) }}
                 />
@@ -847,7 +847,7 @@ export default function Home({ projects = [] }) {
                             { cat: 'Compliance', q: t.faqQ3, a: t.faqA3 },
                             { cat: 'Claims',     q: t.faqQ4, a: t.faqA4 },
                             { cat: 'Logistics',  q: t.faqQ5, a: t.faqA5 },
-                            { cat: 'Quality',    q: t.faqQ6, a: t.faqA6, warrantyLink: true },
+                            { cat: 'Quality',    q: t.faqQ6, a: t.faqA6 },
                         ].map((item, i) => (
                             <div key={i} className={`${styles.faqAccordion} ${openFaqs.has(i) ? styles.faqOpen : ''}`} data-anim="faq-item">
                                 <button className={styles.faqTrigger} onClick={() => setOpenFaqs(prev => { const n = new Set(prev); n.has(i) ? n.delete(i) : n.add(i); return n; })}>

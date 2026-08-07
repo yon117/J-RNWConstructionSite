@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import InteractiveHouse from './InteractiveHouse';
+import WarrantyBadge from './WarrantyBadge';
 import WordCycler from './WordCycler';
 import { VerticalCutReveal } from './ui/VerticalCutReveal';
 import styles from '../styles/Home.module.css';
@@ -182,10 +183,8 @@ export default function HeroSection({
                 {t.viewOurWork}
               </Link>
             </div>
-            <Link href="/warranty" aria-label="View our workmanship warranty" style={{ display: 'inline-flex', textDecoration: 'none', flexShrink: 0 }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/warranty-badge.webp" alt="Up to 5-Year Workmanship Warranty" width={121} height={121} style={{ display: 'block' }} />
-            </Link>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/warranty-badge.webp" alt="Up to 5-Year Workmanship Warranty" width={121} height={121} style={{ display: 'block', flexShrink: 0 }} />
           </div>
 
           <div className={styles.heroReviewBlock} data-hero-fade>

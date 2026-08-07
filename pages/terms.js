@@ -107,14 +107,9 @@ export default function Terms() {
 
         <h2 style={s.h2}>4. Warranty</h2>
         <p style={s.p}>
-          J&amp;R NW Construction warrants workmanship for one (1) year from project completion.
-          This warranty covers defects in installation or craftsmanship directly caused by our crew.
-          It does not cover damage from natural disasters, acts of God, misuse, or modifications
-          made by others after completion.
-        </p>
-        <p style={s.p}>
-          Manufacturer warranties for materials and products are separate and governed by each
-          manufacturer&apos;s terms.
+          All labor is warranted for one (1) year from the date of project completion. All installed
+          materials are covered under their respective manufacturer warranties. Damage due to misuse,
+          third-party work, or acts of nature is not covered.
         </p>
 
         <h2 style={s.h2}>5. Limitation of Liability</h2>

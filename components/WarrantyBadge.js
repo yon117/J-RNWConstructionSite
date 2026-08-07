@@ -17,7 +17,7 @@ export default function WarrantyBadge({ size = 80 }) {
             viewBox="0 0 200 200"
             xmlns="http://www.w3.org/2000/svg"
             role="img"
-            aria-label="Up to 5-year workmanship warranty seal"
+            aria-label="Written workmanship warranty seal"
             style={{ flexShrink: 0 }}
         >
             <defs>
@@ -46,7 +46,7 @@ export default function WarrantyBadge({ size = 80 }) {
                 </text>
             ))}
 
-            {/* UP TO — horizontal rules + text */}
+            {/* WRITTEN — horizontal rules + text */}
             <line x1="20"  y1="53" x2="65"  y2="53" stroke={GOLD} strokeWidth="1.5" strokeLinecap="round" />
             <text
                 x="100" y="57"
@@ -57,21 +57,21 @@ export default function WarrantyBadge({ size = 80 }) {
                 fontWeight="700"
                 letterSpacing="3"
             >
-                UP TO
+                WRITTEN
             </text>
             <line x1="135" y1="53" x2="180" y2="53" stroke={GOLD} strokeWidth="1.5" strokeLinecap="round" />
 
-            {/* 5-YEAR — dominant center text */}
+            {/* WARRANTY — dominant center text */}
             <text
                 x="100" y="92"
                 textAnchor="middle"
-                fontSize="51"
+                fontSize="43"
                 fill={GOLD}
                 fontFamily="'Barlow Condensed','Barlow',sans-serif"
                 fontWeight="700"
                 letterSpacing="-0.5"
             >
-                5-YEARS
+                WARRANTY
             </text>
 
             {/* Shield */}
@@ -95,7 +95,7 @@ export default function WarrantyBadge({ size = 80 }) {
             <line x1="20"  y1="117" x2="78"  y2="117" stroke={GOLD} strokeWidth="1.5" strokeLinecap="round" />
             <line x1="122" y1="117" x2="180" y2="117" stroke={GOLD} strokeWidth="1.5" strokeLinecap="round" />
 
-            {/* WORKMANSHIP WARRANTY curved along bottom */}
+            {/* WORKMANSHIP GUARANTEED curved along bottom */}
             <text
                 fontSize="10.5"
                 fill={GOLD}
@@ -105,7 +105,7 @@ export default function WarrantyBadge({ size = 80 }) {
                 textAnchor="middle"
             >
                 <textPath href="#wbArc" startOffset="50%">
-                    WORKMANSHIP WARRANTY
+                    WORKMANSHIP GUARANTEED
                 </textPath>
             </text>
         </svg>

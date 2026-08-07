@@ -553,9 +553,9 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                         <p>{t.companyDescShort || 'Family-owned and operated. Serving Oregon with integrity, craftsmanship, and 20+ years of experience.'}</p>
                         <div id="bbb-seal" style={{ marginTop: '10px' }} />
                         <div style={{ marginTop: '8px', fontSize: '11px' }}>
-                            <a href="/warranty" style={{ color: '#C5A028', textDecoration: 'none', fontWeight: 600 }}>
+                            <span style={{ color: '#C5A028', fontWeight: 600 }}>
                                 ✓ Up to 5-Year Workmanship Warranty
-                            </a>
+                            </span>
                         </div>
                         <div className={styles.footerSocials}>
                             <a href="https://www.facebook.com/JRNWConstruction/" target="_blank" rel="noreferrer"
@@ -596,8 +596,7 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                                 Portland, OR 97236<br />
                                 <a href="tel:+15039982340" style={{ color: 'var(--gray)' }}>(503) 998-2340</a>
                             </li>
-                            <li style={{ marginTop: '12px', fontSize: '11px' }}><a href="/warranty" style={{ color: 'var(--gray)' }}>Warranty</a></li>
-                            <li style={{ fontSize: '11px' }}><a href="/our-process" style={{ color: 'var(--gray)' }}>Our Process</a></li>
+                            <li style={{ marginTop: '12px', fontSize: '11px' }}><a href="/our-process" style={{ color: 'var(--gray)' }}>Our Process</a></li>
                             <li style={{ marginTop: '8px', fontSize: '11px' }}><a href="/terms-of-use" style={{ color: 'var(--gray)' }}>Terms of Use</a></li>
                             <li style={{ fontSize: '11px' }}><a href="/privacy-policy" style={{ color: 'var(--gray)' }}>Privacy Policy</a></li>
                         </ul>

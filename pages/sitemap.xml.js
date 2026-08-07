@@ -26,7 +26,6 @@ const STATIC_URLS = [
     { loc: `${BASE_URL}/general-contractor-tigard`, priority: '0.85', changefreq: 'monthly' },
     { loc: `${BASE_URL}/general-contractor-west-linn`, priority: '0.85', changefreq: 'monthly' },
     { loc: `${BASE_URL}/general-contractor-clackamas`, priority: '0.85', changefreq: 'monthly' },
-    { loc: `${BASE_URL}/warranty`, priority: '0.7', changefreq: 'yearly' },
     { loc: `${BASE_URL}/our-process`, priority: '0.7', changefreq: 'yearly' },
 ];
 

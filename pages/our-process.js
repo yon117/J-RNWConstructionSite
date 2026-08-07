@@ -179,14 +179,8 @@ export default function OurProcess() {
                                 ) : (
                                     <p style={{ lineHeight: 1.75, opacity: 0.8, margin: 0 }}>
                                         {isEs
-                                            ? <>Revisamos cada detalle juntos. No cerramos el trabajo hasta que esté completamente satisfecho. Y su trabajo queda respaldado por nuestra{' '}
-                                                <Link href="/warranty" style={{ color: '#C5A028', textDecoration: 'underline' }}>
-                                                    garantía de mano de obra por escrito
-                                                </Link>.</>
-                                            : <>We review everything together. We don&apos;t close out the job until you&apos;re fully satisfied. And your work is backed by our{' '}
-                                                <Link href="/warranty" style={{ color: '#C5A028', textDecoration: 'underline' }}>
-                                                    written workmanship warranty
-                                                </Link>.</>
+                                            ? 'Revisamos cada detalle juntos. No cerramos el trabajo hasta que esté completamente satisfecho. Y su trabajo queda respaldado por nuestra garantía de mano de obra por escrito.'
+                                            : 'We review everything together. We don\'t close out the job until you\'re fully satisfied. And your work is backed by our written workmanship warranty.'
                                         }
                                     </p>
                                 )}
