@@ -183,8 +183,7 @@ export default function HeroSection({
                 {t.viewOurWork}
               </Link>
             </div>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/warranty-badge.webp" alt="Up to 5-Year Workmanship Warranty" width={121} height={121} style={{ display: 'block', flexShrink: 0 }} />
+            <WarrantyBadge size={121} />
           </div>
 
           <div className={styles.heroReviewBlock} data-hero-fade>
