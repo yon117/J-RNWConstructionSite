@@ -183,7 +183,7 @@ export default function HeroSection({
               </Link>
             </div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/warranty-badge.png" alt="Written workmanship warranty seal" width={160} height={160} style={{ display: 'block', flexShrink: 0 }} />
+            <img src="/warranty-badge.png" alt="Written workmanship warranty seal" width={275} height={275} style={{ display: 'block', flexShrink: 0 }} />
           </div>
 
           <div className={styles.heroReviewBlock} data-hero-fade>
