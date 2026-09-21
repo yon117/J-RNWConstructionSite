@@ -78,6 +78,15 @@ export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     const reloadKey = '__chunkLoadRetry';
 
+    // Errors with no actionable info: cross-origin "Script error." (no file/line) and
+    // known in-app-browser / Safari injected-script noise.
+    const THIRD_PARTY_NOISE = /_AutofillCallbackHandler|could not be cloned|WeakMap keys must be objects/i;
+    const isThirdPartyNoise = (event: ErrorEvent) => {
+      const message = event.message || '';
+      if (/^Script error\.?$/i.test(message.trim()) && !event.filename && !event.lineno) return true;
+      return THIRD_PARTY_NOISE.test(message);
+    };
+
     const isChunkLoadError = (value: unknown) => {
       if (!value) return false;
       if (value instanceof Error) {
@@ -119,6 +128,7 @@ export default function App({ Component, pageProps }: AppProps) {
       if (isChunkLoadError(event.error) || isChunkLoadError(event.message)) {
         if (reloadOnce()) return;
       }
+      if (isThirdPartyNoise(event)) return;
       fetch('/api/monitor/error', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
