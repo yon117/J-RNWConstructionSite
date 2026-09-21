@@ -430,7 +430,7 @@ export default function Home({ projects = [] }) {
                             { "@type": "Question", "name": "Are you licensed and insured?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Oregon CCB #232708. Fully licensed, bonded, and insured. We carry full liability and workers' compensation coverage on every job." } },
                             { "@type": "Question", "name": "Do you work with insurance claims?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. We regularly work alongside insurance adjusters for water damage, fire, and structural repairs. We document everything for your claim." } },
                             { "@type": "Question", "name": "What areas do you serve?", "acceptedAnswer": { "@type": "Answer", "text": "Serving Portland, Tigard, Tualatin, Gresham, Happy Valley, Oregon City, Milwaukie, Hillsboro & Beaverton." } },
-                            { "@type": "Question", "name": "Do you guarantee your work?", "acceptedAnswer": { "@type": "Answer", "text": "Yes — in writing. Our work is backed by a written workmanship warranty of up to 5 years depending on the service (5 years on siding, 4 on painting)." } },
+                            { "@type": "Question", "name": "Do you guarantee your work?", "acceptedAnswer": { "@type": "Answer", "text": "Yes — in writing. Our work is backed by a written workmanship warranty. Coverage terms vary by service and are detailed in your signed proposal." } },
                         ]
                     }) }}
                 />

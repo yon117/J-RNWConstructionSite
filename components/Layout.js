@@ -514,7 +514,7 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                         <div id="bbb-seal" style={{ marginTop: '10px' }} />
                         <div style={{ marginTop: '8px', fontSize: '11px' }}>
                             <span style={{ color: '#C5A028', fontWeight: 600 }}>
-                                ✓ Up to 5-Year Workmanship Warranty
+                                ✓ Written Warranty · Workmanship Guaranteed
                             </span>
                         </div>
                         <div className={styles.footerSocials}>
