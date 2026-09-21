@@ -265,47 +265,7 @@ export default function Layout({ children, title = 'J&R NW Construction | Portla
                 <meta name="robots" content="index, follow" />
                 <link rel="icon" href="/favicon.ico" />
 
-                {/* JSON-LD Structured Data */}
-                <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{ __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "LocalBusiness",
-                        "name": "J&R NW Construction LLC",
-                        "description": "Portland's trusted general contractor. Home remodeling, siding, water damage restoration & emergency repairs. Licensed, bonded & insured.",
-                        "url": "https://jandrnw.com",
-                        "telephone": "+15039982340",
-                        "email": "jandrnwconstruction@gmail.com",
-                        "image": "https://jandrnw.com/assets/home-hero-bg.jpg",
-                        "priceRange": "$$",
-                        "openingHours": "Mo-Su 00:00-24:00",
-                        "address": {
-                            "@type": "PostalAddress",
-                            "streetAddress": "17942 SE Division St",
-                            "addressLocality": "Portland",
-                            "addressRegion": "OR",
-                            "postalCode": "97236",
-                            "addressCountry": "US"
-                        },
-                        "geo": {
-                            "@type": "GeoCoordinates",
-                            "latitude": 45.5051,
-                            "longitude": -122.6750
-                        },
-                        "areaServed": [
-                            "Portland","Tigard","Tualatin","Gresham",
-                            "Happy Valley","Oregon City","Milwaukie","Hillsboro","Beaverton"
-                        ],
-                        "sameAs": ["https://www.facebook.com/JRNWConstruction/"],
-                        "aggregateRating": {
-                            "@type": "AggregateRating",
-                            "ratingValue": "5.0",
-                            "reviewCount": "50",
-                            "bestRating": "5"
-                        },
-                        "hasCredential": "Oregon CCB #232708"
-                    })}}
-                />
+                {/* Site-wide business JSON-LD lives in pages/_document.tsx (single entity, @id https://jandrnw.com/#business) */}
             </Head>
 
             <header id="site-header" className={styles.stickyHeader}>
