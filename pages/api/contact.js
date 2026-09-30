@@ -1,8 +1,51 @@
 import { getDb } from '../../lib/db';
-import nodemailer from 'nodemailer';
 import { rateLimit } from '../../lib/rateLimit';
 
 const contactRateLimit = rateLimit({ windowMs: 60_000, max: 5 });
+
+const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL || 'http://127.0.0.1:5678/webhook/formulario-contacto';
+const N8N_TIMEOUT_MS = 5000;
+
+// Extra entries via env: BLOCKED_EMAILS="a@x.com,b@y.com"
+const BLOCKED_EMAILS = new Set(
+    ['bruce.f.griffin@gmail.com', ...(process.env.BLOCKED_EMAILS || '').split(',')]
+        .map((e) => e.trim().toLowerCase())
+        .filter(Boolean)
+);
+// Gmail ignores dots and +tags, so normalize before comparing
+function normalizeEmail(email) {
+    const [local = '', domain = ''] = email.trim().toLowerCase().split('@');
+    if (domain === 'gmail.com' || domain === 'googlemail.com') {
+        return `${local.split('+')[0].replace(/\./g, '')}@gmail.com`;
+    }
+    return `${local}@${domain}`;
+}
+const BLOCKED_NORMALIZED = new Set([...BLOCKED_EMAILS].map(normalizeEmail));
+
+const SPAM_PATTERNS = [
+    /forsale\.godaddy\.com/i,
+    /\b\w+(water|damage|cleaning|restoration|roofing|plumbing)\w*\.com\b.*\b(for sale|secured|referrals)\b/i,
+    /(secured|domain).{0,60}(referrals|new .* jobs).{0,200}https?:\/\//is
+];
+
+function isSpam(email, message) {
+    if (BLOCKED_NORMALIZED.has(normalizeEmail(email))) return true;
+    return SPAM_PATTERNS.some((re) => re.test(message));
+}
+
+async function notifyN8n(payload) {
+    try {
+        const res = await fetch(N8N_WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            signal: AbortSignal.timeout(N8N_TIMEOUT_MS)
+        });
+        if (!res.ok) console.error('n8n webhook responded with status', res.status);
+    } catch (error) {
+        console.error('n8n webhook failed:', error.message);
+    }
+}
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
@@ -29,6 +72,12 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: 'Invalid email address' });
         }
 
+        // Fake success: no DB row, no n8n notification, spammer sees nothing to adapt to
+        if (isSpam(safeEmail, safeMessage)) {
+            console.warn('Blocked spam submission from', ip);
+            return res.status(200).json({ success: true });
+        }
+
         try {
             console.log('Getting database connection...');
             const db = await getDb();
@@ -43,71 +92,13 @@ export default async function handler(req, res) {
 
             console.log('Message saved to database successfully');
 
-            // Send email notification
-            try {
-                const transporter = nodemailer.createTransport({
-                    host: 'smtpout.secureserver.net',
-                    port: 587,
-                    secure: false,
-                    auth: {
-                        user: process.env.EMAIL_USER,
-                        pass: process.env.EMAIL_PASS
-                    },
-                });
-
-                const mailOptions = {
-                    from: process.env.EMAIL_USER,
-                    to: process.env.EMAIL_TO || process.env.EMAIL_USER,
-                    subject: `New Contact Message - J&R NW Construction`,
-                    text: `
-New contact message received:
-
-Name: ${name}
-Email: ${safeEmail}
-Phone: ${safePhone || 'Not provided'}
-Service Type: ${safeServiceType || 'Not specified'}
-
-Message:
-${safeMessage}
-
----
-This message was sent from the contact form at jandrnw.com
-Date: ${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}
-                    `,
-                    html: `
-                        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f5f5f5;">
-                            <div style="background-color: #1a252f; padding: 20px; text-align: center;">
-                                <h1 style="color: #D4AF37; margin: 0;">J&R NW Construction</h1>
-                            </div>
-                            <div style="background-color: white; padding: 30px; margin-top: 20px; border-radius: 5px;">
-                                <h2 style="color: #1a252f; border-bottom: 2px solid #D4AF37; padding-bottom: 10px;">
-                                    New Contact Message
-                                </h2>
-                                <div style="margin: 20px 0;">
-                                    <p style="margin: 10px 0;"><strong>Name:</strong> ${name}</p>
-                                    <p style="margin: 10px 0;"><strong>Email:</strong> <a href="mailto:${safeEmail}">${safeEmail}</a></p>
-                                    <p style="margin: 10px 0;"><strong>Phone:</strong> ${safePhone || 'Not provided'}</p>
-                                    <p style="margin: 10px 0;"><strong>Service Type:</strong> ${safeServiceType || 'Not specified'}</p>
-                                </div>
-                                <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #D4AF37; margin: 20px 0;">
-                                    <p style="margin: 0 0 10px 0;"><strong>Message:</strong></p>
-                                    <p style="margin: 0; white-space: pre-wrap;">${safeMessage}</p>
-                                </div>
-                                <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
-                                <p style="color: #666; font-size: 12px; margin: 0;">
-                                    This message was sent from the contact form at <a href="https://jandrnw.com">jandrnw.com</a><br>
-                                    Date: ${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}
-                                </p>
-                            </div>
-                        </div>
-                    `
-                };
-
-                await transporter.sendMail(mailOptions);
-                console.log('✅ Email sent successfully to:', process.env.EMAIL_TO || process.env.EMAIL_USER);
-            } catch (emailError) {
-                console.error('❌ Error sending email:', emailError.message);
-            }
+            await notifyN8n({
+                nombre: name,
+                email: safeEmail,
+                phone: safePhone,
+                mensaje: safeMessage,
+                serviceType: safeServiceType
+            });
 
             res.status(200).json({ success: true });
         } catch (error) {
