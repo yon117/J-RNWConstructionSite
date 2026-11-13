@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useLang } from '../context/LanguageContext';
 import styles from '../styles/Home.module.css';
 
@@ -13,6 +13,12 @@ const SERVICE_OPTION_KEYS = [
     'pt8'
 ];
 
+// Opaque id, not a credential. Server validates the format and falls back to its own id if absent.
+function newSubmissionId() {
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
+    return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 14)}-fallback0`;
+}
+
 export default function ContactFormSection() {
     const { t } = useLang();
     const [contactForm, setContactForm] = useState({
@@ -24,6 +30,8 @@ export default function ContactFormSection() {
         otherService: ''
     });
     const [status, setStatus] = useState('');
+    const submissionIdRef = useRef(null);
+    if (submissionIdRef.current === null) submissionIdRef.current = newSubmissionId();
     const [emailError, setEmailError] = useState('');
     const [phoneError, setPhoneError] = useState('');
 
@@ -70,6 +78,8 @@ export default function ContactFormSection() {
         setPhoneError('');
 
         const formData = {
+            // Stable per form fill: a browser retry reuses it, a new submission gets a new one.
+            submissionId: submissionIdRef.current,
             firstName: contactForm.fullName,
             lastName: '',
             email: contactForm.email,
@@ -92,6 +102,7 @@ export default function ContactFormSection() {
 
             if (res.ok) {
                 setStatus('success');
+                submissionIdRef.current = newSubmissionId();
                 if (typeof window !== 'undefined' && window.gtag) {
                     window.gtag('event', 'conversion', {
                         send_to: 'AW-17362940957/it5lCL_Ei6IcEJ3opddA'

@@ -1,5 +1,7 @@
 import { getDb } from '../../lib/db';
 import { rateLimit } from '../../lib/rateLimit';
+import { readCrmDeliveryConfig } from '../../lib/crm-delivery/config.mjs';
+import { recordContactMessage, resolveSubmissionId } from '../../lib/crm-delivery/intake.mjs';
 
 const contactRateLimit = rateLimit({ windowMs: 60_000, max: 5 });
 
@@ -79,18 +81,26 @@ export default async function handler(req, res) {
         }
 
         try {
-            console.log('Getting database connection...');
             const db = await getDb();
-            console.log('Database connected successfully');
 
-            console.log('Inserting message into database...', { name, email, phone, serviceType });
+            // Delivery to OPS CRM is opt-in (JRNW_OPS_CRM_ENABLED). When on, the message and a pending
+            // delivery are saved in one transaction; the separate worker sends it later.
+            const crm = readCrmDeliveryConfig(process.env);
+            if (!crm.enabled && crm.reason !== 'disabled') {
+                console.warn('[crm-delivery] misconfigured, not queueing:', crm.reason);
+            }
+            const submissionId = resolveSubmissionId(req.body.submissionId);
 
-            await db.execute({
-                sql: 'INSERT INTO messages (name, full_name, email, phone, message, service_type) VALUES (?, ?, ?, ?, ?, ?)',
-                args: [name, name, safeEmail, safePhone, safeMessage, safeServiceType]
-            });
+            const { duplicate } = await recordContactMessage(
+                db,
+                { name, email: safeEmail, phone: safePhone, message: safeMessage, serviceType: safeServiceType },
+                { crmEnabled: crm.enabled, submissionId }
+            );
 
-            console.log('Message saved to database successfully');
+            // Browser retry of an already-saved submission: already handled (and n8n already notified).
+            if (duplicate) {
+                return res.status(200).json({ success: true });
+            }
 
             await notifyN8n({
                 nombre: name,
