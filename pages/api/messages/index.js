@@ -2,6 +2,7 @@ import { getDb } from '../../../lib/db';
 import { parse } from 'cookie';
 import { isValidSessionToken } from '../../../lib/auth';
 import { notifyN8n } from '../../../lib/notifyN8n';
+import { learnSender, forgetSender } from '../../../lib/spamLearningStore';
 
 export default async function handler(req, res) {
     const cookies = parse(req.headers.cookie || '');
@@ -30,13 +31,17 @@ export default async function handler(req, res) {
                 const prev = await db.execute({ sql: 'SELECT * FROM messages WHERE id = ?', args: [id] });
                 const row = prev.rows[0];
                 const restoring = row?.status === 'spam' && status !== 'spam';
+                const markingSpam = row && row.status !== 'spam' && status === 'spam';
 
                 const isRead = status !== 'new' ? 1 : 0;
                 await db.execute({
                     sql: 'UPDATE messages SET status = ?, is_read = ? WHERE id = ?',
                     args: [status, isRead, id]
                 });
+                // Learning: marking spam blocks that sender next time; restoring undoes it.
+                if (markingSpam) await learnSender(db, row.email);
                 if (restoring) {
+                    await forgetSender(db, row.email);
                     await notifyN8n({
                         nombre: row.full_name || row.name,
                         email: row.email,

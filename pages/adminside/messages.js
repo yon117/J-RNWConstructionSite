@@ -93,6 +93,26 @@ export default function AdminMessages() {
         }
     };
 
+    // Sends a message that slipped through to the Spam tab. The server also learns its sender.
+    const markAsSpam = async (msg) => {
+        try {
+            const res = await fetch('/api/messages', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: msg.id, status: 'spam' })
+            });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+            setMessages(messages.filter(m => m.id !== msg.id));
+            setSpamMessages([{ ...msg, status: 'spam', is_read: 1 }, ...spamMessages]);
+            if (selectedMessage && selectedMessage.id === msg.id) {
+                setSelectedMessage(null);
+            }
+        } catch (error) {
+            console.error('Failed to mark as spam:', error);
+        }
+    };
+
     const handleDeleteMessage = async (id) => {
         try {
             const res = await fetch('/api/messages', {
@@ -343,6 +363,15 @@ export default function AdminMessages() {
                                 ))}
                             </select>
                             )}
+                            {selectedMessage.status !== 'spam' && (
+                                <button
+                                    onClick={() => markAsSpam(selectedMessage)}
+                                    className={styles.actionBtn}
+                                    style={{ marginLeft: '10px', background: SPAM_OPTION.color, color: 'white', fontWeight: 'bold' }}
+                                >
+                                    Mark as spam
+                                </button>
+                            )}
                         </div>
                         <div style={{ marginTop: '20px' }}>
                             <strong style={{ color: 'var(--accent)', display: 'block', marginBottom: '10px' }}>Message:</strong>
@@ -438,6 +467,15 @@ export default function AdminMessages() {
                                                     <option key={option.value} value={option.value}>{option.label}</option>
                                                 ))}
                                             </select>
+                                            )}
+                                            {msg.status !== 'spam' && (
+                                                <button
+                                                    onClick={() => markAsSpam(msg)}
+                                                    className={styles.actionBtn}
+                                                    style={{ background: SPAM_OPTION.color, color: 'white', fontWeight: 'bold' }}
+                                                >
+                                                    Mark as spam
+                                                </button>
                                             )}
                                             <button
                                                 onClick={() => setDeleteConfirm(msg)}

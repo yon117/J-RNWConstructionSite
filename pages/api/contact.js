@@ -2,6 +2,8 @@ import { getDb } from '../../lib/db';
 import { rateLimit } from '../../lib/rateLimit';
 import { analyzeMessage } from '../../lib/spamFilter.mjs';
 import { notifyN8n } from '../../lib/notifyN8n';
+import { normalizeEmail, isLearnedSender, isLearnedSpam } from '../../lib/spamLearning.mjs';
+import { loadLearning } from '../../lib/spamLearningStore';
 import { readCrmDeliveryConfig } from '../../lib/crm-delivery/config.mjs';
 import { recordContactMessage, resolveSubmissionId } from '../../lib/crm-delivery/intake.mjs';
 
@@ -14,14 +16,6 @@ const BLOCKED_EMAILS = new Set(
         .map((e) => e.trim().toLowerCase())
         .filter(Boolean)
 );
-// Gmail ignores dots and +tags, so normalize before comparing
-function normalizeEmail(email) {
-    const [local = '', domain = ''] = email.trim().toLowerCase().split('@');
-    if (domain === 'gmail.com' || domain === 'googlemail.com') {
-        return `${local.split('+')[0].replace(/\./g, '')}@gmail.com`;
-    }
-    return `${local}@${domain}`;
-}
 const BLOCKED_NORMALIZED = new Set([...BLOCKED_EMAILS].map(normalizeEmail));
 
 // Whole sender domains (agencies that cold-pitch through the form). Extra via env: BLOCKED_DOMAINS="a.com,b.com"
@@ -46,12 +40,12 @@ const SPAM_PATTERNS = [
 const MIN_FILL_MS = 3000; // humans take longer than this to fill the form
 const MAX_LINKS = 2;
 
-const SPAM_RETENTION_DAYS = 30;
+const SPAM_RETENTION_DAYS = 90; // spam also trains the text model, so keep it longer than a month
 
 // Returns null for a normal message, or { quarantine } for spam.
 // quarantine=false: obvious bot (honeypot / instant submit) — dropped, never stored.
 // quarantine=true: stored with status 'spam' so it can be reviewed and restored from the admin.
-function classifySpam({ email, message, honeypot, startedAt }) {
+async function classifySpam({ email, message, honeypot, startedAt }) {
     if (honeypot) return { quarantine: false };
     if (startedAt && Date.now() - Number(startedAt) < MIN_FILL_MS) return { quarantine: false };
 
@@ -64,7 +58,16 @@ function classifySpam({ email, message, honeypot, startedAt }) {
 
     const verdict = analyzeMessage(message);
     if (verdict.isSpam) console.warn('[spam-filter] score', verdict.score, verdict.signals.join(','));
-    return verdict.isSpam ? { quarantine: true } : null;
+    if (verdict.isSpam) return { quarantine: true };
+
+    // Learned from messages marked as spam in the admin
+    const learning = await loadLearning(await getDb());
+    if (learning && isLearnedSender(learning.senders, email)) return { quarantine: true };
+    if (learning && isLearnedSpam(learning.model, message)) {
+        console.warn('[spam-filter] learned model flagged message');
+        return { quarantine: true };
+    }
+    return null;
 }
 
 async function quarantineMessage(fields) {
@@ -113,7 +116,7 @@ export default async function handler(req, res) {
         }
 
         // Fake success: no CRM row, no n8n notification, spammer sees nothing to adapt to
-        const spam = classifySpam({ email: safeEmail, message: safeMessage, honeypot: req.body.website, startedAt: req.body.formStartedAt });
+        const spam = await classifySpam({ email: safeEmail, message: safeMessage, honeypot: req.body.website, startedAt: req.body.formStartedAt });
         if (spam) {
             console.warn('Blocked spam submission from', ip);
             if (spam.quarantine) {
