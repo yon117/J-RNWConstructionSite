@@ -12,8 +12,11 @@ const STATUS_OPTIONS = [
     { value: 'not_interested', label: 'Not Interested', color: '#9E9E9E' }
 ];
 
+const SPAM_OPTION = { value: 'spam', label: 'Spam', color: '#E53935' };
+
 export default function AdminMessages() {
     const [messages, setMessages] = useState([]);
+    const [spamMessages, setSpamMessages] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedMessage, setSelectedMessage] = useState(null);
     const [filter, setFilter] = useState('all');
@@ -25,9 +28,14 @@ export default function AdminMessages() {
 
     const fetchMessages = async () => {
         try {
-            const res = await fetch('/api/messages');
+            const [res, spamRes] = await Promise.all([
+                fetch('/api/messages'),
+                fetch('/api/messages?view=spam')
+            ]);
             const data = await res.json();
+            const spamData = await spamRes.json();
             setMessages(data);
+            setSpamMessages(Array.isArray(spamData) ? spamData : []);
         } catch (error) {
             console.error('Failed to fetch messages:', error);
         } finally {
@@ -65,6 +73,26 @@ export default function AdminMessages() {
         }
     };
 
+    // Moves a quarantined message back to the inbox as a new lead (the API also sends the usual notification).
+    const markNotSpam = async (msg) => {
+        try {
+            const res = await fetch('/api/messages', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: msg.id, status: 'new' })
+            });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+            setSpamMessages(spamMessages.filter(m => m.id !== msg.id));
+            setMessages([{ ...msg, status: 'new', is_read: 0 }, ...messages]);
+            if (selectedMessage && selectedMessage.id === msg.id) {
+                setSelectedMessage(null);
+            }
+        } catch (error) {
+            console.error('Failed to mark as not spam:', error);
+        }
+    };
+
     const handleDeleteMessage = async (id) => {
         try {
             const res = await fetch('/api/messages', {
@@ -75,6 +103,7 @@ export default function AdminMessages() {
 
             if (res.ok) {
                 setMessages(messages.filter(m => m.id !== id));
+                setSpamMessages(spamMessages.filter(m => m.id !== id));
                 setDeleteConfirm(null);
                 if (selectedMessage && selectedMessage.id === id) {
                     setSelectedMessage(null);
@@ -86,6 +115,7 @@ export default function AdminMessages() {
     };
 
     const getFilteredMessages = () => {
+        if (filter === 'spam') return spamMessages;
         if (filter === 'all') return messages;
         if (filter === 'unread') return messages.filter(m => m.status === 'new');
         if (filter === 'read') return messages.filter(m => m.status !== 'new');
@@ -93,12 +123,12 @@ export default function AdminMessages() {
     };
 
     const getStatusColor = (status) => {
-        const option = STATUS_OPTIONS.find(opt => opt.value === status);
+        const option = [...STATUS_OPTIONS, SPAM_OPTION].find(opt => opt.value === status);
         return option ? option.color : '#999';
     };
 
     const getStatusLabel = (status) => {
-        const option = STATUS_OPTIONS.find(opt => opt.value === status);
+        const option = [...STATUS_OPTIONS, SPAM_OPTION].find(opt => opt.value === status);
         return option ? option.label : status;
     };
 
@@ -233,6 +263,13 @@ export default function AdminMessages() {
                         </button>
                     );
                 })}
+                <button
+                    onClick={() => setFilter('spam')}
+                    className={styles.actionBtn}
+                    style={{ background: filter === 'spam' ? SPAM_OPTION.color : 'rgba(255,255,255,0.1)', color: 'white' }}
+                >
+                    Spam ({spamMessages.length})
+                </button>
             </div>
 
             {selectedMessage ? (
@@ -278,6 +315,15 @@ export default function AdminMessages() {
                         </div>
                         <div>
                             <strong style={{ color: 'var(--accent)' }}>Status:</strong>
+                            {selectedMessage.status === 'spam' ? (
+                                <button
+                                    onClick={() => markNotSpam(selectedMessage)}
+                                    className={styles.actionBtn}
+                                    style={{ marginLeft: '10px', background: '#4CAF50', color: 'white', fontWeight: 'bold' }}
+                                >
+                                    Not spam
+                                </button>
+                            ) : (
                             <select
                                 value={selectedMessage.status}
                                 onChange={(e) => updateMessageStatus(selectedMessage.id, e.target.value)}
@@ -296,6 +342,7 @@ export default function AdminMessages() {
                                     <option key={option.value} value={option.value}>{option.label}</option>
                                 ))}
                             </select>
+                            )}
                         </div>
                         <div style={{ marginTop: '20px' }}>
                             <strong style={{ color: 'var(--accent)', display: 'block', marginBottom: '10px' }}>Message:</strong>
@@ -363,6 +410,15 @@ export default function AdminMessages() {
                                             >
                                                 View
                                             </button>
+                                            {msg.status === 'spam' ? (
+                                                <button
+                                                    onClick={() => markNotSpam(msg)}
+                                                    className={styles.actionBtn}
+                                                    style={{ background: '#4CAF50', color: 'white', fontWeight: 'bold' }}
+                                                >
+                                                    Not spam
+                                                </button>
+                                            ) : (
                                             <select
                                                 value={msg.status}
                                                 onChange={(e) => {
@@ -382,6 +438,7 @@ export default function AdminMessages() {
                                                     <option key={option.value} value={option.value}>{option.label}</option>
                                                 ))}
                                             </select>
+                                            )}
                                             <button
                                                 onClick={() => setDeleteConfirm(msg)}
                                                 className={styles.actionBtn + ' ' + styles.deleteBtn}

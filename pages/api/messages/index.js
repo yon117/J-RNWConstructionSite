@@ -1,6 +1,7 @@
 import { getDb } from '../../../lib/db';
 import { parse } from 'cookie';
 import { isValidSessionToken } from '../../../lib/auth';
+import { notifyN8n } from '../../../lib/notifyN8n';
 
 export default async function handler(req, res) {
     const cookies = parse(req.headers.cookie || '');
@@ -12,7 +13,10 @@ export default async function handler(req, res) {
 
     if (req.method === 'GET') {
         try {
-            const result = await db.execute('SELECT * FROM messages ORDER BY created_at DESC');
+            // Spam lives in the same table (status = 'spam') but stays out of the normal inbox and counts.
+            const spamOnly = req.query.view === 'spam';
+            const where = spamOnly ? "status = 'spam'" : "COALESCE(status, 'new') != 'spam'";
+            const result = await db.execute(`SELECT * FROM messages WHERE ${where} ORDER BY created_at DESC`);
             res.status(200).json(result.rows);
         } catch (error) {
             console.error('Messages GET error:', error);
@@ -22,11 +26,25 @@ export default async function handler(req, res) {
         try {
             const { id, status } = req.body;
             if (status) {
+                // "Not spam": restoring a quarantined message makes it a normal lead and sends the usual notification.
+                const prev = await db.execute({ sql: 'SELECT * FROM messages WHERE id = ?', args: [id] });
+                const row = prev.rows[0];
+                const restoring = row?.status === 'spam' && status !== 'spam';
+
                 const isRead = status !== 'new' ? 1 : 0;
                 await db.execute({
                     sql: 'UPDATE messages SET status = ?, is_read = ? WHERE id = ?',
                     args: [status, isRead, id]
                 });
+                if (restoring) {
+                    await notifyN8n({
+                        nombre: row.full_name || row.name,
+                        email: row.email,
+                        phone: row.phone,
+                        mensaje: row.message,
+                        serviceType: row.service_type
+                    });
+                }
             } else {
                 await db.execute({
                     sql: 'UPDATE messages SET is_read = 1 WHERE id = ?',

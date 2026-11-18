@@ -76,7 +76,7 @@ export async function getServerSideProps(context) {
     }
 
     const db = await getDb();
-    const messages = await db.all('SELECT * FROM messages ORDER BY created_at DESC');
+    const messages = await db.all("SELECT * FROM messages WHERE COALESCE(status, 'new') != 'spam' ORDER BY created_at DESC");
 
     // Serialize dates for Next.js
     const serializedMessages = messages.map(m => ({

@@ -30,6 +30,7 @@ export default function ContactFormSection() {
         otherService: ''
     });
     const [status, setStatus] = useState('');
+    const formStartedAtRef = useRef(Date.now());
     const submissionIdRef = useRef(null);
     if (submissionIdRef.current === null) submissionIdRef.current = newSubmissionId();
     const [emailError, setEmailError] = useState('');
@@ -80,6 +81,8 @@ export default function ContactFormSection() {
         const formData = {
             // Stable per form fill: a browser retry reuses it, a new submission gets a new one.
             submissionId: submissionIdRef.current,
+            website: contactForm.website,
+            formStartedAt: formStartedAtRef.current,
             firstName: contactForm.fullName,
             lastName: '',
             email: contactForm.email,
@@ -139,6 +142,17 @@ export default function ContactFormSection() {
 
                     {/* Contact Form */}
                     <form className={styles.contactForm} onSubmit={handleContactSubmit}>
+                        {/* Honeypot: invisible to people, bots fill it */}
+                        <input
+                            type="text"
+                            name="website"
+                            tabIndex={-1}
+                            autoComplete="off"
+                            aria-hidden="true"
+                            value={contactForm.website || ''}
+                            onChange={e => setContactForm({ ...contactForm, website: e.target.value })}
+                            style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+                        />
                         <div style={{ width: '100%' }}>
                             <input
                                 type="text"

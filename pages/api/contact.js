@@ -1,12 +1,12 @@
 import { getDb } from '../../lib/db';
 import { rateLimit } from '../../lib/rateLimit';
+import { analyzeMessage } from '../../lib/spamFilter.mjs';
+import { notifyN8n } from '../../lib/notifyN8n';
 import { readCrmDeliveryConfig } from '../../lib/crm-delivery/config.mjs';
 import { recordContactMessage, resolveSubmissionId } from '../../lib/crm-delivery/intake.mjs';
 
 const contactRateLimit = rateLimit({ windowMs: 60_000, max: 5 });
 
-const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL || 'http://127.0.0.1:5678/webhook/formulario-contacto';
-const N8N_TIMEOUT_MS = 5000;
 
 // Extra entries via env: BLOCKED_EMAILS="a@x.com,b@y.com"
 const BLOCKED_EMAILS = new Set(
@@ -24,28 +24,66 @@ function normalizeEmail(email) {
 }
 const BLOCKED_NORMALIZED = new Set([...BLOCKED_EMAILS].map(normalizeEmail));
 
+// Whole sender domains (agencies that cold-pitch through the form). Extra via env: BLOCKED_DOMAINS="a.com,b.com"
+const BLOCKED_DOMAINS = new Set(
+    ['automaxrevenue.com', ...(process.env.BLOCKED_DOMAINS || '').split(',')]
+        .map((d) => d.trim().toLowerCase())
+        .filter(Boolean)
+);
+
 const SPAM_PATTERNS = [
     /forsale\.godaddy\.com/i,
     /\b\w+(water|damage|cleaning|restoration|roofing|plumbing)\w*\.com\b.*\b(for sale|secured|referrals)\b/i,
-    /(secured|domain).{0,60}(referrals|new .* jobs).{0,200}https?:\/\//is
+    /(secured|domain).{0,60}(referrals|new .* jobs).{0,200}https?:\/\//is,
+    // Cold outreach / agency pitches ("can I send a quick video", "set it up for free", ...)
+    /\b(send|share)\b.{0,30}\b(quick\s+)?\d*-?\s*(minute|min)\s+(video|demo|loom)\b/is,
+    /\bjust (checking|following) (in|up)\b.{0,80}\b(offer|proposal|my (last )?(email|message))\b/is,
+    /\b(set (it|this) up|setup)\b.{0,20}\bfor free\b.{0,120}\b(test|try)\b/is,
+    /\b(lead generation|lead gen|seo (services|agency)|web(site)? design (services|agency)|grow your (business|revenue)|guaranteed (leads|results)|more (leads|clients|customers) for you)\b/i,
+    /\b(book|schedule) a (quick )?(call|demo|meeting)\b.{0,80}\b(our (team|agency|services)|we (help|offer|specialize))\b/is
 ];
 
-function isSpam(email, message) {
-    if (BLOCKED_NORMALIZED.has(normalizeEmail(email))) return true;
-    return SPAM_PATTERNS.some((re) => re.test(message));
+const MIN_FILL_MS = 3000; // humans take longer than this to fill the form
+const MAX_LINKS = 2;
+
+const SPAM_RETENTION_DAYS = 30;
+
+// Returns null for a normal message, or { quarantine } for spam.
+// quarantine=false: obvious bot (honeypot / instant submit) — dropped, never stored.
+// quarantine=true: stored with status 'spam' so it can be reviewed and restored from the admin.
+function classifySpam({ email, message, honeypot, startedAt }) {
+    if (honeypot) return { quarantine: false };
+    if (startedAt && Date.now() - Number(startedAt) < MIN_FILL_MS) return { quarantine: false };
+
+    if (BLOCKED_NORMALIZED.has(normalizeEmail(email))) return { quarantine: true };
+    const domain = email.split('@')[1]?.trim().toLowerCase();
+    if (domain && BLOCKED_DOMAINS.has(domain)) return { quarantine: true };
+
+    if ((message.match(/https?:\/\/|www\./gi) || []).length > MAX_LINKS) return { quarantine: true };
+    if (SPAM_PATTERNS.some((re) => re.test(message))) return { quarantine: true };
+
+    const verdict = analyzeMessage(message);
+    if (verdict.isSpam) console.warn('[spam-filter] score', verdict.score, verdict.signals.join(','));
+    return verdict.isSpam ? { quarantine: true } : null;
 }
 
-async function notifyN8n(payload) {
+async function quarantineMessage(fields) {
     try {
-        const res = await fetch(N8N_WEBHOOK_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-            signal: AbortSignal.timeout(N8N_TIMEOUT_MS)
-        });
-        if (!res.ok) console.error('n8n webhook responded with status', res.status);
+        const db = await getDb();
+        await db.batch([
+            {
+                sql: `INSERT INTO messages (name, full_name, email, phone, message, service_type, status, is_read)
+                      VALUES (?, ?, ?, ?, ?, ?, 'spam', 1)`,
+                args: [fields.name, fields.name, fields.email, fields.phone, fields.message, fields.serviceType]
+            },
+            {
+                sql: `DELETE FROM messages WHERE status = 'spam' AND created_at < datetime('now', ?)`,
+                args: [`-${SPAM_RETENTION_DAYS} days`]
+            }
+        ], 'write');
     } catch (error) {
-        console.error('n8n webhook failed:', error.message);
+        // Never let quarantine failures change what the sender sees.
+        console.error('Failed to quarantine spam message:', error.message);
     }
 }
 
@@ -74,9 +112,13 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: 'Invalid email address' });
         }
 
-        // Fake success: no DB row, no n8n notification, spammer sees nothing to adapt to
-        if (isSpam(safeEmail, safeMessage)) {
+        // Fake success: no CRM row, no n8n notification, spammer sees nothing to adapt to
+        const spam = classifySpam({ email: safeEmail, message: safeMessage, honeypot: req.body.website, startedAt: req.body.formStartedAt });
+        if (spam) {
             console.warn('Blocked spam submission from', ip);
+            if (spam.quarantine) {
+                await quarantineMessage({ name, email: safeEmail, phone: safePhone, message: safeMessage, serviceType: safeServiceType });
+            }
             return res.status(200).json({ success: true });
         }
 
