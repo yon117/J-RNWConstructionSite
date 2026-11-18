@@ -318,7 +318,7 @@ function setupAnimations(gsap, ScrollTrigger) {
 
     // Elements already in/above viewport on load → show immediately
     ScrollTrigger.getAll().forEach(st => {
-        if (st.animation && window.scrollY >= st.start) {
+        if (st.animation && typeof st.animation.progress === 'function' && window.scrollY >= st.start) {
             st.animation.progress(1, true);
         }
     });
@@ -339,9 +339,21 @@ export default function ScrollMotion() {
             ctx?.revert();
             ctx = gsapRef.context(() => setupAnimations(gsapRef, ScrollTriggerRef));
         };
+        // Rebuilding tears down every animation, so never let two rebuilds overlap: cancel any
+        // pending frame first and debounce resize (mobile address bars fire it constantly).
         let raf = 0;
+        let raf2 = 0;
+        let resizeTimer = 0;
         const refresh = () => {
-            raf = requestAnimationFrame(() => requestAnimationFrame(run));
+            cancelAnimationFrame(raf);
+            cancelAnimationFrame(raf2);
+            raf = requestAnimationFrame(() => {
+                raf2 = requestAnimationFrame(run);
+            });
+        };
+        const onResize = () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(refresh, 200);
         };
 
         let lenis;
@@ -389,7 +401,7 @@ export default function ScrollMotion() {
             document.documentElement.classList.add('scroll-motion-ready');
             refresh();
             router.events.on('routeChangeComplete', refresh);
-            window.addEventListener('resize', refresh);
+            window.addEventListener('resize', onResize);
         };
 
         init();
@@ -397,8 +409,10 @@ export default function ScrollMotion() {
         return () => {
             cancelled = true;
             cancelAnimationFrame(raf);
+            cancelAnimationFrame(raf2);
+            clearTimeout(resizeTimer);
             router.events.off('routeChangeComplete', refresh);
-            window.removeEventListener('resize', refresh);
+            window.removeEventListener('resize', onResize);
             bodyObs?.disconnect();
             ctx?.revert();
             if (ticker && gsapRef) gsapRef.ticker.remove(ticker);

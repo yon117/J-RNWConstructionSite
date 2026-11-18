@@ -80,7 +80,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
     // Errors with no actionable info: cross-origin "Script error." (no file/line) and
     // known in-app-browser / Safari injected-script noise.
-    const THIRD_PARTY_NOISE = /_AutofillCallbackHandler|could not be cloned|WeakMap keys must be objects/i;
+    const THIRD_PARTY_NOISE = /_AutofillCallbackHandler|could not be cloned|WeakMap keys must be objects|document\.elementFromPoint|Java object is gone|Error invoking postMessage/i;
     const isThirdPartyNoise = (event: ErrorEvent) => {
       const message = event.message || '';
       if (/^Script error\.?$/i.test(message.trim()) && !event.filename && !event.lineno) return true;
